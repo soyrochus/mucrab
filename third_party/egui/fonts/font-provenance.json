@@ -1,0 +1,40 @@
+{
+  "source_crate": "epaint_default_fonts",
+  "version": "0.36.2",
+  "fonts": [
+    {
+      "font": "Hack-Regular.ttf",
+      "sha256": "15f55cc0c85a2988d2b4b3a8cdb5d77fdfbaf319e1bb5309d725db9818fb7125",
+      "copyright": [
+        "Copyright (c) 2018 Source Foundry Authors / Copyright (c) 2003 by Bitstream, Inc. All Rights Reserved."
+      ],
+      "license_urls": [
+        "https://github.com/source-foundry/Hack/blob/master/LICENSE.md"
+      ]
+    },
+    {
+      "font": "NotoEmoji-Regular.ttf",
+      "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+      "copyright": [
+        "Copyright 2013 Google Inc. All Rights Reserved."
+      ],
+      "license_urls": [
+        "http://scripts.sil.org/OFL"
+      ]
+    },
+    {
+      "font": "Ubuntu-Light.ttf",
+      "sha256": "80307b8da7649aa4ee4d484b232140e3ce1ec0ca093073d3c53c8f5a5ced7a70",
+      "copyright": [
+        "Copyright 2011 Canonical Ltd.  Licensed under the Ubuntu Font Licence 1.0"
+      ],
+      "license_urls": []
+    },
+    {
+      "font": "emoji-icon-font.ttf",
+      "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+      "copyright": [],
+      "license_urls": []
+    }
+  ]
+}

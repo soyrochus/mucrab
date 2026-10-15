@@ -8,7 +8,55 @@ The experiment will use [REA](https://github.com/morluto/rea), a JVM decompiler,
 
 ## Current status
 
-The repository baseline, reproducible binary acquisition, and static analysis tool setup are complete. The pinned muCommander distribution is downloaded, checksum-verified, and extracted into ignored local storage. REA 6.5.0, CFR 0.152, and the installed JDK have passed the static readiness probe. The Cargo workspace and application implementation are subsequent steps. There is no runnable Rust application or behavioral-equivalence result yet.
+The repository baseline, reproducible binary acquisition, static analysis tool setup, and Cargo workspace are complete. The native **muCrab** window builds and opens with an empty two-pane preview. File browsing, file operations, sorting, and Java/Rust comparison adapters are not implemented yet; no behavioral equivalence has been established. The downloaded Java reference and the pinned REA/CFR tools remain available for the first migration increment.
+
+## Build and run the Rust scaffold
+
+Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. The scaffold was built and launched on **macOS arm64** with Rust/Cargo **1.99.0**. Other platforms have not been verified.
+
+The [Cargo workspace](Cargo.toml) contains:
+
+| Package | Role | Current contents |
+| --- | --- | --- |
+| `mucrab-core` | Framework-independent file-management behavior | Pane identity; recovered operations will follow |
+| `mucrab-desktop` | Native `mucrab` executable | Two-pane window using eframe/egui 0.36.2 with the OpenGL backend |
+| `mucrab-compare` | Java/Rust comparison harness | Entry point that reports `not_ready` and zero cases run |
+
+All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
+
+```sh
+cargo build --workspace --locked
+cargo run --locked -p mucrab-desktop
+```
+
+The preview does not read or modify folders, and starting it does not require Java, Node, REA, or the reference JARs. Check the native command-line entry points without opening a window:
+
+```sh
+cargo run --locked -p mucrab-desktop -- --version
+cargo run --locked -p mucrab-compare -- --status
+```
+
+The comparison status command deliberately exits with **code 2** while its adapters are unavailable. Its JSON reports `status: "not_ready"` and `cases_run: 0`; this is not a passing equivalence result.
+
+Workspace checks:
+
+```sh
+cargo fmt --all -- --check
+cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+cargo test --workspace --all-features --locked
+```
+
+The current Rust suite has one integration guard proving that an unavailable comparison cannot be reported as a successful run. There are no ported-behavior tests yet. Once dependencies are cached, the Cargo build, test, and Clippy commands also work with `--offline`.
+
+Capture the native preview and exit automatically (verified on macOS):
+
+```sh
+mkdir -p artifacts/workspace
+EFRAME_SCREENSHOT_TO="$PWD/artifacts/workspace/mucrab-preview.png" \
+  cargo run --locked -p mucrab-desktop --features screenshot
+```
+
+The optional `screenshot` feature is for development captures. [Workspace readiness evidence](evidence/workspace/readiness.json) records the compiler, source and lockfile digests, verified commands, expected harness refusal, and captured window. Native rendering establishes scaffold readiness only.
 
 ## Reference application
 
@@ -108,7 +156,7 @@ This scope is an initial demonstration target. Complete muCommander feature pari
 1. **Complete:** establish and commit this repository baseline.
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
-4. Create a Cargo workspace separating the Rust core, desktop interface, and comparison harness. Commit `Cargo.lock` for reproducible application builds.
+4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
 5. Recover and implement one workflow at a time, beginning with file sorting. Compare each increment against the original binary before expanding the scope.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
 
@@ -133,7 +181,7 @@ The experiment will distinguish evidence that binary-to-Rust reconstruction work
 - `evidence/`: selected provenance records and comparison results suitable for Git.
 - `third_party/`: preserved upstream notices and their provenance.
 
-The baseline, acquisition and analysis helpers, helper checks, pinned manifests and npm lockfile, and acquisition/readiness evidence exist at this stage. The Rust crates and comparison fixtures will be added in later steps.
+The baseline, acquisition and analysis helpers, pinned tool manifests, Rust workspace, dependency lockfiles, helper/readiness checks, and acquisition/toolchain/workspace evidence exist at this stage. Behavior adapters, comparison fixtures, and migrated workflows will be added in later steps.
 
 ## License and attribution
 

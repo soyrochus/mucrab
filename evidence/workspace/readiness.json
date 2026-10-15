@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "scope": "Cargo workspace scaffold and native window readiness",
+  "observed_on": "2026-10-15",
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64"
+  },
+  "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: aarch64-apple-darwin\nrelease: 1.99.0\nLLVM version: 23.1.1",
+  "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+  "workspace": [
+    {
+      "package": "mucrab-core",
+      "manifest": "crates/core/Cargo.toml",
+      "license": "GPL-3.0-only",
+      "edition": "2024",
+      "rust_version": "1.95",
+      "publish": false
+    },
+    {
+      "package": "mucrab-desktop",
+      "manifest": "crates/desktop/Cargo.toml",
+      "license": "GPL-3.0-only",
+      "edition": "2024",
+      "rust_version": "1.95",
+      "publish": false
+    },
+    {
+      "package": "mucrab-compare",
+      "manifest": "crates/compare/Cargo.toml",
+      "license": "GPL-3.0-only",
+      "edition": "2024",
+      "rust_version": "1.95",
+      "publish": false
+    }
+  ],
+  "inputs": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "334ef83f41db18162f9079e59c5b3f2c8a62eaf5941daff0b294bbbeaa31a49d"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "deabd078cda3420cbf65e814302e02e815548db6272a9a103ee978d7087bc75f"
+    },
+    {
+      "path": "crates/compare/src/main.rs",
+      "sha256": "18e877f88be5409e065abdf4acc759e1a01a85d8bf7794478d39b9265747fd4a"
+    },
+    {
+      "path": "crates/compare/tests/readiness.rs",
+      "sha256": "8aa6dab9518b1130c540f3c6403b39a0abf995ee3a164823b331cfa65723fb3c"
+    },
+    {
+      "path": "crates/core/src/lib.rs",
+      "sha256": "3f8c7fa98f5af7b6a5472d18667aede44302b7265032c0a0f7a96a04d54c2eba"
+    },
+    {
+      "path": "crates/desktop/src/app.rs",
+      "sha256": "59f91ae27356566c4062ef627889549f6ce3404a6d14a67b5c939e2a14b5a5a5"
+    },
+    {
+      "path": "crates/desktop/src/main.rs",
+      "sha256": "abc7389fb1245b272e4ee9b144f46f9b04567409f4782038dd97a50138af3e89"
+    },
+    {
+      "path": "crates/compare/Cargo.toml",
+      "sha256": "9357953c3769778802b0f57f60aeac5d111716faed5d43566fcecda671284c33"
+    },
+    {
+      "path": "crates/core/Cargo.toml",
+      "sha256": "3005e2cd9fc25598ab83f712a09b6775282eb3eef6cec3d549c750540afb6d20"
+    },
+    {
+      "path": "crates/desktop/Cargo.toml",
+      "sha256": "cc2b896f0efca58a4af0512ed955ca721996cb02bf2f0a517c2937f8f3961ea3"
+    }
+  ],
+  "commands": {
+    "format": {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    "build": {
+      "command": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0
+    },
+    "metadata": {
+      "command": [
+        "cargo",
+        "metadata",
+        "--format-version",
+        "1",
+        "--no-deps",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0
+    },
+    "desktop_version": {
+      "command": [
+        "{repository}/target/debug/mucrab",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    "desktop_help": {
+      "command": [
+        "{repository}/target/debug/mucrab",
+        "--help"
+      ],
+      "exit_code": 0
+    },
+    "comparison_status": {
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--status"
+      ],
+      "exit_code": 2
+    },
+    "rustc": {
+      "command": [
+        "rustc",
+        "-vV"
+      ],
+      "exit_code": 0
+    },
+    "cargo": {
+      "command": [
+        "cargo",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    "native_links": {
+      "command": [
+        "otool",
+        "-L",
+        "{repository}/target/debug/mucrab"
+      ],
+      "exit_code": 0
+    }
+  },
+  "additional_verified_checks": [
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "integration_tests_passed": 1,
+      "ported_behavior_tests_run": 0
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "-p",
+        "mucrab-desktop",
+        "--features",
+        "screenshot"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "native_preview": {
+    "command": [
+      "target/debug/mucrab"
+    ],
+    "feature": "screenshot",
+    "environment": {
+      "EFRAME_SCREENSHOT_TO": "artifacts/workspace/mucrab-preview.png"
+    },
+    "exit_code": 0,
+    "screenshot": {
+      "path": "artifacts/workspace/mucrab-preview.png",
+      "sha256": "124b1fbdcec623f5380b07ee61fe79be72a39e60d154e5c97c70e9eab7c6daaa",
+      "width": 2000,
+      "height": 1280
+    },
+    "scope": "Native Rust window rendering only; no file workflows exercised"
+  },
+  "visual_review": {
+    "result": "Both panes, preview status, and attribution footer visible with no clipping in the captured window"
+  },
+  "comparison_harness": {
+    "status": "not_ready",
+    "cases_run": 0,
+    "reason": "Java and Rust behavior adapters are not implemented"
+  },
+  "ported_workflows": [],
+  "java_application_execution": "not_performed",
+  "behavioral_equivalence": "not_assessed",
+  "limitations": [
+    "The native window is a presentation scaffold with empty panes; it cannot browse or modify files.",
+    "The core currently contains pane identity only.",
+    "The harness has no Java or Rust behavior adapters and exits with code 2 rather than reporting a passing comparison.",
+    "Only macOS arm64 was built and launched; no cross-platform build or release packaging was verified."
+  ]
+}

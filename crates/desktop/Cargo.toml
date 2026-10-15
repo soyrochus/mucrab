@@ -1,0 +1,23 @@
+[package]
+name = "mucrab-desktop"
+description = "Native two-pane desktop interface for muCrab"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+default-run = "mucrab"
+
+[[bin]]
+name = "mucrab"
+path = "src/main.rs"
+
+[dependencies]
+mucrab-core.workspace = true
+eframe.workspace = true
+
+[features]
+screenshot = ["eframe/__screenshot"]
+
+[lints]
+workspace = true
