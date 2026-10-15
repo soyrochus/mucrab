@@ -10,7 +10,37 @@
 
 muCrab is an experimental Rust port of selected [muCommander](https://github.com/mucommander/mucommander) file-management workflows, reconstructed from its published Java binaries. The intended application name is **muCrab** and its command name is **`mucrab`**.
 
-The experiment will use [REA](https://github.com/morluto/rea), a JVM decompiler, and observations of the original application to recover behavior, implement it in Rust, and compare the two implementations.
+The experiment combines [REA (Reverse Engineer Anything)](https://github.com/morluto/rea),
+an agent-oriented reverse-engineering toolkit, with **CFR**, a JVM decompiler,
+JDK bytecode inspection, and observations of the original application. Together,
+these support recovering behavior, implementing it in Rust, and comparing the
+two implementations.
+
+## What is REA?
+
+**REA connects AI coding agents to tools for investigating software, from
+packaged applications and runtime behavior down to native binaries.** It
+provides an MCP (Model Context Protocol) server, a CLI, and investigation
+workflows. An agent can inspect a target, trace relevant code, examine the
+returned evidence, and choose the next question to investigate.
+
+Its analysis capabilities span several kinds of targets:
+
+- **Native binaries:** assembly, pseudocode, strings, symbols, calls and
+  references through engines such as Hopper, Ghidra or IDA.
+- **Applications and managed code:** JavaScript/Electron modules and IPC,
+  .NET metadata and instructions, and Android APK analysis through specialized
+  providers.
+- **Runtime behavior:** browser structure and network observations, plus local
+  process interactions and execution captures.
+- **Packages and resources:** file inventories, fingerprints, metadata and
+  extracted resources.
+
+The coding agent uses these findings to explain a feature, reconstruct an
+implementation, and test it against the original. Available analysis depends
+on the target, host and configured providers. See REA's
+[investigation workflow](https://github.com/morluto/rea#how-rea-works) and
+[supported targets](https://github.com/morluto/rea#what-you-can-analyze).
 
 ## Current status
 
@@ -158,6 +188,12 @@ python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 Keep the extracted tree unchanged as the binary reference. Later runtime tests will use a separate working copy and disposable configuration.
 
 ## Analysis tools
+
+**REA's role in this experiment:** the pinned local CLI has supplied artifact
+inventory and fingerprint evidence for the muCommander JAR. Java method recovery
+uses CFR and JDK `javap`; our Java adapters execute the original classes, and our
+comparison harness checks the Rust implementation. The capability table below
+records what each tool has actually demonstrated in this repository.
 
 The [analysis-tool manifest](tools/manifests/analysis-tools.json) pins **REA 6.5.0** and **CFR 0.152**. REA's dependencies are pinned in [the npm lockfile](tools/rea/package-lock.json). The current probe ran on macOS arm64 with Node **24.12.0**, npm **11.7.0**, and OpenJDK / `javap` **21.0.10**. Setup requires a Node version supported by REA and a full JDK 17 or newer; it uses the installed runtimes rather than installing them.
 
