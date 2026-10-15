@@ -8,17 +8,50 @@ The experiment will use [REA](https://github.com/morluto/rea), a JVM decompiler,
 
 ## Current status
 
-This repository contains the experiment baseline: its description, license, upstream attribution, and ignore rules. Artifact acquisition, tool setup, the Cargo workspace, and application implementation are subsequent steps. There is no runnable Rust application or behavioral-equivalence result yet.
+The repository baseline and reproducible binary acquisition are complete. The pinned muCommander distribution is downloaded, checksum-verified, and extracted into ignored local storage. Tool setup, the Cargo workspace, and application implementation are subsequent steps. There is no runnable Rust application or behavioral-equivalence result yet.
 
 ## Reference application
 
-The planned reference is muCommander **1.6.2**, release tag **`1.6.2-1`**:
+The reference is muCommander **1.6.2**, release tag **`1.6.2-1`**:
 
 - [Official release](https://github.com/mucommander/mucommander/releases/tag/1.6.2-1).
 - [Binary distribution](https://github.com/mucommander/mucommander/releases/download/1.6.2-1/mucommander-1.6.2-1-portable-x86_64.zip).
 - Published archive SHA-256: `e6769537bbb56cc52c1289ebef2e3d051912bb8b10691d320f28b945f15819a4`.
 
-The input is the complete distribution, including the launcher, application JARs, dependencies, resources, and notices. The bundled runtime's platform must be distinguished from the host JDK selected to run the Java application. Acquisition will retain the distribution layout and verify the pinned archive before use.
+The input is the complete distribution, including the launcher, application JARs, dependencies, resources, and notices. This portable archive includes a Windows executable launcher and a shell launcher, with no bundled JRE. Running the application will require a compatible host JDK; compatibility of its bundled native components will be checked during tool and runtime setup. Acquisition preserves the distribution layout and does not execute its contents.
+
+## Acquire or verify the reference
+
+Requirements: Python 3.9 or newer, `curl`, and network access for the first download. From the repository root:
+
+```sh
+python3 -B tools/acquire_mucommander.py
+```
+
+The [pinned manifest](tools/manifests/mucommander.json) supplies the official release URL, archive size, and SHA-256. The script verifies the archive before extraction, checks all extracted file contents, and confirms the launcher version, implementation revision, and preserved license notice. Repeating the command verifies the cached archive and distribution before reusing them. A mismatch stops acquisition and reports the affected input.
+
+- Download: `artifacts/downloads/mucommander-1.6.2-1-portable-x86_64.zip`.
+- Extracted reference: `artifacts/reference/mucommander-1.6.2-1/`.
+- Launcher JAR: `artifacts/reference/mucommander-1.6.2-1/mucommander-1.6.2.jar`.
+- Core JAR: `artifacts/reference/mucommander-1.6.2-1/app/mucommander-core-1.6.2.jar`.
+- Full file inventory: `artifacts/inventories/mucommander-1.6.2-1.json` (ignored).
+- [Acquisition evidence](evidence/acquisition/mucommander-1.6.2-1.json) (tracked).
+
+The acquired distribution contains **202 files and 196 JARs**. The compact evidence records the input digest, distribution counts, and selected file digests; the local inventory contains the digest of every extracted file. These records establish acquisition and byte integrity only.
+
+Verify the local reference and its evidence without network access or writes:
+
+```sh
+python3 -B tools/acquire_mucommander.py --verify-only
+```
+
+Check acquisition failure handling and extraction boundaries:
+
+```sh
+python3 -B -m unittest discover -s tools -p 'test_*.py' -v
+```
+
+Keep the extracted tree unchanged as the binary reference. Later runtime tests will use a separate working copy and disposable configuration.
 
 ## Initial demo scope
 
@@ -35,8 +68,8 @@ This scope is an initial demonstration target. Complete muCommander feature pari
 
 ## Execution sequence
 
-1. Establish and commit this repository baseline.
-2. Add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
+1. **Complete:** establish and commit this repository baseline.
+2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. Pin REA and a JVM decompiler, then verify their actual capabilities against the reference. REA's inspected JADX adapter requires an APK, so desktop JAR decompilation needs a separate JVM tool or a verified adapter. Record the producing tool for each finding.
 4. Create a Cargo workspace separating the Rust core, desktop interface, and comparison harness. Commit `Cargo.lock` for reproducible application builds.
 5. Recover and implement one workflow at a time, beginning with file sorting. Compare each increment against the original binary before expanding the scope.
@@ -54,7 +87,7 @@ Fixtures will include numeric and Unicode names, existing destinations, symbolic
 
 The experiment will distinguish evidence that binary-to-Rust reconstruction works from evidence that REA improves the process. Tool provenance, human interventions, and remaining gaps will be recorded with the results.
 
-## Planned repository layout
+## Repository layout
 
 - `artifacts/`: ignored downloads, extracted distributions, and generated decompiler output.
 - `tools/`: reproducible acquisition, inspection, and comparison helpers.
@@ -63,7 +96,7 @@ The experiment will distinguish evidence that binary-to-Rust reconstruction work
 - `evidence/`: selected provenance records and comparison results suitable for Git.
 - `third_party/`: preserved upstream notices and their provenance.
 
-Only the baseline files and preserved notices exist at this stage.
+The baseline, acquisition helper and checks, pinned manifest, and acquisition evidence exist at this stage. The Rust crates and comparison fixtures will be added in later steps.
 
 ## License and attribution
 

@@ -9,6 +9,10 @@ target/
 /tools/.cache/
 /evidence/local/
 
+# Python helper bytecode.
+__pycache__/
+*.py[cod]
+
 # Local environment settings; keep examples trackable.
 .env
 .env.*

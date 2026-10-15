@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "project": "muCommander",
+  "version": "1.6.2",
+  "release_tag": "1.6.2-1",
+  "implementation_revision": "3bc2118",
+  "input_manifest": "tools/manifests/mucommander.json",
+  "archive": {
+    "filename": "mucommander-1.6.2-1-portable-x86_64.zip",
+    "url": "https://github.com/mucommander/mucommander/releases/download/1.6.2-1/mucommander-1.6.2-1-portable-x86_64.zip",
+    "sha256": "e6769537bbb56cc52c1289ebef2e3d051912bb8b10691d320f28b945f15819a4",
+    "size_bytes": 141934827,
+    "local_path": "artifacts/downloads/mucommander-1.6.2-1-portable-x86_64.zip"
+  },
+  "distribution": {
+    "local_path": "artifacts/reference/mucommander-1.6.2-1",
+    "file_count": 202,
+    "jar_count": 196,
+    "uncompressed_size_bytes": 158684395,
+    "all_files_match_archive": true
+  },
+  "launcher": {
+    "main_class": "com.mucommander.main.muCommander",
+    "specification_version": "1.6.2",
+    "implementation_version": "3bc2118"
+  },
+  "key_files": [
+    {
+      "path": "mucommander-1.6.2.jar",
+      "size_bytes": 3853824,
+      "sha256": "4a494249c43ae9879682a8789167fde46faa968446464dba4a910d90357dd01f"
+    },
+    {
+      "path": "app/mucommander-core-1.6.2.jar",
+      "size_bytes": 2602186,
+      "sha256": "4db401b498756bd415395818380e3109b8824695ba816bf61e8572e00696fb1f"
+    },
+    {
+      "path": "bundle/mucommander-commons-file-1.6.2.jar",
+      "size_bytes": 2398498,
+      "sha256": "bb3a456fb42d40b2551b90bc5649b789931ddee9df79c1c2df771a74cafe641e"
+    },
+    {
+      "path": "bundle/mucommander-format-zip-1.6.2.jar",
+      "size_bytes": 51146,
+      "sha256": "7e8c7660c2f2b064ffaea6bb2b8867ed9cf924ccbe2d67d05e43833e2b5e11c4"
+    },
+    {
+      "path": "license.txt",
+      "size_bytes": 55646,
+      "sha256": "4e3671effa92629cf3b2ea1ca4da1b478d19a867b95f6d94dde1f3abf956b6d7"
+    },
+    {
+      "path": "readme.txt",
+      "size_bytes": 7860,
+      "sha256": "493c465e03887f17129c6eed98129f14d7eb346e925ab5b32e84acacb1822b94"
+    },
+    {
+      "path": "mucommander.sh",
+      "size_bytes": 1808,
+      "sha256": "99bc02e7792c610c23ea28436eaff734ca5e38a3c9d736f1daab5f761c7e2076"
+    }
+  ],
+  "upstream_notice_matches_preserved_copy": true,
+  "scope": "binary_acquisition_and_integrity",
+  "application_execution": "not_performed_by_this_tool",
+  "behavioral_equivalence": "not_assessed"
+}

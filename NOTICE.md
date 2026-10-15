@@ -19,7 +19,7 @@ The file [third_party/mucommander/license.txt](third_party/mucommander/license.t
 - Archive SHA-256: `e6769537bbb56cc52c1289ebef2e3d051912bb8b10691d320f28b945f15819a4`.
 - Notice imported on: **2026-10-15**.
 
-The archive was downloaded and checksum-verified during the earlier feasibility investigation. Only its license file is imported into this baseline; acquisition of application binaries inside this repository is a subsequent step.
+The license file was imported from the checksum-verified archive downloaded during the earlier feasibility investigation. The complete binary archive has subsequently been acquired inside this repository using [the acquisition helper](tools/acquire_mucommander.py), with provenance recorded in [the acquisition evidence](evidence/acquisition/mucommander-1.6.2-1.json). Downloaded and extracted binaries are kept in ignored local storage.
 
 The preserved file contains muCommander's licensing statement, GPLv3 and LGPLv3 texts, and notices for third-party works. It describes the upstream distribution and is not a dependency inventory for the future Rust application. Additional file-specific and dependency notices will be preserved as material is introduced.
 
