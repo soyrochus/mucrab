@@ -12,15 +12,15 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-15 |
-| Last verified implementation commit | `88baf29` — Create GPLv3 muCrab Cargo workspace and native preview |
+| Last verified implementation commit | `212d724` — Migrate verified local browsing and name sorting to Rust |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W01 — open a local folder and display its contents in verified name order |
-| W01 status | `not_started`; planning only |
-| Next executable task | G1: build a thin Java adapter that invokes the original `FileComparator` from the pinned JARs |
-| Ported workflows | None |
-| Behavioral comparison cases run | 0 |
-| Known blocker | None established; Java runtime initialization and collation compatibility are unresolved risks |
-| Historical verification platform | macOS arm64; other platforms unverified |
+| Active workflow | W02 — recover the next selection/filtering/sort-criteria contract; implementation not started |
+| W01 status | `verified` within en-US/macOS arm64/APFS scope; representative original GUI evidence |
+| Next executable task | Inspect original selection and filtering callers, choose one bounded W02 subworkflow, and freeze its contract before implementation |
+| Ported workflows | W01 — local browsing and recovered name ordering |
+| Behavioral comparison cases run | 342 configuration/error cases: 187 predefined + 155 reserved; 45,696 pair signs, 336 lists, 54 enumeration/error checks; zero differences |
+| Known blocker | None within W01 scope; other locales/platforms and deferred behaviors require separate increments |
+| Verification platform | macOS arm64, APFS with case-insensitive/canonically equivalent lookup; other platforms unverified |
 
 The commit above identifies the implementation baseline, not the commit adding
 this plan. On resumption, inspect the actual checkout and reconcile this table
@@ -59,16 +59,16 @@ complete, observable workflow before expanding the scope.
 | 2. Binary acquisition | Complete | `15427e7`; `tools/acquire_mucommander.py`, `tools/manifests/mucommander.json`, `evidence/acquisition/mucommander-1.6.2-1.json` |
 | 3. Analysis toolchain | Complete for static inspection | `9996a3e`; `tools/analysis_tools.py`, pinned manifests and npm lockfile, `evidence/toolchain/readiness.json` |
 | 4. Cargo workspace and preview | Complete | `88baf29`; `Cargo.toml`, `Cargo.lock`, `crates/`, `evidence/workspace/readiness.json` |
-| 5. Verified workflows | Not started | W01 gates below |
+| 5. Verified workflows | W01 verified; W02 not started | `evidence/workflows/W01-local-browse-sort/`; W01 gates below |
 | 6. Broader comparison and demo | Not started | Final acceptance below |
 
 The workspace contains:
 
 | Package | Current behavior | Intended responsibility |
 | --- | --- | --- |
-| `mucrab-core` | `PaneSide` identity only | Recovered behavior, independent of the GUI |
-| `mucrab-desktop` | Native empty two-pane preview using eframe/egui 0.36.2 and OpenGL | Navigation, selection, and operation UI |
-| `mucrab-compare` | Reports `not_ready`, zero cases, exit code 2 | Run Java/Rust adapters and report differences |
+| `mucrab-core` | Local enumeration, pane state, recovered comparator/table sorting, ICU4X collation | Recovered behavior, independent of the GUI |
+| `mucrab-desktop` | Native two-pane local browser using eframe/egui 0.36.2 and OpenGL | Navigation and independent sort controls; later selection/operation UI |
+| `mucrab-compare` | Original-JAR/Rust W01 adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
 
 Historical checks passed on the baseline: Cargo build, formatting, Clippy with
 warnings denied, Rust tests, CLI checks, and native preview capture. The Rust
@@ -76,10 +76,13 @@ suite has **one readiness guard and zero migrated-behavior tests**. The Python
 helper suite had **nine passing tests**. These counts describe the baseline,
 not the eventual acceptance suite.
 
-The original muCommander application and Java comparator have **not** been run.
-No directory listing, sorting, navigation, or file operation is implemented in
-Rust. The preview screenshot is ignored local output at
-`artifacts/workspace/mucrab-preview.png`.
+W01 adds **five passing Rust tests**, **twelve passing Python tests**, the two
+passing Java/Rust suites, and original/native GUI observations. The original
+comparator and table sorting execute directly from the pinned JARs. Both native
+panes browse regular folders and sort independently. File mutations and the
+remaining workflows are unimplemented. Historical phase 4 readiness files still
+describe the old scaffold; current evidence is under
+`evidence/workflows/W01-local-browse-sort/`, including retained GUI captures.
 
 ### Pinned inputs
 
@@ -181,9 +184,22 @@ intentionally nonzero:
 cargo run --locked -p mucrab-compare -- --status
 ```
 
-At the baseline, expect exit code **2**, `status: "not_ready"`, and `cases_run: 0`.
-After adapters are implemented, use the updated contract and workflow evidence.
-Do not change this to a success merely to make setup checks green.
+At the current W01 checkpoint, expect exit code **2**, `status: "not_run"`, and
+`cases_run: 0`. Status alone does not execute comparisons or reuse historical
+passes. The earlier phase 4 baseline used `not_ready`. Run fresh W01 comparisons:
+
+```sh
+cargo run --locked -p mucrab-compare -- --suite w01
+cargo run --locked -p mucrab-compare -- --suite w01 --reserved
+```
+
+Expect exit 0 and scoped passing reports when all required cases run. Exit 1
+means differences and exit 2 means unavailable/incomplete execution. Raw runs
+are under `artifacts/runs/`; compact reports update the W01 evidence directory.
+Run `python3 -B tools/w01_inspect.py` to regenerate scoped class recovery.
+`python3 -B tools/w01_gui.py` prepares isolated GUI launch commands; optional
+`--mac-apps` creates local wrappers for macOS UI automation. See the W01 evidence
+README for the complete procedure.
 
 For a GUI check, run `cargo run --locked -p mucrab-desktop`. The existing optional
 capture command renders the window, writes a PNG, and exits automatically:
@@ -217,8 +233,8 @@ pane**. A comparator-only milestone is useful but does not complete W01.
 
 Start with `NAME`, ascending/descending, directories-first on/off, natural and
 lexicographic modes, one explicit locale, and one explicitly recorded OS and
-filesystem. `en-US` is a proposed initial locale, pending investigation of the
-actual GUI configuration. Other criteria, filtering, file mutations, archive
+filesystem. `en-US` is the selected initial locale, confirmed in the disposable
+original GUI profile. Other criteria, filtering, file mutations, archive
 browsing, and cross-platform equivalence belong to later increments.
 
 Specify hidden-file, symbolic-link, parent-entry, and error behavior in the
@@ -261,7 +277,7 @@ on a guessed flag. Check that the adapter's settings correspond to the GUI.
 Record screenshots and observed listings; a comparator adapter alone does not
 prove the application's complete listing pipeline.
 
-Write a contract under the proposed
+Maintain the recovered contract at
 `evidence/workflows/W01-local-browse-sort/contract.md`. Define input fields,
 locale/options, file identity, output order, error outcomes, normalization,
 supported platform, and exclusions before implementing the Rust behavior.
@@ -269,10 +285,11 @@ supported platform, and exclusions before implementing the Rust behavior.
 **Gate:** every claimed W01 behavior has a binary/runtime evidence reference
 and a testable expected outcome. Distinguish static inference from observation.
 
-### Prior comparator findings to verify
+### Comparator findings and recovery correction
 
-These were recovered statically from the pinned class; none is runtime-verified
-yet. Regenerate the probe on a new machine to inspect:
+These were first recovered statically and are now tested through the original
+Java comparator and table sorter in the declared W01 suite. Regenerate the
+probe or scoped recovery on a new machine to inspect:
 
 - `artifacts/analysis/toolchain/decompiled/com/mucommander/commons/file/util/FileComparator.java`
 - `artifacts/analysis/toolchain/javap-sorter.stdout`
@@ -292,17 +309,20 @@ The public constructor accepts criterion, ascending, directories-first,
 - Other criteria include size, date, extension, permissions, owner, and group,
   with name comparison as a tie-breaker. They are outside the first contract.
   Later work must account for unknown size, nulls, and Java arithmetic behavior.
+- Recovery corrected the initial stable-sort assumption: `FileTableModel`
+  implements a custom quicksort that can reorder equal entries. W01 invokes
+  the original private method and reproduces its index permutation in Rust.
 
-**Main technical uncertainty:** reproducing ICU4J 78.3 collation and its data in
-the Rust application. Investigate a compatible Rust collation solution and
-verify it against the oracle. Do not silently replace locale collation with
+**Resolved within the tested scope:** ICU4X `icu_collator` 2.2.1 with compiled
+collation data 2.2.0 matches the original ICU4J 78.3 comparator on both W01 suites.
+Other locales/data versions remain unverified. Do not silently replace locale collation with
 lowercasing, byte order, or a host locale. Do not shrink the fixture suite to
 conceal mismatches. If exact compatibility cannot be achieved, retain a failed
 or blocked gate and describe the supported subset explicitly.
 
 ### G3 — build fixtures and the comparison protocol
 
-Create deterministic, versioned fixture definitions under the proposed
+Maintain deterministic, versioned fixture definitions under
 `fixtures/W01-local-browse-sort/`. Generate runtime directories in ignored
 `artifacts/runs/<run-id>/`, not under the immutable reference tree.
 
@@ -327,10 +347,11 @@ assuming all synthetic cases can be materialized.
 Feed identical entry identities, explicit input order, options, and locale to
 both adapters. Compare **pairwise signs** (`-1`, `0`, `1`) and **complete ordered
 lists**. Sign comparison avoids requiring identical comparator magnitudes.
-Use the same declared stable input order for comparator ties in the harness;
-separately establish whether the real listing pipeline preserves that order.
-If runtime behavior leaves ties unspecified, state that in the contract rather
-than inventing a new filename tie-breaker.
+Use identical declared input order, then invoke the original table quicksort
+and compare its complete index permutation, including ties. Recovery showed
+the table does not preserve all comparator ties. Do not substitute a stable
+sort or invent a new filename tie-breaker. Real enumeration sets are checked
+independently; filesystem enumeration order is not promised across hosts.
 
 **Gate:** the original adapter can produce repeatable results for the frozen
 fixtures, and the protocol can represent ties, errors, and unsupported cases
@@ -348,7 +369,7 @@ additional deterministic cases with a recorded seed and reserve fresh cases
 for validation after implementation. Investigate each difference against
 bytecode, dependencies, and runtime behavior; record the cause and resolution.
 
-The proposed harness contract is exit 0 for a completed passing comparison,
+The implemented harness contract is exit 0 for a completed passing comparison,
 exit 1 for differences, and exit 2 for unavailable adapters or an incomplete
 run. A pass requires more than zero executed cases, all required cases run,
 and no unresolved differences. A partial match is not a global success. Keep
@@ -395,7 +416,7 @@ further when their acceptance criteria cannot be closed in one increment.
 
 | ID | Proposed increment | Required observable evidence | State |
 | --- | --- | --- | --- |
-| W01 | Local folder browsing and name sorting | Entry identities, pairwise signs, ordered listings, both-pane navigation | `not_started` |
+| W01 | Local folder browsing and name sorting | Entry identities, pairwise signs, ordered listings, both-pane native navigation | `verified` within contract |
 | W02 | Selection, filtering, and additional sort criteria | Selected identities, visible entries, metadata ordering and ties | `not_started` |
 | W03 | Recursive copy | Paths, byte contents, empty folders, declared metadata, collisions, errors | `not_started` |
 | W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `not_started` |
@@ -412,7 +433,8 @@ additional archive formats unless explicitly added to the scope.
 ## State and evidence maintenance protocol
 
 This document is the human-readable progress ledger; committed evidence is the
-proof. Suggested future paths in this plan are **not existing tools or results**.
+proof. W01's tools, fixtures, and evidence now exist. Create records for later
+workflows when their work starts; do not infer results from a planned path.
 
 Use states `not_started`, `in_progress`, `blocked`, and `verified`. For each
 workflow, track G1–G6 individually. `verified` requires a reproducible evidence
@@ -458,22 +480,22 @@ claim until rerun. A new host requires its own environment and GUI verification.
 
 | Gate | State | Evidence / unresolved work |
 | --- | --- | --- |
-| G1: original Java adapter | `not_started` | First executable task; runtime dependencies and local-file construction unknown |
-| G2: recovered contract | `not_started` | Comparator statically inspected; callers and original GUI unverified |
-| G3: fixtures and protocol | `not_started` | No committed behavior fixtures or Java outputs |
-| G4: Rust and comparison | `not_started` | Core has pane identity only; harness unavailable |
-| G5: native workflow | `not_started` | Empty two-pane scaffold only |
-| G6: reproducible closure | `not_started` | Depends on G1–G5 |
+| G1: original Java adapter | `verified` | `tools/java/W01Oracle.java`; original `FileFactory`, `FileComparator`, and private table sorter execute; translation resources initialized |
+| G2: recovered contract | `verified` within scope | `contract.md`, `recovery.json`; local name function, en-US settings, original initial/child listings and parent navigation observed |
+| G3: fixtures and protocol | `verified` | Versioned fixture definitions/seeds, explicit synthetic-label layer, real folders/links/errors, full matrix/permutation validation |
+| G4: Rust and comparison | `verified` within scope | Both comparison JSON reports pass; 342 configuration/error cases, zero differences or skips |
+| G5: native workflow | `verified` within scope | Both native panes navigate and change options independently; empty/error/refresh checks; representative original GUI states match |
+| G6: reproducible closure | `verified` for local development | Scripts, source/binary hashes, retained captures, validation, notices, and implementation checkpoint; release packaging remains open |
 
 ### Open issues
 
 | ID | Issue | Next investigation |
 | --- | --- | --- |
-| R01 | Original comparator has not executed | Discover original local-file classes and initialization; run minimal adapter |
-| R02 | ICU4J collation compatibility in Rust unknown | Establish explicit locale and compare candidate implementations against ICU4J 78.3 |
-| R03 | GUI caller configuration and listing semantics unknown | Inspect core call sites and observe original app with isolated settings |
-| R04 | Reference native components unverified on current/other hosts | Establish Java GUI startup from a runtime copy; record platform limits |
-| R05 | Ignored evidence is not transported by Git | Rehydrate or transfer required raw outputs and caches with verification |
+| R01 | Resolved: original comparator/table sorter execute | Keep original JAR/class pins and adapter initialization in regression checks |
+| R02 | Scoped resolution: ICU4X matches en-US fixtures | New locales/data versions need new contract and comparisons |
+| R03 | Scoped resolution: local callers and representative GUI states recovered | Selection/filtering and additional criteria belong to W02; exhaustive original GUI automation is not claimed |
+| R04 | Original GUI launched on macOS arm64; unrelated native components/other hosts unverified | Establish each additional platform/provider separately |
+| R05 | Ignored raw artifacts still need rehydration | Use W01 scripts and retained selected GUI evidence; regenerate or transfer required caches/raw runs |
 
 ### Session entry template
 
@@ -502,6 +524,25 @@ Exact next executable action:
   execution or Rust behavior verification was performed while writing this
   document. Next action is W01/G1.
 
+- **2026-10-15 — W01 implementation:** started at `d80f776` on macOS arm64/APFS.
+  Added original Java adapters, scoped CFR/javap recovery, fixture definitions,
+  native Rust ICU4X comparison/table sorting, local enumeration, and both-pane
+  navigation/sort controls. Corrected the stable-sort assumption and a Parent
+  path-resolution edge case before closure. Predefined and reserved suites pass
+  342 configuration/error cases with 45,696 pair signs, 336 lists, 54 enumeration
+  checks, zero differences, and zero skips. Five Rust and twelve Python tests,
+  Clippy, format, build, reference integrity, standalone linkage, and final
+  render checks pass. Retained original/native screenshots and accessibility
+  states are under the W01 evidence directory. Original GUI comparison is
+  representative; original right-pane navigation and exhaustive GUI parity are
+  not claimed. Implementation checkpoint: `212d724`.
+  Raw comparison runs and generated wrappers remain ignored; use `tools/w01.py`,
+  `tools/w01_inspect.py`, and `tools/w01_gui.py` to regenerate them. No upstream
+  Java implementation source was fetched, no global agent configuration was
+  changed, and no release or remote push was performed. Next executable action:
+  recover and freeze one bounded W02 selection/filtering contract. Preserve W01
+  as a regression gate.
+
 ## Final demonstration acceptance
 
 After the selected workflows are verified, run an agreed suite targeting
@@ -526,8 +567,9 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > Inspect Git, repository instructions, code, and committed evidence first;
 > reconcile the live checkpoint before acting. Rehydrate ignored inputs on this
 > machine and record fresh verification. Resume the first unfinished workflow
-> gate, initially W01/G1: invoke the original comparator from the pinned Java
-> JARs. Continue through the workflow's verification gates before expanding
+> gate. W01 is verified within its declared en-US/macOS scope; the next action
+> is W02 contract recovery for one bounded selection/filtering subworkflow.
+> Keep the W01 suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
 > Java. Update the plan and evidence at each checkpoint, including exact next
