@@ -27,7 +27,13 @@ The preserved file contains muCommander's licensing statement, GPLv3 and LGPLv3 
 
 The Rust workspace packages are licensed under `GPL-3.0-only`. The desktop scaffold depends on eframe/egui **0.36.2** and their dependency graph pinned by [Cargo.lock](Cargo.lock). The egui project offers its framework code under `MIT OR Apache-2.0`; the [MIT notice](third_party/egui/LICENSE-MIT) is preserved here. Other dependencies retain their own terms and notices in their Cargo source packages.
 
-The embedded default fonts retain their original licenses, independently of the application license. [The framework/font notice index](third_party/egui/README.md) records the preserved notices and their provenance. Complete dependency source and notice packaging will accompany a distributable release; this increment is a local development scaffold.
+The embedded default fonts retain their original licenses, independently of the application license. [The framework/font notice index](third_party/egui/README.md) records the preserved notices and their provenance. Complete dependency source and notice packaging will accompany a distributable release; this is a local development experiment.
+
+## Recovered sorting and ICU4X
+
+The Rust name comparator and table index sorting were reconstructed from muCommander 1.6.2's `FileComparator` and `FileTableModel` binaries. The upstream muCommander attribution and GPL notices above apply. [W01 recovery and comparison evidence](evidence/workflows/W01-local-browse-sort/contract.md) identifies the original inputs and tested behavior; decompiled Java implementation source is not distributed in Git.
+
+The native collator uses ICU4X `icu_collator` **2.2.1**, with compiled collation data **2.2.0**. [The preserved ICU4X license](third_party/icu4x/LICENSE) includes Unicode License V3 and ICU adaptation attribution. [The provenance note](third_party/icu4x/README.md) explains the dependency and scope. muCrab remains `GPL-3.0-only`; dependency versions and checksums are recorded in `Cargo.lock`.
 
 ## Investigation tools
 

@@ -15,18 +15,29 @@ fn main() -> ExitCode {
         if argument == "--help" || argument == "-h" {
             println!(
                 "muCrab — Two claws, two panes.\n\n\
-                 Usage: mucrab [--help | --version]\n\n\
-                 With no arguments, opens the native desktop preview.\n\
-                 File browsing and file operations are not implemented yet."
+                 Usage: mucrab [LEFT_FOLDER [RIGHT_FOLDER]]\n\
+                        mucrab [--help | --version]\n\n\
+                 Opens the native two-pane local browser.\n\
+                 Name ordering uses en-US; hidden entries are shown.\n\
+                 File operations and opening symbolic links are deferred."
             );
             return ExitCode::SUCCESS;
         }
     }
-    if !arguments.is_empty() {
-        eprintln!("Unsupported arguments. Use mucrab --help.");
+    if arguments.len() > 2
+        || arguments
+            .iter()
+            .any(|arg| arg.to_string_lossy().starts_with('-'))
+    {
+        eprintln!("Expected up to two folder paths. Use mucrab --help.");
         return ExitCode::from(2);
     }
-    match app::run() {
+    match app::run(
+        arguments
+            .into_iter()
+            .map(std::path::PathBuf::from)
+            .collect(),
+    ) {
         Ok(()) => ExitCode::SUCCESS,
         Err(error) => {
             eprintln!("Could not start muCrab: {error}");

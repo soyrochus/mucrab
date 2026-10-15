@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "locale": "en-US",
+  "generated_seed": 60421,
+  "reserved_seed": 191783,
+  "synthetic_sets": [
+    {"id": "empty", "names": []},
+    {"id": "singleton", "names": ["only"]},
+    {"id": "numbers", "names": ["10", "2", "1", "99", "100", "0"]},
+    {"id": "leading-zeroes", "names": ["file10", "file2", "file02", "file002", "file0", "file00", "file000"]},
+    {"id": "prefix-case", "names": ["A2", "a10", "a2", "A10", "b3", "b11", "x 2", "x 10"]},
+    {"id": "multiple-groups", "names": ["x1y10", "x1y2", "x2y1", "x01y3", "v1.10.2", "v1.2.10", "pre12", "other3"]},
+    {"id": "long-numbers", "names": ["x9999999999999999999999999999999999", "x10000000000000000000000000000000000", "x00000000000000000000000000000000001", "x1"]},
+    {"id": "case-accents", "names": ["alpha", "Alpha", "ALPHA", "éclair", "eclair", "Éclair", "å", "ä", "z", "straße", "strasse", "İ", "ı"]},
+    {"id": "punctuation", "names": ["", " ", "_a", "-a", ".a", "a b", "a-b", "a_b", "a.b", "a~b", "a@b"]},
+    {"id": "unicode", "names": ["中文2", "中文10", "日本語", "α2", "α10", "🦀2", "🦀10", "🗂", "٢", "２", "a٢", "a２"]},
+    {"id": "collation-ties", "names": ["é", "é", "Å", "Å", "a", "a", "a", "a", "", ""]},
+    {"id": "mixed-kinds", "names": ["zdir", "file10", "adir", "file2", "bdir", "0"], "directories": [0, 2, 4]}
+  ],
+  "real_entries": [
+    {"name": "file10.txt", "kind": "file"},
+    {"name": "file2.txt", "kind": "file"},
+    {"name": "file02.txt", "kind": "file"},
+    {"name": "Alpha.txt", "kind": "file"},
+    {"name": "éclair.txt", "kind": "file"},
+    {"name": ".hidden", "kind": "file"},
+    {"name": "zFolder", "kind": "directory"},
+    {"name": "empty", "kind": "directory"},
+    {"name": "link-to-folder", "kind": "symlink", "target": "zFolder"},
+    {"name": "broken-link", "kind": "symlink", "target": "missing-target"}
+  ]
+}

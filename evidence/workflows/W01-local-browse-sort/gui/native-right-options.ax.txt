@@ -1,0 +1,55 @@
+Window: "muCrab", App: muCrab.
+0 standard window muCrab, Secondary Actions: Raise
+	1 container
+		2 text (settable) muCrab
+		3 text (settable) Two claws, two panes.
+		4 text (settable) W01 · Local browsing
+		5 text (settable) Name sorting · en-US · All entries shown, including hidden files
+		6 text (settable) Open folders with a double-click. File operations and opening symbolic links are deferred.
+		7 text (settable) Left pane
+		8 text field (settable) {repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse
+		9 button Open
+		10 button ↑ Parent
+		11 button Refresh
+		12 text (settable) 10 entries
+		13 pop up button (settable) Lexicographic
+		14 checkbox (settable, boolean) Ascending, Value: off
+		15 checkbox (settable, boolean) Folders first, Value: off
+		16 toggle button (settable, boolean) [folder]  zFolder, Value: off
+		17 toggle button (settable, boolean) [link]  link-to-folder, Value: off
+		18 toggle button (settable, boolean) [file]  file2.txt, Value: off
+		19 toggle button (settable, boolean) [file]  file10.txt, Value: off
+		20 toggle button (settable, boolean) [file]  file02.txt, Value: off
+		21 toggle button (settable, boolean) [folder]  empty, Value: off
+		22 toggle button (settable, boolean) [file]  éclair.txt, Value: off
+		23 toggle button (settable, boolean) [link]  broken-link, Value: off
+		24 toggle button (settable, boolean) [file]  Alpha.txt, Value: off
+		25 toggle button (settable, boolean) [file]  .hidden, Value: off
+		26 text (settable) Right pane
+		27 text field (settable) {repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse
+		28 button Open
+		29 button ↑ Parent
+		30 button Refresh
+		31 text (settable) 10 entries
+		32 pop up button (settable) Lexicographic
+		33 checkbox (settable, boolean) Ascending, Value: off
+		34 checkbox (settable, boolean) Folders first, Value: off
+		35 toggle button (settable, boolean) [folder]  zFolder, Value: off
+		36 toggle button (settable, boolean) [link]  link-to-folder, Value: off
+		37 toggle button (settable, boolean) [file]  file2.txt, Value: off
+		38 toggle button (settable, boolean) [file]  file10.txt, Value: off
+		39 toggle button (settable, boolean) [file]  file02.txt, Value: off
+		40 toggle button (settable, boolean) [folder]  empty, Value: off
+		41 toggle button (settable, boolean) [file]  éclair.txt, Value: off
+		42 toggle button (settable, boolean) [link]  broken-link, Value: off
+		43 toggle button (settable, boolean) [file]  Alpha.txt, Value: off
+		44 toggle button (settable, boolean) [file]  .hidden, Value: off
+		45 text (settable) muCrab 0.1.0
+		46 text (settable) GNU GPL version 3
+		47 text (settable) Based on muCommander
+	48 close button
+	49 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	50 minimize button
+	51 text muCrab
+52 menu bar
+	53 muCrab

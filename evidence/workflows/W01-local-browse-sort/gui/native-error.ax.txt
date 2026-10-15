@@ -1,0 +1,48 @@
+Window: "muCrab", App: muCrab.
+0 standard window muCrab, Secondary Actions: Raise
+	1 container
+		2 text (settable) muCrab
+		3 text (settable) Two claws, two panes.
+		4 text (settable) W01 · Local browsing
+		5 text (settable) Name sorting · en-US · All entries shown, including hidden files
+		6 text (settable) Open folders with a double-click. File operations and opening symbolic links are deferred.
+		7 text (settable) Left pane
+		8 text field (settable) {repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse/absent
+		9 button Open
+		10 button ↑ Parent
+		11 button Refresh
+		12 text (settable) 10 entries
+		13 pop up button (settable) Natural
+		14 checkbox (settable, boolean) Ascending, Value: on
+		15 checkbox (settable, boolean) Folders first, Value: on
+		16 text (settable) Cannot open folder: No such file or directory (os error 2)
+		17 text (settable) The last successfully opened folder is retained.
+		18 toggle button (settable, boolean) [folder]  empty, Value: off
+		19 toggle button (settable, boolean) [link]  link-to-folder, Value: off
+		20 toggle button (settable, boolean) [folder]  zFolder, Value: off
+		21 toggle button (settable, boolean) [file]  .hidden, Value: off
+		22 toggle button (settable, boolean) [file]  Alpha.txt, Value: off
+		23 toggle button (settable, boolean) [link]  broken-link, Value: off
+		24 toggle button (settable, boolean) [file]  éclair.txt, Value: off
+		25 toggle button (settable, boolean) [file]  file02.txt, Value: off
+		26 toggle button (settable, boolean) [file]  file2.txt, Value: off
+		27 toggle button (settable, boolean) [file]  file10.txt, Value: off
+		28 text (settable) Right pane
+		29 text field (settable) {repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse/empty
+		30 button Open
+		31 button ↑ Parent
+		32 button Refresh
+		33 text (settable) 0 entries
+		34 pop up button (settable) Natural
+		35 checkbox (settable, boolean) Ascending, Value: on
+		36 checkbox (settable, boolean) Folders first, Value: on
+		37 text (settable) This folder is empty
+		38 text (settable) muCrab 0.1.0
+		39 text (settable) GNU GPL version 3
+		40 text (settable) Based on muCommander
+	41 close button
+	42 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	43 minimize button
+	44 text muCrab
+45 menu bar
+	46 muCrab

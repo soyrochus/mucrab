@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<!-- Disposable reference GUI settings; never apply to a personal profile. -->
+<preferences>
+    <language>en</language>
+    <filename_locale>en-US</filename_locale>
+    <lexicographic_order_of_files>false</lexicographic_order_of_files>
+    <check_for_updates_on_startup>false</check_for_updates_on_startup>
+    <file_table>
+        <show_hidden_files>true</show_hidden_files>
+        <show_parent_folder>true</show_parent_folder>
+        <show_folders_first>true</show_folders_first>
+    </file_table>
+</preferences>

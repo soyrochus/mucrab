@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-10-15",
+  "scope": "Native W01 controls in both panes; representative original GUI states; not exhaustive GUI equivalence",
+  "status": "verified_with_declared_scope",
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "filesystem": {
+      "type": "apfs",
+      "mount_point": "/System/Volumes/Data",
+      "type_observed_by": "diskutil info -plist /System/Volumes/Data",
+      "case_sensitive_probe": false,
+      "canonical_equivalence_lookup": true
+    }
+  },
+  "fixture_run": "artifacts/runs/W01-20261015T192135Z-1c56a8d8",
+  "fixture_spec_sha256": "f7ff06e7914d612e151de6b8386729a7c5676b3a2e41adfa21d4e564446d2f00",
+  "settings": {
+    "locale": "en-US",
+    "mode": "NATURAL",
+    "ascending": true,
+    "directories_first": true,
+    "show_hidden_files": true,
+    "disposable_profile": "artifacts/analysis/w01/profile",
+    "launch_configuration": "artifacts/runtime/appimages/MuCommanderReference.app/Contents/app/MuCommanderReference.cfg"
+  },
+  "reference": {
+    "jar_copies_verified": 196,
+    "all_jar_hashes_match_immutable_reference": true,
+    "observations": [
+      "Both panes display the ten expected entries in the same order as Rust",
+      "Left pane enters zFolder and displays child2 before child10",
+      "Parent row returns the original left pane to browse"
+    ],
+    "expected_initial_order": [
+      "empty",
+      "link-to-folder",
+      "zFolder",
+      ".hidden",
+      "Alpha.txt",
+      "broken-link",
+      "éclair.txt",
+      "file02.txt",
+      "file2.txt",
+      "file10.txt"
+    ],
+    "not_claimed": [
+      "Exhaustive original GUI control automation",
+      "Original right-pane navigation equivalence",
+      "Selection restoration parity"
+    ]
+  },
+  "native": {
+    "observations": [
+      "Both panes open the same ten-entry folder",
+      "Left and right panes enter zFolder and return independently",
+      "Right pane displays an empty-folder state",
+      "Missing-path error retains the left pane listing and location",
+      "Refresh clears the error and restores the successful path",
+      "Both panes change natural/lexicographic mode, direction, and grouping independently",
+      "Hidden entries and both valid and broken links remain visible"
+    ],
+    "interactive_binary_sha256": "faf06891916caad3866e548e7db1b49e7f3c48fc5ff6337ecbd61f6854b3ebf6",
+    "final_change_after_interaction": "Parent label renders without an unsupported arrow glyph; successful folder inputs are canonicalized to fix child/.. Parent behavior. Existing canonical-path interaction scenarios are unchanged. The dot-component regression passes; a fresh rebuilt window was captured.",
+    "final_capture_command": [
+      "cargo",
+      "run",
+      "--locked",
+      "--offline",
+      "-p",
+      "mucrab-desktop",
+      "--features",
+      "screenshot",
+      "--",
+      "{fixture}/browse",
+      "{fixture}/browse"
+    ],
+    "final_capture_environment": {
+      "EFRAME_SCREENSHOT_TO": "artifacts/gui/W01/native-final.png"
+    },
+    "final_capture_exit_code": 0,
+    "visual_review": "Both panes show all ten entries and controls without clipping; Parent label renders correctly"
+  },
+  "automation_notes": [
+    "Mac initially locked; user unlocked it",
+    "Indexed clicks were unreliable for Swing; screenshot coordinates established representative navigation",
+    "Short sustained clicks worked for native egui; default instantaneous clicks could leave state unchanged",
+    "No input attempt was treated as success without an observed state change"
+  ],
+  "captures": [
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-both-panes.ax.txt",
+      "sha256": "df2adda2b8afb689cd642d8da5337a27a416088fa00a52bafd103a9213b8a799",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-descending-mixed.ax.txt",
+      "sha256": "229197c499010f6e36ccc4506a1302d22c568a0c71ae7b7b0f53c1d142e6b243",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-empty.ax.txt",
+      "sha256": "18f7c1ac6901ae6b21c171876343d797d9389b4b9e9e7eac0650a11024a00a36",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-error.ax.txt",
+      "sha256": "49f1d252d32b80d1e421c5642e9be415ef125410dbedb39cda636f5db5f71c02",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-left-child.ax.txt",
+      "sha256": "90c106c92b6e682b386718f1d654dcc7bf5dbedf4a966f2a1166a603689b7685",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-lexicographic.ax.txt",
+      "sha256": "74ef81628ab68d368cd991ab99620289a03324644e5a5d8db7bc03b3a7ec84cc",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-right-child.ax.txt",
+      "sha256": "c1fd4c4ccd1f7a8e2490bb60d097d1fc9e9e7e24a65376b628bfc9764aaab7d6",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-right-options.ax.txt",
+      "sha256": "3341d012db0b38062b3f4d0a190712fb927f445b69183aec9fda09800a78539d",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/reference-both-panes.ax.txt",
+      "sha256": "d306b3f97b5026ce937dd445a338708569b072251d48afa33c14ed4b120ff668",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/reference-left-child.ax.txt",
+      "sha256": "ea7dee6365a8699db8f4023b53cee4ee20af9e70185b4b9bd0acaf0ba22d4219",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-final.png",
+      "sha256": "d4de5d88779722523491251932e2db47164dfbe9715552c15da87e6f241b5e2f",
+      "width": 2240,
+      "height": 1440,
+      "kind": "native_screenshot"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-empty.png",
+      "sha256": "cddc9cccfd5fbcddd12820c90a46cb32862a1eac566bffc841508c6a68607cac",
+      "width": 4718592,
+      "height": 4292935744,
+      "kind": "native_screenshot"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/native-error.png",
+      "sha256": "7a29e9721aad4e05e739815305e5fe76b67fc0c73db339f14022853348b2c372",
+      "width": 4718592,
+      "height": 4292935744,
+      "kind": "native_screenshot"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/reference-both-panes.png",
+      "sha256": "82dbb49fb00447d6ab97ffebcc7cef69af5d773d4275c046f42e6472d4d2eeec",
+      "width": 4718592,
+      "height": 4292935744,
+      "kind": "native_screenshot"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/gui/reference-left-child.png",
+      "sha256": "619f89c4ac461807cdafeebcd13589bfe2fdc3c83b30954d590df7bd093aa24a",
+      "width": 4718592,
+      "height": 4292935744,
+      "kind": "native_screenshot"
+    }
+  ],
+  "limitations": [
+    "One host, APFS and en-US only",
+    "Native file mutations, filtering, selection and opening links are deferred",
+    "Component permutations for all eight sort configurations were compared through original JAR methods; GUI observations are representative"
+  ]
+}

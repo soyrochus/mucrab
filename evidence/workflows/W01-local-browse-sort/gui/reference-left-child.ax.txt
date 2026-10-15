@@ -1,0 +1,182 @@
+Window: "{repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse/zFolder/", App: muCommander.
+0 standard window {repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse/zFolder/, URL: file://{repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse/zFolder/, Secondary Actions: Raise
+	1 split group (selectable) Description: Toggle Terminal, Value: 767
+		2 split group (selectable) 683
+			3 button (selectable) Macintosh HD
+			4 text field (selectable) {repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse/zFolder/
+			5 text field (selectable)
+			6 split group (selectable) 0
+				7 scroll area (selectable) 0
+					8 outline (selectable) tree
+					9 scroll bar (selectable)
+					10 scroll bar (selectable)
+			11 button (selectable) Macintosh HD
+			12 text field (selectable) {repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse/
+			13 text field (selectable)
+			14 split group (selectable) 0
+				15 scroll area (selectable) 0
+					16 outline (selectable) tree
+					17 scroll bar (selectable)
+					18 scroll bar (selectable)
+	19 text (selectable) 0 of 2 selected
+	20 button (selectable)
+	21 button (selectable)
+	22 text (selectable)
+	23 button (selectable, disabled) Description: View [F3], Help: View selected file
+	24 button (selectable, disabled) Description: Edit [F4], Help: Edit selected file
+	25 button (selectable, disabled) Description: Copy [F5], Help: Copy marked files
+	26 button (selectable, disabled) Description: Move [F6], Help: Move marked files
+	27 button (selectable) Description: Make directory [F7], Help: Create a directory in current folder
+	28 button (selectable, disabled) Description: Delete [F8], Help: Delete marked files using the system trash when possible
+	29 button (selectable) Description: Refresh [F9], Help: Refresh current folder
+	30 button (selectable) Description: Close window [F10], Help: Close this window
+	31 toolbar (selectable) 0
+		32 button (selectable) New window (⌘+N)
+		33 button (selectable) New tab (⌘+T)
+		34 button (selectable) Go back (⌘+[)
+		35 button (selectable, disabled) Go forward (⌘+])
+		36 button (selectable) Go to parent (⌫)
+		37 button (selectable) Go to home folder
+		38 button (selectable, disabled) Stop folder change (⎋)
+		39 button (selectable) Mark files... (⌨ +)
+		40 button (selectable) Unmark files... (⌨ -)
+		41 button (selectable) Swap folders (⌘+U)
+		42 button (selectable) Set same folder (⌘+E)
+		43 button (selectable, disabled) Pack files... (⌘+I)
+		44 button (selectable, disabled) Unpack files... (⌘+P)
+		45 button (selectable) Find... (⌘+F)
+		46 button (selectable) Add bookmark... (⌘+B)
+		47 button (selectable) Edit bookmarks...
+		48 button (selectable) Edit credentials... (⌘+⌥+K)
+		49 button (selectable) Connect to server... (⌘+K)
+		50 button (selectable) Show open connections... (⌘+⇧+K)
+		51 button (selectable) ToggleTerminal (F12)
+		52 button (selectable, disabled) Send by email... (⌘+S)
+		53 button (selectable) Reveal in Finder (⌘+L)
+		54 button (selectable, disabled) Properties (⌥+⏎)
+		55 button (selectable) Preferences...
+	56 toolbar (selectable) 0
+		57 checkbox (selectable)
+	58 menu bar (selectable) 0
+		59 Description: File, Secondary Actions: Pick
+			60 Description: New window ⌘N, Help: Open a new window
+			61 Description: New tab ⌘T, Help: Open a new tab in the active panel
+			62 Description: Open ⏎, Help: Enter folder / Enter archive / Execute
+			63 Description: Open natively ⇧⏎, Help: Execute selected file with system's file associations
+			64 (disabled) Open with...
+			65 Open in new tab ⌘⏎
+			66 Open in other panel ⌘O
+			67 Open in both panels ⌘+⇧O
+			68 Reveal in Finder ⌘L
+			69 Find... ⌘F
+			70 ToggleTerminal F12
+			71 (disabled) Description: Pack files... ⌘I, Help: Pack marked files into an archive
+			72 (disabled) Description: Unpack files... ⌘P, Help: Unpack marked archive files
+			73 (disabled) Description: Send by email... ⌘S, Help: Send marked files as email attachments
+			74 (disabled) Batch rename... ⌥F6
+			75 (disabled) Description: Split..., Help: Split a file into multiple parts
+			76 (disabled) Description: Combine..., Help: Combine split file parts to recreate the original file
+			77 (disabled) Description: Properties ⌥⏎, Help: Show properties of marked files
+			78 (disabled) Calculate checksum... ⌥+⇧K
+			79 (disabled) Description: Change permissions... ⌥+⇧P, Help: Change permissions of selected file(s)
+			80 (disabled) Description: Change date... ⌥+⇧D, Help: Change date of selected file(s)
+			81 Description: Close window F10, Help: Close this window
+		82 Description: Mark, Secondary Actions: Pick
+			83 Description: Mark/unmark ␣, Help: Mark/Unmark selected file
+			84 Description: Mark files... ⌨ +, Help: Mark a group of files
+			85 Description: Unmark files... ⌨ -, Help: Unmark a group of files
+			86 Mark all ⌘A
+			87 Unmark all ⌘D
+			88 Mark extension ⇧⌨ +
+			89 Invert selection ⌨ *
+			90 (disabled) Copy file(s) ⌘C
+			91 (disabled) Copy name(s) ⌘+⇧C
+			92 (disabled) Copy basename(s) ⌘+⌥C
+			93 (disabled) Copy path(s) ⌥+⇧C
+			94 (disabled) Paste file(s) ⌘V
+			95 Compare folders ⌘M
+		96 Description: View, Secondary Actions: Pick
+			97 Description: Swap folders ⌘U, Help: Swap left and right folders
+			98 Description: Set same folder ⌘E, Help: Set same directory to left and right panels
+			99 Show folders first
+			100 Show hidden files ⌥+⇧H
+			101 Show parent folder
+			102 Show tree view ⌘J
+			103 Toggle single panel view
+			104 Sort by Extension ⌘F3
+			105 Sort by Name ⌘F4
+			106 Sort by Size ⌘F5
+			107 Sort by Date ⌘F6
+			108 Sort by Permissions ⌘F7
+			109 (disabled) Sort by Owner ⌘F8
+			110 (disabled) Sort by Group ⌘F9
+			111 Reverse order
+			112 Show/Hide columns
+				113 checkbox (selectable) Description: Hide Extension column, Secondary Actions: Pick
+				114 checkbox (selectable) Description: Hide Size column, Secondary Actions: Pick
+				115 checkbox (selectable) Description: Hide Date column, Secondary Actions: Pick
+				116 checkbox (selectable) Description: Hide Permissions column, Secondary Actions: Pick
+				117 checkbox (selectable) Description: Show Owner column, Secondary Actions: Pick
+				118 checkbox (selectable) Description: Show Group column, Secondary Actions: Pick
+			119 Auto-size columns
+			120 Hide toolbar
+			121 Hide status bar
+			122 Hide command bar
+			123 Customize command bar...
+		124 Description: Go, Secondary Actions: Pick
+			125 Description: Go back ⌘[, Help: Go to previous folder
+			126 (disabled) Description: Go forward ⌘], Help: Go to next folder
+			127 Description: Go to parent ⌫, Help: Go to parent folder
+			128 Go to parent in other panel ⌘⌫
+			129 Go to parent in both panels ⌘+⇧⌫
+			130 Go to root ⇧⌫
+			131 Change current location ⌘G
+			132 Description: Connect to server... ⌘K, Help: Connect to a remote server
+			133 Show open connections... ⌘+⇧K
+			134 Quick lists
+				135 Parent folders ⌥1
+				136 Recent locations ⌥2
+				137 Recently executed files ⌥3
+				138 Bookmarks ⌥4
+				139 Root folders ⌥5
+				140 Open tabs ⌥6
+			141 Bonjour services
+			142 Android
+		143 Description: Bookmarks, Secondary Actions: Pick
+			144 Description: Add bookmark... ⌘B, Help: Add the current folder to the list of bookmarks
+			145 Edit bookmarks...
+			146 Explore bookmarks ⌘+⇧B
+			147 Edit credentials... ⌘+⌥K
+		148 Description: Window, Secondary Actions: Pick
+			149 Minimize ⌘M
+			150 Zoom
+			151 Split equally
+			152 Split vertically
+			153 Split horizontally
+			154 Themes
+			155 Recall previous window ⌘+⇧←
+			156 Recall next window ⌘+⇧→
+			157 Bring all to front
+		158 Description: Help, Secondary Actions: Pick
+			159 Online documentation
+			160 Keyboard shortcuts
+			161 Debug console
+			162 Go to website
+			163 Go to forums
+			164 Report a bug
+			165 Make a donation
+			166 Check for updates...
+	167 close button
+	168 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	169 minimize button
+	170 image zFolder
+	171 text {repository}/artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse/zFolder/
+172 menu bar
+	173 MuCommanderReference
+	174 File
+	175 Mark
+	176 View
+	177 Go
+	178 Bookmarks
+	179 Window
+	180 Help

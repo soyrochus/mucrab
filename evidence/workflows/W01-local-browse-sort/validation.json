@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-10-15",
+  "scope": "W01 local development acceptance; not release packaging",
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "filesystem": {
+      "type": "apfs",
+      "mount_point": "/System/Volumes/Data",
+      "type_observed_by": "diskutil info -plist /System/Volumes/Data",
+      "case_sensitive_probe": false,
+      "canonical_equivalence_lookup": true
+    }
+  },
+  "source_revision_base": "d80f776127e901c753a10ab468cf8621fbe63deb",
+  "source_state": "W01 working-tree sources captured by the hashes below before the implementation commit",
+  "source_inputs": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "334ef83f41db18162f9079e59c5b3f2c8a62eaf5941daff0b294bbbeaa31a49d"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "212045012290eef50e019a366ed06726627683a30d347bdbd193217130847bf7"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/contract.md",
+      "sha256": "9fbc057adf1c8d1f85f4b693aeb155dab8d8c9b933b21bdf0b3d1c6c1dda4fe5"
+    },
+    {
+      "path": "fixtures/W01-local-browse-sort/cases.json",
+      "sha256": "f7ff06e7914d612e151de6b8386729a7c5676b3a2e41adfa21d4e564446d2f00"
+    },
+    {
+      "path": "fixtures/W01-local-browse-sort/reference-preferences.xml",
+      "sha256": "7bb5c7635a8767f5b3d93db7dbfaf35a8e7bcf639b3323bffe2c5390ee5fa36a"
+    },
+    {
+      "path": "crates/compare/src/main.rs",
+      "sha256": "f11153d8ed1251d091175e478c23a8d28bb273abda515a353032a14a3f9cd50e"
+    },
+    {
+      "path": "crates/compare/tests/readiness.rs",
+      "sha256": "865d3bf51a809859f3944403111f469c36746ed16dd88fbc42eca45717c50d80"
+    },
+    {
+      "path": "crates/core/src/browsing.rs",
+      "sha256": "967f040d4ff7d6257440302a9eabc80f77c83c3db6b305b135bdba8f5775079f"
+    },
+    {
+      "path": "crates/core/src/lib.rs",
+      "sha256": "fadc998b073e9038a1e0d3d92d72974bf46310ac77664a88f15f0d4820f215a6"
+    },
+    {
+      "path": "crates/core/src/sorting.rs",
+      "sha256": "85f0d2352eb89a7623fb835d15cb61e0e313b6d49d5eca07dfb041a56acf8b69"
+    },
+    {
+      "path": "crates/core/tests/navigation.rs",
+      "sha256": "d095c6379897a6610717d24b33e535bb2b581a9037241f09709f36471e10ec62"
+    },
+    {
+      "path": "crates/desktop/src/app.rs",
+      "sha256": "adc128fe01e864852a6086a80e55fe0905f57c8dd767b8166295375ebabb9f48"
+    },
+    {
+      "path": "crates/desktop/src/main.rs",
+      "sha256": "de9ab2a270be331e9438d98665be6b861b8cff57784b339e1c12c9dea4f15e29"
+    },
+    {
+      "path": "crates/compare/Cargo.toml",
+      "sha256": "4b1888c089cead6f1d6994198bb9e695a23456c2879ab43f137c373ef17ec15f"
+    },
+    {
+      "path": "crates/core/Cargo.toml",
+      "sha256": "8e7d98cff18eb493b8d8af5559acaaf44c6b3a3a6c57d9ff4973690cb7c0643d"
+    },
+    {
+      "path": "crates/desktop/Cargo.toml",
+      "sha256": "cc2b896f0efca58a4af0512ed955ca721996cb02bf2f0a517c2937f8f3961ea3"
+    },
+    {
+      "path": "tools/w01.py",
+      "sha256": "59ca6e84973ef0a5887387b38bfc919c5a8c9b8ab36bf549b4b716a37d427129"
+    },
+    {
+      "path": "tools/w01_gui.py",
+      "sha256": "05a08cd7170520ab19c21a941c706aae6b0bbace89a187ebf86a814395adc391"
+    },
+    {
+      "path": "tools/w01_inspect.py",
+      "sha256": "297f9eab5888aebe73063fd659bfa4b4b00471d1303a587bfd4db383b8d6e3f7"
+    },
+    {
+      "path": "tools/java/W01Oracle.java",
+      "sha256": "5fcacf10c324bb3e02698dce9374c2cf7937a7ba10c7c7d88d5b4b223784bb37"
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "rust_tests_passed": 5,
+  "python_tests_passed": 12,
+  "native_binary_sha256": "6aa8b54b11159f9dcce823593b33dfe4e619d5438e0325743252ac54ac73bbe7",
+  "native_linkage": {
+    "command": [
+      "otool",
+      "-L",
+      "target/debug/mucrab"
+    ],
+    "no_libjvm_dependency": true,
+    "raw_output": "artifacts/gui/W01/native-links.stdout",
+    "sha256": "cd2ff6ad567cfc097d20d2499e52bb624a76c5bd67e0564812d5df1552f494d1"
+  },
+  "reference_integrity": "Verified before and after every W01 oracle/comparison run",
+  "comparisons": {
+    "predefined": "comparison-predefined.json",
+    "reserved": "comparison-reserved.json",
+    "total_cases": 342,
+    "pair_signs": 45696,
+    "ordered_lists": 336,
+    "enumeration_checks": 54,
+    "differences": 0,
+    "skipped": 0
+  },
+  "gui": "gui-observations.json",
+  "final_native_capture": "gui/native-final.png",
+  "release_build_and_distribution": "not_performed; no claim of release readiness"
+}

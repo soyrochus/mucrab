@@ -8,35 +8,46 @@ The experiment will use [REA](https://github.com/morluto/rea), a JVM decompiler,
 
 ## Current status
 
-The repository baseline, reproducible binary acquisition, static analysis tool setup, and Cargo workspace are complete. The native **muCrab** window builds and opens with an empty two-pane preview. File browsing, file operations, sorting, and Java/Rust comparison adapters are not implemented yet; no behavioral equivalence has been established. The downloaded Java reference and the pinned REA/CFR tools remain available for the first migration increment.
+**W01 is implemented:** the native application opens local folders in two independent panes, navigates into regular subfolders and back, and sorts names using recovered muCommander behavior. The Java/Rust suite passes **187 predefined and 155 reserved cases**, including **45,696 pairwise signs**, **336 complete ordered lists**, and **54 enumeration/error checks**, with no differences in the declared scope. Counts include option combinations and repeated real-folder checks; they are not counts of distinct user journeys.
 
-## Build and run the Rust scaffold
+The scope is **en-US on macOS arm64**, with natural/lexicographic ordering, either direction, and optional folders-first. Hidden entries and links are listed. Opening symbolic links, selection semantics, filtering, file mutations, archives, background operations, other locales, and other platforms remain for later increments. [The W01 contract and evidence](evidence/workflows/W01-local-browse-sort/README.md) define exactly what was verified.
 
-Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. The scaffold was built and launched on **macOS arm64** with Rust/Cargo **1.99.0**. Other platforms have not been verified.
+## Build and run muCrab
+
+Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. The application was built and launched on **macOS arm64** with Rust/Cargo **1.99.0**. Other platforms have not been verified.
 
 The [Cargo workspace](Cargo.toml) contains:
 
 | Package | Role | Current contents |
 | --- | --- | --- |
-| `mucrab-core` | Framework-independent file-management behavior | Pane identity; recovered operations will follow |
-| `mucrab-desktop` | Native `mucrab` executable | Two-pane window using eframe/egui 0.36.2 with the OpenGL backend |
-| `mucrab-compare` | Java/Rust comparison harness | Entry point that reports `not_ready` and zero cases run |
+| `mucrab-core` | Framework-independent behavior | Local enumeration, pane state, ICU4X name comparison, recovered table quicksort |
+| `mucrab-desktop` | Native `mucrab` executable | Two-pane browser using eframe/egui 0.36.2 with the OpenGL backend |
+| `mucrab-compare` | Java/Rust comparison harness | W01 original-binary oracle, Rust adapter, and difference reports |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
 
 ```sh
 cargo build --workspace --locked
 cargo run --locked -p mucrab-desktop
+# Optionally provide initial locations:
+cargo run --locked -p mucrab-desktop -- /path/to/left /path/to/right
 ```
 
-The preview does not read or modify folders, and starting it does not require Java, Node, REA, or the reference JARs. Check the native command-line entry points without opening a window:
+The application reads folder entries and supports navigation; file mutation controls are deferred. Running it requires no Java, Node, REA, or reference JARs. Double-click a regular folder to enter it; each pane has Open, Parent, Refresh, and sort controls. Check the native command-line entry points without opening a window:
 
 ```sh
 cargo run --locked -p mucrab-desktop -- --version
 cargo run --locked -p mucrab-compare -- --status
 ```
 
-The comparison status command deliberately exits with **code 2** while its adapters are unavailable. Its JSON reports `status: "not_ready"` and `cases_run: 0`; this is not a passing equivalence result.
+Status alone deliberately exits with **code 2**, `status: "not_run"`, and `cases_run: 0`. It never reuses a historical pass as a fresh comparison. Run the scoped suite after acquiring the reference and installing a full JDK:
+
+```sh
+cargo run --locked -p mucrab-compare -- --suite w01
+cargo run --locked -p mucrab-compare -- --suite w01 --reserved
+```
+
+The runner exits 0 for a complete scoped pass, 1 for differences, and 2 for unavailable/incomplete execution. Raw results are kept under ignored `artifacts/runs/`; compact reports are in `evidence/workflows/W01-local-browse-sort/`. A real access-denied fixture is required, so running with privileges that can read it cannot produce a passing suite result.
 
 Workspace checks:
 
@@ -46,9 +57,9 @@ cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 cargo test --workspace --all-features --locked
 ```
 
-The current Rust suite has one integration guard proving that an unavailable comparison cannot be reported as a successful run. There are no ported-behavior tests yet. Once dependencies are cached, the Cargo build, test, and Clippy commands also work with `--offline`.
+The Rust suite has five tests covering recovered rules, navigation/error state, link enumeration, and the zero-case readiness guard. The Python helper/protocol suite has twelve tests. The separate Java/Rust comparison suite supplies the behavioral evidence. Once dependencies are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 
-Capture the native preview and exit automatically (verified on macOS):
+Capture the native browser and exit automatically (verified on macOS):
 
 ```sh
 mkdir -p artifacts/workspace
@@ -56,7 +67,7 @@ EFRAME_SCREENSHOT_TO="$PWD/artifacts/workspace/mucrab-preview.png" \
   cargo run --locked -p mucrab-desktop --features screenshot
 ```
 
-The optional `screenshot` feature is for development captures. [Workspace readiness evidence](evidence/workspace/readiness.json) records the compiler, source and lockfile digests, verified commands, expected harness refusal, and captured window. Native rendering establishes scaffold readiness only.
+The optional `screenshot` feature is for development captures. [Workspace readiness evidence](evidence/workspace/readiness.json) is the historical phase 4 scaffold snapshot; [W01 evidence](evidence/workflows/W01-local-browse-sort/README.md) records the current workflow. A screenshot supplements runtime comparisons.
 
 ## Reference application
 
@@ -66,7 +77,7 @@ The reference is muCommander **1.6.2**, release tag **`1.6.2-1`**:
 - [Binary distribution](https://github.com/mucommander/mucommander/releases/download/1.6.2-1/mucommander-1.6.2-1-portable-x86_64.zip).
 - Published archive SHA-256: `e6769537bbb56cc52c1289ebef2e3d051912bb8b10691d320f28b945f15819a4`.
 
-The input is the complete distribution, including the launcher, application JARs, dependencies, resources, and notices. This portable archive includes a Windows executable launcher and a shell launcher, with no bundled JRE. A host JDK is installed and works for the static analysis tools; application startup and compatibility of the bundled native components remain unverified. Acquisition preserves the distribution layout and does not execute its contents.
+The input is the complete distribution, including the launcher, application JARs, dependencies, resources, and notices. This portable archive includes a Windows executable launcher and a shell launcher, with no bundled JRE. W01 ran original Java classes and launched the original GUI from a separate runtime copy on macOS arm64. Native components unrelated to W01 remain unverified. Acquisition preserves the distribution layout and does not execute its contents.
 
 ## Acquire or verify the reference
 
@@ -136,7 +147,7 @@ The selected class was previously examined during the feasibility investigation.
 
 REA is installed under ignored `tools/rea/node_modules/`; CFR is stored under ignored `tools/.cache/cfr/`. The npm lockfile carries REA's registry integrity value. CFR's SHA-256 was computed from the official author download and pinned locally; the author's published MD5 also matches. That SHA-256 is a reproducibility pin, not a publisher-supplied signature. Preserved tool licenses and provenance are listed in [NOTICE.md](NOTICE.md).
 
-No JADX, Hopper, Ghidra, or other native analysis engine is needed for these probes. Native, browser, and instrumentation providers are outside this step's verified capabilities. GUI startup, Java behavior, and Rust equivalence remain to be tested.
+No JADX, Hopper, Ghidra, or other native analysis engine is needed for these probes. Native, browser, and instrumentation providers are outside the static probe's verified capabilities. W01 adds separate original-Java execution, scoped comparisons, and GUI observations.
 
 ## Initial demo scope
 
@@ -159,7 +170,7 @@ The [implementation plan and progress ledger](mucrab-implementation-plan.md) rec
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
-5. Recover and implement one workflow at a time, beginning with file sorting. Compare each increment against the original binary before expanding the scope.
+5. **In progress:** W01 local browsing and name sorting is verified in its declared scope. Continue with W02 selection/filtering/additional criteria, applying the same recovery and comparison gates.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
 
 Upstream Java implementation source will be withheld during reconstruction; license and attribution material remains available. Decompiled representations, binary metadata, and observations of the original are permitted inputs. Findings from the earlier feasibility investigation must be identified as prior evidence if reused.
@@ -168,7 +179,7 @@ Upstream Java implementation source will be withheld during reconstruction; lice
 
 Each workflow will have explicit inputs and acceptance criteria established before its Rust implementation. A harness will exercise the original JARs and the Rust implementation against equivalent fixtures, comparing observable results and recording discrepancies. Any normalization of paths, timestamps, or platform details must be stated explicitly.
 
-The first implementation milestone is one real behavior recovered from the pinned JARs, implemented in Rust, and passing comparisons against the original. The broader demo aims for approximately 100 predefined cases plus withheld cases, with all critical file-integrity cases required to pass. These are acceptance targets, not completed checks.
+W01 meets the first implementation milestone: a real workflow recovered from pinned JARs, implemented in Rust, and compared with the original. The broader demo still needs cases across the remaining workflows, including reserved cases and mandatory file-integrity checks. W01's configuration-case count does not close that broader acceptance target.
 
 Fixtures will include numeric and Unicode names, existing destinations, symbolic links, unreadable files, and cancellation. File operations will run inside disposable fixture directories. GUI demonstrations supplement the behavioral comparisons. Build success alone does not establish equivalence.
 
@@ -183,7 +194,7 @@ The experiment will distinguish evidence that binary-to-Rust reconstruction work
 - `evidence/`: selected provenance records and comparison results suitable for Git.
 - `third_party/`: preserved upstream notices and their provenance.
 
-The baseline, acquisition and analysis helpers, pinned tool manifests, Rust workspace, dependency lockfiles, helper/readiness checks, and acquisition/toolchain/workspace evidence exist at this stage. Behavior adapters, comparison fixtures, and migrated workflows will be added in later steps.
+The repository includes acquisition/analysis helpers, pinned manifests and lockfiles, the native workspace, W01 Java/Rust adapters and fixtures, scoped results, GUI evidence, and the maintained implementation plan. Later workflows remain unimplemented.
 
 ## License and attribution
 
