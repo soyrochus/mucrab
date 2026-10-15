@@ -1,5 +1,11 @@
 # muCrab
 
+[![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-blue)](Cargo.toml)
+[![Rust 1.95 or newer](https://img.shields.io/badge/Rust-1.95%2B-orange?logo=rust)](#build-and-run-mucrab)
+[![License: GPL-3.0-only](https://img.shields.io/badge/license-GPL--3.0--only-blue)](LICENSE)
+[![Status: experimental](https://img.shields.io/badge/status-experimental-yellow)](#current-status)
+[![Verified on macOS arm64](https://img.shields.io/badge/verified-macOS%20arm64-lightgrey?logo=apple)](#current-status)
+
 **Two claws, two panes.**
 
 muCrab is an experimental Rust port of selected [muCommander](https://github.com/mucommander/mucommander) file-management workflows, reconstructed from its published Java binaries. The intended application name is **muCrab** and its command name is **`mucrab`**.
@@ -18,6 +24,25 @@ with zero differences. Native checks cover both panes. [The W02 evidence](eviden
 explains the isolated runtime boundary and representative original GUI coverage.
 
 The scope is **en-US on macOS arm64**, with natural/lexicographic ordering, either direction, and optional folders-first. Hidden entries and links are listed. Opening symbolic links, filtering, file mutations, archives, background operations, other locales, and other platforms remain for later increments. [The W01 contract and evidence](evidence/workflows/W01-local-browse-sort/README.md) define exactly what was verified.
+
+## Migration screenshots
+
+### muCrab — current Rust implementation
+
+The W01/W02a checkpoint provides two independent file panes, local folder
+browsing, name sorting, focused rows, and selection/marking controls. The native
+Rust application runs independently of Java.
+
+![muCrab's native Rust interface with two file panes, independent sorting controls, and All, None, and Invert marking controls](images/mucrab.png)
+
+### muCommander — Java reference application
+
+The original muCommander interface is the reference for recovering and comparing
+the selected workflows. The screenshot shows its two-pane browser and broader
+set of file-management features; the migration scope and comparison results are
+described above.
+
+![Original muCommander Java application showing its two-pane file browser, metadata columns, toolbar, and file-operation controls](images/mucommander.png)
 
 ## Build and run muCrab
 
