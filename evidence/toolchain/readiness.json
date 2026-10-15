@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "scope": "static_analysis_tool_readiness",
+  "tool_manifest_sha256": "7ec4e0f884fa459fbbc8caa0710876d37e1b079332279f216cd862f04e14c0c7",
+  "npm_lock_sha256": "d2b2482ce40b32ae748904c8e0c0466d9008283aad873205c13921b77cc41a8b",
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64"
+  },
+  "versions": {
+    "node": "v24.12.0",
+    "npm": "11.7.0",
+    "java": "openjdk version \"21.0.10\" 2026-01-20\nOpenJDK Runtime Environment Homebrew (build 21.0.10)\nOpenJDK 64-Bit Server VM Homebrew (build 21.0.10, mixed mode, sharing)",
+    "javap": "21.0.10",
+    "rea": "6.5.0",
+    "cfr": "CFR 0.152"
+  },
+  "commands": {
+    "node": {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/node-version.stdout",
+        "size_bytes": 9,
+        "sha256": "e38e4d731392482b901fbedb7e5d7c97762d1769b314b0e333756b03be496bf1"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/node-version.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "npm": {
+      "argv": [
+        "npm",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/npm-version.stdout",
+        "size_bytes": 7,
+        "sha256": "d7c27e39e223d95b17ed257f80e9e4a27633549a13b62a189d3a17d05f9b1816"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/npm-version.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "java": {
+      "argv": [
+        "java",
+        "-version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/java-version.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/java-version.stderr",
+        "size_bytes": 161,
+        "sha256": "e1fed2662f196c786b9a0abe86ba4628287f56a0f76e9fec561a783e6aa40754"
+      }
+    },
+    "javap": {
+      "argv": [
+        "javap",
+        "-version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/javap-version.stdout",
+        "size_bytes": 8,
+        "sha256": "7dc9cb4ae9fdddb2654563d03e7339e07bfe46ea1e29255b27febae645be5007"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/javap-version.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "rea": {
+      "argv": [
+        "node",
+        "{repository}/tools/rea/node_modules/rea-agents/scripts/rea.mjs",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/rea-version.stdout",
+        "size_bytes": 6,
+        "sha256": "3eb8e06ca1e02f0a30b0e3eebd289494b35d4fd1466ed907b9148e03b2459b00"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/rea-version.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "cfr": {
+      "argv": [
+        "java",
+        "-jar",
+        "{repository}/tools/.cache/cfr/cfr-0.152.jar",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/cfr-version.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/cfr-version.stderr",
+        "size_bytes": 11,
+        "sha256": "d76936e9378edacca32af88a02304b235b7c2a8eec5151510ea923521cccf166"
+      }
+    },
+    "rea_inventory": {
+      "argv": [
+        "node",
+        "{repository}/tools/rea/node_modules/rea-agents/scripts/rea.mjs",
+        "inspect-artifact",
+        "{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/rea-jar-inventory.stdout",
+        "size_bytes": 1757228,
+        "sha256": "f055a4bb4dbf0f0603b878c2a00621eea28dac9683d0e38c448e6f209d5082da"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/rea-jar-inventory.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "rea_android_boundary": {
+      "argv": [
+        "node",
+        "{repository}/tools/rea/node_modules/rea-agents/scripts/rea.mjs",
+        "inspect-android-package",
+        "{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar",
+        "--json"
+      ],
+      "exit_code": 1,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/rea-jar-android-boundary.stdout",
+        "size_bytes": 537,
+        "sha256": "3b4a9651dde6f4fd6a991a07a1c9b25de2fc381e9a17774e9d8f2b7ad75f36f4"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/rea-jar-android-boundary.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "javap_listing": {
+      "argv": [
+        "javap",
+        "-classpath",
+        "{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar",
+        "-c",
+        "-p",
+        "-s",
+        "com.mucommander.commons.file.util.FileComparator"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/javap-sorter.stdout",
+        "size_bytes": 18181,
+        "sha256": "4d85a566a765019793bd1a2006fff44459f727e2e87e9a7b53c9131bc486753a"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/javap-sorter.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "cfr_decompile": {
+      "argv": [
+        "java",
+        "-jar",
+        "{repository}/tools/.cache/cfr/cfr-0.152.jar",
+        "{repository}/artifacts/analysis/toolchain/FileComparator.class",
+        "--extraclasspath",
+        "{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/icu4j-78.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-lang3-3.20.0.jar",
+        "--outputdir",
+        "{repository}/artifacts/analysis/toolchain/decompiled",
+        "--silent",
+        "true"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/analysis/toolchain/cfr-sorter.stdout",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/analysis/toolchain/cfr-sorter.stderr",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "rea_jar_inventory": {
+    "evidence_id": "ev_8c5b9949d0ce9ba23dcee23e8e2c2b625d90f8dad9ba098f8c0efb0f7294afaa",
+    "provider": {
+      "id": "rea-artifact-graph",
+      "name": "REA safe artifact graph provider",
+      "version": "1"
+    },
+    "jar_sha256": "bb3a456fb42d40b2551b90bc5649b789931ddee9df79c1c2df771a74cafe641e",
+    "coverage": {
+      "scope": "container-entries",
+      "status": "complete"
+    },
+    "coverage_status": "complete",
+    "limitations": [
+      "ZIP inventory lists central-directory entries only. Non-entry bytes, including an APK Signing Block before the central directory or a ZIP comment after it, are not occurrences."
+    ],
+    "occurrence_count": 1529,
+    "class_entry": "com/mucommander/commons/file/util/FileComparator.class",
+    "class_sha256": "d4bc2dfe6884a78916248afef758831efb91863bf5dc86788c5ead29fde54a2a",
+    "class_artifact_format": "unknown",
+    "class_hash_status": "verified",
+    "jvm_semantic_analysis": "not_provided_by_this_inventory"
+  },
+  "rea_android_boundary": {
+    "code": "capability_unavailable",
+    "category": "unsupported_provider",
+    "provider_id": "jadx",
+    "operation": "inspect_android_package",
+    "reason": "Target {repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar is zip; provide one standalone APK.",
+    "expected_rejection": true
+  },
+  "jvm_decompilation": {
+    "producer": "CFR 0.152",
+    "class_entry": "com/mucommander/commons/file/util/FileComparator.class",
+    "class_sha256": "d4bc2dfe6884a78916248afef758831efb91863bf5dc86788c5ead29fde54a2a",
+    "class_file_major_version": 55,
+    "source_path": "artifacts/analysis/toolchain/decompiled/com/mucommander/commons/file/util/FileComparator.java",
+    "source_sha256": "8af1c7f1c9abea6206a56fffcc139ff7771385a2a3aee2b4248a965bed4d177a",
+    "source_lines": 163,
+    "unresolved_class_warning": false,
+    "bytecode_listing_producer": "JDK javap",
+    "previously_examined_in_feasibility_investigation": true
+  },
+  "reference_unchanged_after_probe": true,
+  "application_execution": "not_performed",
+  "gui_compatibility": "not_assessed",
+  "behavioral_equivalence": "not_assessed",
+  "global_agent_configuration_changes": "none",
+  "limitations": [
+    "REA coverage describes ZIP entries; it does not establish JVM method semantics.",
+    "CFR output and javap disassembly are derived representations; no equivalence test has run.",
+    "The APK-only refusal was checked without installing JADX or a native analysis provider.",
+    "npm lifecycle scripts are disabled; native, browser and instrumentation providers were not validated.",
+    "The selected class was already inspected during feasibility work; this probe is not a blind reconstruction."
+  ]
+}

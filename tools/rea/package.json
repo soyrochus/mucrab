@@ -1,0 +1,10 @@
+{
+  "name": "mucrab-analysis-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pinned REA CLI for the muCrab binary reconstruction experiment",
+  "license": "GPL-3.0-only",
+  "dependencies": {
+    "rea-agents": "6.5.0"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "rea": {
+    "package": "rea-agents",
+    "version": "6.5.0",
+    "metadata_url": "https://registry.npmjs.org/rea-agents/6.5.0",
+    "tarball_url": "https://registry.npmjs.org/rea-agents/-/rea-agents-6.5.0.tgz",
+    "integrity": "sha512-C6BG7LyrAdR74mSjertM6PrxJkcNZ2bfQNOJornPo9erDEp2tyPRVYPnV5Yodr+1RqewCQla68WulXlVnveD+A==",
+    "runtime_files_sha256": {
+      "package.json": "a500302319c1214a8bb6c9a8b4a4a090806e95eef884204a9d9fbb4003050a6c",
+      "scripts/rea.mjs": "526105418604cc6e5a202a6275b700814e27450bfaffd45e7510530ba669de8d",
+      "dist/android/JadxProvider.js": "70063d469ae133366e827e93c3f13433235dec8c023c87e7497b236cbc74f651"
+    },
+    "license": "MIT",
+    "license_sha256": "798f9e4d18e49b30bf2f12696c8ced73dc4e1413da375a333d01281543a1ea8b"
+  },
+  "cfr": {
+    "version": "0.152",
+    "filename": "cfr-0.152.jar",
+    "url": "https://www.benf.org/other/cfr/cfr-0.152.jar",
+    "size_bytes": 2162315,
+    "sha256": "f686e8f3ded377d7bc87d216a90e9e9512df4156e75b06c655a16648ae8765b2",
+    "publisher_md5": "8a85ada8cec494121246805a5562b82b",
+    "sha256_provenance": "Computed from the official author download during the earlier feasibility investigation; its MD5 matched the author's published value. SHA-256 is a local reproducibility pin, not a publisher-supplied signature.",
+    "license": "MIT",
+    "license_url": "https://raw.githubusercontent.com/leibnitz27/cfr/0.152/LICENSE",
+    "license_sha256": "d0b36fd265410a15e634220fdc6101976582799a09c69764f44bc21c21611527"
+  },
+  "runtimes": {
+    "node_engine": "^22.19.0 || ^24.11.0 || >=26.0.0",
+    "minimum_java_major": 17,
+    "jdk_required": true
+  },
+  "probe": {
+    "jar": "bundle/mucommander-commons-file-1.6.2.jar",
+    "class_name": "com.mucommander.commons.file.util.FileComparator",
+    "class_entry": "com/mucommander/commons/file/util/FileComparator.class",
+    "classpath": [
+      "bundle/mucommander-commons-file-1.6.2.jar",
+      "bundle/icu4j-78.3.jar",
+      "bundle/commons-lang3-3.20.0.jar"
+    ],
+    "previously_examined_in_feasibility_investigation": true
+  }
+}

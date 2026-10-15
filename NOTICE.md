@@ -25,4 +25,10 @@ The preserved file contains muCommander's licensing statement, GPLv3 and LGPLv3 
 
 ## Investigation tools
 
-[REA](https://github.com/morluto/rea), [CFR](https://github.com/leibnitz27/cfr), and [Vineflower](https://github.com/Vineflower/vineflower) are investigation tools considered for the experiment. Their code is not included in this baseline. Future evidence will record which tool and version produced each recovered finding.
+[REA](https://github.com/morluto/rea) **6.5.0** and [CFR](https://github.com/leibnitz27/cfr) **0.152** are installed locally as investigation tools. Their downloaded implementations and dependencies are in ignored storage, separate from the future Rust application's source and dependencies. [Readiness evidence](evidence/toolchain/readiness.json) records their actual commands and results.
+
+REA-authored code uses the MIT license. [third_party/rea/LICENSE](third_party/rea/LICENSE) is copied verbatim from the pinned official npm package, whose registry integrity value and dependency lock are recorded in [the tool manifest](tools/manifests/analysis-tools.json) and [npm lockfile](tools/rea/package-lock.json). REA's third-party dependencies retain their own notices in the local installation.
+
+CFR uses the MIT license. [third_party/cfr/LICENSE](third_party/cfr/LICENSE) is copied verbatim from [the upstream `0.152` tag](https://raw.githubusercontent.com/leibnitz27/cfr/0.152/LICENSE), copyright (c) 2011-2019 Lee Benfield. The decompiler JAR comes from [the author's official download](https://www.benf.org/other/cfr/cfr-0.152.jar). Its recorded SHA-256 is a locally computed reproducibility pin; its MD5 matches the value published by the author. The license-file digest is also recorded in the tool manifest.
+
+OpenJDK's installed `javap` supplies the bytecode listing. The installed JDK is not redistributed by this repository. Decompiled muCommander output remains derived upstream material under its original applicable terms and is kept in ignored local storage at this stage.

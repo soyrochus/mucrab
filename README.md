@@ -8,7 +8,7 @@ The experiment will use [REA](https://github.com/morluto/rea), a JVM decompiler,
 
 ## Current status
 
-The repository baseline and reproducible binary acquisition are complete. The pinned muCommander distribution is downloaded, checksum-verified, and extracted into ignored local storage. Tool setup, the Cargo workspace, and application implementation are subsequent steps. There is no runnable Rust application or behavioral-equivalence result yet.
+The repository baseline, reproducible binary acquisition, and static analysis tool setup are complete. The pinned muCommander distribution is downloaded, checksum-verified, and extracted into ignored local storage. REA 6.5.0, CFR 0.152, and the installed JDK have passed the static readiness probe. The Cargo workspace and application implementation are subsequent steps. There is no runnable Rust application or behavioral-equivalence result yet.
 
 ## Reference application
 
@@ -18,7 +18,7 @@ The reference is muCommander **1.6.2**, release tag **`1.6.2-1`**:
 - [Binary distribution](https://github.com/mucommander/mucommander/releases/download/1.6.2-1/mucommander-1.6.2-1-portable-x86_64.zip).
 - Published archive SHA-256: `e6769537bbb56cc52c1289ebef2e3d051912bb8b10691d320f28b945f15819a4`.
 
-The input is the complete distribution, including the launcher, application JARs, dependencies, resources, and notices. This portable archive includes a Windows executable launcher and a shell launcher, with no bundled JRE. Running the application will require a compatible host JDK; compatibility of its bundled native components will be checked during tool and runtime setup. Acquisition preserves the distribution layout and does not execute its contents.
+The input is the complete distribution, including the launcher, application JARs, dependencies, resources, and notices. This portable archive includes a Windows executable launcher and a shell launcher, with no bundled JRE. A host JDK is installed and works for the static analysis tools; application startup and compatibility of the bundled native components remain unverified. Acquisition preserves the distribution layout and does not execute its contents.
 
 ## Acquire or verify the reference
 
@@ -53,6 +53,43 @@ python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 
 Keep the extracted tree unchanged as the binary reference. Later runtime tests will use a separate working copy and disposable configuration.
 
+## Analysis tools
+
+The [analysis-tool manifest](tools/manifests/analysis-tools.json) pins **REA 6.5.0** and **CFR 0.152**. REA's dependencies are pinned in [the npm lockfile](tools/rea/package-lock.json). The current probe ran on macOS arm64 with Node **24.12.0**, npm **11.7.0**, and OpenJDK / `javap` **21.0.10**. Setup requires a Node version supported by REA and a full JDK 17 or newer; it uses the installed runtimes rather than installing them.
+
+Install the tools locally, with npm lifecycle scripts disabled:
+
+```sh
+python3 -B tools/analysis_tools.py setup
+```
+
+Repeat installation from the populated local cache without network access:
+
+```sh
+python3 -B tools/analysis_tools.py setup --offline
+```
+
+Run the static capability probe against the verified muCommander reference:
+
+```sh
+python3 -B tools/analysis_tools.py probe
+```
+
+The probe does not download tools, execute muCommander classes, or modify global agent configuration. It writes raw command arguments, stdout, stderr, bytecode, and decompiler output under ignored `artifacts/analysis/toolchain/`. Its compact [readiness evidence](evidence/toolchain/readiness.json) is tracked in Git and records each producer, version, command, output digest, and limitation.
+
+| Producer | Observed capability | Boundary |
+| --- | --- | --- |
+| REA `inspect-artifact` | Inventoried the file-library JAR and verified the selected class fingerprint | Coverage concerns ZIP entries; the class format is reported as `unknown`, with no JVM method semantics |
+| REA `inspect-android-package` | Explicitly rejected the JAR because it requires a standalone APK | This is an expected format refusal, not a successful Java decompilation |
+| CFR | Decompiled `FileComparator` into 163 lines of Java with its dependencies resolved | One static smoke test; output correctness is not established |
+| JDK `javap` | Returned method signatures and bytecode instructions for the same class | Disassembly supports investigation; it does not establish equivalence |
+
+The selected class was previously examined during the feasibility investigation. This repeatable probe establishes tool readiness and must not be presented as a blind reconstruction or a new behavioral discovery. The input class has JVM class-file major version **55**.
+
+REA is installed under ignored `tools/rea/node_modules/`; CFR is stored under ignored `tools/.cache/cfr/`. The npm lockfile carries REA's registry integrity value. CFR's SHA-256 was computed from the official author download and pinned locally; the author's published MD5 also matches. That SHA-256 is a reproducibility pin, not a publisher-supplied signature. Preserved tool licenses and provenance are listed in [NOTICE.md](NOTICE.md).
+
+No JADX, Hopper, Ghidra, or other native analysis engine is needed for these probes. Native, browser, and instrumentation providers are outside this step's verified capabilities. GUI startup, Java behavior, and Rust equivalence remain to be tested.
+
 ## Initial demo scope
 
 | Workflow | Intended comparison |
@@ -70,7 +107,7 @@ This scope is an initial demonstration target. Complete muCommander feature pari
 
 1. **Complete:** establish and commit this repository baseline.
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
-3. Pin REA and a JVM decompiler, then verify their actual capabilities against the reference. REA's inspected JADX adapter requires an APK, so desktop JAR decompilation needs a separate JVM tool or a verified adapter. Record the producing tool for each finding.
+3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. Create a Cargo workspace separating the Rust core, desktop interface, and comparison harness. Commit `Cargo.lock` for reproducible application builds.
 5. Recover and implement one workflow at a time, beginning with file sorting. Compare each increment against the original binary before expanding the scope.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
@@ -96,7 +133,7 @@ The experiment will distinguish evidence that binary-to-Rust reconstruction work
 - `evidence/`: selected provenance records and comparison results suitable for Git.
 - `third_party/`: preserved upstream notices and their provenance.
 
-The baseline, acquisition helper and checks, pinned manifest, and acquisition evidence exist at this stage. The Rust crates and comparison fixtures will be added in later steps.
+The baseline, acquisition and analysis helpers, helper checks, pinned manifests and npm lockfile, and acquisition/readiness evidence exist at this stage. The Rust crates and comparison fixtures will be added in later steps.
 
 ## License and attribution
 
