@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
-use crate::{NameSorter, SortOptions};
+use crate::{FileSelection, NameSorter, PaneEvent, SortOptions};
 use serde::{Deserialize, Serialize};
 use std::{
     fs, io,
@@ -42,6 +42,7 @@ pub struct BrowserPane {
     pub order: Vec<usize>,
     pub options: SortOptions,
     pub error: Option<String>,
+    pub selection: FileSelection,
 }
 
 impl BrowserPane {
@@ -61,10 +62,52 @@ impl BrowserPane {
         })();
         match result {
             Ok((path, entries)) => {
+                let old = self.selection.snapshot(&self.entries, &self.order);
+                let same_folder = self.location.as_ref() == Some(&path);
+                let returning = self.location.as_deref().and_then(Path::parent) == Some(&path);
+                let restore_focus = if same_folder {
+                    old.focused.filter(|name| name != "..")
+                } else if returning {
+                    self.location
+                        .as_deref()
+                        .and_then(Path::file_name)
+                        .and_then(|name| name.to_str())
+                        .map(str::to_owned)
+                } else {
+                    None
+                };
+                let has_parent = path.parent().is_some();
                 self.path_input = path.to_string_lossy().into_owned();
                 self.location = Some(path);
                 self.entries = entries;
-                self.resort(sorter);
+                self.order = sorter.sorted_indices(&self.entries, self.options);
+                self.selection = FileSelection::new(self.entries.len(), has_parent);
+                if let Some(name) = restore_focus {
+                    let row = self
+                        .order
+                        .iter()
+                        .position(|index| self.entries[*index].name == name)
+                        .map(|index| index + usize::from(has_parent))
+                        .or_else(|| {
+                            same_folder.then(|| {
+                                old.focus_row
+                                    .unwrap_or(0)
+                                    .min(self.selection.row_count(&self.order).saturating_sub(1))
+                            })
+                        });
+                    if let Some(row) = row {
+                        self.selection.focus(row, &self.order);
+                    }
+                }
+                if same_folder {
+                    for row in 0..self.selection.row_count(&self.order) {
+                        if let Some(index) = self.selection.entry_at(row, &self.order)
+                            && old.marked.contains(&self.entries[index].name)
+                        {
+                            self.selection.set_marked(row, true, &self.order);
+                        }
+                    }
+                }
                 self.error = None;
                 true
             }
@@ -76,7 +119,42 @@ impl BrowserPane {
     }
 
     pub fn resort(&mut self, sorter: &NameSorter) {
-        self.order = sorter.sorted_indices(&self.entries, self.options);
+        let focused = self
+            .selection
+            .focus_row
+            .and_then(|row| self.selection.entry_at(row, &self.order));
+        sorter.sort_indices(&self.entries, self.options, &mut self.order);
+        if let Some(index) = focused
+            && let Some(position) = self.order.iter().position(|item| *item == index)
+        {
+            self.selection.focus(
+                position + usize::from(self.selection.has_parent),
+                &self.order,
+            );
+        }
+    }
+
+    pub fn apply_event(
+        &mut self,
+        event: &PaneEvent,
+        sorter: &NameSorter,
+    ) -> Result<(), &'static str> {
+        if let PaneEvent::Sort {
+            ascending,
+            directories_first,
+            mode,
+        } = *event
+        {
+            self.options = SortOptions {
+                ascending,
+                directories_first,
+                mode,
+            };
+            self.resort(sorter);
+            Ok(())
+        } else {
+            self.selection.apply(event, &self.order)
+        }
     }
 
     pub fn parent(&mut self, sorter: &NameSorter) {

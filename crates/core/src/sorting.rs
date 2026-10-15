@@ -93,10 +93,16 @@ impl NameSorter {
     /// An explicit stack avoids recursive stack overflow on large equal sets.
     pub fn sorted_indices(&self, entries: &[FileEntry], options: SortOptions) -> Vec<usize> {
         let mut indices: Vec<_> = (0..entries.len()).collect();
-        if entries.len() < 2 {
-            return indices;
+        self.sort_indices(entries, options, &mut indices);
+        indices
+    }
+
+    /// Subsequent table sorts start from the existing index permutation.
+    pub fn sort_indices(&self, entries: &[FileEntry], options: SortOptions, indices: &mut [usize]) {
+        if indices.len() < 2 {
+            return;
         }
-        let mut pending = vec![(0, entries.len() - 1)];
+        let mut pending = vec![(0, indices.len() - 1)];
         while let Some((low, high)) = pending.pop() {
             if low >= high {
                 continue;
@@ -143,7 +149,6 @@ impl NameSorter {
                 pending.push((low, lo - 1));
             }
         }
-        indices
     }
 }
 

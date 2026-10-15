@@ -1,0 +1,610 @@
+{
+  "schema_version": 1,
+  "generated_seed": 90241,
+  "reserved_seed": 180413,
+  "generated_sequences": 16,
+  "reserved_sequences": 32,
+  "events_per_sequence": 80,
+  "cases": [
+    {
+      "id": "click-focus-and-toggle",
+      "parent": true,
+      "names": [
+        "file10.txt",
+        "folder2",
+        "file2.txt",
+        ".hidden",
+        "folder10",
+        "Alpha.txt",
+        "link-file"
+      ],
+      "events": [
+        {
+          "op": "click",
+          "row": 2
+        },
+        {
+          "op": "click",
+          "row": 4,
+          "ctrl": true
+        },
+        {
+          "op": "click",
+          "row": 1
+        },
+        {
+          "op": "click",
+          "row": 4,
+          "ctrl": true
+        },
+        {
+          "op": "click",
+          "row": 0,
+          "ctrl": true
+        }
+      ]
+    },
+    {
+      "id": "shift-destination-state",
+      "parent": true,
+      "names": [
+        "file10.txt",
+        "folder2",
+        "file2.txt",
+        ".hidden",
+        "folder10",
+        "Alpha.txt",
+        "link-file"
+      ],
+      "events": [
+        {
+          "op": "click",
+          "row": 1,
+          "ctrl": true
+        },
+        {
+          "op": "click",
+          "row": 4,
+          "shift": true
+        },
+        {
+          "op": "click",
+          "row": 2,
+          "shift": true
+        },
+        {
+          "op": "click",
+          "row": 6,
+          "shift": true,
+          "ctrl": true
+        },
+        {
+          "op": "click",
+          "row": 0,
+          "shift": true
+        }
+      ]
+    },
+    {
+      "id": "keyboard-focus",
+      "parent": true,
+      "names": [
+        "file10.txt",
+        "folder2",
+        "file2.txt",
+        ".hidden",
+        "folder10",
+        "Alpha.txt",
+        "link-file"
+      ],
+      "events": [
+        {
+          "op": "previous"
+        },
+        {
+          "op": "next"
+        },
+        {
+          "op": "last"
+        },
+        {
+          "op": "next"
+        },
+        {
+          "op": "first"
+        },
+        {
+          "op": "last"
+        },
+        {
+          "op": "previous"
+        }
+      ]
+    },
+    {
+      "id": "space-held-at-end",
+      "parent": true,
+      "names": [
+        "file2.txt",
+        "folder2"
+      ],
+      "events": [
+        {
+          "op": "space"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "release"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "release"
+        },
+        {
+          "op": "first"
+        },
+        {
+          "op": "space"
+        }
+      ]
+    },
+    {
+      "id": "shift-arrows",
+      "parent": true,
+      "names": [
+        "file10.txt",
+        "folder2",
+        "file2.txt",
+        ".hidden",
+        "folder10",
+        "Alpha.txt",
+        "link-file"
+      ],
+      "events": [
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "mark_previous"
+        }
+      ]
+    },
+    {
+      "id": "all-none-invert",
+      "parent": true,
+      "names": [
+        "file10.txt",
+        "folder2",
+        "file2.txt",
+        ".hidden",
+        "folder10",
+        "Alpha.txt",
+        "link-file"
+      ],
+      "events": [
+        {
+          "op": "all"
+        },
+        {
+          "op": "all"
+        },
+        {
+          "op": "click",
+          "row": 0
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "none"
+        },
+        {
+          "op": "none"
+        },
+        {
+          "op": "last"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "none"
+        }
+      ]
+    },
+    {
+      "id": "without-parent",
+      "parent": false,
+      "names": [
+        "file10.txt",
+        "folder2",
+        "file2.txt",
+        ".hidden",
+        "folder10",
+        "Alpha.txt",
+        "link-file"
+      ],
+      "events": [
+        {
+          "op": "space"
+        },
+        {
+          "op": "release"
+        },
+        {
+          "op": "click",
+          "row": 6,
+          "shift": true
+        },
+        {
+          "op": "all"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "last"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_previous"
+        }
+      ]
+    },
+    {
+      "id": "only-parent",
+      "parent": true,
+      "names": [],
+      "events": [
+        {
+          "op": "space"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "release"
+        },
+        {
+          "op": "all"
+        },
+        {
+          "op": "none"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "next"
+        },
+        {
+          "op": "previous"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "click",
+          "row": 0,
+          "shift": true,
+          "ctrl": true
+        }
+      ]
+    },
+    {
+      "id": "empty-no-parent",
+      "parent": false,
+      "names": [],
+      "events": []
+    },
+    {
+      "id": "singleton-no-parent",
+      "parent": false,
+      "names": [
+        "file2.txt"
+      ],
+      "events": [
+        {
+          "op": "space"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "release"
+        },
+        {
+          "op": "space"
+        },
+        {
+          "op": "all"
+        },
+        {
+          "op": "mark_next"
+        },
+        {
+          "op": "mark_previous"
+        },
+        {
+          "op": "none"
+        }
+      ]
+    },
+    {
+      "id": "sort-identity-parent-true",
+      "parent": true,
+      "names": [
+        "file10.txt",
+        "folder2",
+        "file2.txt",
+        ".hidden",
+        "folder10",
+        "Alpha.txt",
+        "link-file"
+      ],
+      "events": [
+        {
+          "op": "click",
+          "row": 1,
+          "ctrl": true
+        },
+        {
+          "op": "last"
+        },
+        {
+          "op": "sort",
+          "ascending": false,
+          "directories_first": false,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": false,
+          "directories_first": true,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": true,
+          "directories_first": false,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": true,
+          "directories_first": true,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": false,
+          "directories_first": false,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": false,
+          "directories_first": true,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": true,
+          "directories_first": false,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": true,
+          "directories_first": true,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "invert"
+        }
+      ]
+    },
+    {
+      "id": "sort-identity-parent-false",
+      "parent": false,
+      "names": [
+        "file10.txt",
+        "folder2",
+        "file2.txt",
+        ".hidden",
+        "folder10",
+        "Alpha.txt",
+        "link-file"
+      ],
+      "events": [
+        {
+          "op": "click",
+          "row": 1,
+          "ctrl": true
+        },
+        {
+          "op": "last"
+        },
+        {
+          "op": "sort",
+          "ascending": false,
+          "directories_first": false,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": false,
+          "directories_first": true,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": true,
+          "directories_first": false,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": true,
+          "directories_first": true,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": false,
+          "directories_first": false,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": false,
+          "directories_first": true,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": true,
+          "directories_first": false,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "invert"
+        },
+        {
+          "op": "sort",
+          "ascending": true,
+          "directories_first": true,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "invert"
+        }
+      ]
+    }
+  ],
+  "kinds": {
+    "folder2": "directory",
+    "folder10": "directory",
+    "link-file": "symlink"
+  }
+}

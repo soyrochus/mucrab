@@ -14,12 +14,12 @@ session can continue without the original conversation.
 | Last updated | 2026-10-15 |
 | Last verified implementation commit | `212d724` — Migrate verified local browsing and name sorting to Rust |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W02 — recover the next selection/filtering/sort-criteria contract; implementation not started |
+| Active workflow | W02a — selection and marking verified within its bounded contract; closure commit pending |
 | W01 status | `verified` within en-US/macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | Inspect original selection and filtering callers, choose one bounded W02 subworkflow, and freeze its contract before implementation |
-| Ported workflows | W01 — local browsing and recovered name ordering |
-| Behavioral comparison cases run | 342 configuration/error cases: 187 predefined + 155 reserved; 45,696 pair signs, 336 lists, 54 enumeration/error checks; zero differences |
-| Known blocker | None within W01 scope; other locales/platforms and deferred behaviors require separate increments |
+| Next executable task | W02b: recover hidden-file filtering and selection interaction; freeze a separate contract before implementation |
+| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking |
+| Behavioral comparison cases run | W01: 342 configuration/error cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences, 4,022 state snapshots. Zero differences/skips in both scopes |
+| Known blocker | None within the bounded W01/W02a scopes; original shortcut dispatch and exhaustive GUI parity remain unverified |
 | Verification platform | macOS arm64, APFS with case-insensitive/canonically equivalent lookup; other platforms unverified |
 
 The commit above identifies the implementation baseline, not the commit adding
@@ -59,16 +59,16 @@ complete, observable workflow before expanding the scope.
 | 2. Binary acquisition | Complete | `15427e7`; `tools/acquire_mucommander.py`, `tools/manifests/mucommander.json`, `evidence/acquisition/mucommander-1.6.2-1.json` |
 | 3. Analysis toolchain | Complete for static inspection | `9996a3e`; `tools/analysis_tools.py`, pinned manifests and npm lockfile, `evidence/toolchain/readiness.json` |
 | 4. Cargo workspace and preview | Complete | `88baf29`; `Cargo.toml`, `Cargo.lock`, `crates/`, `evidence/workspace/readiness.json` |
-| 5. Verified workflows | W01 verified; W02 not started | `evidence/workflows/W01-local-browse-sort/`; W01 gates below |
+| 5. Verified workflows | W01 and W02a verified within contracts | W01/W02 evidence directories and gate ledgers below |
 | 6. Broader comparison and demo | Not started | Final acceptance below |
 
 The workspace contains:
 
 | Package | Current behavior | Intended responsibility |
 | --- | --- | --- |
-| `mucrab-core` | Local enumeration, pane state, recovered comparator/table sorting, ICU4X collation | Recovered behavior, independent of the GUI |
-| `mucrab-desktop` | Native two-pane local browser using eframe/egui 0.36.2 and OpenGL | Navigation and independent sort controls; later selection/operation UI |
-| `mucrab-compare` | Original-JAR/Rust W01 adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
+| `mucrab-core` | Local enumeration, focus/marks, pane state, recovered comparator/table sorting, ICU4X collation | Recovered behavior, independent of the GUI |
+| `mucrab-desktop` | Native two-pane local browser using eframe/egui 0.36.2 and OpenGL | Navigation, sorting and marking in both panes; later file-operation UI |
+| `mucrab-compare` | Original-JAR/Rust W01/W02 adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
 
 Historical checks passed on the baseline: Cargo build, formatting, Clippy with
 warnings denied, Rust tests, CLI checks, and native preview capture. The Rust
@@ -184,13 +184,15 @@ intentionally nonzero:
 cargo run --locked -p mucrab-compare -- --status
 ```
 
-At the current W01 checkpoint, expect exit code **2**, `status: "not_run"`, and
+At the current checkpoint, expect exit code **2**, `status: "not_run"`, and
 `cases_run: 0`. Status alone does not execute comparisons or reuse historical
 passes. The earlier phase 4 baseline used `not_ready`. Run fresh W01 comparisons:
 
 ```sh
 cargo run --locked -p mucrab-compare -- --suite w01
 cargo run --locked -p mucrab-compare -- --suite w01 --reserved
+cargo run --locked -p mucrab-compare -- --suite w02
+cargo run --locked -p mucrab-compare -- --suite w02 --reserved
 ```
 
 Expect exit 0 and scoped passing reports when all required cases run. Exit 1
@@ -417,7 +419,9 @@ further when their acceptance criteria cannot be closed in one increment.
 | ID | Proposed increment | Required observable evidence | State |
 | --- | --- | --- | --- |
 | W01 | Local folder browsing and name sorting | Entry identities, pairwise signs, ordered listings, both-pane native navigation | `verified` within contract |
-| W02 | Selection, filtering, and additional sort criteria | Selected identities, visible entries, metadata ordering and ties | `not_started` |
+| W02a | Focus and marking in a loaded directory | Ordered selected identities and marks after every event; both native panes | `verified` within contract |
+| W02b | Hidden-file filtering and selection interaction | Visible entries, surviving marks/focus, parent handling | `not_started` |
+| W02c | Additional sort criteria | Metadata ordering and ties | `not_started` |
 | W03 | Recursive copy | Paths, byte contents, empty folders, declared metadata, collisions, errors | `not_started` |
 | W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `not_started` |
 | W05 | Batch rename | Generated names, preview/apply consistency, collisions, partial failures | `not_started` |
@@ -487,15 +491,34 @@ claim until rerun. A new host requires its own environment and GUI verification.
 | G5: native workflow | `verified` within scope | Both native panes navigate and change options independently; empty/error/refresh checks; representative original GUI states match |
 | G6: reproducible closure | `verified` for local development | Scripts, source/binary hashes, retained captures, validation, notices, and implementation checkpoint; release packaging remains open |
 
+### W02a gate ledger
+
+| Gate | State | Evidence / unresolved work |
+| --- | --- | --- |
+| G1: original Java adapter | `verified` within isolated-method boundary | Original FileTable/model/actions execute; ReflectionFactory bypasses desktop wiring only; no behavioral overrides |
+| G2: recovered contract | `verified` within scope | W02 contract and 19-class recovery; representative original marked/focused rows and reverse sorting |
+| G3: fixtures and protocol | `verified` | 12 named + 16 generated predefined sequences; 32 reserved; seeds frozen before implementation; reject missing snapshots/invalid selections |
+| G4: Rust and comparison | `verified` within scope | 60 sequences, 4,022 complete snapshots, zero differences/skips; W01's 342 cases still pass |
+| G5: native workflow | `verified` within scope | Native Ctrl/Shift clicks, Tab/Space, held Space/release, marking controls, sort/refresh and pane isolation; retained GUI evidence |
+| G6: reproducible closure | `verified` for local development | Scripts, source/binary/JAR hashes, seven Rust/fifteen Python tests, validation, notices and checkpoint; release packaging remains open |
+
+W02's original-method suite excludes full shortcut/LAF dispatch and folder
+reload orchestration. Refresh/navigation restoration is statically recovered,
+Rust-tested and native-observed; no original-runtime transition equivalence is
+claimed for it. See `evidence/workflows/W02-selection-marking/README.md` and
+`gui-observations.json` for the exact scope. Regenerate with `tools/w02.py` and
+`tools/w02_inspect.py`; raw inputs/outputs are in each report's `raw_run`.
+
 ### Open issues
 
 | ID | Issue | Next investigation |
 | --- | --- | --- |
 | R01 | Resolved: original comparator/table sorter execute | Keep original JAR/class pins and adapter initialization in regression checks |
 | R02 | Scoped resolution: ICU4X matches en-US fixtures | New locales/data versions need new contract and comparisons |
-| R03 | Scoped resolution: local callers and representative GUI states recovered | Selection/filtering and additional criteria belong to W02; exhaustive original GUI automation is not claimed |
+| R03 | Scoped resolution: local callers and representative GUI states recovered | W02a selection/marking is scoped and verified; filtering/additional criteria remain; exhaustive original GUI automation is not claimed |
 | R04 | Original GUI launched on macOS arm64; unrelated native components/other hosts unverified | Establish each additional platform/provider separately |
-| R05 | Ignored raw artifacts still need rehydration | Use W01 scripts and retained selected GUI evidence; regenerate or transfer required caches/raw runs |
+| R05 | Ignored raw artifacts still need rehydration | Use W01/W02 scripts and retained GUI evidence; regenerate or transfer required caches/raw runs |
+| R06 | Original shortcut dispatch/AX mark count and full OS mouse-event parity unverified | Adapter isolates original methods; GUI captures are representative. Establish full dispatch separately before making broader GUI claims |
 
 ### Session entry template
 
@@ -543,6 +566,25 @@ Exact next executable action:
   recover and freeze one bounded W02 selection/filtering contract. Preserve W01
   as a regression gate.
 
+- **2026-10-15 — W02a selection and marking:** started at `fbf7abc`, clean main,
+  macOS arm64/APFS/en-US. Recovered 19 original classes; froze fixture seeds and
+  contract; ran Java before Rust implementation. Added original-method/action
+  adapter, core focus/marking state, subsequent in-place sorting, and native
+  marking/keyboard controls in both panes. Fixed initial focus after first sort
+  (20 initial mismatches) and quick modifier-click input; see W02 decisions.
+  Final comparisons: W02 28 predefined + 32 reserved sequences, 4,022 snapshots,
+  zero differences/skips; W01 342 cases remain passing. Seven Rust/fifteen Python
+  tests, format, Clippy, build, independent linkage and reference integrity pass.
+  Evidence is `evidence/workflows/W02-selection-marking/`; native screenshots/AX
+  and representative original marked/focused rows are retained. Original shortcut
+  dispatch, full OS mouse dispatch and refresh orchestration are not part of the
+  original-method equivalence claim. The adapter uses JDK ReflectionFactory and
+  fails unavailable if that isolation mechanism cannot run. GPL notices retained;
+  no upstream source fetch, global agent changes, release or push. Regenerate
+  ignored runs via `tools/w02.py`, W01 scripts and the documented GUI procedure.
+  Next executable action: recover W02b hidden-file filtering and how focus/marks
+  behave when visible entries change. Freeze its own contract before coding.
+
 ## Final demonstration acceptance
 
 After the selected workflows are verified, run an agreed suite targeting
@@ -567,9 +609,9 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > Inspect Git, repository instructions, code, and committed evidence first;
 > reconcile the live checkpoint before acting. Rehydrate ignored inputs on this
 > machine and record fresh verification. Resume the first unfinished workflow
-> gate. W01 is verified within its declared en-US/macOS scope; the next action
-> is W02 contract recovery for one bounded selection/filtering subworkflow.
-> Keep the W01 suites passing. Continue through each workflow's gates before expanding
+> gate. W01 and W02a are verified within their declared en-US/macOS scopes;
+> the next action is W02b hidden-file filtering/selection contract recovery.
+> Keep both W01 and W02 selection suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
 > Java. Update the plan and evidence at each checkpoint, including exact next

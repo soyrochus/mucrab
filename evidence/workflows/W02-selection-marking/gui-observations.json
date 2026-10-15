@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-10-15",
+  "scope": "Native W02a interactions and representative original Swing marking/sorting; full GUI equivalence excluded",
+  "status": "verified_with_declared_scope",
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64"
+  },
+  "native": {
+    "binary_sha256": "f9fdceeecc1a867f68ea83f2cac98f0d717853a6213459c1dcecc2a14aea2981",
+    "fixture_run": "artifacts/runs/W02-20261015T200831Z-edce3eae",
+    "observations": [
+      "Ctrl-click Alpha.txt marks one file; Shift-click folder2 marks the inclusive four-entry range",
+      "Tab switches to the right pane; Down and Space mark folder2 and advance to folder10 without changing four left marks",
+      "End and held Space mark final link-file once; another Space after release unmarks it",
+      "Left descending sort and Refresh preserve focused folder2 and four marked identities",
+      "All, None and Invert produce seven, zero, seven child marks; parent excluded and right marks retained",
+      "Returning from a child focuses the departed folder",
+      "Final visual review: both panes, paths, controls, focused rows, marks, counts and footer render without clipping"
+    ]
+  },
+  "reference": {
+    "runtime_app": "artifacts/runtime/appimages/MuCommanderReference.app",
+    "jars_verified": 196,
+    "all_jar_hashes_match_immutable_reference": true,
+    "fixture_run": "artifacts/runs/W01-20261015T192135Z-1c56a8d8/browse/zFolder",
+    "observations": [
+      "child2 and child10 display marked red names separately from a single focused blue row",
+      "Clicking Name reverses order to child10 then child2; both remain marked and child2 retains focus"
+    ],
+    "not_claimed": [
+      "Original shortcut dispatch equivalence",
+      "Exact original OS modifier-click dispatch",
+      "Original refresh-restoration runtime comparison",
+      "Exhaustive original right-pane GUI testing"
+    ],
+    "limitation": "Original AX/status text did not reliably reflect marks; screenshots are used for these representative observations"
+  },
+  "captures": [
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-all.ax.txt",
+      "sha256": "3c8036e264a2e184174614c67a028d7c77548112f4a82816fa62c065db1ee8df",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-final.ax.txt",
+      "sha256": "9ab9e9f309ca2eadcb56d7bab65caf041a1c27e8d16f40ad120ecb8e683d59ee",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-final.png",
+      "sha256": "4ab178d44fc80350451a99ede75218bd16037bfc22da9cc2019a5e7282d14a4c",
+      "kind": "screenshot"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-none.ax.txt",
+      "sha256": "407d88eab2fae7707212625b04c8f9157afb328bd7c714f98f262531d9abd09c",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-range.ax.txt",
+      "sha256": "c7032a9622593ac34b11973b655c537f802114f11cf90f7c1514a9146f713303",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-range.png",
+      "sha256": "d7a8dc5b2dcf90450a84ad04d8bec7c96d2878a03fca90ec4b6959b3ff3ecd00",
+      "kind": "screenshot"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-sorted-refreshed.ax.txt",
+      "sha256": "8d51f65b393b556967e0e073742f06da5453741a92104e6724a38a623817a82f",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-space-release.ax.txt",
+      "sha256": "bdef85c200efae7d19488e08cdd8c94b84294fbd8d5dad3dcbb6f2a929a602f6",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-two-panes.ax.txt",
+      "sha256": "3bb0b01260be231fb66deab1556e880a1c13595a39359b40cef9f077c1116b58",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/native-two-panes.png",
+      "sha256": "2614f1db85daf1d47cb92d1bfd7347d9c4ae92c20f9b5297335ac7664bde84b2",
+      "kind": "screenshot"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/reference-range.ax.txt",
+      "sha256": "ce6b1ea3ffd197a19578f5010d10e532ece052b1a2bba8f65ba792e330e71bc6",
+      "kind": "accessibility_state"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/reference-range.png",
+      "sha256": "6bdc1cb6d36cda12f34af7d35d90d2148660ae53c8bb4b583dbd2879783774a2",
+      "kind": "screenshot"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/gui/reference-sorted.png",
+      "sha256": "2441399e60aea7a4dd663b54e0dbca12b2e15155ac609b858444274264fdd3b5",
+      "kind": "screenshot"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+Window: "muCrab", App: muCrab Selection.
+0 standard window muCrab, Secondary Actions: Raise
+	1 container
+		2 text (settable) muCrab
+		3 text (settable) Two claws, two panes.
+		4 text (settable) W02 · Selection and marking
+		5 text (settable) Name sorting · en-US · All entries shown, including hidden files
+		6 text (settable) Click to focus · Ctrl-click to mark · Shift-click for a range · Space to mark and advance · Tab to switch panes
+		7 text (settable) Left pane
+		8 text field (settable) {repository}/artifacts/runs/W02-20261015T200831Z-edce3eae/fixtures/click-focus-and-toggle
+		9 button Open
+		10 button Parent
+		11 button Refresh
+		12 text (settable) 7 entries
+		13 pop up button (settable) Natural
+		14 checkbox (settable, boolean) Ascending, Value: off
+		15 checkbox (settable, boolean) Folders first, Value: on
+		16 button All
+		17 button None
+		18 button Invert
+		19 text (settable) 0 marked
+		20 unknown
+		21 toggle button (settable, boolean) [parent]  .., Value: off
+		22 toggle button (settable, boolean) [ ] [folder]  folder10, Value: off
+		23 toggle button (settable, boolean) [ ] [folder]  folder2, Value: on
+		24 toggle button (settable, boolean) [ ] [link]  link-file, Value: off
+		25 toggle button (settable, boolean) [ ] [file]  file10.txt, Value: off
+		26 toggle button (settable, boolean) [ ] [file]  file2.txt, Value: off
+		27 toggle button (settable, boolean) [ ] [file]  Alpha.txt, Value: off
+		28 toggle button (settable, boolean) [ ] [file]  .hidden, Value: off
+		29 text (settable) Focus: folder2 · 1 selected
+		30 text (settable) Right pane
+		31 text field (settable) {repository}/artifacts/runs/W02-20261015T200831Z-edce3eae/fixtures/click-focus-and-toggle
+		32 button Open
+		33 button Parent
+		34 button Refresh
+		35 text (settable) 7 entries
+		36 pop up button (settable) Natural
+		37 checkbox (settable, boolean) Ascending, Value: on
+		38 checkbox (settable, boolean) Folders first, Value: on
+		39 button All
+		40 button None
+		41 button Invert
+		42 text (settable) 1 marked
+		43 unknown
+		44 toggle button (settable, boolean) [parent]  .., Value: off
+		45 toggle button (settable, boolean) [x] [folder]  folder2, Value: off
+		46 toggle button (settable, boolean) [ ] [folder]  folder10, Value: off
+		47 toggle button (settable, boolean) [ ] [file]  .hidden, Value: off
+		48 toggle button (settable, boolean) [ ] [file]  Alpha.txt, Value: off
+		49 toggle button (settable, boolean) [ ] [file]  file2.txt, Value: off
+		50 toggle button (settable, boolean) [ ] [file]  file10.txt, Value: off
+		51 toggle button (settable, boolean) [ ] [link]  link-file, Value: on
+		52 text (settable) Focus: link-file · 1 selected
+		53 text (settable) muCrab 0.1.0
+		54 text (settable) GNU GPL version 3
+		55 text (settable) Based on muCommander
+	56 close button
+	57 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	58 minimize button
+	59 text muCrab
+60 menu bar
+	61 muCrab

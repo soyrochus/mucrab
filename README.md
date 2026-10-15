@@ -10,7 +10,14 @@ The experiment will use [REA](https://github.com/morluto/rea), a JVM decompiler,
 
 **W01 is implemented:** the native application opens local folders in two independent panes, navigates into regular subfolders and back, and sorts names using recovered muCommander behavior. The Java/Rust suite passes **187 predefined and 155 reserved cases**, including **45,696 pairwise signs**, **336 complete ordered lists**, and **54 enumeration/error checks**, with no differences in the declared scope. Counts include option combinations and repeated real-folder checks; they are not counts of distinct user journeys.
 
-The scope is **en-US on macOS arm64**, with natural/lexicographic ordering, either direction, and optional folders-first. Hidden entries and links are listed. Opening symbolic links, selection semantics, filtering, file mutations, archives, background operations, other locales, and other platforms remain for later increments. [The W01 contract and evidence](evidence/workflows/W01-local-browse-sort/README.md) define exactly what was verified.
+**W02a adds selection and marking:** separate focused rows and marked identities,
+Ctrl/Shift clicks, Space with advance/repeat handling, arrow/Home/End navigation,
+Shift+arrows, All/None/Invert, and selection persistence through sorting. The
+original-JAR/Rust comparison passes **60 sequences and 4,022 state snapshots**,
+with zero differences. Native checks cover both panes. [The W02 evidence](evidence/workflows/W02-selection-marking/README.md)
+explains the isolated runtime boundary and representative original GUI coverage.
+
+The scope is **en-US on macOS arm64**, with natural/lexicographic ordering, either direction, and optional folders-first. Hidden entries and links are listed. Opening symbolic links, filtering, file mutations, archives, background operations, other locales, and other platforms remain for later increments. [The W01 contract and evidence](evidence/workflows/W01-local-browse-sort/README.md) define exactly what was verified.
 
 ## Build and run muCrab
 
@@ -20,9 +27,9 @@ The [Cargo workspace](Cargo.toml) contains:
 
 | Package | Role | Current contents |
 | --- | --- | --- |
-| `mucrab-core` | Framework-independent behavior | Local enumeration, pane state, ICU4X name comparison, recovered table quicksort |
+| `mucrab-core` | Framework-independent behavior | Local enumeration, focus/marking state, ICU4X name comparison, recovered table quicksort |
 | `mucrab-desktop` | Native `mucrab` executable | Two-pane browser using eframe/egui 0.36.2 with the OpenGL backend |
-| `mucrab-compare` | Java/Rust comparison harness | W01 original-binary oracle, Rust adapter, and difference reports |
+| `mucrab-compare` | Java/Rust comparison harness | W01 and W02 original-binary oracles, Rust adapters, and difference reports |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
 
@@ -45,6 +52,8 @@ Status alone deliberately exits with **code 2**, `status: "not_run"`, and `cases
 ```sh
 cargo run --locked -p mucrab-compare -- --suite w01
 cargo run --locked -p mucrab-compare -- --suite w01 --reserved
+cargo run --locked -p mucrab-compare -- --suite w02
+cargo run --locked -p mucrab-compare -- --suite w02 --reserved
 ```
 
 The runner exits 0 for a complete scoped pass, 1 for differences, and 2 for unavailable/incomplete execution. Raw results are kept under ignored `artifacts/runs/`; compact reports are in `evidence/workflows/W01-local-browse-sort/`. A real access-denied fixture is required, so running with privileges that can read it cannot produce a passing suite result.
@@ -57,7 +66,18 @@ cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 cargo test --workspace --all-features --locked
 ```
 
-The Rust suite has five tests covering recovered rules, navigation/error state, link enumeration, and the zero-case readiness guard. The Python helper/protocol suite has twelve tests. The separate Java/Rust comparison suite supplies the behavioral evidence. Once dependencies are cached, Cargo build, test, and Clippy commands also work with `--offline`.
+The Rust suite has seven tests covering recovered rules, navigation/error state,
+selection persistence and pane isolation, link enumeration, and the zero-case
+readiness guard. The Python helper/protocol suite has fifteen tests. The separate
+Java/Rust comparison suites supply the behavioral evidence. Once dependencies
+are cached, Cargo build, test, and Clippy commands also work with `--offline`.
+
+Click a row to give its listing keyboard focus. Ctrl-click toggles a mark and
+Shift-click toggles a range; Space toggles and advances. Up/Down, Home/End, and
+Shift+Up/Down move/select; Tab switches panes. Cmd+A/Cmd+D (Ctrl on non-macOS)
+mark/unmark all; All/None/Invert buttons are also available. A focused row is
+highlighted and marks use `[x]`. With no marks, the focused child is the effective
+selection. The parent row can be focused but is never included in file selection.
 
 Capture the native browser and exit automatically (verified on macOS):
 

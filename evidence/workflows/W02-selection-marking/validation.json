@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-15",
+  "status": "passed",
+  "source_revision_base": "fbf7abcef55328ef2479c0249504b8e3c9216454",
+  "source_status": [
+    " M NOTICE.md",
+    " M README.md",
+    " M crates/compare/src/main.rs",
+    " M crates/core/src/browsing.rs",
+    " M crates/core/src/lib.rs",
+    " M crates/core/src/sorting.rs",
+    " M crates/core/tests/navigation.rs",
+    " M crates/desktop/src/app.rs",
+    " M evidence/workflows/W01-local-browse-sort/comparison-predefined.json",
+    " M evidence/workflows/W01-local-browse-sort/comparison-reserved.json",
+    " M mucrab-implementation-plan.md",
+    "?? crates/compare/src/w02.rs",
+    "?? crates/core/src/selection.rs",
+    "?? evidence/workflows/W02-selection-marking/",
+    "?? fixtures/W02-selection-marking/",
+    "?? tools/java/W02Oracle.java",
+    "?? tools/test_w02.py",
+    "?? tools/w02.py",
+    "?? tools/w02_inspect.py"
+  ],
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64"
+  },
+  "commands": {
+    "build": {
+      "argv": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/build.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/build.stderr",
+        "sha256": "a16685927daa0790a2b357e2b56df170e7bad259186d3c802d6d441422dfd0cf"
+      }
+    },
+    "format": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/format.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/format.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "clippy": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/clippy.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/clippy.stderr",
+        "sha256": "4a8f3ac69d8cc01e67d1f4ddb7029de20f9a9e526f982c5d5df9371c76f7d16a"
+      }
+    },
+    "rust-tests": {
+      "argv": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/rust-tests.stdout",
+        "sha256": "b731b5ffac443da664947d1fa8f8c4f43b944499ab3690a38ece7d319e8c3ec3"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/rust-tests.stderr",
+        "sha256": "25b43bad43303d53a18fc921fc7a6c9507301e36ac8694c0ef757b044e889b73"
+      }
+    },
+    "python-tests": {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/python-tests.stdout",
+        "sha256": "0706812ba01af4df65161c64bd077bc9fb917c8265560e7d6a4255c66710714a"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/python-tests.stderr",
+        "sha256": "541db95876007a07aee3818645849b62b76a0e17c06da6d0fc9e9b6099b174da"
+      }
+    },
+    "linkage": {
+      "argv": [
+        "otool",
+        "-L",
+        "target/debug/mucrab"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/linkage.stdout",
+        "sha256": "c2756b2162283dcafe81b54c02ed0ac2b630530bbfc8b1e9286138cf8748210d"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/linkage.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "reference": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/acquire_mucommander.py",
+        "--verify-only"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/reference.stdout",
+        "sha256": "1e042a78c8261ea910b7d799478b97b604be93e5e338f8d7eae09d99d83651a8"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-validation-20261015T202157Z/reference.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "rust_tests_passed": 7,
+  "python_tests_passed": 15,
+  "java_runtime_required_by_native": false,
+  "source_inputs": [
+    {
+      "path": "crates/compare/src/main.rs",
+      "sha256": "16c43d882fdd1f437f3d0b6107860e2d42de7e5b2a4c5221abced9cd1a385431"
+    },
+    {
+      "path": "crates/compare/src/w02.rs",
+      "sha256": "0e74558620b84c651a157151422c30ad0c107e27e50743edf806f206b0f20386"
+    },
+    {
+      "path": "crates/compare/tests/readiness.rs",
+      "sha256": "865d3bf51a809859f3944403111f469c36746ed16dd88fbc42eca45717c50d80"
+    },
+    {
+      "path": "crates/core/src/browsing.rs",
+      "sha256": "ffcefa432e72dc242160b679dad58ebb637de9b0c6d79f9d88128aaec9f4a0bb"
+    },
+    {
+      "path": "crates/core/src/lib.rs",
+      "sha256": "8982867598c27eedc273211592c1c310a7128b5cc507a80ab8d39a20376d4af6"
+    },
+    {
+      "path": "crates/core/src/selection.rs",
+      "sha256": "289a8ca1854b995d4fc770ee49b4951a52c2810bd9d5ef5a7ce997b8b43a6b11"
+    },
+    {
+      "path": "crates/core/src/sorting.rs",
+      "sha256": "7b723d2d7637a8194306f9bd6bc6c2e957f13e7f656c4ab75ee9e7b8a41f8d3c"
+    },
+    {
+      "path": "crates/core/tests/navigation.rs",
+      "sha256": "db0304640309ddcf91007287137b55f7717288a477726a8e29371d19f0542490"
+    },
+    {
+      "path": "crates/desktop/src/app.rs",
+      "sha256": "2f052e9a033c773b33be1c2950987d87fad802567f0b21cc90a5358fcf40e2fa"
+    },
+    {
+      "path": "crates/desktop/src/main.rs",
+      "sha256": "de9ab2a270be331e9438d98665be6b861b8cff57784b339e1c12c9dea4f15e29"
+    },
+    {
+      "path": "crates/compare/Cargo.toml",
+      "sha256": "4b1888c089cead6f1d6994198bb9e695a23456c2879ab43f137c373ef17ec15f"
+    },
+    {
+      "path": "crates/core/Cargo.toml",
+      "sha256": "8e7d98cff18eb493b8d8af5559acaaf44c6b3a3a6c57d9ff4973690cb7c0643d"
+    },
+    {
+      "path": "crates/desktop/Cargo.toml",
+      "sha256": "cc2b896f0efca58a4af0512ed955ca721996cb02bf2f0a517c2937f8f3961ea3"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "334ef83f41db18162f9079e59c5b3f2c8a62eaf5941daff0b294bbbeaa31a49d"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "212045012290eef50e019a366ed06726627683a30d347bdbd193217130847bf7"
+    },
+    {
+      "path": "NOTICE.md",
+      "sha256": "4043351fe4e59c6a1b2af4c65219b5958a490b364345503a7d9138915d57cd0f"
+    },
+    {
+      "path": "tools/w02.py",
+      "sha256": "346e8eec3372b40354dcef02fc1dcc70133ad2be1044fded86fed125c7b221f0"
+    },
+    {
+      "path": "tools/w02_inspect.py",
+      "sha256": "e8c445dc6919a73c304ee57f5279ebcb5e5e172d2e91c1f021c2fb9c4e66e7c6"
+    },
+    {
+      "path": "tools/test_w02.py",
+      "sha256": "7e6dfa6dff783c3a39f67e7b0b80a0719d56ed759c3a7c5939e7130d8e139bb5"
+    },
+    {
+      "path": "tools/java/W02Oracle.java",
+      "sha256": "f95ce5a8577e564722fc45843600340edb1d9b8f8cd2b743ce3082b429e33a4b"
+    },
+    {
+      "path": "fixtures/W02-selection-marking/cases.json",
+      "sha256": "4f49175517c2840d3ce28900ea45bf6946e5337c292b2d21505056587e7caa0a"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/contract.md",
+      "sha256": "733c39f584402452012a6fae80089697a6fa0a1bf697d0544e5ad07a0ffc5ae3"
+    }
+  ],
+  "native_binary_sha256": "f9fdceeecc1a867f68ea83f2cac98f0d717853a6213459c1dcecc2a14aea2981",
+  "compare_binary_sha256": "b63a32188c34bb787f08a5a104a045022bca54f852cd75878b7a1262480c822b",
+  "reference_unchanged": true,
+  "raw_run": "artifacts/runs/W02-validation-20261015T202157Z"
+}

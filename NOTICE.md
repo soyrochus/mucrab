@@ -33,6 +33,12 @@ The embedded default fonts retain their original licenses, independently of the 
 
 The Rust name comparator and table index sorting were reconstructed from muCommander 1.6.2's `FileComparator` and `FileTableModel` binaries. The upstream muCommander attribution and GPL notices above apply. [W01 recovery and comparison evidence](evidence/workflows/W01-local-browse-sort/contract.md) identifies the original inputs and tested behavior; decompiled Java implementation source is not distributed in Git.
 
+The focus/marking state and related native interactions were reconstructed from
+the original `FileTable`, `FileTableModel`, and selection action binaries.
+The same upstream attribution and GPL notices apply to this recovered behavior.
+[The W02 contract](evidence/workflows/W02-selection-marking/contract.md) records
+the runtime adapter boundary and deferred interactions.
+
 The native collator uses ICU4X `icu_collator` **2.2.1**, with compiled collation data **2.2.0**. [The preserved ICU4X license](third_party/icu4x/LICENSE) includes Unicode License V3 and ICU adaptation attribution. [The provenance note](third_party/icu4x/README.md) explains the dependency and scope. muCrab remains `GPL-3.0-only`; dependency versions and checksums are recorded in `Cargo.lock`.
 
 ## Investigation tools

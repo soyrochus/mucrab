@@ -4,9 +4,11 @@
 //! Recovered W01 name ordering and local browsing, independent of the GUI.
 
 mod browsing;
+mod selection;
 mod sorting;
 
 pub use browsing::{BrowserPane, FileEntry, list_directory};
+pub use selection::{FileSelection, PaneEvent, SelectionSnapshot};
 pub use sorting::{NameSorter, SortMode, SortOptions};
 
 /// Identifies one of the application's two file panes.

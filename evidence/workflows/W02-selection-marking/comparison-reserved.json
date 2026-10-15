@@ -1,0 +1,1306 @@
+{
+  "schema_version": 1,
+  "run_id": "20261015T202057Z-6ae8f3f2",
+  "workflow": "W02-selection-marking",
+  "suite": "reserved",
+  "status": "passed",
+  "scope": "isolated original binary methods and actions; normalized post-Swing mouse events; full GUI dispatch excluded",
+  "source_revision": "fbf7abcef55328ef2479c0249504b8e3c9216454",
+  "source_status": [
+    " M NOTICE.md",
+    " M README.md",
+    " M crates/compare/src/main.rs",
+    " M crates/core/src/browsing.rs",
+    " M crates/core/src/lib.rs",
+    " M crates/core/src/sorting.rs",
+    " M crates/core/tests/navigation.rs",
+    " M crates/desktop/src/app.rs",
+    " M evidence/workflows/W01-local-browse-sort/comparison-predefined.json",
+    " M evidence/workflows/W01-local-browse-sort/comparison-reserved.json",
+    "?? crates/compare/src/w02.rs",
+    "?? crates/core/src/selection.rs",
+    "?? evidence/workflows/W02-selection-marking/",
+    "?? fixtures/W02-selection-marking/",
+    "?? tools/java/W02Oracle.java",
+    "?? tools/test_w02.py",
+    "?? tools/w02.py",
+    "?? tools/w02_inspect.py"
+  ],
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "source_inputs": [
+    {
+      "path": "fixtures/W02-selection-marking/cases.json",
+      "sha256": "4f49175517c2840d3ce28900ea45bf6946e5337c292b2d21505056587e7caa0a"
+    },
+    {
+      "path": "tools/java/W02Oracle.java",
+      "sha256": "f95ce5a8577e564722fc45843600340edb1d9b8f8cd2b743ce3082b429e33a4b"
+    },
+    {
+      "path": "tools/w02.py",
+      "sha256": "346e8eec3372b40354dcef02fc1dcc70133ad2be1044fded86fed125c7b221f0"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "212045012290eef50e019a366ed06726627683a30d347bdbd193217130847bf7"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "334ef83f41db18162f9079e59c5b3f2c8a62eaf5941daff0b294bbbeaa31a49d"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/contract.md",
+      "sha256": "733c39f584402452012a6fae80089697a6fa0a1bf697d0544e5ad07a0ffc5ae3"
+    },
+    {
+      "path": "crates/compare/src/main.rs",
+      "sha256": "16c43d882fdd1f437f3d0b6107860e2d42de7e5b2a4c5221abced9cd1a385431"
+    },
+    {
+      "path": "crates/compare/src/w02.rs",
+      "sha256": "0e74558620b84c651a157151422c30ad0c107e27e50743edf806f206b0f20386"
+    },
+    {
+      "path": "crates/compare/tests/readiness.rs",
+      "sha256": "865d3bf51a809859f3944403111f469c36746ed16dd88fbc42eca45717c50d80"
+    },
+    {
+      "path": "crates/core/src/browsing.rs",
+      "sha256": "ffcefa432e72dc242160b679dad58ebb637de9b0c6d79f9d88128aaec9f4a0bb"
+    },
+    {
+      "path": "crates/core/src/lib.rs",
+      "sha256": "8982867598c27eedc273211592c1c310a7128b5cc507a80ab8d39a20376d4af6"
+    },
+    {
+      "path": "crates/core/src/selection.rs",
+      "sha256": "289a8ca1854b995d4fc770ee49b4951a52c2810bd9d5ef5a7ce997b8b43a6b11"
+    },
+    {
+      "path": "crates/core/src/sorting.rs",
+      "sha256": "7b723d2d7637a8194306f9bd6bc6c2e957f13e7f656c4ab75ee9e7b8a41f8d3c"
+    },
+    {
+      "path": "crates/core/tests/navigation.rs",
+      "sha256": "db0304640309ddcf91007287137b55f7717288a477726a8e29371d19f0542490"
+    },
+    {
+      "path": "crates/desktop/src/app.rs",
+      "sha256": "2f052e9a033c773b33be1c2950987d87fad802567f0b21cc90a5358fcf40e2fa"
+    },
+    {
+      "path": "crates/desktop/src/main.rs",
+      "sha256": "de9ab2a270be331e9438d98665be6b861b8cff57784b339e1c12c9dea4f15e29"
+    },
+    {
+      "path": "crates/compare/Cargo.toml",
+      "sha256": "4b1888c089cead6f1d6994198bb9e695a23456c2879ab43f137c373ef17ec15f"
+    },
+    {
+      "path": "crates/core/Cargo.toml",
+      "sha256": "8e7d98cff18eb493b8d8af5559acaaf44c6b3a3a6c57d9ff4973690cb7c0643d"
+    },
+    {
+      "path": "crates/desktop/Cargo.toml",
+      "sha256": "cc2b896f0efca58a4af0512ed955ca721996cb02bf2f0a517c2937f8f3961ea3"
+    }
+  ],
+  "classpath": [
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/accessors-smart-2.4.9.jar",
+      "sha256": "accdd5c7ac4c49b155890aaea1ffca2a9ccd5826b562dd95a99fc1887003e031"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/annotations-13.0.jar",
+      "sha256": "96f80bad73ca6b2cd8965828c3e0c5471e10ed65e9387f4f772f42d5b3b82f41"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/annotations-26.0.2-1.jar",
+      "sha256": "466cc74206ebd43114b46454f78f9fcb4d61c4a8c8d72bea2a01fa5813e57fa3"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/apache-bzip2-1.6.2.jar",
+      "sha256": "75bed58ee176ba66a192609dbb8809031c99dfca0b45e723f261f6d520f83791"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/asm-9.3.jar",
+      "sha256": "1263369b59e29c943918de11d6d6152e2ec6085ce63e5710516f8c67d368e4bc"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/asn-one-0.6.0.jar",
+      "sha256": "d93f5dd80ea0ff64c5f7e8b5c3b06ce164f0cfd71c0f63ca2a39319118186f1c"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-1.41.0.jar",
+      "sha256": "c6886b01b5d35829908e3800253d34e62c2abf56e65926edbc4fc9a5e311cef8"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-http-netty-1.13.5.jar",
+      "sha256": "896480104a09e43141884742a8307bde88c4aa78f2c0a54d9dd32aa1442d4c5a"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/azure-identity-1.9.2.jar",
+      "sha256": "3fad2c7d1bfb6711a3bf835ba971392b49dd4e3672dc1cbfbca9cd6b0c7859e0"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/azure-json-1.0.1.jar",
+      "sha256": "597805e800456bc460512ef6e8ef40db70848fb3aeed801e8dcd86b8154362e9"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/azure-xml-1.0.0-beta.2.jar",
+      "sha256": "629e291383bddbc66e35d4e6e2bd9b237401d617fc70e22aeb9528340c036b48"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/base64-2.3.8.jar",
+      "sha256": "0f9b64650e29dc6a4c2b1a05d78b103b7d06781e5bd02a099b7f7f926aee92a7"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk15on-1.62.jar",
+      "sha256": "2fa0ab71b154da29ac134097bc6bbacd90987dd4c4005516159e6494d1d52ea2"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk18on-1.79.jar",
+      "sha256": "0d81ecc3124536b539bce9aa3fe9621b7f84c9cee371b635a5b31c78b79ab1da"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-0.2.2.jar",
+      "sha256": "843f81dc413cb5b926de9df2bcd8b27a43fa5aa235ef9835de4126f8437ce8aa"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-array-0.2.2.jar",
+      "sha256": "a62dca7df558c182d63846ddb3a0ce5c60e9b057ae7ac85a92aa2ffbcbd09324"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/bined-core-0.2.2.jar",
+      "sha256": "cc98c24f5c63ef3cf0b62455e35f0eaf3c8362eec3c98a8510ea525e3cb0b734"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/bined-highlight-swing-0.2.2.jar",
+      "sha256": "47620435fae63e18b66ebc0e247c71fba723ebc40e4421433fe2c60f8d05b5ee"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-0.2.2.jar",
+      "sha256": "bd474d7f0f659368ad9bb0b5d5ea310ec00c8b10e79836bdab62c4492793043f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-swing-0.2.2.jar",
+      "sha256": "ddb54a7d1096d8d52af72f96b86733239db315ccdeb30a83727240906e9321c0"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/bined-section-0.2.2.jar",
+      "sha256": "5ded9a75cd8ff873002482c799e6485f92485ec21357984dfc496d06c41152bb"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-0.2.2.jar",
+      "sha256": "679103deb76575f9a91bdb3d6251f1e80d25ae053f740115728eec582fff4960"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-section-0.2.2.jar",
+      "sha256": "40405b00ebd50c997ea26e5fbd4a130e158d25251b222b6883c13840681cfca9"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.24.0.jar",
+      "sha256": "dad189d4e3b485edf023a9e20bbc8478303dc8cddc957e688a3f594d5e73bb7b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.33.0.jar",
+      "sha256": "e316255bbfcd9fe50d165314b85abb2b33cb2a66a93c491db648e498a82c2de1"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.15.jar",
+      "sha256": "b3e9f6d63a790109bf0d056611fbed1cf69055826defeb9894a71369d246ed63"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.19.0.jar",
+      "sha256": "5c3881e4f556855e9c532927ee0c9dfde94cc66760d5805c031a59887070af5f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.9.jar",
+      "sha256": "ad19d2601c3abf0b946b5c3a4113e226a8c1e3305e395b90013b78dd94a723ce"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-collections4-4.5.0.jar",
+      "sha256": "00f93263c267be201b8ae521b44a7137271b16688435340bf629db1bac0a5845"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-compress-1.28.0.jar",
+      "sha256": "e1522945218456f3649a39bc4afd70ce4bd466221519dba7d378f2141a4642ca"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-io-2.20.0.jar",
+      "sha256": "df90bba0fe3cb586b7f164e78fe8f8f4da3f2dd5c27fa645f888100ccc25dd72"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-lang3-3.20.0.jar",
+      "sha256": "69e5c9fa35da7a51a5fd2099dfe56a2d8d32cf233e2f6d770e796146440263f4"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.2.jar",
+      "sha256": "daddea1ea0be0f56978ab3006b8ac92834afeefbd9b7e4e6316fca57df0fa636"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.3.2.jar",
+      "sha256": "6b858424f518015f32bfcd1183a373f4a827d72d026b6031da0c91cf0e8f3489"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-net-3.8.0.jar",
+      "sha256": "352b0ba1c657d8930063a9b83878fb717deef2d29ee25d13943be9beccc64d49"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/commons-vfs2-2.3.jar",
+      "sha256": "56d1ee93fa62ed5273b14403c19c00955eef3792605307e4b106b41ae5d83a66"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/content-type-2.2.jar",
+      "sha256": "730f1816196145e88275093c147f2e6da3c3e541207acd3503a1b06129b9bea9"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/dd-plist-1.23.jar",
+      "sha256": "3d794f2808d0e90c7ec889658e843f92a24414bd4df18ecf9f1478726af1238c"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/dropbox-core-sdk-7.0.0.jar",
+      "sha256": "2fa2cb6ac2f32f594efdf7c79fa85539fe9df1f0afcaf9f03f570a94c9991387"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/el-api-2.2.jar",
+      "sha256": "5241047db8baccba88e4c0fdf7ded28cdaaea9a0f499442c1558d3177f1cc2f5"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/error_prone_annotations-2.18.0.jar",
+      "sha256": "6a5e7cdee1655a4dc353544a543b0a4f8336a633fef084c0ce109b9f2505dc35"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/failureaccess-1.0.1.jar",
+      "sha256": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/fastdoubleparser-0.8.0.jar",
+      "sha256": "c80fefd9147380bf9ae9e271eb262dbee37f0171c4546fa1ea5e6181da4e97e4"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/gson-1.6.2.jar",
+      "sha256": "debf9c6ec8f96b43c93d3269b5e6a1c128aba7a54a0a19a3630d902b556982bc"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/guava-32.1.2-jre.jar",
+      "sha256": "bc65dea7cfd9e4dacf8419d8af0e741655857d27885bb35d943d7187fc3a8fce"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.9.jar",
+      "sha256": "b37dd13db1691caf309165db099c5cd4c4f493cdf80a2c58e644355716625b99"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.jar",
+      "sha256": "8d14c373b75221594a299f9f694251eecf1d2b930a1aa94319dc857518abb538"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.1.jar",
+      "sha256": "55d6d75253c16bf672d5721768ca16a94f63b6c1c7d943be38063b863020a043"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.11.jar",
+      "sha256": "6eb125f14d69f11fd3cd879c30b767578000ec8fed4d90c9ad92379b8e4e318b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/icu4j-78.3.jar",
+      "sha256": "e962c1758d9659ea1e1fbab99c58683f654d304e1126ace19aaabfe39e0edb25"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.10.0.jar",
+      "sha256": "77a0846219774a8269bc1b38cc00294908d34e77f8a9da34d97673982f75853d"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.13.5.jar",
+      "sha256": "80aea8ed7232db5040ced4b3f982f29da95bb3d802343dbf6fd82ccd98c21c4f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.9.0.jar",
+      "sha256": "45d32ac61ef8a744b464c54c2b3414be571016dd46bfc2bec226761cf7ae457a"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.10.0.jar",
+      "sha256": "69e7695b1e40834fa1242fc328a4010607911ced3706ab79abc769d451197513"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.13.5.jar",
+      "sha256": "48f36a025311d0464ad8dda4512a20c79e279a9550f63f3179d731d94482474b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.15.0.jar",
+      "sha256": "5b483f68fa9dd6aa37da37d1f79dd5c4b9464238f4f0660a242cb6b5c724950c"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.9.7.jar",
+      "sha256": "9e5bc0efabd9f0cac5c1fdd9ae35b16332ed22a0ee19a356de370a18a8cb6c84"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.10.0.jar",
+      "sha256": "8e6c566c67fc61a96c5dfc4a71d430f2565765778ec9a6ef216c5460a9911b60"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.13.5.jar",
+      "sha256": "5fedb24b2356491815d18267f65da9a21dd67413345ad7795f221afa25c78984"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.9.7.jar",
+      "sha256": "675376decfc070b039d2be773a97002f1ee1e1346d95bd99feee0d56683a92bf"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jackson-datatype-jsr310-2.13.5.jar",
+      "sha256": "ef15ceddddc58dfbd686b6b7fd0853ed328ff08c628bd4a395734bec20ca857b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jakarta.servlet-api-6.1.0.jar",
+      "sha256": "8a31f465f3593bf2351531a5c952014eb839da96a605b5825b93dd54714c48c4"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/java-xmlbuilder-1.1.jar",
+      "sha256": "aac6fc6e6a7b73619fc1f5dd2f744d7c6cb12f845d5a4d132f4ece0809f2cc94"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/javax.jws-api-1.1.jar",
+      "sha256": "9f20ab1fea3f9571ed52a9d98e3c651cc7c04c8a709addf238312b60987c6f2c"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-10.0-b28.jar",
+      "sha256": "0e781f9ed21b00cfa066f0fec004d2446b110ce0004d2316e420cf11af0017bd"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-api-1.3.5.jar",
+      "sha256": "fcd7b4e8d2d95695ada27987dd35d52468248801cadf3a603d969ac29a99dd8c"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jaxb-api-2.2.9.jar",
+      "sha256": "1665d12bcc68a418ca24d389dce3c586cd16fc9d571df21d4249ff1e38fcb992"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jaxrpc-api-1.1.jar",
+      "sha256": "62e14d6b84071521c45916680e41cb27b48188230e02566856141b8f4a9e774f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jaxws-api-2.2.12.jar",
+      "sha256": "7e76ce3af63054592b1141deed31e96fc4b38502b86df48d5376d000b0302c94"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jcifs-ng-2.1.10.jar",
+      "sha256": "1940332a416644b3b464335d0e0fb12530fb2c1e4cfb57e7d3339b46b2f0af48"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jcip-annotations-1.0-1.jar",
+      "sha256": "c8b450c7e3b120db45ac801df94139d9810f9ea930c88a4b34382c3f85130131"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jetbrains-jediterm-1.6.2.jar",
+      "sha256": "b32fc81c7e2c60cd7e1c57f59ea743287b6f484c0cf9ffb7bf2c48ed7f6bf36b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jets3t-0.9.7.jar",
+      "sha256": "5ad34a55cd01f2b65848b7650257431ff39a86d5c951d7610bd582ff1f419c5f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jmdns-3.5.5.jar",
+      "sha256": "894c852b26001e3bb1ad0f6915e73706aa590637ed5d731b652a146186504737"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jna-5.13.0.jar",
+      "sha256": "66d4f819a062a51a1d5627bffc23fac55d1677f0e0a1feba144aabdd670a64bb"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jna-platform-5.13.0.jar",
+      "sha256": "474d7b88f6e97009b6ec1d98c3024dd95c23187c65dabfbc35331bcac3d173dd"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jsch-0.2.10.jar",
+      "sha256": "717fe038b03b606e09e674bad2ac3a7b6aa64131291d1cc1c489f99c1aa563ca"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/json-simple-1.1.1.jar",
+      "sha256": "4e69696892b88b41c55d49ab2fdcc21eead92bf54acc588c0050596c3b75199c"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/json-smart-2.4.10.jar",
+      "sha256": "70cab5e9488630dc631b1fc6e7fa550d95cddd19ba14db39ceca7cabfbd4e5ae"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/jsr305-3.0.2.jar",
+      "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/junrar-7.5.5.jar",
+      "sha256": "98247a9dd305c3cdd758748c93a51ead7480e3b7dba35e3744ce549f215e5545"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-reflect-1.6.2.jar",
+      "sha256": "d7a50b862fc328215fc9ac2daccff06efb3b8c08a3bb812f64c8ff64db0a2fe2"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-2.1.20.jar",
+      "sha256": "8a6c72cd2c039f5c3aba8b11bd443d92fc24159ec83299b514c1d55d06583d5f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk7-2.1.20.jar",
+      "sha256": "a2fa882fcfd3afaff07c6efa1c0ddc79843425b0422382fb846049097862b552"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk8-2.1.20.jar",
+      "sha256": "904a59b5e827551b271857d99fcf97ac77312cdd74c5f9ddbc7fda5b24f8432b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/lang-tag-1.7.jar",
+      "sha256": "e8c1c594e2425bdbea2d860de55c69b69fc5d59454452449a0f0913c2a5b8a31"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/libguestfs.jar",
+      "sha256": "1f822bbb9edb46f921e5f3c624caf685b3a91ef94403239e686ac4be6e5bed70"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+      "sha256": "74ca3fa94efc894357764d02445ef1c52c52b3496f9cd484caa23a194e9bd92a"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/log4j-1.2-api-2.25.3.jar",
+      "sha256": "72aab8a06335962bfd441605cb4da94777798f699414e02931d29e63fd12ace4"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/log4j-api-2.25.3.jar",
+      "sha256": "e886682920fa0fb9d6eb6395dcb4de088443f8646c89c5e5846e168e327f406f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/log4j-core-2.25.3.jar",
+      "sha256": "362b7fcb65b73aa46cc4bc53abf4eb216f444a83b5d1a037cb6fdfff0ae9f0f9"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/logback-classic-1.2.13.jar",
+      "sha256": "937afb220b91d8a394d78befdbf587c71aeed289d582e2a91e72a7d92172371d"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/logback-core-1.2.13.jar",
+      "sha256": "07b1586faf220c05821d0f3ed8e2e417e214c83f40641f76e8a90b134c31ff6b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mail.osgi-1.4.jar",
+      "sha256": "f2426dd17d3459112c63f5adb185c3b1d9fe29482d0ed32efcf2075236528862"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mbassador-1.3.0.jar",
+      "sha256": "f065031a490c88c9b20d34f3c9c4eb6e0dffe329c090788c383574e1ac7c6bba"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-5.67.0.jar",
+      "sha256": "4f2ab7513d98e2f27e9f3f9a544011b6267b1e9afb6ed4db37e3bc639e38a073"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-core-2.0.19.jar",
+      "sha256": "02d052976d7a5a64fb4a8efc1b67737d6fd06c48ec281c127d172c2bfe36112b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-1.13.8.jar",
+      "sha256": "2efa025ad7b83e4aaa8da4c0885b60d4dbe82f98b00f5204f8012c5b3d481903"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-persistence-extension-1.2.0.jar",
+      "sha256": "eb6b70f08990bf6e0f5a353e4398b908e2d348c288a48bbc078b228588f91c7f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-archiver-1.6.2.jar",
+      "sha256": "655a2fdeee5b1465e035dc6122bad6380e542d9665e9779eebd62f57011357a9"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-bonjour-1.6.2.jar",
+      "sha256": "5715f3d432af694e0a8e59be2fa040c119e720bf9690e899ebc266ee97692787"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-command-1.6.2.jar",
+      "sha256": "3f7e881646c283af5bf7ea441d3c83581668e9ebb01cf965e52dffdcd3ea6039"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-collections-1.6.2.jar",
+      "sha256": "a22d072f45b05d65cacb602895d369091c5185e0e8025df4557b7757592ec234"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-conf-1.6.2.jar",
+      "sha256": "67ad18f373be93866b145e7929b6426a49ca48ed26be8e0edf4a61c3bd6e45ff"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar",
+      "sha256": "bb3a456fb42d40b2551b90bc5649b789931ddee9df79c1c2df771a74cafe641e"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-io-1.6.2.jar",
+      "sha256": "74a92a98abf7e5bb815a20b299cdff30c58f378f72938375d97a4fc20ac92c98"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-runtime-1.6.2.jar",
+      "sha256": "533178221ec748c97da5f541b7be5b088759b7fc02ea73c398bb3ecef9541265"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-util-1.6.2.jar",
+      "sha256": "f551a07e8f489ec7e36b4b0a7ff9d1f2663fbff82ef3bc5efa0d0cd86176214b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-core-preload-1.6.2.jar",
+      "sha256": "a9d50ddde76ef2654a7329d886fc0e243e650515047f37a15c8d521c402ff4dc"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-encoding-1.6.2.jar",
+      "sha256": "a5015b05cd9ac12fee2a66bd5044bfa8ceec7f59b71b623eb816fb2bbd292b38"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-ar-1.6.2.jar",
+      "sha256": "da00cfeb9b252b5dfaaa6cfc48867d1b0511f7764c83b8a0835ffa70e839c7dc"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-bzip2-1.6.2.jar",
+      "sha256": "96895d8a17a557601e65552384755e9e54f34b30c4460a0c70d1ac82f5de5d0b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-cpio-1.6.2.jar",
+      "sha256": "76fb46d2c6a9a7dd1b695530a0d2ee7b371934de6e2dd86885adb4d067891bbc"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-gzip-1.6.2.jar",
+      "sha256": "c3f06caaec47583c1f98876cb178e020ca798c6df9cd45692f20eed4884dabbf"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-iso-1.6.2.jar",
+      "sha256": "cb66387d759471c8fdb11e1ff3287f7ce9eada868b39e316df10ac6e147a45da"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-libguestfs-1.6.2.jar",
+      "sha256": "391b5114b503853504f0b3a0a29762bcfc5ca05c116b525de98f1b426d39cc45"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-lst-1.6.2.jar",
+      "sha256": "9001e7f0cb35a7e54e1e44f24f1275683f9be6634390fc36945f06e85a601f90"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rar-1.6.2.jar",
+      "sha256": "a1e4778f9b6148c1ce7b3e801411bb728fc2a45ed999aa69628b77bf5cc1bff0"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rpm-1.6.2.jar",
+      "sha256": "b7a88a12729d77e9169f2b44eaaad615d1158eeacf7b645433ff63d12d401635"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-sevenzip-1.6.2.jar",
+      "sha256": "306a5e677c81e492a43eadfcd352967fef876fe844e95b5910c26fe057c9756c"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-tar-1.6.2.jar",
+      "sha256": "7eb057b85799e8c5c8386c2b2d6d7311ca0691a1a33c68f9bbc9bb03e4b00a36"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-xz-1.6.2.jar",
+      "sha256": "b686bf19e66478a207d640076b8bb7891a670a600626ae3254f6a6d88c5a1277"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-zip-1.6.2.jar",
+      "sha256": "7e8c7660c2f2b064ffaea6bb2b8867ed9cf924ccbe2d67d05e43833e2b5e11c4"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-api-1.6.2.jar",
+      "sha256": "7e3a3d44ad0de73ff678954dd95604224368c9877760d05a9a86fd8dfc97f37d"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-linux-1.6.2.jar",
+      "sha256": "93bb0ad0729d13d7180afe210e528473c0b631824fb76b9b9bb104a1c99ba673"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-macos-1.6.2.jar",
+      "sha256": "c70690dc73766da4308ee3d75a75db623401812fc587f9da3ad2267c207a4da3"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-openvms-1.6.2.jar",
+      "sha256": "46c9e7650f64174ad8fd666c453794970443a35427eb3923ddec69fac6a8d711"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-win-1.6.2.jar",
+      "sha256": "33eac118fe237139afbbd1c15db67d7e0b7b9c516c2cb227cf4311a721f8c2b8"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-preferences-1.6.2.jar",
+      "sha256": "1b9d9b0170f11349c3e08b74f13647cf6bf886bc1dacc1b998401a8a0898dd8a"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-process-1.6.2.jar",
+      "sha256": "44b427dac130293fa00efeddcb1afe488082477ca11c3e4058eacd5396d8ecff"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-adb-1.6.2.jar",
+      "sha256": "c5c096bfbdb61d48ebac3a23e615de0b274afd6d288282476963371a87ed5050"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-api-1.6.2.jar",
+      "sha256": "514c605c6202ab638c020a90a3b47cab6b4e139cbdadb04b2fc54f98baa39593"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-dropbox-1.6.2.jar",
+      "sha256": "c6a9fb0c6ef5f56f572a9a59243b220c08ffdf04fe41b5f620522b90081e923e"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ftp-1.6.2.jar",
+      "sha256": "d8fcda9a52b09d13aaad79950520bc9caa2c40dfd7980dc2c350033c5e99e997"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gcs-1.6.2.jar",
+      "sha256": "3b3faa70e752274071a11ff1bd8552e030472906cf74e862d3d1f4f59f44bc52"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gdrive-1.6.2.jar",
+      "sha256": "25bf199a92a7e497923101548fd525bf9fb4d281318323786333793ad6936140"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-http-1.6.2.jar",
+      "sha256": "08b409e3592332f6a0ef0708fbbe442001ed3fd6607971dc23eda9577c8b0c38"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-nfs-1.6.2.jar",
+      "sha256": "d3b61f57eea301e0655316901a309126cbae90143b9c2f3cad299762915176e5"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-onedrive-1.6.2.jar",
+      "sha256": "26739db7c0e22f7cf5fce9afef355c190a095cc5341c231be48e82a1a959145d"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ovirt-1.6.2.jar",
+      "sha256": "083b55a3ba895bead0e104475804e34049c4fd040e8d7c21decfaa8c6c31e623"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-registry-1.6.2.jar",
+      "sha256": "63d16ec47636df30368b113f667fa69f0b8a5f8a1284a8cbd24b77a7bf0c3ace"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-s3-1.6.2.jar",
+      "sha256": "82a8e4684c46105fd48cb01e2b73aec963ba0d0ba8134531bd74ae39a06ba454"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-sftp-1.6.2.jar",
+      "sha256": "181b3bdd2d3b8f382bd9b75f855f8b00e64977b4711aa62fd223383c279cde5e"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-smb-1.6.2.jar",
+      "sha256": "21c977e91c7702038b1e6181c231c93cb7f9c73313c880bc7fe326b1834c4b72"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-vsphere-1.6.2.jar",
+      "sha256": "fd986c9748ccddeacd1a5b9156629aefe5b7d4a0f9cac32df0e2bb42bcd11539"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-translator-1.6.2.jar",
+      "sha256": "7ae88e8f91c86c4a4447b29768b2f2d6c43d51bc3e13a57c30982af166244e9a"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-api-1.6.2.jar",
+      "sha256": "c9de6e577ee8ef86c7f457949b593e47a6ffb96945e61c81e4c0c5242eb7fc39"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-binary-1.6.2.jar",
+      "sha256": "0e27667f239415d13bffc87be274b1675a902ccc1b3afdba108b7db18e06adc4"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-image-1.6.2.jar",
+      "sha256": "3d843962f9b9ce5b3271c31b15e3925acaae1b361194e4f474f6f12a0305115f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-pdf-1.6.2.jar",
+      "sha256": "2d22cea74f290a08717440d863876e21577a73a8b5e9ae6dd759a2421028bcd1"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-text-1.6.2.jar",
+      "sha256": "0aa8c5791761c618094f518c2a65edf79b216030b7f89b3a57c30e18026dd644"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-buffer-4.1.94.Final.jar",
+      "sha256": "8066ee7c49f9f29da96ee62f7cb13bee022cb4b68e51437b33da3b6d01398f13"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-4.1.94.Final.jar",
+      "sha256": "91243776ad68b4d8e39eafb9ec115e1b8fa9aecd147b12ef15bb691639498328"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-dns-4.1.93.Final.jar",
+      "sha256": "10a278b19d6393d5637f745007cb26d47dd16d468898dcc4a43e26d39c6cdd29"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http-4.1.94.Final.jar",
+      "sha256": "1ada4580f68cd17a534fb3c0337087073223a76cb77304dbe5a1b19df3d53c2f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http2-4.1.94.Final.jar",
+      "sha256": "8fbd2e95abec6155b60ed3c9c1600ed4e17ffe3f053cd5a40677d879c0af961f"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-socks-4.1.94.Final.jar",
+      "sha256": "1c0b4ee0b623402dd5bb78fd4a69bf808da2510524f489a24b0f3cc58ded046e"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-common-4.1.94.Final.jar",
+      "sha256": "cb8d84a3e63aea90d0d7a333a02e50ac751d2b05db55745d981b5eff893f647b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-4.1.94.Final.jar",
+      "sha256": "8e50719a9ab89e33ef85c5f36d780e0d7056b3f768b07d261d87baed7094eb3c"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-proxy-4.1.94.Final.jar",
+      "sha256": "378738bfeb84c81228ae5de209f964ca87849f9a720c916c77f7cba6494bb1ec"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-4.1.94.Final.jar",
+      "sha256": "bd26e9bc5e94e2d3974a93fdf921658eff4f033bfd4c5208607760ab54298617"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-4.1.93.Final.jar",
+      "sha256": "2744ccc1bbd653c9f65f5764ab211f51cae56aa6c2e2288850a9add9c805be56"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-classes-macos-4.1.93.Final.jar",
+      "sha256": "fba8ed0d39538ebf3400f93957c0ea8a746755019c4e15076b04591fb5d85373"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-native-macos-4.1.93.Final-osx-x86_64.jar",
+      "sha256": "2694451bb8e30f1b19b781942eb67ea0fd400afefb90583730db996aacc1b948"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-boringssl-static-2.0.61.Final.jar",
+      "sha256": "b6f974972c44cd6f9cecabc255290286faac40b6393c66c3c3c0db7f421cc28e"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-classes-2.0.61.Final.jar",
+      "sha256": "9b970eccd844bfae175a5cbbf7bf94891894add06d6ccbe1abf2250cd64080f6"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-4.1.94.Final.jar",
+      "sha256": "a75afa84ca35a50225991b39e6b6278186e612f7a2a0c0e981de523aaac516a4"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-epoll-4.1.94.Final.jar",
+      "sha256": "9d5d51eb42081d6fc13f4dca6855cd30d098a5b1d0b06d5644a1342bd1e50a44"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-kqueue-4.1.94.Final.jar",
+      "sha256": "339a066e988e770e038933484446ed6a6eac7c341d9ef476e9548a16f94fc886"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-epoll-4.1.94.Final-linux-x86_64.jar",
+      "sha256": "e25e0ef347f7850e6f3d8a6031d64b0edb06ba0e75533c36edb350d4defde5f3"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-kqueue-4.1.94.Final-osx-x86_64.jar",
+      "sha256": "ef5bd5faf8c2a8846fffc26ad3ca9bab4162e18f19e8fd5f77dfc6ad21ed1699"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-unix-common-4.1.94.Final.jar",
+      "sha256": "27d0dff1cd743190279becacfb372fe4d45b266edafad9f1c6c01b04d00280eb"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/nimbus-jose-jwt-9.30.2.jar",
+      "sha256": "1c5f3d94cd3d77d6176f854f1c78eb658cfb83ef803f0da54fb479f5614971ef"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/oauth2-oidc-sdk-10.7.1.jar",
+      "sha256": "f03b2ba8a501cc87e1b907106dbb2e53bc2b7cff8352d0ba8268b636f8555dda"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/okhttp-4.11.0.jar",
+      "sha256": "9c8915d7d3ca412d9ee3804399a52cab2965949ac0e225e37ae4e6a1549a8a55"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/okio-jvm-3.11.0.jar",
+      "sha256": "2d22541a192f901a45c95274567d6957ac1ed613d49e41db4e5e5d86139cf022"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.scr-2.0.12.jar",
+      "sha256": "8da179edc789e12607fb1ee908db84909921e80e093bd49d9bae3c2c20eca90d"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.shell-1.4.3.jar",
+      "sha256": "c53e2f82de7c427b63dbbf911b8b890386f4ab1238d6cfe8945b10f01dd8aa04"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/reactive-streams-1.0.4.jar",
+      "sha256": "f75ca597789b3dac58f61857b9ac2e1034a68fa672db35055a8fb4509e325f28"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/reactor-core-3.4.30.jar",
+      "sha256": "2f8fd369e3d965931009f0c5bec63f1d0170ee111d26e0a676f5b94050b8abea"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-core-1.0.33.jar",
+      "sha256": "8856421cfb5c81fb11d97a3ef43fe67895d5b0641c7aafe3e5d748b4be6d8a59"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-http-1.0.33.jar",
+      "sha256": "ec907c522981159e45aa38a3d5f1183e8e5725dee3fe594e8f21b3b8fe5bea2b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/sdk-4.4.5.jar",
+      "sha256": "f701620f94e2c9cce1d085dea462884dd636841a2be2044b5e355a272d77af68"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbinding-16.02-2.01.jar",
+      "sha256": "3660a99ad41d732ec829df776331534aea3c8d3694c1ed42feddc7f797085e64"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbindings-1.6.2.jar",
+      "sha256": "3f16ae1f2bceb751a7c90bd6a14ca28ab19f8cc08ca45cadac9704cac8ef263b"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-1.7.36.jar",
+      "sha256": "d3ef575e3e4979678dc01bf1dcce51021493b4d11fb7f1be8ad982877c16a1c0"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-2.0.9.jar",
+      "sha256": "0818930dc8d7debb403204611691da58e49d42c50b6ffcfdce02dadb7c3c2b6c"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/smbj-0.13.0.jar",
+      "sha256": "1e57fcbbf8fee8e62007ab7e84ea35b958a7ec32974513ded5987e91d1fe68a0"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/snakeyaml-2.3.jar",
+      "sha256": "63a76fe66b652360bd4c2c107e6f0258daa7d4bb492008ba8c26fcd230ff9146"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/spotbugs-annotations-4.7.3.jar",
+      "sha256": "c0fd1ac2e22acdd46913a2ff74551b71f124457199688698204af4bf3d43165d"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/sun-net-www-1.6.2.jar",
+      "sha256": "9a660d7e044651020846e0dbab4c96cba1856bebec8864687063d5dc85e62502"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/trove4j-1.0.20200330.jar",
+      "sha256": "74ee19966a461fc72ace3af70f652f28b3e70933ceba87c8d14c470b6918f8aa"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/vim25.jar",
+      "sha256": "c5411c34dd7cb6ef3728021b7bad247e9efa7bcda03d0203d3ba2c575b23d1bc"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/bundle/xz-1.9.jar",
+      "sha256": "211b306cfc44f8f96df3a0a3ddaf75ba8c5289eed77d60d72f889bb855f535e5"
+    },
+    {
+      "path": "artifacts/reference/mucommander-1.6.2-1/app/mucommander-core-1.6.2.jar",
+      "sha256": "4db401b498756bd415395818380e3109b8824695ba816bf61e8572e00696fb1f"
+    }
+  ],
+  "reference_classes": [
+    {
+      "entry": "com/mucommander/ui/action/impl/InvertSelectionAction$Descriptor.class",
+      "sha256": "975a79205e61988398ba4d0b86b5c1bc0078fb2f2a06af17cd3e4f17995b6712"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/InvertSelectionAction.class",
+      "sha256": "4bdd6722f91908ba625e90bdd7cfa691541472e3b9aa1d34c278a610814260d1"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkAllAction$Descriptor.class",
+      "sha256": "b928de4c2c375383df598c96ef085b01ac5d8b0d53b66ef041f1b508e3189a8f"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkAllAction.class",
+      "sha256": "7789b8b6ca8330e05599cef05beed42c89258c53510427a5decb9939847b6275"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkBackwardAction.class",
+      "sha256": "b9fe3a2af8cc60be0b62653ce0eb8880f351be2cf226c78bb4ae382f879697d6"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkExtensionAction$1.class",
+      "sha256": "8b0667b1f597a63e03bd9918a33224b77472b20b925c50a48bcfdc3f5088f90c"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkExtensionAction$Descriptor.class",
+      "sha256": "f6d433c29585bf1c9af1383e9ed2e8fb79c8f5bf19fa917fab75f7d910a13ac5"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkExtensionAction.class",
+      "sha256": "fcd56d9ff2f72ee40558a7a58b20ed1ee9ea158ea09d7b2bec3f54c76a745e0c"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkForwardAction.class",
+      "sha256": "96307ea1562266b29fa43a9bb5bc80a14e4dbeef39bfa46852ea6d6fa8f2232e"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkGroupAction$Descriptor.class",
+      "sha256": "067e359709c3c677762556a4a243c40c8e2085a582ea751f244713339d112aa8"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkGroupAction.class",
+      "sha256": "d4531c8578bb115b3700c1482f2d31420743322c2c8e64958ab85962992fc2dc"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkNextBlockAction$Descriptor.class",
+      "sha256": "c1af2329b383f99e6b598e21c1ca718200e585a16cdb7383fd095d2abb6e615f"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkNextBlockAction.class",
+      "sha256": "48b0c1b487b7dc789656598a60f9dc4b337775af634eb29d1aaf507864c7c1b2"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkNextPageAction$Descriptor.class",
+      "sha256": "92d546a1869d5b05835e7ee48a0a1afca58395df1728d9f0d8d75cd95034a7a9"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkNextPageAction.class",
+      "sha256": "71da8c3d028ff1dd24c6153e4b32f71ae151141fa8a8d8eb35aa9a2e3ef0f2c2"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkNextRowAction$Descriptor.class",
+      "sha256": "680a0d3ca1d2c69ddf0750d5429a90dca7ece6acd6e7c0e2a1127e476104d6f4"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkNextRowAction.class",
+      "sha256": "52de2c2dd4b19b735c728dea94ad0f0dc5008cd9496b6f68d1b087c1351d6da5"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkPreviousBlockAction$Descriptor.class",
+      "sha256": "86006777e53244fae7c8ecf587c43184085ee1830f5bb5ba3429866f365879ed"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkPreviousBlockAction.class",
+      "sha256": "94dbc3f5465c8dfcbb37c5b14a25dd02e8914d89033a2268c20d15d3a86bcccd"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkPreviousPageAction$Descriptor.class",
+      "sha256": "050f8d572906fd3f9e939b835fe1a5eb3128ee39b6d98436e011af724262c120"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkPreviousPageAction.class",
+      "sha256": "ca556dc5b43bbf77e9ab8395d9ba74600a042d88f3fea2026d11a3f52974d34c"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkPreviousRowAction$Descriptor.class",
+      "sha256": "864ee9a24646691a4347e681af6b943064a6bc6ba4b845e0fe386f54978162f2"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkPreviousRowAction.class",
+      "sha256": "dac58c5bfcd2eae10cc9a6a52c50b5c6d5c1f2966a44e3cbd6ef0fbcdfdb1b5f"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkSelectedFileAction$Descriptor.class",
+      "sha256": "0f56bcabb38a968012f12ea0b703f2285bd5ed235a6367fdac03ad1c73906edd"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkSelectedFileAction.class",
+      "sha256": "2ebf3bc3d6bb6cd8f895131808d12a76f091f46111215c63660622dc2575bf46"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkToFirstRowAction$Descriptor.class",
+      "sha256": "4075f0cdab0adeac7e503d2b8ed3c168f22a7436fa9ad3b6e0064000d324fdbd"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkToFirstRowAction.class",
+      "sha256": "71743c21968ae826fe3508ee219f96482d468b847d470648a6b47bf4dcbc4f64"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkToLastRowAction$Descriptor.class",
+      "sha256": "a8b6123cf424c1e7741151f1934649c93d8c130be257ae20d51867a7e8deb550"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/MarkToLastRowAction.class",
+      "sha256": "b128bd93a215e1c1559ab4dcb06eaf6af4608f15766901e2b5e7de408339ecff"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectBackwardAction.class",
+      "sha256": "b935872acadd5316d207dc0267aa0a1b02e96f269315c647de23497b11d6c8e6"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectFirstRowAction$Descriptor.class",
+      "sha256": "cb8bdca693d5cca3516155d1ac9927133b76fa332a846e6ca90f8fc7e6c15a0d"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectFirstRowAction.class",
+      "sha256": "e2c6e5abaeb06c425cf78375cfcd0a616593d8dedd90a1e438d56ad287719913"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectForwardAction.class",
+      "sha256": "074be7d6aa710279a04cd607320b7ca2a6922d27328c3bef6b8853fe22a2d473"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectLastRowAction$Descriptor.class",
+      "sha256": "199de7b21b6fe4ee04e3a2c78695c869755b7f4cd5187e2b33cdf931d5440cd2"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectLastRowAction.class",
+      "sha256": "0070ee49ef7d97a8bb5976f06c9027cb528e544b15cb3cf765507c374808cf67"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectNextBlockAction$Descriptor.class",
+      "sha256": "c3a7c9c395994c3d726022fb6afe252d2d48a35d8986435466f560c050a78428"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectNextBlockAction.class",
+      "sha256": "745138440b82c893992a5f1a142fd4218aaa2dc3e01427dbeeecd9eb83953260"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectNextPageAction$Descriptor.class",
+      "sha256": "cfb4e35aa8475e002c0edeaa6aa44a81b996667fbbb0fe445937c455aae0616c"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectNextPageAction.class",
+      "sha256": "c7115d0971b4d2fc29b5c1e3487ccaead585e507d28c501f38e2144d2ceacda6"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectNextRowAction$Descriptor.class",
+      "sha256": "cedc2c73d4759a4eb6ef358760d3cc4c87aa5b0a10c5c32a11819bc72b91c23c"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectNextRowAction.class",
+      "sha256": "d5d7de6e4b42b9119008bd5157e4463db19263cb030476260e82ef1d9d4edfcd"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectPreviousBlockAction$Descriptor.class",
+      "sha256": "bdb2a037c5dab01ac4a825a16a88eb6726bb7a990d784a8009c431816e57b681"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectPreviousBlockAction.class",
+      "sha256": "32779df263788206134405577fe31f7b8fc6c6d43ed1761ff785a10f8dd66c6a"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectPreviousPageAction$Descriptor.class",
+      "sha256": "a977869c927b8ba68bac4960e6700516bb8d8dba919bc154999f2eec7a51917c"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectPreviousPageAction.class",
+      "sha256": "595711356333d3f5d7b7ba1c048b67bf954bf9a32adf3d9652c5a8e015c62d78"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectPreviousRowAction$Descriptor.class",
+      "sha256": "104c0bce515a40869aad6f2388ace2c64555a204f503dbe6ff893f9cf4282fff"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectPreviousRowAction.class",
+      "sha256": "b6a20eb3e5f39feb0b008352a4349af677dc6a8f5faab762f9a74d459cb808b9"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectedFileAction.class",
+      "sha256": "eebae40879b2657cba38b5ce3f43733f0336835b8451f2f82628416ff2f3e119"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/SelectedFilesAction.class",
+      "sha256": "cb19d12e94695a0c642cf24303dc696db95e3e32c518da1c39050c458edc4050"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/UnmarkAllAction$Descriptor.class",
+      "sha256": "503571ce30eef08c665d7b919793be4c9e588d1e6ee8d7365c3164735b7e9ef5"
+    },
+    {
+      "entry": "com/mucommander/ui/action/impl/UnmarkAllAction.class",
+      "sha256": "2289e4b18f3c616bec76ea3cc3e9d2f554354e8bd57eda41483cfd56c2c27228"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable$1.class",
+      "sha256": "548daf1202e0b8b476922ae067ea990e279d8acc28ceace3f49e888bf3cedbb4"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable$2.class",
+      "sha256": "cac8534589790d879574e87c65aa5c76954318cdf954c3e26b69fdf6e73d621c"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable$3.class",
+      "sha256": "15bc5c9e699838a7d211589e7ff451b5c229e0bc180454879f2998533686e128"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable$FileTableQuickSearch.class",
+      "sha256": "497d0f967a7430bcca344843eec1ab0c2d2c7794f86a0938492ea98a7a7d1c48"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable$FilenameEditor$1.class",
+      "sha256": "1b21d137d124d1ce4abf370d12739e03c93be00879003929a9fba53ac537037f"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable$FilenameEditor$2.class",
+      "sha256": "eebc492694d76d98fb3a73d51ff92d0d1354b7a3b7adae984e11b98548248ee1"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable$FilenameEditor$3.class",
+      "sha256": "088d3e85512f4edbd3d828e6f85fad919a47d5a2b50f5275fb29cab62365f00e"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable$FilenameEditor.class",
+      "sha256": "accf35e05a223de4d1a3b747fac87a8c68c02805e1e712112049bf44f654b711"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable$FolderChangeThread.class",
+      "sha256": "928e1fe6964d087fda378a9d578d4c55a579fd973ca58dcfbce15b1b8b228353"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTable.class",
+      "sha256": "c517a0bab80d70afb5b6ccdad48e12039d1ef3b89e6b9e8587d1c17008b2123a"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableCellRenderer.class",
+      "sha256": "406ad13eb72a759b2912af1745032b8bf4367d97f3770c846821e8f926a9d3da"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableColumnModel$ColumnEnumeration.class",
+      "sha256": "d5e31d46fb83f695a0cd52343d9fb6feb9bc6e88417234f80d74e77a95cf7782"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableColumnModel$ColumnSorter.class",
+      "sha256": "48f86b8d3b5b99e2c0af48ef0ca44b9fe9173b070700c151de8636e7853fd556"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableColumnModel.class",
+      "sha256": "1721ea646079744bf446e7a70911768f44f4e3dba94286f8dd277dd6365e8d65"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableConfiguration.class",
+      "sha256": "4fdbdfddf87402f645fc8146f35b396736eae272729158c585b4e6e855b392a1"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableHeader$1.class",
+      "sha256": "13ca8297f0a7b2c9a13ee775cd5e4627f9a650d331fa48e767bae3818d29fb2d"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableHeader.class",
+      "sha256": "6a181b947573c6403bbf1ca4e32d7055776f91cfcefe33354e20da42ffba764a"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableHeaderRenderer.class",
+      "sha256": "2cc1148a006db4fa5e1970e4775818b1a5f149e0ca47d5f4e3e8805e03e6d7a0"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableModel.class",
+      "sha256": "6679681ac80a69cc10063265011440b23eb94d15e2d9820dcaf0d2e788c26a91"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableWrapperForDisplay$1.class",
+      "sha256": "c560aa2b4cd372a751f6826dfcd2dd24d1043b65770b4b87f63a479af0fd16a8"
+    },
+    {
+      "entry": "com/mucommander/ui/main/table/FileTableWrapperForDisplay.class",
+      "sha256": "ff855530c3bc14bafffdf829346a3c6736cb69a5bef1f890f3bfa735bcf3d410"
+    }
+  ],
+  "java_adapter_classes": [
+    {
+      "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/classes/W02Oracle$Event.class",
+      "sha256": "c7e267e3cda156918cbc637dadb9fef07e9d38338fb1d468348e8ebae87d5da3"
+    },
+    {
+      "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/classes/W02Oracle$Request.class",
+      "sha256": "48450c461dc7908db6b5d099ac0ead7d6d34d1d97f0eb04e96f85ae465ca0aac"
+    },
+    {
+      "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/classes/W02Oracle$Snapshot.class",
+      "sha256": "21b2bed88a27ef7c9a1f8d98013c883bb3980d18c64d8629888fd779b3c468a6"
+    },
+    {
+      "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/classes/W02Oracle.class",
+      "sha256": "d54db7fb5c49d5565c35bd757b6e120490376e3bbde3cf6a65e4113102c4e8ff"
+    }
+  ],
+  "commands": {
+    "javac": {
+      "argv": [
+        "javac",
+        "-proc:none",
+        "-encoding",
+        "UTF-8",
+        "-cp",
+        "{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/accessors-smart-2.4.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-26.0.2-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/apache-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asm-9.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asn-one-0.6.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-1.41.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-http-netty-1.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-identity-1.9.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-json-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-xml-1.0.0-beta.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/base64-2.3.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk15on-1.62.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk18on-1.79.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-array-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-core-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-highlight-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.24.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.33.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.15.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.19.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-collections4-4.5.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-compress-1.28.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-io-2.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-lang3-3.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.3.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-net-3.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-vfs2-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/content-type-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dd-plist-1.23.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dropbox-core-sdk-7.0.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/el-api-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/error_prone_annotations-2.18.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/failureaccess-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/fastdoubleparser-0.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/gson-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/guava-32.1.2-jre.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.11.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/icu4j-78.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.9.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.15.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-datatype-jsr310-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jakarta.servlet-api-6.1.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/java-xmlbuilder-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.jws-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-10.0-b28.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-api-1.3.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxb-api-2.2.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxrpc-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxws-api-2.2.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcifs-ng-2.1.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcip-annotations-1.0-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jetbrains-jediterm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jets3t-0.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jmdns-3.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-platform-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsch-0.2.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-simple-1.1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-smart-2.4.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsr305-3.0.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/junrar-7.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-reflect-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk7-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk8-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/lang-tag-1.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/libguestfs.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-1.2-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-core-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-classic-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-core-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mail.osgi-1.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mbassador-1.3.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-5.67.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-core-2.0.19.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-1.13.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-persistence-extension-1.2.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-archiver-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-bonjour-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-command-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-collections-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-conf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-io-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-runtime-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-util-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-core-preload-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-encoding-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-ar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-cpio-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-gzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-iso-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-libguestfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-lst-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rpm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-sevenzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-tar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-xz-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-zip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-linux-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-macos-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-openvms-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-win-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-preferences-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-process-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-adb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-dropbox-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gcs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gdrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-http-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-nfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-onedrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ovirt-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-registry-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-s3-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-sftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-smb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-vsphere-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-translator-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-binary-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-image-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-pdf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-text-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-buffer-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http2-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-socks-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-proxy-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-classes-macos-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-native-macos-4.1.93.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-boringssl-static-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-classes-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-epoll-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-kqueue-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-epoll-4.1.94.Final-linux-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-kqueue-4.1.94.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-unix-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/nimbus-jose-jwt-9.30.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/oauth2-oidc-sdk-10.7.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okhttp-4.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okio-jvm-3.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.scr-2.0.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.shell-1.4.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactive-streams-1.0.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-core-3.4.30.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-core-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-http-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sdk-4.4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbinding-16.02-2.01.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbindings-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-1.7.36.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-2.0.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/smbj-0.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/snakeyaml-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/spotbugs-annotations-4.7.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sun-net-www-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/trove4j-1.0.20200330.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/vim25.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/xz-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/app/mucommander-core-1.6.2.jar",
+        "-d",
+        "{repository}/artifacts/runs/W02-20261015T202057Z-6ae8f3f2/classes",
+        "{repository}/tools/java/W02Oracle.java"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/javac.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/javac.stderr",
+        "sha256": "04e8fb418b4d94629ed93066c228e64ba34d1aff1f00a44fe7efeabb327f2734"
+      }
+    },
+    "java": {
+      "argv": [
+        "java",
+        "--add-opens=java.base/java.io=ALL-UNNAMED",
+        "-Djava.awt.headless=true",
+        "-Duser.home={repository}/artifacts/runs/W02-20261015T202057Z-6ae8f3f2/home",
+        "-cp",
+        "{repository}/artifacts/runs/W02-20261015T202057Z-6ae8f3f2/classes:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/accessors-smart-2.4.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-26.0.2-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/apache-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asm-9.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asn-one-0.6.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-1.41.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-http-netty-1.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-identity-1.9.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-json-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-xml-1.0.0-beta.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/base64-2.3.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk15on-1.62.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk18on-1.79.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-array-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-core-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-highlight-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.24.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.33.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.15.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.19.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-collections4-4.5.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-compress-1.28.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-io-2.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-lang3-3.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.3.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-net-3.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-vfs2-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/content-type-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dd-plist-1.23.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dropbox-core-sdk-7.0.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/el-api-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/error_prone_annotations-2.18.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/failureaccess-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/fastdoubleparser-0.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/gson-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/guava-32.1.2-jre.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.11.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/icu4j-78.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.9.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.15.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-datatype-jsr310-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jakarta.servlet-api-6.1.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/java-xmlbuilder-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.jws-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-10.0-b28.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-api-1.3.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxb-api-2.2.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxrpc-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxws-api-2.2.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcifs-ng-2.1.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcip-annotations-1.0-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jetbrains-jediterm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jets3t-0.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jmdns-3.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-platform-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsch-0.2.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-simple-1.1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-smart-2.4.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsr305-3.0.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/junrar-7.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-reflect-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk7-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk8-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/lang-tag-1.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/libguestfs.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-1.2-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-core-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-classic-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-core-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mail.osgi-1.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mbassador-1.3.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-5.67.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-core-2.0.19.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-1.13.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-persistence-extension-1.2.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-archiver-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-bonjour-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-command-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-collections-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-conf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-io-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-runtime-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-util-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-core-preload-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-encoding-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-ar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-cpio-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-gzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-iso-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-libguestfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-lst-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rpm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-sevenzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-tar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-xz-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-zip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-linux-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-macos-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-openvms-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-win-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-preferences-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-process-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-adb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-dropbox-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gcs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gdrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-http-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-nfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-onedrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ovirt-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-registry-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-s3-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-sftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-smb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-vsphere-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-translator-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-binary-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-image-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-pdf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-text-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-buffer-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http2-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-socks-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-proxy-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-classes-macos-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-native-macos-4.1.93.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-boringssl-static-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-classes-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-epoll-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-kqueue-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-epoll-4.1.94.Final-linux-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-kqueue-4.1.94.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-unix-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/nimbus-jose-jwt-9.30.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/oauth2-oidc-sdk-10.7.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okhttp-4.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okio-jvm-3.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.scr-2.0.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.shell-1.4.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactive-streams-1.0.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-core-3.4.30.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-core-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-http-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sdk-4.4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbinding-16.02-2.01.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbindings-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-1.7.36.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-2.0.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/smbj-0.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/snakeyaml-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/spotbugs-annotations-4.7.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sun-net-www-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/trove4j-1.0.20200330.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/vim25.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/xz-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/app/mucommander-core-1.6.2.jar",
+        "W02Oracle"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/java.stdout",
+        "sha256": "79b4290c4a5b7226b6e2debc3defb0a9bca3575d2a727212ec5416e8158708d9"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/java.stderr",
+        "sha256": "8cfe605cf448d0bc487bd971b4295532b4e9be37704f08430b4747a43cb33805"
+      }
+    },
+    "java-version": {
+      "argv": [
+        "java",
+        "-version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/java-version.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/java-version.stderr",
+        "sha256": "e1fed2662f196c786b9a0abe86ba4628287f56a0f76e9fec561a783e6aa40754"
+      }
+    },
+    "rustc-version": {
+      "argv": [
+        "rustc",
+        "-vV"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/rustc-version.stdout",
+        "sha256": "352d6857968e80a6357a926ac685b9b07f77c479aaafde33e73a53945e802909"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/rustc-version.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "rust": {
+      "argv": [
+        "{repository}/target/debug/mucrab-compare",
+        "--adapter-w02"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/rust.stdout",
+        "sha256": "1f2f0bc439d03de1360ddb8b9e4c1c00037f23d653011e6f6120e147a0fdf242"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2/rust.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "fixture_seed": 180413,
+  "rust_adapter": {
+    "path": "{repository}/target/debug/mucrab-compare",
+    "sha256": "b63a32188c34bb787f08a5a104a045022bca54f852cd75878b7a1262480c822b"
+  },
+  "sequences_run": 32,
+  "oracle_sequences": 32,
+  "snapshots_checked": 2592,
+  "events_executed": 2560,
+  "differences": [],
+  "skipped": [],
+  "reference_unchanged": true,
+  "raw_run": "artifacts/runs/W02-20261015T202057Z-6ae8f3f2",
+  "request_sha256": "05b7bd3ea462819996bca7c220240f8040b3f45e78c3415dddf5f8071e092405",
+  "reproduce": "target/debug/mucrab-compare --suite w02 --reserved"
+}

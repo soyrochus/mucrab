@@ -2,6 +2,7 @@
 // Copyright (C) 2026 muCrab contributors
 
 use mucrab_core::{FileEntry, NameSorter, SortOptions, list_directory};
+mod w02;
 use serde::{Deserialize, Serialize};
 use std::{
     io::{self, BufRead},
@@ -86,6 +87,15 @@ fn adapter() -> Result<(), Box<dyn std::error::Error>> {
 
 fn main() -> ExitCode {
     let arguments: Vec<_> = std::env::args_os().skip(1).collect();
+    if arguments.as_slice() == ["--adapter-w02"] {
+        return match w02::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("W02 adapter unavailable: {error}");
+                ExitCode::from(2)
+            }
+        };
+    }
     if arguments.as_slice() == ["--adapter"] {
         return match adapter() {
             Ok(()) => ExitCode::SUCCESS,
@@ -101,18 +111,24 @@ fn main() -> ExitCode {
     }
     if arguments.as_slice() == ["--help"] || arguments.as_slice() == ["-h"] {
         println!(
-            "muCrab comparison harness\n\nUsage: mucrab-compare --suite w01 [--reserved]\n       mucrab-compare --status\n\nW01 runs the original Java comparator/table sorter and the Rust adapter.\nRequires the acquired reference and a JDK. Status alone exits 2 with zero cases."
+            "muCrab comparison harness\n\nUsage: mucrab-compare --suite w01|w02 [--reserved]\n       mucrab-compare --status\n\nRuns original Java binary behavior and the Rust adapter.\nRequires the acquired reference and a JDK. Status alone exits 2 with zero cases."
         );
         return ExitCode::SUCCESS;
     }
-    if arguments.as_slice() == ["--suite", "w01"]
-        || arguments.as_slice() == ["--suite", "w01", "--reserved"]
+    if (arguments.as_slice() == ["--suite", "w01"]
+        || arguments.as_slice() == ["--suite", "w01", "--reserved"])
+        || (arguments.as_slice() == ["--suite", "w02"]
+            || arguments.as_slice() == ["--suite", "w02", "--reserved"])
     {
         let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
         let mut command = Command::new("python3");
         command
             .arg("-B")
-            .arg(root.join("tools/w01.py"))
+            .arg(root.join(if arguments[1] == "w02" {
+                "tools/w02.py"
+            } else {
+                "tools/w01.py"
+            }))
             .arg("compare")
             .arg("--rust-adapter")
             .arg(std::env::current_exe().expect("executable path"));
@@ -122,14 +138,14 @@ fn main() -> ExitCode {
         return match command.status() {
             Ok(status) => ExitCode::from(status.code().unwrap_or(2).try_into().unwrap_or(2)),
             Err(error) => {
-                eprintln!("W01 runner unavailable: {error}");
+                eprintln!("Comparison runner unavailable: {error}");
                 ExitCode::from(2)
             }
         };
     }
     if arguments.is_empty() || arguments.as_slice() == ["--status"] {
         println!(
-            r#"{{"status":"not_run","cases_run":0,"reason":"Run --suite w01 for a fresh scoped comparison"}}"#
+            r#"{{"status":"not_run","cases_run":0,"reason":"Run --suite w01 or --suite w02 for a fresh scoped comparison"}}"#
         );
     } else {
         eprintln!("Unsupported arguments. Use mucrab-compare --help.");
