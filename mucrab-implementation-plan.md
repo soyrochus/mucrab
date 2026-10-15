@@ -12,9 +12,9 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-15 |
-| Last verified implementation commit | `212d724` — Migrate verified local browsing and name sorting to Rust |
+| Last verified implementation commit | `3af9346` — Migrate verified focus and marking workflows to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W02a — selection and marking verified within its bounded contract; closure commit pending |
+| Active workflow | W02a — selection and marking verified within its bounded contract; next is W02b |
 | W01 status | `verified` within en-US/macOS arm64/APFS scope; representative original GUI evidence |
 | Next executable task | W02b: recover hidden-file filtering and selection interaction; freeze a separate contract before implementation |
 | Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking |
@@ -582,6 +582,9 @@ Exact next executable action:
   fails unavailable if that isolation mechanism cannot run. GPL notices retained;
   no upstream source fetch, global agent changes, release or push. Regenerate
   ignored runs via `tools/w02.py`, W01 scripts and the documented GUI procedure.
+  Implementation/evidence checkpoint: `3af9346`. Reports identify the tested
+  worktree base `fbf7abc` and exact source hashes; this commit contains those
+  matching sources. No required W02a work remains uncommitted.
   Next executable action: recover W02b hidden-file filtering and how focus/marks
   behave when visible entries change. Freeze its own contract before coding.
 
