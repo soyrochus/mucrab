@@ -1,0 +1,2 @@
+# Preserve the upstream notice's exact bytes, including original whitespace.
+third_party/mucommander/license.txt -text -whitespace

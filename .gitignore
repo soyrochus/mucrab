@@ -1,0 +1,23 @@
+# Local reference binaries, extracted distributions, and decompiler output.
+/artifacts/
+
+# Rust build output and packaged applications.
+target/
+/dist/
+
+# Local tool caches and machine-specific captures.
+/tools/.cache/
+/evidence/local/
+
+# Local environment settings; keep examples trackable.
+.env
+.env.*
+!.env.example
+
+# Operating-system and editor temporary files.
+.DS_Store
+*.swp
+*.swo
+*.log
+
+# Cargo.lock is intentionally tracked for this application.
