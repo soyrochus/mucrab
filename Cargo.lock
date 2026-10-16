@@ -1731,6 +1731,7 @@ dependencies = [
 name = "mucrab-core"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "icu_collator",
  "icu_locale_core",
  "serde",

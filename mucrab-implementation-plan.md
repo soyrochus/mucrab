@@ -12,13 +12,13 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-16 |
-| Last verified implementation commit | `8396865` — Migrate verified local move and focused rename to muCrab |
+| Last verified implementation commit | W05 implementation/evidence checkpoint prepared; exact commit recorded after commit creation |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W04 — bounded local move/rename verified; next is W05 batch rename |
+| Active workflow | W05 — bounded local batch rename verified; next is W06 ZIP browsing/extraction |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | W05: recover batch rename rules and original preview/apply adapter; freeze contract/fixtures before Rust; keep all six predefined/reserved suites passing |
-| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename |
-| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. Zero differences/omitted test cases within scope |
+| Next executable task | W06: recover original ZIP listing/extraction and path/error handling; freeze oracle/fixtures before Rust; keep all seven predefined/reserved suites passing |
+| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename |
+| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
 | Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4 plus distinct /tmp for W04, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
 
@@ -59,20 +59,20 @@ complete, observable workflow before expanding the scope.
 | 2. Binary acquisition | Complete | `15427e7`; `tools/acquire_mucommander.py`, `tools/manifests/mucommander.json`, `evidence/acquisition/mucommander-1.6.2-1.json` |
 | 3. Analysis toolchain | Complete for static inspection | `9996a3e`; `tools/analysis_tools.py`, pinned manifests and npm lockfile, `evidence/toolchain/readiness.json` |
 | 4. Cargo workspace and preview | Complete | `88baf29`; `Cargo.toml`, `Cargo.lock`, `crates/`, `evidence/workspace/readiness.json` |
-| 5. Verified workflows | W01, W02a, W02b, bounded W02c and W03 verified within contracts | Workflow evidence directories and gate ledgers below |
+| 5. Verified workflows | W01, W02a, W02b, bounded W02c, W03, W04 and W05 verified within contracts | Workflow evidence directories and gate ledgers below |
 | 6. Broader comparison and demo | Not started | Final acceptance below |
 
 The workspace contains:
 
 | Package | Current behavior | Intended responsibility |
 | --- | --- | --- |
-| `mucrab-core` | Local enumeration, focus/marks, pane state, recovered sorting, ICU4X collation and recursive copy | Recovered behavior, independent of the GUI |
-| `mucrab-desktop` | Native two-pane local browser using eframe/egui 0.36.2 and OpenGL | Navigation, sorting, marking, filtering and reviewed copy in both directions; later move/rename UI |
-| `mucrab-compare` | Original-JAR/Rust W01/W02/W02b/W02c/W03 adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
+| `mucrab-core` | Local enumeration, focus/marks, pane state, recovered sorting, ICU4X collation, recursive copy/move and batch preview/apply | Recovered behavior, independent of the GUI |
+| `mucrab-desktop` | Native two-pane local browser using eframe/egui 0.36.2 and OpenGL | Navigation, sorting, marking, filtering, reviewed copy/move/focused rename, live batch preview and apply |
+| `mucrab-compare` | Original-JAR/Rust W01/W02/W02b/W02c/W03/W04/W05 adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
 
 Historical checks passed on the baseline: Cargo build, formatting, Clippy with
-warnings denied, Rust tests, CLI checks, and native preview capture. The Rust
-suite has **one readiness guard and zero migrated-behavior tests**. The Python
+warnings denied, Rust tests, CLI checks, and native preview capture. The baseline Rust
+suite had **one readiness guard and zero migrated-behavior tests**. The Python
 helper suite had **nine passing tests**. These counts describe the baseline,
 not the eventual acceptance suite.
 
@@ -428,7 +428,7 @@ further when their acceptance criteria cannot be closed in one increment.
 | W02c | Size/date/extension sorting | Metadata ordering, ties, selection persistence | `verified` within bounded metadata contract; permissions/owner/group deferred |
 | W03 | Recursive local copy | Paths, bytes, empty folders, declared metadata, fixed collision policies and partial errors | `verified` within bounded Linux/owned-file contract |
 | W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `verified` within bounded Linux/owned-file/same-and-cross-device contract |
-| W05 | Batch rename | Generated names, preview/apply consistency, collisions, partial failures | `not_started` |
+| W05 | Batch rename | Generated names, preview/apply consistency, collisions, partial failures | `verified` within bounded ASCII-case/UTC/local-owned-file contract; manual row controls deferred |
 | W06 | ZIP browsing and extraction | Entry listing, extracted paths and bytes, supported edge/error cases | `not_started` |
 | W07 | Background operations and cancellation | Completion, cancellation boundaries, partial results, UI responsiveness | `not_started` |
 
@@ -589,7 +589,28 @@ equivalence cases. Native declines such fallback. Native safety guards, races,
 other owners/ACLs/xattrs/special bits, mid-stream faults, other providers/platforms
 and full scheduling/cancellation remain outside equivalence scope. Cross-device
 fixtures/tests require a genuinely different `/tmp` mount and unprivileged uid.
-W05 batch rename is the next executable workflow; W07 retains broader lifecycle.
+W05 batch rename is now verified separately below; W07 retains broader lifecycle.
+
+### W05 gate ledger
+
+| Gate | State | Evidence / unresolved work |
+| --- | --- | --- |
+| G1: original Java adapter | `verified` within isolated-method boundary | Actual BatchRenameDialog parser/tokens/preview and BatchRenameJob/MoveJob; field-only headless UI wiring and fixed original SKIP policy; no behavior overrides |
+| G2: recovered contract | `verified` within bounded scope | 19-class recovery, last-dot splitting, UTF-16 ranges, independent wrapping counters, literal replace, ASCII case, UTC dates, first-conflict flags, unchanged pruning and partial outcomes |
+| G3: fixtures and protocol | `verified` | 30 named + 24 generated sets; 32 withheld reserved sets; every initial/configuration preview, ordered apply outcomes, complete trees, identities and content checks; strict nonzero/type/ordering guards |
+| G4: Rust and comparison | `verified` within scope | 86 sets/346 previews/1,721 row pairs/69 method apply jobs/315 outcomes/86 trees/404 identity relations/172 content checks; zero differences/omitted cases; all fourteen suites pass |
+| G5: native workflow | `verified` within X11/Xvfb scope | 41-action live preview, duplicate/invalid/unchanged guards, Cancel, replacement/counters, both panes, skipped/unchanged marks and partial merge details; actual original batch/confirmation/Skip controls and two full jobs, 20 pane states |
+| G6: reproducible closure | `verified` for local development | Source/input/binary hashes, 35 retained GUI artifacts/replay, 26 Rust/33 Python tests, locked offline build/lint/integrity, earlier W03/W04 GUI regressions, notices and checkpoint; release packaging remains open |
+
+See `evidence/workflows/W05-batch-rename/README.md`, `contract.md` and
+`decisions.md`. The component adapter excludes full lifecycle; actual original
+GUI jobs supplement it. Native additionally rejects stale reviewed plans before
+writing, invalid leaf names, unsupported conversion/ranges and excessive padding.
+These guards do not claim race safety. Manual per-row overrides/block/removal,
+Unicode case, non-UTC date tokens and arbitrary collision prompts remain outside
+the accepted increment. Existing W04 path/link guards remain. Core reuses pinned
+chrono 0.4.45; Cargo.lock adds only the local core-to-chrono dependency edge,
+without refreshing any package. W06 ZIP browsing/extraction is next.
 
 ### Open issues
 
@@ -604,6 +625,7 @@ W05 batch rename is the next executable workflow; W07 retains broader lifecycle.
 | R07 | Original table sorter stalls on certain extreme signed-metadata inputs | Preserved original failure/reproducer; pair-only arithmetic coverage; enforce declared native sortable range |
 | R08 | Recursive copy is bounded; full job orchestration and race-safe mutation remain unverified | Preserve W03/W04 guards and partial-error details; cancellation/lifecycle remains W07 |
 | R09 | Original cross-device symlink fallback can consume targets | Keep W04 diagnostic separate (exit 2/zero equivalence); native retains links/targets when atomic rename fails |
+| R10 | Batch rename is bounded to ASCII case/UTC and excludes manual row controls | Extend recovery/fixtures before claiming those controls, other locale/timezone semantics or arbitrary collision prompts |
 
 ### Session entry template
 
@@ -935,6 +957,58 @@ Exact next executable action:
   W05 batch rename: recover original generated names/preview/apply/collision
   behavior, freeze fixtures/contract, then port while keeping all six suites passing.
 
+- **2026-10-16 — W05 batch rename:** started clean at `cd25ffe`, synchronized
+  main, same Linux x86_64/ext4/JDK 25.0.4.1 host. Recovered 19 original classes
+  in `W05-recovery-20261016T203531Z-144d8105`; original-only 54-set runs
+  `W05-20261016T203924Z-c7a7eac7` and `W05-20261016T203943Z-ae8c407c`
+  precede Rust. Froze 30 named + 24 generated sets (755051), 32 withheld reserved
+  sets (991075) and the scoped contract before implementation. No source fetch,
+  immutable-reference write, global installation, release or push.
+
+  Added native batch masks/ranges/counters/parent/date tokens, literal replacement,
+  ASCII case modes, conflict preview, unchanged pruning and ordered apply through
+  W04's move engine. Plans reject stale selected metadata/identity and changed
+  generated names before writing. Native dialog reviews the active effective
+  selection, applies only changed rows, retains unchanged/skipped marks, refreshes
+  both panes and shows partial details. Unsupported manual row editing/blocking,
+  Unicode case and non-UTC date semantics remain explicitly deferred. CLI help
+  now describes the implemented operations. Existing chrono 0.4.45 supplies UTC
+  token components; lockfile changes only the local core dependency edge.
+
+  First native predefined/reserved passes had zero differences. Final runs
+  `W05-20261016T205039Z-a90ec4dc` and `W05-20261016T205044Z-66b7f32f`
+  pass 54 + 32 = 86 sets, 346 previews/1,721 row pairs, 69 method apply jobs,
+  315 ordered outcomes, 86 resulting trees, 404 identity relations and
+  172 selected-content checks. No differences or omitted cases.
+  `W05-regressions-20261016T204951Z-9b9d242c` passes all fourteen predefined/
+  reserved executions; earlier counts remain unchanged. Initial Rust literal-mask
+  test expectation omitted one separator around empty `[]`; corrected the
+  assertion to recovered behavior without changing code. Strict protocol checks
+  additionally reject numeric substitutes for boolean flags.
+
+  Final GUI run `artifacts/gui/W05-20261016T204917Z-c3334d15` passes a
+  41-action native replay with PATH=/nonexistent and original actual batch,
+  confirmation and collision-Skip controls, two full jobs, ten stages/twenty
+  pane states and four live previews. Retained 35 GUI artifacts. Complete healthy
+  trees and the native partial merge match original expectations. Existing W03
+  40-action and W04 41-action GUI replays pass on the final native binary in
+  `artifacts/gui/W03-20261016T204948Z-1305dd01` and
+  `artifacts/gui/W04-20261016T204951Z-87ebb026`. The input helper now maps
+  bracket/comma keysyms for masks; preview arrows use ASCII for legibility.
+  Exploratory runs remain retained. Physical/Wayland desktop, exhaustive OS
+  dispatch and unrelated original optional bundles remain unverified.
+
+  Validation `W05-validation-20261016T205111Z-a2e798d5` passes formatting,
+  Clippy with warnings denied, 26 Rust/33 Python tests, locked offline build,
+  original integrity, Java-absent native version/help and no JVM linkage.
+  README/NOTICE, preview, gate ledger and reproducible tools are updated. Exact
+  source fingerprints match the final implementation. Gates G1–G6 are verified
+  only within the declared contract; implementation/evidence checkpoint is being
+  committed and its exact hash follows in the handoff update. Ignored raw runs
+  need regeneration or separate transfer; every mutating GUI replay needs fresh
+  trees. Next is W06: recover original ZIP listing/extraction/path errors, freeze
+  oracle/fixtures before Rust and keep all seven suites passing.
+
 ## Final demonstration acceptance
 
 After the selected workflows are verified, run an agreed suite targeting
@@ -959,10 +1033,10 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > Inspect Git, repository instructions, code, and committed evidence first;
 > reconcile the live checkpoint before acting. Rehydrate ignored inputs on this
 > machine and record fresh verification. Resume the first unfinished workflow
-> gate. W01, W02a, W02b, W02c, W03 and W04 are verified within their declared contracts; Linux
+> gate. W01, W02a, W02b, W02c, W03, W04 and W05 are verified within their declared contracts; Linux
 > component comparisons and representative X11/Xvfb checks are recorded.
-> The next action is W05 batch rename recovery and original preview/apply adapter.
-> Keep all six W01/W02/W02b/W02c/W03/W04 predefined/reserved suites passing. Continue through each workflow's gates before expanding
+> The next action is W06 ZIP browsing/extraction recovery and original adapter.
+> Keep all seven W01/W02/W02b/W02c/W03/W04/W05 predefined/reserved suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
 > Java. Update the plan and evidence at each checkpoint, including exact next

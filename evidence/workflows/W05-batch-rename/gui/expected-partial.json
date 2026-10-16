@@ -1,0 +1,37 @@
+[
+  {
+    "path": "new",
+    "kind": "directory",
+    "mode": 493,
+    "modified_ms": 1577836800123
+  },
+  {
+    "path": "new/both",
+    "kind": "file",
+    "mode": 420,
+    "modified_ms": 1577836800123,
+    "size": 19,
+    "sha256": "80b1c4c460d3f44afe9ec3e61ab7e8cc4175428547a0c3341cf72af75c30d49c"
+  },
+  {
+    "path": "new/moved",
+    "kind": "file",
+    "mode": 420,
+    "modified_ms": 1577836800123,
+    "size": 31,
+    "sha256": "9715f57bd9ce34bfa8163307ef57f2526ba234ebd2a72a73e8e16586e95a2942"
+  },
+  {
+    "path": "old",
+    "kind": "directory",
+    "mode": 493
+  },
+  {
+    "path": "old/both",
+    "kind": "file",
+    "mode": 420,
+    "modified_ms": 1577836800123,
+    "size": 7,
+    "sha256": "e8a502dceeacb78493b9235280001ec99dcbbb12fde2ceaf9c5c9eac605d6ea3"
+  }
+]

@@ -3,9 +3,9 @@
 
 use eframe::egui;
 use mucrab_core::{
-    BrowserPane, CopyIssue, CopyIssueKind, CopyOutcome, CopyPolicy, CopyRequest, FileEntry,
-    MoveRequest, NameSorter, PaneEvent, PaneSide, SortCriterion, SortMode, copy_entries,
-    is_valid_leaf_name, move_entries,
+    BatchRenameOptions, BatchRenamePlan, BrowserPane, CopyIssue, CopyIssueKind, CopyOutcome,
+    CopyPolicy, CopyRequest, FileEntry, MoveRequest, NameSorter, PaneEvent, PaneSide,
+    SortCriterion, SortMode, apply_batch_rename, copy_entries, is_valid_leaf_name, move_entries,
 };
 use std::{path::PathBuf, sync::mpsc, time::Duration};
 
@@ -37,6 +37,7 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 active: PaneSide::Left,
                 show_hidden: false,
                 copy_confirmation: None,
+                batch_review: None,
                 copy_job: None,
                 copy_summary: None,
                 copy_details: Vec::new(),
@@ -53,6 +54,7 @@ struct MuCrabApp {
     active: PaneSide,
     show_hidden: bool,
     copy_confirmation: Option<CopyConfirmation>,
+    batch_review: Option<BatchReview>,
     copy_job: Option<PendingCopy>,
     copy_summary: Option<String>,
     copy_details: Vec<String>,
@@ -76,6 +78,7 @@ enum FileAction {
     Copy,
     Move,
     Rename,
+    BatchRename,
 }
 impl FileAction {
     fn label(self) -> &'static str {
@@ -83,6 +86,7 @@ impl FileAction {
             Self::Copy => "Copy",
             Self::Move => "Move",
             Self::Rename => "Rename",
+            Self::BatchRename => "Batch rename",
         }
     }
 }
@@ -91,7 +95,136 @@ struct JobResult {
     issues: Vec<CopyIssue>,
     summary: String,
 }
+struct BatchReview {
+    source_side: PaneSide,
+    directory: PathBuf,
+    names: Vec<String>,
+    options: BatchRenameOptions,
+    plan: Result<BatchRenamePlan, String>,
+}
 impl MuCrabApp {
+    fn prepare_batch(&self) -> Option<BatchReview> {
+        let index = if self.active == PaneSide::Left { 0 } else { 1 };
+        let pane = &self.panes[index];
+        let names = pane.selection.snapshot(&pane.entries, &pane.order).selected;
+        if names.is_empty() {
+            return None;
+        }
+        let directory = pane.location.clone()?;
+        let options = BatchRenameOptions::default();
+        let plan =
+            BatchRenamePlan::new(&directory, &names, &options).map_err(|error| error.to_string());
+        Some(BatchReview {
+            source_side: self.active,
+            directory,
+            names,
+            options,
+            plan,
+        })
+    }
+    fn batch_dialog(&mut self, ctx: &egui::Context) {
+        let mut apply = false;
+        let mut cancel = false;
+        if let Some(review) = &mut self.batch_review {
+            let response = egui::Modal::new(egui::Id::new("batch-rename")).show(ctx, |ui| {
+                ui.set_width(700.0);
+                ui.heading(format!("Batch rename {} items", review.names.len()));
+                ui.label(review.directory.display().to_string());
+                ui.separator();
+                let before = review.options.clone();
+                egui::Grid::new("batch-options").num_columns(2).show(ui, |ui| {
+                    ui.label("Mask"); ui.add(egui::TextEdit::singleline(&mut review.options.mask).desired_width(510.0)); ui.end_row();
+                    ui.label("Search"); ui.text_edit_singleline(&mut review.options.search); ui.end_row();
+                    ui.label("Replace with"); ui.text_edit_singleline(&mut review.options.replacement); ui.end_row();
+                    ui.label("Case");
+                    egui::ComboBox::from_id_salt("batch-case").selected_text(batch_case_label(review.options.case_mode)).show_ui(ui, |ui| {
+                        for value in 0..5 { ui.selectable_value(&mut review.options.case_mode, value, batch_case_label(value)); }
+                    }); ui.end_row();
+                    ui.label("Counter"); ui.horizontal(|ui| {
+                        ui.label("Start"); ui.add(egui::TextEdit::singleline(&mut review.options.counter_start).desired_width(58.0));
+                        ui.label("Step"); ui.add(egui::TextEdit::singleline(&mut review.options.counter_step).desired_width(58.0));
+                        ui.label("Digits"); ui.add(egui::DragValue::new(&mut review.options.digits).range(1..=5));
+                    }); ui.end_row();
+                });
+                ui.small("[N] name · [E] extension · [C] counter · [P] parent · [YMD] UTC date · [N2-5] range");
+                if before != review.options {
+                    review.plan = BatchRenamePlan::new(&review.directory, &review.names, &review.options).map_err(|error| error.to_string());
+                }
+                ui.separator();
+                let enabled = match &review.plan {
+                    Ok(plan) => {
+                        egui::ScrollArea::vertical().max_height(190.0).show(ui, |ui| {
+                            egui::Grid::new("batch-preview").num_columns(3).striped(true).show(ui, |ui| {
+                                ui.strong("Original name"); ui.label(""); ui.strong("New name"); ui.end_row();
+                                for row in &plan.preview.rows { ui.label(&row.name); ui.label("->"); ui.label(&row.new_name); ui.end_row(); }
+                            });
+                        });
+                        if plan.preview.duplicate_names { ui.colored_label(egui::Color32::LIGHT_RED, "Duplicate new names: change the mask or counter."); }
+                        else if plan.preview.old_names_conflict { ui.colored_label(egui::Color32::LIGHT_RED, "A new name conflicts with another selected original name."); }
+                        else if !plan.preview.rows.iter().all(|row| is_valid_leaf_name(&row.new_name)) { ui.colored_label(egui::Color32::LIGHT_RED, "Each new name must be a nonempty direct child name."); }
+                        ui.label(format!("{} changed · {} unchanged", plan.preview.changed_count, plan.preview.rows.len() - plan.preview.changed_count));
+                        plan.preview.can_apply()
+                    }
+                    Err(message) => { ui.colored_label(egui::Color32::LIGHT_RED, message); false }
+                };
+                ui.label("Existing files are skipped; folders merge. Partial renames remain after errors.");
+                ui.horizontal(|ui| { apply = ui.add_enabled(enabled, egui::Button::new("Apply rename")).clicked(); cancel = ui.button("Cancel").clicked(); });
+            });
+            cancel |= response.should_close();
+        }
+        if cancel {
+            self.batch_review = None;
+            self.restore_copy_focus = true;
+            ctx.request_repaint();
+        } else if apply
+            && let Some(review) = self.batch_review.take()
+            && let Ok(plan) = review.plan
+        {
+            let (sender, receiver) = mpsc::channel();
+            self.restore_copy_focus = true;
+            match std::thread::Builder::new()
+                .name("mucrab-batch-rename".to_owned())
+                .spawn(move || {
+                    let result = apply_batch_rename(&plan)
+                        .map(|report| JobResult {
+                            summary: format!(
+                                "Batch rename finished: {} items completed",
+                                report
+                                    .outcomes
+                                    .iter()
+                                    .filter(|outcome| outcome.success)
+                                    .count()
+                            ),
+                            outcomes: report
+                                .outcomes
+                                .into_iter()
+                                .map(|outcome| CopyOutcome {
+                                    name: outcome.name,
+                                    success: outcome.success,
+                                })
+                                .collect(),
+                            issues: report.issues,
+                        })
+                        .map_err(|error| error.to_string());
+                    let _ = sender.send(result);
+                }) {
+                Ok(_) => {
+                    self.copy_job = Some(PendingCopy {
+                        action: FileAction::BatchRename,
+                        renamed_to: None,
+                        source_side: review.source_side,
+                        source_directory: review.directory,
+                        receiver,
+                    })
+                }
+                Err(error) => {
+                    self.copy_summary = Some("Batch rename could not start".to_owned());
+                    self.copy_details = vec![error.to_string()];
+                }
+            }
+            ctx.request_repaint();
+        }
+    }
     fn prepare_action(&self, action: FileAction) -> Option<CopyConfirmation> {
         let side = if self.active == PaneSide::Left { 0 } else { 1 };
         let source = &self.panes[side];
@@ -301,6 +434,15 @@ fn copy_policy_label(policy: CopyPolicy) -> &'static str {
         CopyPolicy::OverwriteIfSizeDiffers => "Overwrite if size differs",
     }
 }
+fn batch_case_label(mode: usize) -> &'static str {
+    match mode {
+        1 => "Lowercase (ASCII)",
+        2 => "Uppercase (ASCII)",
+        3 => "First uppercase (ASCII)",
+        4 => "Word initials uppercase (ASCII)",
+        _ => "Unchanged",
+    }
+}
 
 impl eframe::App for MuCrabApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
@@ -315,10 +457,21 @@ impl eframe::App for MuCrabApp {
             }
         }
         self.poll_copy(ui.ctx());
-        let idle =
-            self.copy_job.is_none() && self.copy_confirmation.is_none() && !self.show_copy_details;
+        let idle = self.copy_job.is_none()
+            && self.copy_confirmation.is_none()
+            && self.batch_review.is_none()
+            && !self.show_copy_details;
         let can_copy = idle && self.prepare_action(FileAction::Copy).is_some();
         let can_rename = idle && self.prepare_action(FileAction::Rename).is_some();
+        let active_index = if self.active == PaneSide::Left { 0 } else { 1 };
+        let active_pane = &self.panes[active_index];
+        let can_batch = idle
+            && active_pane.location.is_some()
+            && !active_pane
+                .selection
+                .snapshot(&active_pane.entries, &active_pane.order)
+                .selected
+                .is_empty();
         if idle && ui.memory(|memory| memory.has_focus(listing_id(self.active))) {
             for (key, action) in [
                 (egui::Key::F5, FileAction::Copy),
@@ -371,6 +524,7 @@ impl eframe::App for MuCrabApp {
                 if ui.add_enabled(can_copy,egui::Button::new(format!("Copy to {direction} pane… (F5)"))).clicked() { self.copy_confirmation=self.prepare_action(FileAction::Copy); }
                 if ui.add_enabled(can_copy,egui::Button::new(format!("Move to {direction} pane… (F6)"))).clicked() { self.copy_confirmation=self.prepare_action(FileAction::Move); }
                 if ui.add_enabled(can_rename,egui::Button::new("Rename… (F2)")).clicked() { self.copy_confirmation=self.prepare_action(FileAction::Rename); }
+                if ui.add_enabled(can_batch,egui::Button::new("Batch rename…")).clicked() { self.batch_review=self.prepare_batch(); }
                 if let Some(job) = &self.copy_job {ui.spinner();ui.label(format!("{} in progress…",job.action.label()));}
             });
             ui.small("Click to focus · Ctrl-click to mark · Shift-click for a range · Space to mark and advance · Tab to switch panes");
@@ -391,6 +545,7 @@ impl eframe::App for MuCrabApp {
             });
         });
         self.copy_dialogs(ui.ctx());
+        self.batch_dialog(ui.ctx());
     }
 }
 

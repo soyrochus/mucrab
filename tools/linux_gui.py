@@ -85,7 +85,7 @@ def main():
             for name in reversed(action["keys"]): key(name, False)
         elif op == "text":
             shifted = {"_": "minus", ":": "semicolon", "~": "grave"}
-            names = {"/": "slash", ".": "period", "-": "minus", " ": "space"}
+            names = {"/": "slash", ".": "period", "-": "minus", " ": "space", "[": "bracketleft", "]": "bracketright", ",": "comma"}
             for char in action["text"]:
                 shift = char.isupper() or char in shifted
                 name = shifted.get(char, names.get(char, char.lower()))

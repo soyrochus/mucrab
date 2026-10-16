@@ -1,0 +1,82 @@
+{
+  "left": [
+    {
+      "path": "keep.dat",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 13,
+      "sha256": "cd6229090ee8f7202f9d5da13eac8c66bad154924ed45f4ea04ad0ae4ae69df6"
+    },
+    {
+      "path": "new-one.txt",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 41,
+      "sha256": "445e8ee818d6f504190e9c576aee44d9b95f83a5931f0d40c89b0eed0d0a40aa"
+    },
+    {
+      "path": "new-two.bin",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 31,
+      "sha256": "9715f57bd9ce34bfa8163307ef57f2526ba234ebd2a72a73e8e16586e95a2942"
+    },
+    {
+      "path": "old-one.txt",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 17,
+      "sha256": "377b5ef50897b202a242d3cfccdf04ad730cb50ec04447e6e55f809db75f6ec8"
+    },
+    {
+      "path": "package",
+      "kind": "directory",
+      "mode": 493,
+      "modified_ms": 1577836800123
+    },
+    {
+      "path": "package/.hidden",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 7,
+      "sha256": "e8a502dceeacb78493b9235280001ec99dcbbb12fde2ceaf9c5c9eac605d6ea3"
+    },
+    {
+      "path": "package/binary",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 65539,
+      "sha256": "46c22be5e4d998f17b267d3aa10fb886d343c29b0b4aa2d8bde2859943cf1eba"
+    },
+    {
+      "path": "package/link",
+      "kind": "symlink",
+      "mode": 511,
+      "target": "binary"
+    }
+  ],
+  "right": [
+    {
+      "path": "item-001.txt",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 29,
+      "sha256": "9d8170ccbea7a071a703509a1d00f895fa6d59a08e7de99d9b3cf3572527f1a6"
+    },
+    {
+      "path": "item-002.txt",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 23,
+      "sha256": "7fa3102d3bdf5628e6f7cbd03da44d1e1b215b0f6a302c3bc8b2110b804c462e"
+    }
+  ]
+}

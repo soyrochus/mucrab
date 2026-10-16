@@ -1,0 +1,76 @@
+{
+  "status": "passed",
+  "scope": "Final current-source comparison/validation/GUI/regression receipts; historical oracle-only/earlier-GUI receipts retain their original source versions",
+  "fingerprints_checked": 3533,
+  "unique_files": 547,
+  "reports": [
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/comparison-predefined.json",
+      "sha256": "955c4440183cda3304803623b99156afef0ac50fa3bc1fa1419d4d7bf0522bb6"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/comparison-reserved.json",
+      "sha256": "1a94eb1d2e084b45bc0af5cf9442ac64f0899377eee479534d61833ef0fc3f00"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/comparison-predefined.json",
+      "sha256": "f14327bda0c99e26a71f4b15fa246c1c54523f4d41cfec95c37879ac69efd321"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/comparison-reserved.json",
+      "sha256": "7e44a8d9c8c9583e55a851f60efa1491bae3452be354c56953bba5802614f1b1"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/comparison-predefined.json",
+      "sha256": "e4b0dd83f8492fd0a227e5553d6837ded51f8c195ec1cf6d54d13cdffc6e269d"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/comparison-reserved.json",
+      "sha256": "f5efc5b5833a9e7681cf4ffb0950ad5165db6cbd2b349f3e49bfa5b0da257ecd"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/comparison-predefined.json",
+      "sha256": "4e0be5f4b69480066efa51c075ce0d418477c49075cd0df4774fd68caea2d88b"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/comparison-reserved.json",
+      "sha256": "d4d8bd1de54f520662f198fbb7326413d804de1ac6b557e3684098624e2f3271"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/comparison-predefined.json",
+      "sha256": "4c17d07eab2d8efce7ce914dee656e3543a5c94e4da85434419172c01d45f4ba"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/comparison-reserved.json",
+      "sha256": "87c3cedc43444013059663ab3b7c8b55e6acb830241a932b86d9acf3284091ab"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/comparison-predefined.json",
+      "sha256": "73e9c4fc7ef7d412edb2bd5762bc1c3e00ba1357382a607711616a920de54230"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/comparison-reserved.json",
+      "sha256": "2d3f4336b635d1fef0ab01c4deb5e0de215ede39a934683396d446d2bff2ec0d"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/comparison-predefined.json",
+      "sha256": "ee1031404b74a4254eec7e1282e824f3bb9c16310953d05c5d5e8681da4cf109"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/comparison-reserved.json",
+      "sha256": "39479c641c814e0e4b414d4c7086323dc495333b3447f4c8d3ea06872d9cff69"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/validation.json",
+      "sha256": "d2ff50b03a88818d0761772060a78d7d2cec662b35ff5b1c894e62d794e08eaa"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/regressions.json",
+      "sha256": "5df84dba6ab0e91f61e9727ea6d57d67710e02da092825088174a8bdb0cbcbf5"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui-observations.json",
+      "sha256": "de656ccb2516c995bed5712c624ce76818e3fd2ad6d39429702a464d89469b79"
+    }
+  ]
+}

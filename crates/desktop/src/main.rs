@@ -19,7 +19,8 @@ fn main() -> ExitCode {
                         mucrab [--help | --version]\n\n\
                  Opens the native two-pane local browser.\n\
                  Name ordering uses en-US; Show hidden files applies to both panes.\n\
-                 File operations and opening symbolic links are deferred."
+                 F5 copies, F6 moves, F2 renames; Batch rename reviews masks and counters.\n\
+                 Opening symbolic links from the listing is deferred."
             );
             return ExitCode::SUCCESS;
         }

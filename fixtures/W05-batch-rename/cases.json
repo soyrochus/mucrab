@@ -1,0 +1,1482 @@
+{
+  "schema_version": 1,
+  "generated_seed": 755051,
+  "reserved_seed": 991075,
+  "generated_sets": 24,
+  "reserved_sets": 32,
+  "default_modified_ms": 1577836800123,
+  "default_file_mode": 420,
+  "default_directory_mode": 493,
+  "cases": [
+    {
+      "id": "default-and-literals",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[N].[E]"
+        },
+        {
+          "mask": "prefix-[N].[E]"
+        },
+        {
+          "mask": "[Q]-[]-[[]-[N]"
+        },
+        {
+          "mask": "left[unfinished"
+        },
+        {
+          "mask": "[]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "tokens-0",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[N1]"
+        },
+        {
+          "mask": "[N2-4]"
+        },
+        {
+          "mask": "[N2,3]"
+        },
+        {
+          "mask": "[N2-]"
+        },
+        {
+          "mask": "[N-3,2]"
+        },
+        {
+          "mask": "[N2--2]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "tokens-1",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[N0]"
+        },
+        {
+          "mask": "[N-99]"
+        },
+        {
+          "mask": "[N99]"
+        },
+        {
+          "mask": "[N4-2]"
+        },
+        {
+          "mask": "[N1,0]"
+        },
+        {
+          "mask": "[N-1]"
+        },
+        {
+          "mask": "[N--2]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "tokens-2",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[E]"
+        },
+        {
+          "mask": "[E1]"
+        },
+        {
+          "mask": "[E2-]"
+        },
+        {
+          "mask": "[E-2,2]"
+        },
+        {
+          "mask": "[E99]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "tokens-3",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[P]"
+        },
+        {
+          "mask": "[P2-4]"
+        },
+        {
+          "mask": "[P-3]"
+        },
+        {
+          "mask": "[P1,3]"
+        },
+        {
+          "mask": "[P0]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "tokens-4",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[N2147483648]"
+        },
+        {
+          "mask": "[N-2147483648,2]"
+        },
+        {
+          "mask": "[N+2]"
+        },
+        {
+          "mask": "[N1,2147483647]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "tokens-5",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[C]"
+        },
+        {
+          "mask": "[C10,2,3]"
+        },
+        {
+          "mask": "[C-2,1,3]"
+        },
+        {
+          "mask": "[C4,-2,2]"
+        },
+        {
+          "mask": "[C0,0,1]"
+        },
+        {
+          "mask": "[C1,2,3]-[C7,3,2]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "tokens-6",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[C2147483647,1,1]"
+        },
+        {
+          "mask": "[C-2147483648,-1,2]"
+        },
+        {
+          "mask": "[C9999999999,2,1]"
+        },
+        {
+          "mask": "[C--2]"
+        },
+        {
+          "mask": "[C1,2,-1]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "tokens-7",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[YMD]-[hms]-[N]"
+        },
+        {
+          "mask": "[YYYY]-[MM]-[DD]-[hhmmss]"
+        },
+        {
+          "mask": "[Y-x-M?D]"
+        },
+        {
+          "mask": "[hxxmxxs]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "counter-controls",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[C]-[N]",
+          "counter_start": "7",
+          "counter_step": "3",
+          "digits": 4
+        },
+        {
+          "mask": "[C]",
+          "counter_start": "not-a-number",
+          "counter_step": "2",
+          "digits": 2
+        },
+        {
+          "mask": "[C]",
+          "counter_start": " 2",
+          "counter_step": "+3",
+          "digits": 5
+        },
+        {
+          "mask": "[C]",
+          "counter_start": "-3",
+          "counter_step": "0",
+          "digits": 1
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "search-and-case",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "[N].[E]",
+          "search": "a",
+          "replacement": "XX"
+        },
+        {
+          "mask": "[N].[E]",
+          "search": ".",
+          "replacement": "-"
+        },
+        {
+          "mask": "[N]..",
+          "search": "a",
+          "replacement": ""
+        },
+        {
+          "mask": "pre-[N].[E]",
+          "case_mode": 0
+        },
+        {
+          "mask": "pre-[N].[E]",
+          "case_mode": 1
+        },
+        {
+          "mask": "pre-[N].[E]",
+          "case_mode": 2
+        },
+        {
+          "mask": "pre-[N].[E]",
+          "case_mode": 3
+        },
+        {
+          "mask": "pre-[N].[E]",
+          "case_mode": 4
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "case-spaces",
+      "names": [
+        "A BIG Name.TXT",
+        "two  wORDS.txt",
+        "a-b.txt",
+        "a_b.txt"
+      ],
+      "source": [
+        {
+          "path": "A BIG Name.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "two  wORDS.txt",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "a-b.txt",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": "a_b.txt",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        }
+      ],
+      "options": [
+        {
+          "case_mode": 0
+        },
+        {
+          "case_mode": 1
+        },
+        {
+          "case_mode": 2
+        },
+        {
+          "case_mode": 3
+        },
+        {
+          "case_mode": 4
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "extension-edge",
+      "names": [
+        ".dot",
+        "..double",
+        "a..b",
+        "tail.",
+        "multi.part.gz",
+        "UPPER.TXT"
+      ],
+      "source": [
+        {
+          "path": ".dot",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "..double",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "a..b",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": "tail.",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "multi.part.gz",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "UPPER.TXT",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {},
+        {
+          "mask": "[N]"
+        },
+        {
+          "mask": "[E]"
+        },
+        {
+          "mask": "[N].[E]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "unicode-intact",
+      "names": [
+        "Résumé.TXT",
+        "é.txt",
+        "🦀12.dat",
+        "文件.txt",
+        "İßΣ.log"
+      ],
+      "source": [
+        {
+          "path": "Résumé.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "é.txt",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "🦀12.dat",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": "文件.txt",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "İßΣ.log",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        }
+      ],
+      "options": [
+        {},
+        {
+          "mask": "[P]-[C3,2,3]-[N].[E]"
+        },
+        {
+          "mask": "[N]",
+          "search": "é",
+          "replacement": "E"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "utf16-whole-ranges",
+      "names": [
+        "🦀ab.txt",
+        "𐐀xy.bin"
+      ],
+      "source": [
+        {
+          "path": "🦀ab.txt",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "𐐀xy.bin",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        }
+      ],
+      "options": [
+        {
+          "mask": "[N1-2].[E]"
+        },
+        {
+          "mask": "[N3-].[E]"
+        },
+        {
+          "mask": "[N-2,2].[E]"
+        }
+      ],
+      "apply": false
+    },
+    {
+      "id": "duplicate-preview",
+      "names": [
+        "one.txt",
+        "two.txt"
+      ],
+      "source": [
+        {
+          "path": "one.txt",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "two.txt",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        }
+      ],
+      "options": [
+        {
+          "mask": "same"
+        },
+        {
+          "mask": "[C0,0]"
+        },
+        {
+          "mask": "[N]-[C]"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "selected-original-conflict",
+      "names": [
+        "A.txt",
+        "a.txt",
+        "b.txt"
+      ],
+      "source": [
+        {
+          "path": "A.txt",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "a.txt",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "b.txt",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        }
+      ],
+      "options": [
+        {
+          "case_mode": 1
+        },
+        {
+          "mask": "[N].[E]",
+          "search": "A",
+          "replacement": "a"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-basic",
+      "names": [
+        "Alpha.TXT",
+        "beta.log",
+        "plain",
+        ".hidden",
+        "trail.",
+        "two Words.dat"
+      ],
+      "source": [
+        {
+          "path": "Alpha.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "beta.log",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "plain",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 46,
+          "pattern": 23
+        },
+        {
+          "path": "trail.",
+          "kind": "file",
+          "size": 59,
+          "pattern": 24
+        },
+        {
+          "path": "two Words.dat",
+          "kind": "file",
+          "size": 72,
+          "pattern": 25
+        }
+      ],
+      "options": [
+        {
+          "mask": "item-[C10,3,3]-[N].[E]"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-case-only",
+      "names": [
+        "ONE.TXT",
+        "Two.TXT"
+      ],
+      "source": [
+        {
+          "path": "ONE.TXT",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "Two.TXT",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        }
+      ],
+      "options": [
+        {
+          "case_mode": 1
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-replace",
+      "names": [
+        "old-one.txt",
+        "old-two.txt",
+        "keep.dat"
+      ],
+      "source": [
+        {
+          "path": "old-one.txt",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "old-two.txt",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "keep.dat",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        }
+      ],
+      "options": [
+        {
+          "search": "old-",
+          "replacement": "new-"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-unchanged",
+      "names": [
+        "one.txt",
+        "two.bin"
+      ],
+      "source": [
+        {
+          "path": "one.txt",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "two.bin",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        }
+      ],
+      "options": [
+        {}
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-external-skip",
+      "names": [
+        "one.txt",
+        "two.txt"
+      ],
+      "source": [
+        {
+          "path": "one.txt",
+          "kind": "file",
+          "size": 17
+        },
+        {
+          "path": "two.txt",
+          "kind": "file",
+          "size": 31
+        },
+        {
+          "path": "done-one.txt",
+          "kind": "file",
+          "size": 41,
+          "pattern": 200
+        }
+      ],
+      "options": [
+        {
+          "mask": "done-[N].[E]"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-permission-failure",
+      "names": [
+        "a.txt",
+        "b.txt"
+      ],
+      "source": [
+        {
+          "path": "a.txt",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "b.txt",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        }
+      ],
+      "options": [
+        {
+          "mask": "new-[N].[E]"
+        }
+      ],
+      "apply": true,
+      "root_mode": 365
+    },
+    {
+      "id": "apply-missing-and-continue",
+      "names": [
+        "missing.txt",
+        "real.txt"
+      ],
+      "source": [
+        {
+          "path": "real.txt",
+          "kind": "file",
+          "size": 123
+        }
+      ],
+      "options": [
+        {
+          "mask": "renamed-[N].[E]"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-folder",
+      "names": [
+        "package",
+        "data.bin"
+      ],
+      "source": [
+        {
+          "path": "package",
+          "kind": "directory"
+        },
+        {
+          "path": "package/empty",
+          "kind": "directory"
+        },
+        {
+          "path": "package/.hidden",
+          "kind": "file",
+          "size": 7
+        },
+        {
+          "path": "package/bytes",
+          "kind": "file",
+          "size": 65539
+        },
+        {
+          "path": "package/link",
+          "kind": "symlink",
+          "target": "bytes"
+        },
+        {
+          "path": "data.bin",
+          "kind": "file",
+          "size": 262151
+        }
+      ],
+      "options": [
+        {
+          "mask": "renamed-[N].[E]"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-folder-merge-partial",
+      "names": [
+        "old"
+      ],
+      "source": [
+        {
+          "path": "old",
+          "kind": "directory"
+        },
+        {
+          "path": "old/both",
+          "kind": "file",
+          "size": 7
+        },
+        {
+          "path": "old/moved",
+          "kind": "file",
+          "size": 31
+        },
+        {
+          "path": "new",
+          "kind": "directory"
+        },
+        {
+          "path": "new/both",
+          "kind": "file",
+          "size": 19,
+          "pattern": 221
+        }
+      ],
+      "options": [
+        {
+          "mask": "new"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-readonly-files",
+      "names": [
+        "a.txt",
+        "b.txt"
+      ],
+      "source": [
+        {
+          "path": "a.txt",
+          "kind": "file",
+          "size": 13,
+          "mode": 0
+        },
+        {
+          "path": "b.txt",
+          "kind": "file",
+          "size": 41,
+          "mode": 292
+        }
+      ],
+      "options": [
+        {
+          "mask": "[N]-[C].[E]"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-dates",
+      "names": [
+        "zero",
+        "past",
+        "future"
+      ],
+      "source": [
+        {
+          "path": "zero",
+          "kind": "file",
+          "size": 0,
+          "modified_ms": 0
+        },
+        {
+          "path": "past",
+          "kind": "file",
+          "size": 23,
+          "modified_ms": 946684799999
+        },
+        {
+          "path": "future",
+          "kind": "file",
+          "size": 101,
+          "modified_ms": 1893456000123
+        }
+      ],
+      "options": [
+        {
+          "mask": "[YMD]-[hms]-[N]"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-unicode",
+      "names": [
+        "é 02.txt",
+        "🦀.dat",
+        "文件"
+      ],
+      "source": [
+        {
+          "path": "é 02.txt",
+          "kind": "file",
+          "size": 7,
+          "pattern": 20
+        },
+        {
+          "path": "🦀.dat",
+          "kind": "file",
+          "size": 20,
+          "pattern": 21
+        },
+        {
+          "path": "文件",
+          "kind": "file",
+          "size": 33,
+          "pattern": 22
+        }
+      ],
+      "options": [
+        {
+          "mask": "batch-[C]-[N].[E]"
+        }
+      ],
+      "apply": true
+    },
+    {
+      "id": "apply-empty-directory-replace",
+      "names": [
+        "old"
+      ],
+      "source": [
+        {
+          "path": "old",
+          "kind": "directory"
+        },
+        {
+          "path": "old/child",
+          "kind": "file",
+          "size": 23
+        },
+        {
+          "path": "new",
+          "kind": "directory"
+        }
+      ],
+      "options": [
+        {
+          "mask": "new"
+        }
+      ],
+      "apply": true
+    }
+  ]
+}

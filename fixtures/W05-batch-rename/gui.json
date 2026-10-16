@@ -1,0 +1,16 @@
+{
+  "left": [
+    {"path":"package","kind":"directory"},
+    {"path":"package/.hidden","kind":"file","size":7},
+    {"path":"package/binary","kind":"file","size":65539},
+    {"path":"package/link","kind":"symlink","target":"binary"},
+    {"path":"keep.dat","kind":"file","size":13},
+    {"path":"new-one.txt","kind":"file","size":41,"pattern":201},
+    {"path":"old-one.txt","kind":"file","size":17},
+    {"path":"old-two.bin","kind":"file","size":31}
+  ],
+  "right": [
+    {"path":"reply.txt","kind":"file","size":29},
+    {"path":"second.txt","kind":"file","size":23}
+  ]
+}
