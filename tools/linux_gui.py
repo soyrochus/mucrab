@@ -5,7 +5,8 @@
 
 Requires Xvfb, xwininfo, libX11, libXtst and Pillow with XCB support. Run via
 `xvfb-run -a python3 -B tools/linux_gui.py LAUNCH_JSON [--replay ACTIONS_JSON]`.
-Launch JSON contains argv, cwd, title and output. Without --replay, read one
+Launch JSON contains argv, cwd, title and output; optional umask controls child
+creation modes. Without --replay, read one
 JSON action (or an array of actions) per stdin line; finish with {"op":"quit"}.
 This driver never attaches to the user's desktop: a separate Xvfb is required.
 """
@@ -55,7 +56,7 @@ def main():
     log = (output / "application.log").open("w")
     env = dict(os.environ); env.pop("WAYLAND_DISPLAY", None); env.pop("EFRAME_SCREENSHOT_TO", None)
     env.update(spec.get("env", {}))
-    process = subprocess.Popen(spec["argv"], cwd=spec["cwd"], env=env, stdout=log, stderr=log)
+    process = subprocess.Popen(spec["argv"], cwd=spec["cwd"], env=env, stdout=log, stderr=log, umask=spec.get("umask", -1))
 
     def key(name, down):
         symbol = x.XStringToKeysym(name.encode("ascii"))

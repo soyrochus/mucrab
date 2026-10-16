@@ -1,0 +1,646 @@
+{
+  "schema_version": 1,
+  "generated_seed": 733031,
+  "reserved_seed": 991073,
+  "generated_sets": 12,
+  "reserved_sets": 24,
+  "policies": [
+    "SKIP",
+    "OVERWRITE",
+    "OVERWRITE_IF_OLDER",
+    "OVERWRITE_IF_SIZE_DIFFERS"
+  ],
+  "default_modified_ms": 1577836800123,
+  "default_file_mode": 420,
+  "default_directory_mode": 493,
+  "cases": [
+    {
+      "id": "empty-selection",
+      "source": [
+        {
+          "path": "untouched",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [],
+      "names": []
+    },
+    {
+      "id": "zero-file",
+      "source": [
+        {
+          "path": "zero",
+          "kind": "file",
+          "size": 0
+        }
+      ],
+      "destination": [],
+      "names": [
+        "zero"
+      ]
+    },
+    {
+      "id": "binary-chunk-boundaries",
+      "source": [
+        {
+          "path": "binary",
+          "kind": "file",
+          "size": 262151
+        }
+      ],
+      "destination": [],
+      "names": [
+        "binary"
+      ]
+    },
+    {
+      "id": "unicode-and-hidden",
+      "source": [
+        {
+          "path": "a space",
+          "kind": "file",
+          "size": 9
+        },
+        {
+          "path": "\u00e9.\u4e2d",
+          "kind": "file",
+          "size": 45
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 3
+        }
+      ],
+      "destination": [],
+      "names": [
+        ".hidden",
+        "\u00e9.\u4e2d",
+        "a space"
+      ]
+    },
+    {
+      "id": "empty-folder",
+      "source": [
+        {
+          "path": "empty",
+          "kind": "directory"
+        }
+      ],
+      "destination": [],
+      "names": [
+        "empty"
+      ]
+    },
+    {
+      "id": "nested-tree",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/one",
+          "kind": "file",
+          "size": 1
+        },
+        {
+          "path": "tree/sub",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/sub/large",
+          "kind": "file",
+          "size": 65539
+        },
+        {
+          "path": "tree/sub/empty",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/.hidden",
+          "kind": "file",
+          "size": 7
+        }
+      ],
+      "destination": [],
+      "names": [
+        "tree"
+      ]
+    },
+    {
+      "id": "readonly-and-executable",
+      "source": [
+        {
+          "path": "readonly",
+          "kind": "file",
+          "size": 5,
+          "mode": 292
+        },
+        {
+          "path": "executable",
+          "kind": "file",
+          "size": 21,
+          "mode": 489
+        }
+      ],
+      "destination": [],
+      "names": [
+        "readonly",
+        "executable"
+      ]
+    },
+    {
+      "id": "signed-millisecond-dates",
+      "source": [
+        {
+          "path": "before",
+          "kind": "file",
+          "size": 7,
+          "modified_ms": -1234
+        },
+        {
+          "path": "last-ms",
+          "kind": "file",
+          "size": 8,
+          "modified_ms": -1
+        },
+        {
+          "path": "epoch",
+          "kind": "file",
+          "size": 9,
+          "modified_ms": 0
+        },
+        {
+          "path": "precise",
+          "kind": "file",
+          "size": 10,
+          "modified_ms": 1577836800123
+        }
+      ],
+      "destination": [],
+      "names": [
+        "before",
+        "last-ms",
+        "epoch",
+        "precise"
+      ]
+    },
+    {
+      "id": "renamed-copy",
+      "source": [
+        {
+          "path": "old",
+          "kind": "file",
+          "size": 41
+        }
+      ],
+      "destination": [],
+      "names": [
+        "old"
+      ],
+      "new_name": "new copy"
+    },
+    {
+      "id": "collision-same-size",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17,
+          "modified_ms": 946684800000,
+          "pattern": 199
+        }
+      ],
+      "names": [
+        "file"
+      ]
+    },
+    {
+      "id": "collision-different-size",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 23,
+          "modified_ms": 946684800000,
+          "pattern": 199
+        }
+      ],
+      "names": [
+        "file"
+      ]
+    },
+    {
+      "id": "collision-newer-destination",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17,
+          "modified_ms": 1893456000000,
+          "pattern": 199
+        }
+      ],
+      "names": [
+        "file"
+      ]
+    },
+    {
+      "id": "collision-equal-date",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 23,
+          "modified_ms": 1577836800123,
+          "pattern": 199
+        }
+      ],
+      "names": [
+        "file"
+      ]
+    },
+    {
+      "id": "merge-existing-folders",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/both",
+          "kind": "file",
+          "size": 4
+        },
+        {
+          "path": "tree/new",
+          "kind": "file",
+          "size": 2
+        },
+        {
+          "path": "tree/empty",
+          "kind": "directory"
+        }
+      ],
+      "destination": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/both",
+          "kind": "file",
+          "size": 13,
+          "pattern": 200
+        },
+        {
+          "path": "tree/retained",
+          "kind": "file",
+          "size": 31
+        },
+        {
+          "path": "tree/other",
+          "kind": "directory"
+        }
+      ],
+      "names": [
+        "tree"
+      ]
+    },
+    {
+      "id": "folder-over-file",
+      "source": [
+        {
+          "path": "item",
+          "kind": "directory"
+        },
+        {
+          "path": "item/inside",
+          "kind": "file",
+          "size": 5
+        }
+      ],
+      "destination": [
+        {
+          "path": "item",
+          "kind": "file",
+          "size": 10,
+          "pattern": 211
+        }
+      ],
+      "names": [
+        "item"
+      ]
+    },
+    {
+      "id": "file-over-folder",
+      "source": [
+        {
+          "path": "item",
+          "kind": "file",
+          "size": 5
+        }
+      ],
+      "destination": [
+        {
+          "path": "item",
+          "kind": "directory"
+        },
+        {
+          "path": "item/keep",
+          "kind": "file",
+          "size": 11
+        }
+      ],
+      "names": [
+        "item"
+      ]
+    },
+    {
+      "id": "unreadable-source-and-continue",
+      "source": [
+        {
+          "path": "locked",
+          "kind": "file",
+          "size": 11,
+          "mode": 0
+        },
+        {
+          "path": "next",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [],
+      "names": [
+        "locked",
+        "next"
+      ]
+    },
+    {
+      "id": "unwritable-file",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 7
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 13,
+          "mode": 292
+        }
+      ],
+      "names": [
+        "file"
+      ]
+    },
+    {
+      "id": "unwritable-folder",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/new",
+          "kind": "file",
+          "size": 5
+        }
+      ],
+      "destination": [
+        {
+          "path": "tree",
+          "kind": "directory",
+          "mode": 365
+        }
+      ],
+      "names": [
+        "tree"
+      ]
+    },
+    {
+      "id": "unreadable-directory",
+      "source": [
+        {
+          "path": "locked",
+          "kind": "directory",
+          "mode": 0
+        },
+        {
+          "path": "locked/child",
+          "kind": "file",
+          "size": 31
+        }
+      ],
+      "destination": [],
+      "names": [
+        "locked"
+      ],
+      "ignore_destination_mtime": [
+        "locked"
+      ]
+    },
+    {
+      "id": "partial-child-failure",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/locked",
+          "kind": "file",
+          "size": 29,
+          "mode": 0
+        },
+        {
+          "path": "tree/good",
+          "kind": "file",
+          "size": 13
+        },
+        {
+          "path": "tree/denied",
+          "kind": "directory",
+          "mode": 0
+        },
+        {
+          "path": "tree/denied/child",
+          "kind": "file",
+          "size": 11
+        }
+      ],
+      "destination": [],
+      "names": [
+        "tree"
+      ],
+      "ignore_destination_mtime": [
+        "tree/denied"
+      ]
+    },
+    {
+      "id": "missing-source-and-continue",
+      "source": [
+        {
+          "path": "next",
+          "kind": "file",
+          "size": 23
+        }
+      ],
+      "destination": [],
+      "names": [
+        "missing",
+        "next"
+      ]
+    },
+    {
+      "id": "contained-symlinks",
+      "source": [
+        {
+          "path": "pack",
+          "kind": "directory"
+        },
+        {
+          "path": "pack/target",
+          "kind": "file",
+          "size": 39
+        },
+        {
+          "path": "pack/sub",
+          "kind": "directory"
+        },
+        {
+          "path": "pack/sub/file",
+          "kind": "file",
+          "size": 19
+        },
+        {
+          "path": "pack/file-link",
+          "kind": "symlink",
+          "target": "target"
+        },
+        {
+          "path": "pack/dir-link",
+          "kind": "symlink",
+          "target": "sub"
+        },
+        {
+          "path": "pack/broken",
+          "kind": "symlink",
+          "target": "missing"
+        }
+      ],
+      "destination": [],
+      "names": [
+        "pack"
+      ]
+    },
+    {
+      "id": "existing-broken-link",
+      "source": [
+        {
+          "path": "link",
+          "kind": "symlink",
+          "target": "missing"
+        }
+      ],
+      "destination": [
+        {
+          "path": "link",
+          "kind": "symlink",
+          "target": "old-missing"
+        }
+      ],
+      "names": [
+        "link"
+      ]
+    },
+    {
+      "id": "identical-source-destination",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/item",
+          "kind": "file",
+          "size": 19
+        },
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 7
+        }
+      ],
+      "destination": [],
+      "names": [
+        "tree",
+        "file"
+      ],
+      "destination_use": "source",
+      "policies": [
+        "SKIP"
+      ]
+    },
+    {
+      "id": "destination-below-source",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/item",
+          "kind": "file",
+          "size": 19
+        },
+        {
+          "path": "tree/inside",
+          "kind": "directory"
+        }
+      ],
+      "destination": [],
+      "names": [
+        "tree"
+      ],
+      "destination_use": "source/tree/inside",
+      "policies": [
+        "SKIP"
+      ]
+    }
+  ]
+}

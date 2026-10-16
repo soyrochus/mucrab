@@ -257,6 +257,24 @@ impl BrowserPane {
         }
     }
 
+    /// Original FileJob unmarks only top-level true outcomes. Detailed child
+    /// errors belong to the copy report, because directories may return true.
+    pub fn unmark_copy_outcomes(&mut self, outcomes: &[crate::CopyOutcome]) {
+        for outcome in outcomes.iter().filter(|outcome| outcome.success) {
+            if let Some(position) = self
+                .order
+                .iter()
+                .position(|index| self.entries[*index].name == outcome.name)
+            {
+                self.selection.set_marked(
+                    position + usize::from(self.selection.has_parent),
+                    false,
+                    &self.order,
+                );
+            }
+        }
+    }
+
     pub fn refresh(&mut self, sorter: &NameSorter) {
         if let Some(path) = self.location.clone() {
             self.open(&path, sorter);

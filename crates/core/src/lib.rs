@@ -4,11 +4,15 @@
 //! Recovered W01 name ordering and local browsing, independent of the GUI.
 
 mod browsing;
+mod copying;
 mod java_case_data;
 mod selection;
 mod sorting;
 
 pub use browsing::{BrowserPane, FileEntry, FileMetadata, filename_extension, list_directory};
+pub use copying::{
+    CopyIssue, CopyIssueKind, CopyOutcome, CopyPolicy, CopyReport, CopyRequest, copy_entries,
+};
 pub use selection::{FileSelection, PaneEvent, SelectionSnapshot};
 pub use sorting::{NameSorter, SortCriterion, SortMode, SortOptions};
 

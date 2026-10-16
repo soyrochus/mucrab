@@ -65,6 +65,16 @@ modified timestamps in UTC. Chrono offers `MIT OR Apache-2.0`; its unmodified
 are preserved. It does not supply file comparison behavior. Complete dependency
 source and notice packaging remain part of release preparation.
 
+## Recursive local copy
+
+Recursive copy, collision policies, transfer metadata and partial outcomes were
+reconstructed from the pinned muCommander `CopyJob`, `AbstractCopyJob`,
+`TransferFileJob`, `FileJob`, `FileCollisionChecker` and local-file binaries.
+The upstream attribution and GPL notices above apply. [The W03 contract](evidence/workflows/W03-recursive-copy/contract.md)
+records the original runtime boundary and native path guards. Original-JAR
+adapters and full-application dialog observations remain test-only; the native
+copy implementation uses Rust's standard library and requires no Java runtime.
+
 ## Investigation tools
 
 [REA](https://github.com/morluto/rea) **6.5.0** and [CFR](https://github.com/leibnitz27/cfr) **0.152** are installed locally as investigation tools. Their downloaded implementations and dependencies are in ignored storage, separate from the future Rust application's source and dependencies. [Readiness evidence](evidence/toolchain/readiness.json) records their actual commands and results.

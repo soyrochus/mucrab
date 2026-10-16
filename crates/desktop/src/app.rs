@@ -3,9 +3,10 @@
 
 use eframe::egui;
 use mucrab_core::{
-    BrowserPane, FileEntry, NameSorter, PaneEvent, PaneSide, SortCriterion, SortMode,
+    BrowserPane, CopyIssueKind, CopyPolicy, CopyReport, CopyRequest, FileEntry, NameSorter,
+    PaneEvent, PaneSide, SortCriterion, SortMode, copy_entries,
 };
-use std::path::PathBuf;
+use std::{path::PathBuf, sync::mpsc, time::Duration};
 
 pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
     let options = eframe::NativeOptions {
@@ -34,6 +35,12 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 panes,
                 active: PaneSide::Left,
                 show_hidden: false,
+                copy_confirmation: None,
+                copy_job: None,
+                copy_summary: None,
+                copy_details: Vec::new(),
+                show_copy_details: false,
+                restore_copy_focus: false,
             }))
         }),
     )
@@ -44,10 +51,208 @@ struct MuCrabApp {
     panes: [BrowserPane; 2],
     active: PaneSide,
     show_hidden: bool,
+    copy_confirmation: Option<CopyConfirmation>,
+    copy_job: Option<PendingCopy>,
+    copy_summary: Option<String>,
+    copy_details: Vec<String>,
+    show_copy_details: bool,
+    restore_copy_focus: bool,
+}
+struct CopyConfirmation {
+    source_side: PaneSide,
+    request: CopyRequest,
+}
+struct PendingCopy {
+    source_side: PaneSide,
+    source_directory: PathBuf,
+    receiver: mpsc::Receiver<Result<CopyReport, String>>,
+}
+impl MuCrabApp {
+    fn prepare_copy(&self) -> Option<CopyConfirmation> {
+        let side = if self.active == PaneSide::Left { 0 } else { 1 };
+        let source = &self.panes[side];
+        let names = source
+            .selection
+            .snapshot(&source.entries, &source.order)
+            .selected;
+        if names.is_empty() {
+            return None;
+        }
+        Some(CopyConfirmation {
+            source_side: self.active,
+            request: CopyRequest {
+                source_directory: source.location.clone()?,
+                destination_directory: self.panes[1 - side].location.clone()?,
+                names,
+                new_name: None,
+                policy: CopyPolicy::Skip,
+            },
+        })
+    }
+    fn poll_copy(&mut self, ctx: &egui::Context) {
+        let Some(job) = self.copy_job.as_ref() else {
+            return;
+        };
+        let result = match job.receiver.try_recv() {
+            Ok(result) => result,
+            Err(mpsc::TryRecvError::Empty) => {
+                ctx.request_repaint_after(Duration::from_millis(50));
+                return;
+            }
+            Err(mpsc::TryRecvError::Disconnected) => Err(
+                "Copy worker stopped unexpectedly; inspect the destination for partial files"
+                    .to_owned(),
+            ),
+        };
+        let job = self.copy_job.take().unwrap();
+        self.copy_details.clear();
+        match result {
+            Ok(report) => {
+                let source_index = if job.source_side == PaneSide::Left {
+                    0
+                } else {
+                    1
+                };
+                if self.panes[source_index].location.as_ref() == Some(&job.source_directory) {
+                    self.panes[source_index].unmark_copy_outcomes(&report.outcomes);
+                }
+                let skipped = report
+                    .issues
+                    .iter()
+                    .filter(|issue| issue.kind == CopyIssueKind::Skipped)
+                    .count();
+                let problems = report.issues.len() - skipped;
+                self.copy_summary = Some(format!(
+                    "Copy finished: {} files · {} folders processed · {} links · {skipped} skipped · {problems} problems",
+                    report.files_copied, report.directories_processed, report.links_copied
+                ));
+                self.copy_details = report
+                    .issues
+                    .iter()
+                    .map(|issue| format!("{}: {}", issue.path.display(), issue.message))
+                    .collect();
+            }
+            Err(message) => {
+                self.copy_summary = Some("Copy could not finish".to_owned());
+                self.copy_details.push(message);
+            }
+        }
+        for pane in &mut self.panes {
+            pane.refresh(&self.sorter);
+        }
+    }
+    fn copy_dialogs(&mut self, ctx: &egui::Context) {
+        let mut start = false;
+        let mut cancel = false;
+        if let Some(confirmation) = &mut self.copy_confirmation {
+            let response = egui::Modal::new(egui::Id::new("copy-confirmation")).show(ctx, |ui| {
+                ui.set_width(510.0);
+                let destination = if confirmation.source_side == PaneSide::Left { "right" } else { "left" };
+                let count=confirmation.request.names.len();
+                ui.heading(format!("Copy {count} {} to {destination} pane",if count==1 {"item"} else {"items"}));
+                ui.add_space(8.0);
+                ui.label("From:"); ui.label(confirmation.request.source_directory.display().to_string());
+                ui.label("To:"); ui.label(confirmation.request.destination_directory.display().to_string());
+                ui.separator();
+                egui::ScrollArea::vertical().max_height(140.0).show(ui, |ui| {
+                    for name in &confirmation.request.names { ui.label(name); }
+                });
+                ui.separator();
+                egui::ComboBox::from_id_salt("copy-policy").width(300.0).selected_text(copy_policy_label(confirmation.request.policy)).show_ui(ui,|ui| {
+                    for policy in [CopyPolicy::Skip,CopyPolicy::Overwrite,CopyPolicy::OverwriteIfOlder,CopyPolicy::OverwriteIfSizeDiffers] {
+                        ui.selectable_value(&mut confirmation.request.policy,policy,copy_policy_label(policy));
+                    }
+                });
+                ui.label("Existing folders are merged. Files copied before an error remain in the destination.");
+                ui.add_space(8.0);
+                ui.horizontal(|ui| { start=ui.button("Copy").clicked();cancel=ui.button("Cancel").clicked(); });
+            });
+            cancel |= response.should_close();
+        }
+        if cancel {
+            self.restore_copy_focus = true;
+            ctx.request_repaint();
+            self.copy_confirmation = None;
+        } else if start && let Some(confirmation) = self.copy_confirmation.take() {
+            self.restore_copy_focus = true;
+            ctx.request_repaint();
+            let source_directory = confirmation.request.source_directory.clone();
+            let (sender, receiver) = mpsc::channel();
+            match std::thread::Builder::new()
+                .name("mucrab-copy".to_owned())
+                .spawn(move || {
+                    let result =
+                        copy_entries(&confirmation.request).map_err(|error| error.to_string());
+                    let _ = sender.send(result);
+                }) {
+                Ok(_) => {
+                    self.copy_job = Some(PendingCopy {
+                        source_side: confirmation.source_side,
+                        source_directory,
+                        receiver,
+                    });
+                    ctx.request_repaint();
+                }
+                Err(error) => {
+                    self.copy_summary = Some("Copy could not start".to_owned());
+                    self.copy_details = vec![error.to_string()];
+                }
+            }
+        }
+        if self.show_copy_details {
+            let response = egui::Modal::new(egui::Id::new("copy-details")).show(ctx, |ui| {
+                ui.set_width(600.0);
+                ui.heading(self.copy_summary.as_deref().unwrap_or("Copy details"));
+                egui::ScrollArea::vertical()
+                    .max_height(300.0)
+                    .show(ui, |ui| {
+                        for detail in &self.copy_details {
+                            ui.label(detail);
+                            ui.separator();
+                        }
+                    });
+                ui.button("Close").clicked()
+            });
+            if response.inner || response.should_close() {
+                self.show_copy_details = false;
+                self.restore_copy_focus = true;
+                ctx.request_repaint();
+            }
+        }
+    }
+}
+fn copy_policy_label(policy: CopyPolicy) -> &'static str {
+    match policy {
+        CopyPolicy::Skip => "Skip existing files",
+        CopyPolicy::Overwrite => "Overwrite files",
+        CopyPolicy::OverwriteIfOlder => "Overwrite if source is newer",
+        CopyPolicy::OverwriteIfSizeDiffers => "Overwrite if size differs",
+    }
 }
 
 impl eframe::App for MuCrabApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        if self.restore_copy_focus {
+            // egui retains the previous modal layer for one pass. Requesting
+            // listing focus before that layer clears is immediately rejected.
+            if ui.memory(|memory| memory.top_modal_layer().is_none()) {
+                ui.memory_mut(|memory| memory.request_focus(listing_id(self.active)));
+                self.restore_copy_focus = false;
+            } else {
+                ui.ctx().request_repaint();
+            }
+        }
+        self.poll_copy(ui.ctx());
+        let can_copy = self.copy_job.is_none()
+            && self.copy_confirmation.is_none()
+            && self.prepare_copy().is_some();
+        if can_copy
+            && ui.memory(|memory| memory.has_focus(listing_id(self.active)))
+            && ui.input_mut(|input| input.consume_key(egui::Modifiers::NONE, egui::Key::F5))
+        {
+            self.copy_confirmation = self.prepare_copy();
+        }
+
         if ui.memory(|memory| memory.has_focus(listing_id(self.active)))
             && ui.input_mut(|input| {
                 input.consume_key(egui::Modifiers::NONE, egui::Key::Tab)
@@ -68,7 +273,7 @@ impl eframe::App for MuCrabApp {
                 ui.add_space(12.0);
                 ui.label("Two claws, two panes.");
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.colored_label(egui::Color32::from_rgb(115, 211, 165), "Two-pane file browser");
+                    ui.colored_label(egui::Color32::from_rgb(115, 211, 165), "Two-pane file manager");
                 });
             });
             ui.add_space(6.0);
@@ -82,13 +287,21 @@ impl eframe::App for MuCrabApp {
                     ui.memory_mut(|memory| memory.request_focus(listing_id(self.active)));
                 }
             });
+            ui.horizontal(|ui| {
+                let direction = if self.active == PaneSide::Left { "right" } else { "left" };
+                if ui.add_enabled(can_copy,egui::Button::new(format!("Copy to {direction} pane… (F5)"))).clicked() { self.copy_confirmation=self.prepare_copy(); }
+                if self.copy_job.is_some() {ui.spinner();ui.label("Copying…");}
+            });
             ui.small("Click to focus · Ctrl-click to mark · Shift-click for a range · Space to mark and advance · Tab to switch panes");
             ui.add_space(14.0);
-            let height = (ui.available_height() - 40.0).max(180.0);
+            let height = (ui.available_height() - if self.copy_summary.is_some() { 62.0 } else { 40.0 }).max(180.0);
             ui.columns(2, |columns| {
                 pane(&mut columns[0], PaneSide::Left, &mut self.panes[0], &self.sorter, height, &mut self.active);
                 pane(&mut columns[1], PaneSide::Right, &mut self.panes[1], &self.sorter, height, &mut self.active);
             });
+            if let Some(summary) = &self.copy_summary {
+                ui.horizontal(|ui| {ui.small(summary);if !self.copy_details.is_empty() && ui.small_button("Details").clicked() {self.show_copy_details=true;}});
+            }
             ui.add_space(10.0);
             ui.horizontal(|ui| {
                 ui.small(format!("muCrab {}", env!("CARGO_PKG_VERSION")));
@@ -96,6 +309,7 @@ impl eframe::App for MuCrabApp {
                 ui.separator(); ui.small("Based on muCommander");
             });
         });
+        self.copy_dialogs(ui.ctx());
     }
 }
 

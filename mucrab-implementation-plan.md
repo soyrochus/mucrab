@@ -14,11 +14,11 @@ session can continue without the original conversation.
 | Last updated | 2026-10-16 |
 | Last verified implementation commit | `228d79d` — Migrate verified size, date and extension sorting to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W02c — Name/Size/Modified/Extension sorting verified within its bounded contract; next is W03 |
+| Active workflow | W03 — bounded recursive local copy verified; next is W04 move/rename |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | W03: recover a bounded recursive-copy contract and original adapter before Rust; keep all four comparison suites passing |
-| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting |
-| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. Zero differences/skips within scope |
+| Next executable task | W04: recover bounded local move/rename behavior and original adapter before Rust; keep all five comparison suites passing |
+| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy |
+| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); OS dispatch/Wayland remain unverified |
 | Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
 
@@ -59,16 +59,16 @@ complete, observable workflow before expanding the scope.
 | 2. Binary acquisition | Complete | `15427e7`; `tools/acquire_mucommander.py`, `tools/manifests/mucommander.json`, `evidence/acquisition/mucommander-1.6.2-1.json` |
 | 3. Analysis toolchain | Complete for static inspection | `9996a3e`; `tools/analysis_tools.py`, pinned manifests and npm lockfile, `evidence/toolchain/readiness.json` |
 | 4. Cargo workspace and preview | Complete | `88baf29`; `Cargo.toml`, `Cargo.lock`, `crates/`, `evidence/workspace/readiness.json` |
-| 5. Verified workflows | W01, W02a, W02b and bounded W02c verified within contracts | Workflow evidence directories and gate ledgers below |
+| 5. Verified workflows | W01, W02a, W02b, bounded W02c and W03 verified within contracts | Workflow evidence directories and gate ledgers below |
 | 6. Broader comparison and demo | Not started | Final acceptance below |
 
 The workspace contains:
 
 | Package | Current behavior | Intended responsibility |
 | --- | --- | --- |
-| `mucrab-core` | Local enumeration, focus/marks, pane state, recovered comparator/table sorting, ICU4X collation | Recovered behavior, independent of the GUI |
-| `mucrab-desktop` | Native two-pane local browser using eframe/egui 0.36.2 and OpenGL | Navigation, sorting and marking in both panes; later file-operation UI |
-| `mucrab-compare` | Original-JAR/Rust W01/W02/W02b/W02c adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
+| `mucrab-core` | Local enumeration, focus/marks, pane state, recovered sorting, ICU4X collation and recursive copy | Recovered behavior, independent of the GUI |
+| `mucrab-desktop` | Native two-pane local browser using eframe/egui 0.36.2 and OpenGL | Navigation, sorting, marking, filtering and reviewed copy in both directions; later move/rename UI |
+| `mucrab-compare` | Original-JAR/Rust W01/W02/W02b/W02c/W03 adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
 
 Historical checks passed on the baseline: Cargo build, formatting, Clippy with
 warnings denied, Rust tests, CLI checks, and native preview capture. The Rust
@@ -426,7 +426,7 @@ further when their acceptance criteria cannot be closed in one increment.
 | W02a | Focus and marking in a loaded directory | Ordered selected identities and marks after every event; both native panes | `verified` within contract |
 | W02b | Hidden-file filtering and selection interaction | Visible entries, surviving marks/focus, parent handling | `verified` within Unix/en-US contract |
 | W02c | Size/date/extension sorting | Metadata ordering, ties, selection persistence | `verified` within bounded metadata contract; permissions/owner/group deferred |
-| W03 | Recursive copy | Paths, byte contents, empty folders, declared metadata, collisions, errors | `not_started` |
+| W03 | Recursive local copy | Paths, bytes, empty folders, declared metadata, fixed collision policies and partial errors | `verified` within bounded Linux/owned-file contract |
 | W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `not_started` |
 | W05 | Batch rename | Generated names, preview/apply consistency, collisions, partial failures | `not_started` |
 | W06 | ZIP browsing and extraction | Entry listing, extracted paths and bytes, supported edge/error cases | `not_started` |
@@ -549,6 +549,26 @@ ordered-list case. Supported full sorting uses size -1/nonnegative i64 and dates
 within ±(i64::MAX / 2) milliseconds. Native enumeration rejects dates outside
 that bound. Permissions/owner/group remain deferred; W03 copy is next.
 
+### W03 gate ledger
+
+| Gate | State | Evidence / unresolved work |
+| --- | --- | --- |
+| G1: original Java adapter | `verified` within method boundary | Actual CopyJob constructor/nextFile/processFile with original auto-skip errors and initialized DefaultDesktopAdapter; no behavioral overrides |
+| G2: recovered contract | `verified` within bounded scope | 17-class recovery; directory merge, four policies, bytes, links, dates/owner permissions, original partial-directory outcomes and native guards |
+| G3: fixtures and protocol | `verified` | 26 named + 12 generated sets, 24 withheld reserved sets; policy combinations; separate equivalent trees; denied access confirmed; strict outcome protocol and complete snapshots |
+| G4: Rust and comparison | `verified` within scope | 242 cases/271 ordered top-level outcomes/242 destination trees/1,114 file observations/16 link observations/484 source checks; zero differences or omitted test cases; all earlier suites pass |
+| G5: native workflow | `verified` within X11/Xvfb scope | Review/F5/cancel/focus recovery, copy both directions, skip/overwrite, marks/refresh and partial-error details; original actual CopyDialog controls/full jobs and verified trees |
+| G6: reproducible closure | `verified` for local development | Source/input/binary hashes, 40-action replay, 16 Rust/27 Python tests, locked build/lint/integrity checks, GPL notices, retained evidence and checkpoint; release packaging remains open |
+
+See `evidence/workflows/W03-recursive-copy/README.md`, `contract.md` and
+`decisions.md`. The isolated adapter does not execute FileJob.run lifecycle;
+actual original GUI jobs supplement that boundary. Directory true outcomes may
+contain failed children; native details expose those errors. Native guards
+reject dangerous overlaps, aliases and outside link targets. Those restrictions,
+other owners/ACLs, filesystem races, mid-stream/disk-full recovery, remote/archive
+providers and cancellation are outside equivalence scope. W04 move/rename is
+next; full job/cancellation behavior remains W07.
+
 ### Open issues
 
 | ID | Issue | Next investigation |
@@ -560,6 +580,7 @@ that bound. Permissions/owner/group remain deferred; W03 copy is next.
 | R05 | Ignored raw artifacts still need rehydration | Use W01/W02 scripts and retained GUI evidence; regenerate or transfer required caches/raw runs |
 | R06 | Original shortcut dispatch/AX mark count and full OS mouse-event parity unverified | Adapter isolates original methods; GUI captures are representative. Establish full dispatch separately before making broader GUI claims |
 | R07 | Original table sorter stalls on certain extreme signed-metadata inputs | Preserved original failure/reproducer; pair-only arithmetic coverage; enforce declared native sortable range |
+| R08 | Recursive copy is bounded; full job orchestration and race-safe mutation remain unverified | Preserve W03 guards and partial-error details; establish move/rename in W04 and cancellation/lifecycle in W07 |
 
 ### Session entry template
 
@@ -779,6 +800,68 @@ Exact next executable action:
   original adapter, using separate disposable Java/Rust fixture trees. Keep
   all four predefined/reserved suites passing before expanding scope.
 
+- **2026-10-16, from 20:58 Europe/Madrid — W03 recursive local copy:**
+  started at `2960c45`, clean main. Linux x86_64/ext4, unprivileged uid 1000,
+  Rust/Cargo 1.99.0, JDK 25.0.4.1, en-US. Recovered original constructor,
+  recursion, collision, error and metadata helpers through CFR/javap. Initial
+  smoke failed from missing original DesktopManager initialization, after
+  writing bytes; retained as unavailable, not passing evidence. Original
+  DesktopManager.init(false) and the known java.io module open resolve that
+  dependency without replacing postCopy. Fifteen initial classes were recovered;
+  the final receipt also pins two desktop API/adapter classes.
+
+  Original-only run `20261016T190523Z-c944c320` completed 146 real copy cases
+  before native copy code. Froze the contract, 26 named/12 generated fixture
+  sets, policies and withheld seed. Implemented bytes, recursive/empty/hidden
+  folders, merge/collision behavior, contained relative links, millisecond date
+  clamping and owner permission semantics. Separate Java/Rust disposable trees
+  are measured independently. The observer lifts denied-entry access only during
+  inspection, then restores modes; ctime/atime and explicit nondeterministic
+  creation dates are excluded. Root cannot pass denied-access cases.
+
+  Final W03 runs `20261016T192309Z-d60b72aa` and
+  `20261016T192313Z-878234ae` pass 146 + 96 cases, 271 ordered top-level
+  outcomes, 242 destination tree comparisons, 1,114 regular-file observations,
+  16 link observations and 484 source integrity checks. Zero differences or
+  omitted test cases. Collision skips and expected failures remain measured
+  outcomes. All eight earlier suites pass in
+  `artifacts/runs/W03-regressions-20261016T192238Z-a1a02838`.
+
+  Added native F5/copy review with fixed paths/names and default SKIP, a worker,
+  collision choices, per-path details, original-compatible successful-top-level
+  unmarking and refresh. A directory true outcome can contain failed children;
+  the native result exposes those problems. Guards reject overlapping paths,
+  hard-link aliases, destination links and escaping/absolute source links.
+  Native guard cases are distinct from original equivalence fixtures.
+  The first permission unit test assumed umask 022; the host's test mask was 002.
+  The corrected independent control-file check verifies retained group/other
+  bits without changing behavior. Cargo.lock and dependency pins are unchanged.
+
+  Fresh final GUI run `artifacts/gui/W03-20261016T192317Z-ac3de560` passes a
+  40-action native replay with PATH=/nonexistent and umask 022, plus three actual
+  original CopyDialog/ProgressDialog/full-job copies. Retained eight original
+  stages/sixteen pane states, final trees and twenty screenshots. Native checks
+  cover both directions, cancel/F5 restoration, SKIP/OVERWRITE, marks, refresh,
+  collision details and two child permission errors in a partial tree. The focus
+  fix waits for egui's previous modal layer to clear; earlier failed attempts
+  remain recorded. Full OS dispatch/notifications, Wayland and physical desktop
+  are not claimed. Original optional bundle/logging warnings remain.
+
+  Validation `W03-validation-20261016T192402Z-0a51feae` passes format,
+  Clippy with warnings denied, 16 Rust/27 Python tests, locked offline build,
+  original integrity, native version with Java absent from PATH and linkage
+  without JVM libraries. GPL/NOTICE attribution, README, preview, scripts and
+  gate ledger are updated. No new dependency, upstream implementation-source
+  fetch, global tool change, release or push. Current sources match comparison
+  fingerprints. Gates G1–G6 are verified only within the bounded contract.
+  Implementation/evidence checkpoint: pending local commit; reports identify
+  tested base `2960c45` and exact matching source hashes. Ignored artifacts
+  regenerate with w03_inspect.py, w03.py and w03_gui.py; mutating GUI replay
+  always needs a fresh prepared run. Next executable task: recover W04 local
+  move/rename behavior and its original adapter, freezing a new contract before
+  coding and keeping all five predefined/reserved suites passing. Use separate
+  disposable source/destination trees for every mutating comparison.
+
 ## Final demonstration acceptance
 
 After the selected workflows are verified, run an agreed suite targeting
@@ -803,10 +886,10 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > Inspect Git, repository instructions, code, and committed evidence first;
 > reconcile the live checkpoint before acting. Rehydrate ignored inputs on this
 > machine and record fresh verification. Resume the first unfinished workflow
-> gate. W01, W02a, W02b and W02c are verified within their declared contracts; Linux
+> gate. W01, W02a, W02b, W02c and W03 are verified within their declared contracts; Linux
 > component comparisons and representative X11/Xvfb checks are recorded.
-> The next action is W03 bounded recursive-copy contract recovery and original adapter.
-> Keep W01, W02, W02b and W02c suites passing. Continue through each workflow's gates before expanding
+> The next action is W04 bounded local move/rename recovery and original adapter.
+> Keep W01, W02, W02b, W02c and W03 suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
 > Java. Update the plan and evidence at each checkpoint, including exact next

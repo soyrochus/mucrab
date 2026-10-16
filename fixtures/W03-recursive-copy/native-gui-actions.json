@@ -1,0 +1,228 @@
+[
+  {
+    "op": "capture",
+    "name": "initial",
+    "wait": 2
+  },
+  {
+    "op": "click",
+    "x": 654,
+    "y": 310,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 115,
+    "y": 289,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 111,
+    "y": 310,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 106,
+    "y": 331,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 108,
+    "y": 289
+  },
+  {
+    "op": "capture",
+    "name": "native-marked"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "native-forward-review"
+  },
+  {
+    "op": "click",
+    "x": 373,
+    "y": 487
+  },
+  {
+    "op": "capture",
+    "name": "native-cancelled"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "native-review-after-cancel"
+  },
+  {
+    "op": "click",
+    "x": 323,
+    "y": 487,
+    "wait": 1.5
+  },
+  {
+    "op": "capture",
+    "name": "native-forward-skip"
+  },
+  {
+    "op": "click",
+    "x": 334,
+    "y": 663,
+    "capture": "native-skip-details"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 654,
+    "y": 331
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "native-reverse-review"
+  },
+  {
+    "op": "click",
+    "x": 323,
+    "y": 469,
+    "wait": 1.5
+  },
+  {
+    "op": "capture",
+    "name": "native-reverse-complete"
+  },
+  {
+    "op": "click",
+    "x": 107,
+    "y": 310
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "native-overwrite-review"
+  },
+  {
+    "op": "click",
+    "x": 590,
+    "y": 422,
+    "capture": "native-collision-choices"
+  },
+  {
+    "op": "click",
+    "x": 400,
+    "y": 469
+  },
+  {
+    "op": "capture",
+    "name": "native-overwrite-approved"
+  },
+  {
+    "op": "click",
+    "x": 323,
+    "y": 469,
+    "wait": 1.5
+  },
+  {
+    "op": "capture",
+    "name": "native-overwrite-complete"
+  },
+  {
+    "op": "click",
+    "x": 230,
+    "y": 174
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "{run}/partial-fixture/source"
+  },
+  {
+    "op": "click",
+    "x": 515,
+    "y": 174
+  },
+  {
+    "op": "click",
+    "x": 782,
+    "y": 174
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "{run}/partial-fixture/destination"
+  },
+  {
+    "op": "click",
+    "x": 1070,
+    "y": 174
+  },
+  {
+    "op": "click",
+    "x": 111,
+    "y": 289
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "native-partial-review"
+  },
+  {
+    "op": "click",
+    "x": 323,
+    "y": 469,
+    "wait": 1.5
+  },
+  {
+    "op": "capture",
+    "name": "native-partial-result"
+  },
+  {
+    "op": "click",
+    "x": 334,
+    "y": 663,
+    "capture": "native-partial-details"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  }
+]
