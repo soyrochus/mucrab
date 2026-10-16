@@ -1,0 +1,21 @@
+[
+  {
+    "path": "tree",
+    "kind": "directory",
+    "mode": 493,
+    "modified_ms": 1577836800123
+  },
+  {
+    "path": "tree/denied",
+    "kind": "directory",
+    "mode": 493
+  },
+  {
+    "path": "tree/good",
+    "kind": "file",
+    "mode": 420,
+    "modified_ms": 1577836800123,
+    "size": 13,
+    "sha256": "cd6229090ee8f7202f9d5da13eac8c66bad154924ed45f4ea04ad0ae4ae69df6"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "scope":"Original-only diagnostic; native fallback through symlinks is excluded",
+  "cases":[
+    {"id":"file-link","source":[{"path":"target","kind":"file","size":19},{"path":"link","kind":"symlink","target":"target"}],"names":["link"]},
+    {"id":"directory-link","source":[{"path":"target","kind":"directory"},{"path":"target/child","kind":"file","size":23},{"path":"link","kind":"symlink","target":"target"}],"names":["link"]}
+  ]
+}

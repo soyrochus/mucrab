@@ -3,8 +3,9 @@
 
 use eframe::egui;
 use mucrab_core::{
-    BrowserPane, CopyIssueKind, CopyPolicy, CopyReport, CopyRequest, FileEntry, NameSorter,
-    PaneEvent, PaneSide, SortCriterion, SortMode, copy_entries,
+    BrowserPane, CopyIssue, CopyIssueKind, CopyOutcome, CopyPolicy, CopyRequest, FileEntry,
+    MoveRequest, NameSorter, PaneEvent, PaneSide, SortCriterion, SortMode, copy_entries,
+    is_valid_leaf_name, move_entries,
 };
 use std::{path::PathBuf, sync::mpsc, time::Duration};
 
@@ -59,32 +60,62 @@ struct MuCrabApp {
     restore_copy_focus: bool,
 }
 struct CopyConfirmation {
+    action: FileAction,
     source_side: PaneSide,
     request: CopyRequest,
 }
 struct PendingCopy {
+    action: FileAction,
+    renamed_to: Option<String>,
     source_side: PaneSide,
     source_directory: PathBuf,
-    receiver: mpsc::Receiver<Result<CopyReport, String>>,
+    receiver: mpsc::Receiver<Result<JobResult, String>>,
+}
+#[derive(Clone, Copy, PartialEq)]
+enum FileAction {
+    Copy,
+    Move,
+    Rename,
+}
+impl FileAction {
+    fn label(self) -> &'static str {
+        match self {
+            Self::Copy => "Copy",
+            Self::Move => "Move",
+            Self::Rename => "Rename",
+        }
+    }
+}
+struct JobResult {
+    outcomes: Vec<CopyOutcome>,
+    issues: Vec<CopyIssue>,
+    summary: String,
 }
 impl MuCrabApp {
-    fn prepare_copy(&self) -> Option<CopyConfirmation> {
+    fn prepare_action(&self, action: FileAction) -> Option<CopyConfirmation> {
         let side = if self.active == PaneSide::Left { 0 } else { 1 };
         let source = &self.panes[side];
-        let names = source
-            .selection
-            .snapshot(&source.entries, &source.order)
-            .selected;
+        let snapshot = source.selection.snapshot(&source.entries, &source.order);
+        let names = if action == FileAction::Rename {
+            vec![snapshot.focused.filter(|name| name != "..")?]
+        } else {
+            snapshot.selected
+        };
         if names.is_empty() {
             return None;
         }
         Some(CopyConfirmation {
+            action,
             source_side: self.active,
             request: CopyRequest {
                 source_directory: source.location.clone()?,
-                destination_directory: self.panes[1 - side].location.clone()?,
+                destination_directory: if action == FileAction::Rename {
+                    source.location.clone()?
+                } else {
+                    self.panes[1 - side].location.clone()?
+                },
+                new_name: (action == FileAction::Rename).then(|| names[0].clone()),
                 names,
-                new_name: None,
                 policy: CopyPolicy::Skip,
             },
         })
@@ -100,14 +131,20 @@ impl MuCrabApp {
                 return;
             }
             Err(mpsc::TryRecvError::Disconnected) => Err(
-                "Copy worker stopped unexpectedly; inspect the destination for partial files"
+                "File worker stopped unexpectedly; inspect both folders for partial results"
                     .to_owned(),
             ),
         };
         let job = self.copy_job.take().unwrap();
         self.copy_details.clear();
+        let mut rename_succeeded = false;
         match result {
             Ok(report) => {
+                rename_succeeded = job.action == FileAction::Rename
+                    && report
+                        .outcomes
+                        .first()
+                        .is_some_and(|outcome| outcome.success);
                 let source_index = if job.source_side == PaneSide::Left {
                     0
                 } else {
@@ -123,8 +160,8 @@ impl MuCrabApp {
                     .count();
                 let problems = report.issues.len() - skipped;
                 self.copy_summary = Some(format!(
-                    "Copy finished: {} files · {} folders processed · {} links · {skipped} skipped · {problems} problems",
-                    report.files_copied, report.directories_processed, report.links_copied
+                    "{} · {skipped} skipped · {problems} problems",
+                    report.summary
                 ));
                 self.copy_details = report
                     .issues
@@ -133,12 +170,23 @@ impl MuCrabApp {
                     .collect();
             }
             Err(message) => {
-                self.copy_summary = Some("Copy could not finish".to_owned());
+                self.copy_summary = Some(format!("{} could not finish", job.action.label()));
                 self.copy_details.push(message);
             }
         }
         for pane in &mut self.panes {
             pane.refresh(&self.sorter);
+        }
+        let source_index = if job.source_side == PaneSide::Left {
+            0
+        } else {
+            1
+        };
+        if let Some(name) = job.renamed_to
+            && rename_succeeded
+            && self.panes[source_index].location.as_ref() == Some(&job.source_directory)
+        {
+            self.panes[source_index].focus_name(&name);
         }
     }
     fn copy_dialogs(&mut self, ctx: &egui::Context) {
@@ -149,11 +197,17 @@ impl MuCrabApp {
                 ui.set_width(510.0);
                 let destination = if confirmation.source_side == PaneSide::Left { "right" } else { "left" };
                 let count=confirmation.request.names.len();
-                ui.heading(format!("Copy {count} {} to {destination} pane",if count==1 {"item"} else {"items"}));
+                let rename = confirmation.action == FileAction::Rename;
+                ui.heading(if rename { "Rename focused item".to_owned() } else { format!("{} {count} {} to {destination} pane",confirmation.action.label(),if count==1 {"item"} else {"items"}) });
                 ui.add_space(8.0);
                 ui.label("From:"); ui.label(confirmation.request.source_directory.display().to_string());
                 ui.label("To:"); ui.label(confirmation.request.destination_directory.display().to_string());
                 ui.separator();
+                if let Some(name) = &mut confirmation.request.new_name {
+                    ui.label("New name:");
+                    ui.text_edit_singleline(name);
+                    if !is_valid_leaf_name(name) { ui.label("Enter a direct child name without path separators."); }
+                }
                 egui::ScrollArea::vertical().max_height(140.0).show(ui, |ui| {
                     for name in &confirmation.request.names { ui.label(name); }
                 });
@@ -163,9 +217,10 @@ impl MuCrabApp {
                         ui.selectable_value(&mut confirmation.request.policy,policy,copy_policy_label(policy));
                     }
                 });
-                ui.label("Existing folders are merged. Files copied before an error remain in the destination.");
+                ui.label(if confirmation.action == FileAction::Copy { "Existing folders are merged. Files copied before an error remain in the destination." } else { "Existing folders are merged. Partial moves remain; skipped or failed sources are retained." });
                 ui.add_space(8.0);
-                ui.horizontal(|ui| { start=ui.button("Copy").clicked();cancel=ui.button("Cancel").clicked(); });
+                let valid = confirmation.request.new_name.as_ref().is_none_or(|name| is_valid_leaf_name(name) && name != &confirmation.request.names[0]);
+                ui.horizontal(|ui| { start=ui.add_enabled(valid,egui::Button::new(confirmation.action.label())).clicked();cancel=ui.button("Cancel").clicked(); });
             });
             cancel |= response.should_close();
         }
@@ -177,16 +232,33 @@ impl MuCrabApp {
             self.restore_copy_focus = true;
             ctx.request_repaint();
             let source_directory = confirmation.request.source_directory.clone();
+            let action = confirmation.action;
+            let renamed_to = if action == FileAction::Rename {
+                confirmation.request.new_name.clone()
+            } else {
+                None
+            };
             let (sender, receiver) = mpsc::channel();
             match std::thread::Builder::new()
-                .name("mucrab-copy".to_owned())
+                .name(format!("mucrab-{}",action.label().to_lowercase()))
                 .spawn(move || {
-                    let result =
-                        copy_entries(&confirmation.request).map_err(|error| error.to_string());
+                    let result = if action == FileAction::Copy {
+                        copy_entries(&confirmation.request).map(|report| JobResult {
+                            summary: format!("Copy finished: {} files · {} folders processed · {} links",report.files_copied,report.directories_processed,report.links_copied),
+                            outcomes: report.outcomes, issues: report.issues,
+                        })
+                    } else {
+                        move_entries(&MoveRequest { transfer: confirmation.request, rename_mode: action == FileAction::Rename }).map(|report| JobResult {
+                            summary: format!("{} finished: {} items completed · {} renamed entries · {} files transferred",action.label(),report.outcomes.iter().filter(|outcome| outcome.success).count(),report.renamed_entries,report.files_transferred),
+                            outcomes: report.outcomes, issues: report.issues,
+                        })
+                    }.map_err(|error| error.to_string());
                     let _ = sender.send(result);
                 }) {
                 Ok(_) => {
                     self.copy_job = Some(PendingCopy {
+                        action,
+                        renamed_to,
                         source_side: confirmation.source_side,
                         source_directory,
                         receiver,
@@ -194,7 +266,7 @@ impl MuCrabApp {
                     ctx.request_repaint();
                 }
                 Err(error) => {
-                    self.copy_summary = Some("Copy could not start".to_owned());
+                    self.copy_summary = Some(format!("{} could not start",action.label()));
                     self.copy_details = vec![error.to_string()];
                 }
             }
@@ -243,14 +315,21 @@ impl eframe::App for MuCrabApp {
             }
         }
         self.poll_copy(ui.ctx());
-        let can_copy = self.copy_job.is_none()
-            && self.copy_confirmation.is_none()
-            && self.prepare_copy().is_some();
-        if can_copy
-            && ui.memory(|memory| memory.has_focus(listing_id(self.active)))
-            && ui.input_mut(|input| input.consume_key(egui::Modifiers::NONE, egui::Key::F5))
-        {
-            self.copy_confirmation = self.prepare_copy();
+        let idle =
+            self.copy_job.is_none() && self.copy_confirmation.is_none() && !self.show_copy_details;
+        let can_copy = idle && self.prepare_action(FileAction::Copy).is_some();
+        let can_rename = idle && self.prepare_action(FileAction::Rename).is_some();
+        if idle && ui.memory(|memory| memory.has_focus(listing_id(self.active))) {
+            for (key, action) in [
+                (egui::Key::F5, FileAction::Copy),
+                (egui::Key::F6, FileAction::Move),
+                (egui::Key::F2, FileAction::Rename),
+            ] {
+                if ui.input_mut(|input| input.consume_key(egui::Modifiers::NONE, key)) {
+                    self.copy_confirmation = self.prepare_action(action);
+                    break;
+                }
+            }
         }
 
         if ui.memory(|memory| memory.has_focus(listing_id(self.active)))
@@ -289,8 +368,10 @@ impl eframe::App for MuCrabApp {
             });
             ui.horizontal(|ui| {
                 let direction = if self.active == PaneSide::Left { "right" } else { "left" };
-                if ui.add_enabled(can_copy,egui::Button::new(format!("Copy to {direction} pane… (F5)"))).clicked() { self.copy_confirmation=self.prepare_copy(); }
-                if self.copy_job.is_some() {ui.spinner();ui.label("Copying…");}
+                if ui.add_enabled(can_copy,egui::Button::new(format!("Copy to {direction} pane… (F5)"))).clicked() { self.copy_confirmation=self.prepare_action(FileAction::Copy); }
+                if ui.add_enabled(can_copy,egui::Button::new(format!("Move to {direction} pane… (F6)"))).clicked() { self.copy_confirmation=self.prepare_action(FileAction::Move); }
+                if ui.add_enabled(can_rename,egui::Button::new("Rename… (F2)")).clicked() { self.copy_confirmation=self.prepare_action(FileAction::Rename); }
+                if let Some(job) = &self.copy_job {ui.spinner();ui.label(format!("{} in progress…",job.action.label()));}
             });
             ui.small("Click to focus · Ctrl-click to mark · Shift-click for a range · Space to mark and advance · Tab to switch panes");
             ui.add_space(14.0);

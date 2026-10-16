@@ -6,13 +6,16 @@
 mod browsing;
 mod copying;
 mod java_case_data;
+mod moving;
 mod selection;
 mod sorting;
 
 pub use browsing::{BrowserPane, FileEntry, FileMetadata, filename_extension, list_directory};
 pub use copying::{
     CopyIssue, CopyIssueKind, CopyOutcome, CopyPolicy, CopyReport, CopyRequest, copy_entries,
+    is_valid_leaf_name,
 };
+pub use moving::{MoveReport, MoveRequest, move_entries};
 pub use selection::{FileSelection, PaneEvent, SelectionSnapshot};
 pub use sorting::{NameSorter, SortCriterion, SortMode, SortOptions};
 

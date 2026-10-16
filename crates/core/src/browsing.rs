@@ -257,6 +257,23 @@ impl BrowserPane {
         }
     }
 
+    /// Focus a visible identity after a successful single-item rename.
+    pub fn focus_name(&mut self, name: &str) -> bool {
+        if let Some(position) = self
+            .order
+            .iter()
+            .position(|index| self.entries[*index].name == name)
+        {
+            self.selection.focus(
+                position + usize::from(self.selection.has_parent),
+                &self.order,
+            );
+            true
+        } else {
+            false
+        }
+    }
+
     /// Original FileJob unmarks only top-level true outcomes. Detailed child
     /// errors belong to the copy report, because directories may return true.
     pub fn unmark_copy_outcomes(&mut self, outcomes: &[crate::CopyOutcome]) {

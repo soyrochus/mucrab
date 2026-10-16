@@ -4,7 +4,7 @@
 [![Rust 1.95 or newer](https://img.shields.io/badge/Rust-1.95%2B-orange?logo=rust)](#build-and-run-mucrab)
 [![License: GPL-3.0-only](https://img.shields.io/badge/license-GPL--3.0--only-blue)](LICENSE)
 [![Status: experimental](https://img.shields.io/badge/status-experimental-yellow)](#current-status)
-[![Verified on macOS arm64](https://img.shields.io/badge/verified-macOS%20arm64-lightgrey?logo=apple)](#current-status)
+[![Verified on Linux x86_64](https://img.shields.io/badge/verified-Linux%20x86__64-lightgrey?logo=linux)](#current-status)
 
 **Two claws, two panes.**
 
@@ -50,12 +50,22 @@ complete destination trees. Source contents and declared metadata remain unchang
 and errors are shown in the result details. [W03 evidence](evidence/workflows/W03-recursive-copy/README.md)
 records the method boundary and unsupported cases.
 
-All five component suites pass on **Linux x86_64/ext4**, OpenJDK **25.0.4.1**,
+**W04 adds local move and focused rename:** **F6** reviews a move to the other
+pane; **F2** reviews a new name for the focused item, preserving unrelated marks.
+Moves try a filesystem rename first and fall back to copy then delete. Partial
+failures retain the remaining sources and expose details. The original-JAR/Rust
+comparison passes **479 cases** (319 predefined + 160 reserved), including
+**216 real cross-filesystem cases**, with zero differences in outcomes, source/
+destination trees and inode-identity relations. Native code declines fallback
+through symlinks because the original can consume their targets.
+[W04 evidence](evidence/workflows/W04-move-rename/README.md) records the boundary.
+
+All six component suites pass on **Linux x86_64/ext4**, OpenJDK **25.0.4.1**,
 with en-US ordering. Native input checks run under X11/Xvfb; representative
 original menu-action checks retain live-table states and Swing renders.
 Earlier W01/W02a GUI evidence covers macOS arm64. Wayland/physical-desktop
 behavior, Windows hidden attributes and exhaustive OS shortcut parity remain
-unverified. Opening symbolic links, other filters, move/rename, archives, cancellation
+unverified. Opening symbolic links, other filters, batch rename, archives, cancellation
 and other locales remain for later increments. Copy rejects overlapping source/
 destination paths, outside link targets and destination aliases; race-free
 filesystem handling and full background-job parity remain unverified.
@@ -64,11 +74,11 @@ filesystem handling and full background-job parity remain unverified.
 
 ### muCrab — current Rust implementation
 
-The W03 checkpoint provides two independent file panes, local folder browsing,
-name/metadata sorting, focus/marking, hidden-file filtering, and reviewed recursive copy. The native
+The W04 checkpoint provides two independent file panes, local folder browsing,
+name/metadata sorting, focus/marking, hidden-file filtering, and reviewed recursive copy, move and single-item rename. The native
 Rust application runs independently of Java.
 
-![muCrab's native Rust interface with two file panes, copy review with source/destination paths, selected items and collision policy](images/mucrab.png)
+![muCrab's native Rust interface with two file panes, move review with source/destination paths, selected items and collision policy](images/mucrab.png)
 
 ### muCommander — Java reference application
 
@@ -87,9 +97,9 @@ The [Cargo workspace](Cargo.toml) contains:
 
 | Package | Role | Current contents |
 | --- | --- | --- |
-| `mucrab-core` | Framework-independent behavior | Local enumeration/filtering, focus/marks, name/metadata sorting, recursive copy and detailed outcomes |
+| `mucrab-core` | Framework-independent behavior | Local enumeration/filtering, focus/marks, name/metadata sorting, recursive copy, move/rename and detailed outcomes |
 | `mucrab-desktop` | Native `mucrab` executable | Two-pane browser using eframe/egui 0.36.2 with the OpenGL backend |
-| `mucrab-compare` | Java/Rust comparison harness | W01, W02a, W02b, W02c and W03 original-binary oracles, Rust adapters, and difference reports |
+| `mucrab-compare` | Java/Rust comparison harness | W01, W02a, W02b, W02c, W03 and W04 original-binary oracles, Rust adapters, and difference reports |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
 
@@ -100,7 +110,7 @@ cargo run --locked -p mucrab-desktop
 cargo run --locked -p mucrab-desktop -- /path/to/left /path/to/right
 ```
 
-The application supports browsing, sorting, marking, filtering and recursive local copy; move/rename and other mutation controls are deferred. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder to enter it; each pane has Open, Parent, Refresh, and sort controls. Check the native command-line entry points without opening a window:
+The application supports browsing, sorting, marking, filtering and recursive local copy/move plus focused rename; batch rename and other mutation controls are deferred. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder to enter it; each pane has Open, Parent, Refresh, and sort controls. Check the native command-line entry points without opening a window:
 
 ```sh
 cargo run --locked -p mucrab-desktop -- --version
@@ -120,7 +130,14 @@ cargo run --locked -p mucrab-compare -- --suite w02c
 cargo run --locked -p mucrab-compare -- --suite w02c --reserved
 cargo run --locked -p mucrab-compare -- --suite w03
 cargo run --locked -p mucrab-compare -- --suite w03 --reserved
+cargo run --locked -p mucrab-compare -- --suite w04
+cargo run --locked -p mucrab-compare -- --suite w04 --reserved
 ```
+
+W04 comparisons require unprivileged execution and two real filesystems: this host
+uses repository ext4 and a different `/tmp` mount. The suite fails as unavailable
+if that arrangement cannot be established; EXDEV is never mocked. GUI checks
+also require Xvfb, X11/XTest tools and Python Pillow.
 
 The runner exits 0 for a complete scoped pass, 1 for differences, and 2 for unavailable/incomplete execution. Raw results are kept under ignored `artifacts/runs/`; compact reports are in each directory under `evidence/workflows/`. W01 requires a real access-denied fixture, so running with privileges that can read it cannot produce a passing W01 result.
 
@@ -132,9 +149,9 @@ cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 cargo test --workspace --all-features --locked
 ```
 
-The Rust suite has sixteen tests covering recovered rules, navigation/error state,
+The Rust suite has twenty-one tests covering recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard, plus recursive-copy integrity, partial-error and boundary checks. The Python helper/protocol suite has twenty-seven tests. The separate
+readiness guard, plus copy/move integrity, real cross-device fallback, failed source deletion, focused rename and boundary checks. The Python helper/protocol suite has thirty tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 
@@ -142,7 +159,8 @@ Click a row to give its listing keyboard focus. Ctrl-click toggles a mark and
 Shift-click toggles a range; Space toggles and advances. Up/Down, Home/End, and
 Shift+Up/Down move/select; Tab switches panes. Cmd+A/Cmd+D (Ctrl on non-macOS)
 mark/unmark all; All/None/Invert buttons are also available. F5 reviews a copy
-to the other pane; Skip existing files is the initial policy. Successful
+to the other pane; F6 reviews a move and F2 renames the focused child, even when
+other children are marked. Skip existing files is the initial policy. Successful
 top-level items are unmarked, skipped items stay marked, and both panes refresh.
 The result details report failed children even when their parent folder was
 processed. The worker has no pause/cancel controls yet. A focused row is
@@ -260,7 +278,7 @@ The [implementation plan and progress ledger](mucrab-implementation-plan.md) rec
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
-5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting and bounded W03 recursive copy are verified within their contracts. Next is W04 move/rename, applying the same recovery and comparison gates. Permissions/owner/group sorting and additional filters remain deferred.
+5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy and W04 move/rename are verified within their contracts. Next is W05 batch rename, applying the same recovery and comparison gates. Permissions/owner/group sorting and additional filters remain deferred.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
 
 Upstream Java implementation source will be withheld during reconstruction; license and attribution material remains available. Decompiled representations, binary metadata, and observations of the original are permitted inputs. Findings from the earlier feasibility investigation must be identified as prior evidence if reused.

@@ -1,0 +1,254 @@
+{
+  "status": "passed",
+  "scope": "Representative native XTest replay, actual original MoveDialog jobs/inline editor and complete trees; no exhaustive OS dispatch parity",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "filesystem": "ext4 plus distinct /tmp",
+    "backend": "X11/Xvfb",
+    "original_jdk": "25.0.4.1",
+    "umask": "022"
+  },
+  "raw_run": "artifacts/gui/W04-20261016T195348Z-8bcf4a90",
+  "inputs": [
+    {
+      "path": "tools/w04_gui.py",
+      "sha256": "1aadf18ae5ec881f79c3400391fa7257ad9879243ad98f98a079d88bd0e98b7a"
+    },
+    {
+      "path": "tools/java/W04GuiProbe.java",
+      "sha256": "1ccec758af09917421b684e0754e6ee9a4e7c82440221885f0c17f09483a9b5e"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    },
+    {
+      "path": "tools/linux_gui.py",
+      "sha256": "22914dd769c229c6982c1e142b9fbd2da0470d214863161efd52cb2c0e0223b2"
+    },
+    {
+      "path": "fixtures/W04-move-rename/gui.json",
+      "sha256": "fb96385d9888518de09dad252a75ae7c3ed8cfe60b3e997253458689ea42ff73"
+    },
+    {
+      "path": "fixtures/W04-move-rename/native-gui-actions.json",
+      "sha256": "307c9adc50fea8540f9797f6b2b0af66615e2ebab0f391d13919b08feb412ffe"
+    }
+  ],
+  "native_binary": {
+    "path": "target/debug/mucrab",
+    "sha256": "342ac9a741a07438ae494b3c411a69c825a52f0fd3033c6e97fd09e7011aeb50"
+  },
+  "native_env": {
+    "PATH": "/nonexistent"
+  },
+  "native_actions": 41,
+  "native_checks": [
+    "Both move directions, review/cancel/F6 focus restoration, SKIP/OVERWRITE, successful item unmarking and refresh",
+    "Focused single-item rename with a different marked item; new visible identity focused and other mark retained",
+    "Unchanged and path-traversal rename names disable submit",
+    "Real cross-device partial directory move: one file moved, two permission errors, source mark retained, both paths/details visible",
+    "Final healthy source/destination trees match expectations; partial remaining source/destination match original component snapshots"
+  ],
+  "original_probe": {
+    "mechanism": "Observer invokes real active table and MoveDialog controls on EDT, executes original full jobs, and posts the actual inline filename JTextField action listener; no overrides or transformations",
+    "move_jobs": 3,
+    "rename_jobs": 1,
+    "stages": 10,
+    "pane_states": 20,
+    "states": "gui/original-states.json",
+    "result": "gui/original-result.json",
+    "tree_result": "gui/original-tree-result.json"
+  },
+  "copy_gui_regression": {
+    "raw_run": "artifacts/gui/W03-20261016T195311Z-41c13c63",
+    "actions": 40,
+    "tree_result": "gui/copy-regression-tree-result.json",
+    "partial_result": "gui/copy-regression-partial-result.json",
+    "native_binary_sha256": "342ac9a741a07438ae494b3c411a69c825a52f0fd3033c6e97fd09e7011aeb50"
+  },
+  "preparation": {
+    "path": "artifacts/gui/W04-20261016T195348Z-8bcf4a90/provenance.json",
+    "sha256": "2efe49c5d1da07a6819405e42fd72d887a982bf410a049795a41a2ccc6310ee8"
+  },
+  "review": "Retained captures inspected visually; filesystem inspection verifies bytes/modes/dates/link text independently",
+  "limitations": [
+    "Native partial errors compared to original method results, not full-original error-dialog parity",
+    "Physical desktop, Wayland, exhaustive OS shortcuts, cancellation and broader job orchestration unverified",
+    "Original optional bundle/logging warnings remain",
+    "Exploratory GUI run retained at artifacts/gui/W04-20261016T195041Z-512ade81; final mutating replay uses fresh trees"
+  ],
+  "retained": [
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-marked.png",
+      "sha256": "6e68218db711c1493add5e4f16bf1fa8b4c7a964c8dbae84067fafbcf3559e25",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-forward-review.png",
+      "sha256": "1dedabfdf9de5c0724c315c3d78dfc84dd3a6e3f1e2f54049cc78292d8998386",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-cancelled.png",
+      "sha256": "c847698121ae886c7c34774ca8c3f06a8a849ee99d04dcd64656e95b5709d7ae",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-forward-skip.png",
+      "sha256": "18148f9130f7af6e883cb441ba2b6decad5ccb25579e860cdb8689e49c3d7aa7",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-reverse-review.png",
+      "sha256": "bfb4461bb62b0f442290c1b6de91d6f2cd4da449bbb68b7963333fe3d43f1d06",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-reverse-complete.png",
+      "sha256": "6b05ffd864ace87e635fa1fc8dc7dd41201c7672b6d6ed08e18d407c15825300",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-overwrite-approved.png",
+      "sha256": "1dbaebfcac11eeb34650c74a85e86f46413667585e4dddfd1658fbd57f072a05",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-overwrite-complete.png",
+      "sha256": "a64e8116ec5835c501880708feaa7d988a9180a8252cb08a0c338431ccd4f8ba",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-rename-unchanged.png",
+      "sha256": "d0ce86b5baf276014bff94b6b3557ff215b64e7e3ac645db1bc801c4cc83c9c4",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-rename-invalid.png",
+      "sha256": "ac9e902cd9f5a3db1563e3d3afb609887981b12ee3542fa0f3b8d20ce56df2e1",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-rename-review.png",
+      "sha256": "b6c1ba86710418ca1c51bb8b3c92cbd35cb0e23436f641573e788056f22fba59",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-rename-complete.png",
+      "sha256": "a47040c883c0d61b4bc3c7c6c1d97969b5a3e9973831b3d8e673501ba6239ec5",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-partial-review.png",
+      "sha256": "97aef9b22132a5374bc6e33b596ca981541c2be2dfe31e5edbc754dfe78cc143",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-partial-result.png",
+      "sha256": "adac42c97bb0833119a6824967e757eb7522145b02afcf40a57440e88039e2e0",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-partial-details.png",
+      "sha256": "d9d5c909b1e7c4cf12e63a7a968b3a81f025ff84ab0ebe8f43db4f52dea42579",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-forward-review-dialog.png",
+      "sha256": "6e1c89187357e0ff2deaaf8b2af30aa49972fc61d42eea8ebc70074521d09a1f",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-forward-skip.png",
+      "sha256": "fca1e345ad883b6af764afbb58a5a7046afaa4a4148fbd30c57cd12002675a0e",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-reverse-review-dialog.png",
+      "sha256": "0c29f68fb9fcb315f1870808322d34fb245459fe6900133589ddd2bb1eb5d9bb",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-reverse-complete.png",
+      "sha256": "f82ea9ed7ec3661e23524b6a86404cd4270c6fe44036a47ebb2bb3a78bc4fc2c",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-overwrite-review-dialog.png",
+      "sha256": "a703e777121d3fb0602f68783c3df989686f12dd035bfc926a73206dd1d5a9b1",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-overwrite-complete.png",
+      "sha256": "eb2b3628b7d6bc4bbf6aaab6a77ac70e6021f56cc454f5616cfbdb0ac22d4b7f",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-inline-rename-review.png",
+      "sha256": "86bd927f3b278a61586e87d152d4b91467630e339a87963711f2d85f98393c7f",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-inline-rename-complete.png",
+      "sha256": "25d700e09f218bbfb377803b78f687785a50b4085377ec7a3ba1fce8a4496cef",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-states.json",
+      "sha256": "1cb7b48d3c452c4b0643d260d9d765d02005926852a4e871c720df4ac6f982f3",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-result.json",
+      "sha256": "e916e7055317c3f63fc9ceb011c263f9f5f8920cbdb590d87da3ae583cda5c1d",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/original-tree-result.json",
+      "sha256": "a2a6fa3d39f4d4dc393ed231560b63d02002c75b410520b090657ef4c3a4b996",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-tree-result.json",
+      "sha256": "a2a6fa3d39f4d4dc393ed231560b63d02002c75b410520b090657ef4c3a4b996",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-partial-result.json",
+      "sha256": "d572a2f254c91091a95472347658bfd5e76b9575eaae2c0f497dc5d10860e273",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/expected-trees.json",
+      "sha256": "42ffe482bf5d8723fcec49b8d8f62818cdc3fdc5668432d0ac31771751aec231",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/expected-partial-destination.json",
+      "sha256": "306413fab4abf71f7baa9f8615b9be8c343ce2682b3cbe97c86708a6508d3429",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/expected-partial-source.json",
+      "sha256": "5af83adb8349dafd47801b72a3fc2ae8557be68400f58fb5ee378b66c9854610",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/native-actions.json",
+      "sha256": "11e5fc4114399dd4ea716175eb2c716e8354ab56a74be08ae074ec8d9ee8851a",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/copy-regression-tree-result.json",
+      "sha256": "f3a05a61359457aa136729b2ac12e1fd33d2f993d9231ed8c11ed5c4bb0fcf8f",
+      "producer": "GUI observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/gui/copy-regression-partial-result.json",
+      "sha256": "9a45d3f4ae54849a2db61b8503d54ab624e03dcd9d0c5c8b9b1e3580311e9434",
+      "producer": "GUI observer or independent filesystem inspection"
+    }
+  ]
+}

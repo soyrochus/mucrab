@@ -12,15 +12,15 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-16 |
-| Last verified implementation commit | `e9b9587` — Migrate verified recursive local copy to muCrab |
+| Last verified implementation commit | W04 implementation/evidence checkpoint prepared; exact commit recorded after commit creation |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W03 — bounded recursive local copy verified; next is W04 move/rename |
+| Active workflow | W04 — bounded local move/rename verified; next is W05 batch rename |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | W04: recover bounded local move/rename behavior and original adapter before Rust; keep all five comparison suites passing |
-| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy |
-| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. Zero differences/omitted test cases within scope |
-| Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); OS dispatch/Wayland remain unverified |
-| Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
+| Next executable task | W05: recover batch rename rules and original preview/apply adapter; freeze contract/fixtures before Rust; keep all six predefined/reserved suites passing |
+| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename |
+| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. Zero differences/omitted test cases within scope |
+| Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
+| Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4 plus distinct /tmp for W04, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
 
 The commit above identifies the implementation baseline, not the commit adding
 this plan. On resumption, inspect the actual checkout and reconcile this table
@@ -427,7 +427,7 @@ further when their acceptance criteria cannot be closed in one increment.
 | W02b | Hidden-file filtering and selection interaction | Visible entries, surviving marks/focus, parent handling | `verified` within Unix/en-US contract |
 | W02c | Size/date/extension sorting | Metadata ordering, ties, selection persistence | `verified` within bounded metadata contract; permissions/owner/group deferred |
 | W03 | Recursive local copy | Paths, bytes, empty folders, declared metadata, fixed collision policies and partial errors | `verified` within bounded Linux/owned-file contract |
-| W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `not_started` |
+| W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `verified` within bounded Linux/owned-file/same-and-cross-device contract |
 | W05 | Batch rename | Generated names, preview/apply consistency, collisions, partial failures | `not_started` |
 | W06 | ZIP browsing and extraction | Entry listing, extracted paths and bytes, supported edge/error cases | `not_started` |
 | W07 | Background operations and cancellation | Completion, cancellation boundaries, partial results, UI responsiveness | `not_started` |
@@ -567,7 +567,29 @@ contain failed children; native details expose those errors. Native guards
 reject dangerous overlaps, aliases and outside link targets. Those restrictions,
 other owners/ACLs, filesystem races, mid-stream/disk-full recovery, remote/archive
 providers and cancellation are outside equivalence scope. W04 move/rename is
-next; full job/cancellation behavior remains W07.
+now verified separately below; full job/cancellation behavior remains W07.
+
+### W04 gate ledger
+
+| Gate | State | Evidence / unresolved work |
+| --- | --- | --- |
+| G1: original Java adapter | `verified` within method boundary | Real MoveJob constructor/nextFile/processFile, initialized original desktop, original rename/copy/delete/collision methods; no overrides |
+| G2: recovered contract | `verified` within bounded scope | 21-class recovery, rename-first fallback after any IOException, directory aggregate failures, source removal, metadata, focused inline rename and explicit symlink exclusion |
+| G3: fixtures and protocol | `verified` | 38 named + 10 generated + 20 withheld reserved sets; real st_dev arrangements, strict ordered outcomes, both complete trees, identities and selected-content conservation |
+| G4: Rust and comparison | `verified` within scope | 319 predefined + 160 reserved = 479 cases, 216 cross-device, 37 rename-mode, 544 outcomes/identity checks; zero differences/omitted cases; all twelve suite executions pass |
+| G5: native workflow | `verified` within X11/Xvfb scope | 41-action move both ways, cancel/F6, skip/overwrite, focused F2 rename with other marks, invalid-name guard and real cross-device partial details; actual original MoveDialogs/full jobs/inline editor, final trees and 20 pane states |
+| G6: reproducible closure | `verified` for local development | Source/input/binary hashes, retained GUI artifacts/replay, 21 Rust/30 Python tests, locked offline build/lint/integrity checks, GPL notices and local checkpoint; release packaging remains open |
+
+See `evidence/workflows/W04-move-rename/README.md`, `contract.md` and
+`decisions.md`. Same-device rename preserves inode/full ordinary metadata;
+fallback copies with W03 metadata rules, deletes only after successful transfer,
+and reports partial source retention. Original symlink fallback can consume a
+directory link's target; a separate diagnostic deliberately claims zero
+equivalence cases. Native declines such fallback. Native safety guards, races,
+other owners/ACLs/xattrs/special bits, mid-stream faults, other providers/platforms
+and full scheduling/cancellation remain outside equivalence scope. Cross-device
+fixtures/tests require a genuinely different `/tmp` mount and unprivileged uid.
+W05 batch rename is the next executable workflow; W07 retains broader lifecycle.
 
 ### Open issues
 
@@ -580,7 +602,8 @@ next; full job/cancellation behavior remains W07.
 | R05 | Ignored raw artifacts still need rehydration | Use W01/W02 scripts and retained GUI evidence; regenerate or transfer required caches/raw runs |
 | R06 | Original shortcut dispatch/AX mark count and full OS mouse-event parity unverified | Adapter isolates original methods; GUI captures are representative. Establish full dispatch separately before making broader GUI claims |
 | R07 | Original table sorter stalls on certain extreme signed-metadata inputs | Preserved original failure/reproducer; pair-only arithmetic coverage; enforce declared native sortable range |
-| R08 | Recursive copy is bounded; full job orchestration and race-safe mutation remain unverified | Preserve W03 guards and partial-error details; establish move/rename in W04 and cancellation/lifecycle in W07 |
+| R08 | Recursive copy is bounded; full job orchestration and race-safe mutation remain unverified | Preserve W03/W04 guards and partial-error details; cancellation/lifecycle remains W07 |
+| R09 | Original cross-device symlink fallback can consume targets | Keep W04 diagnostic separate (exit 2/zero equivalence); native retains links/targets when atomic rename fails |
 
 ### Session entry template
 
@@ -863,6 +886,54 @@ Exact next executable action:
   coding and keeping all five predefined/reserved suites passing. Use separate
   disposable source/destination trees for every mutating comparison.
 
+- **2026-10-16 — W04 local move/rename:** started from clean `027078f`
+  (main ahead six), Linux x86_64/ext4, separate `/tmp` device, JDK 25.0.4.1.
+  Recovered 21 pinned classes and ran original-only 319 cases before Rust;
+  froze contract, 38 named + ten generated sets (744041), and withheld twenty
+  reserved sets (991074). Original-only symlink diagnostic reproduces target
+  consumption separately, exits 2 and counts zero equivalence cases. No upstream
+  implementation-source fetch, dependency change or immutable-reference write.
+
+  Added native MoveRequest/MoveReport, actual filesystem rename then copy/delete
+  fallback, directory aggregate failures, collision policies, safe path/link
+  guards and source-retention details. Shared W03 metadata helpers keep their
+  behavior. F6 reviews effective selection to the other pane; F2 reviews only
+  the focused child, preserving unrelated marks and focusing the renamed entry.
+  Both panes refresh and successful top-level items unmark. Invalid/unchanged
+  names are disabled; the worker preserves existing F5/cancel focus restoration.
+
+  Final predefined run `W04-20261016T195318Z-4223cb0b` passes 319 cases;
+  reserved `W04-20261016T195322Z-aaa0caf8` passes 160. Totals: 479 cases,
+  263 same-device/216 cross-device, 37 rename-mode, 544 ordered outcomes and
+  identity relations, 479 complete source and 479 destination tree comparisons,
+  958 selected-content conservation checks. Zero differences or omitted cases.
+  `W04-regressions-20261016T195240Z-0e1b95d9` reruns all twelve predefined/
+  reserved suites; earlier workflow counts remain unchanged. Every required
+  source fingerprint matches the final Rust implementation.
+
+  Final GUI run `artifacts/gui/W04-20261016T195348Z-8bcf4a90` passes the
+  portable 41-action native replay (PATH=/nonexistent, umask 022), actual original
+  three MoveDialogs/full jobs and inline filename-editor rename, ten original
+  stages/twenty pane states, and complete tree checks. Native captures show
+  unchanged/invalid-name guards, unrelated marks retained after focused rename,
+  a failing marked source retained after a real cross-device partial move, and
+  both permission details. Thirty-four GUI artifacts are retained in evidence.
+  Existing W03 40-action GUI replay also passes on the final native binary in
+  `artifacts/gui/W03-20261016T195311Z-41c13c63`. Exploratory runs remain retained;
+  every mutating final replay used fresh independent trees. Physical desktop,
+  Wayland, exhaustive OS dispatch and unrelated original components are unverified.
+
+  Validation `W04-validation-20261016T195411Z-f3f110fa` passes formatting,
+  Clippy with warnings denied, 21 Rust/30 Python tests, locked offline build,
+  original integrity, native version without Java on PATH and no JVM linkage.
+  Cargo.lock is unchanged. README/NOTICE, preview, reproducible tools and gate
+  ledger are updated. Gates G1–G6 are verified only within the declared contract.
+  Implementation/evidence checkpoint is being committed; exact hash follows in
+  the handoff update. No push or release. Raw ignored runs and uniquely named
+  `/tmp/mucrab-W04-*` trees require regeneration or separate transfer. Next is
+  W05 batch rename: recover original generated names/preview/apply/collision
+  behavior, freeze fixtures/contract, then port while keeping all six suites passing.
+
 ## Final demonstration acceptance
 
 After the selected workflows are verified, run an agreed suite targeting
@@ -887,10 +958,10 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > Inspect Git, repository instructions, code, and committed evidence first;
 > reconcile the live checkpoint before acting. Rehydrate ignored inputs on this
 > machine and record fresh verification. Resume the first unfinished workflow
-> gate. W01, W02a, W02b, W02c and W03 are verified within their declared contracts; Linux
+> gate. W01, W02a, W02b, W02c, W03 and W04 are verified within their declared contracts; Linux
 > component comparisons and representative X11/Xvfb checks are recorded.
-> The next action is W04 bounded local move/rename recovery and original adapter.
-> Keep W01, W02, W02b, W02c and W03 suites passing. Continue through each workflow's gates before expanding
+> The next action is W05 batch rename recovery and original preview/apply adapter.
+> Keep all six W01/W02/W02b/W02c/W03/W04 predefined/reserved suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
 > Java. Update the plan and evidence at each checkpoint, including exact next

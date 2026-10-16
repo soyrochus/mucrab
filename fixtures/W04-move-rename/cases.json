@@ -1,0 +1,1040 @@
+{
+  "schema_version": 1,
+  "generated_seed": 744041,
+  "reserved_seed": 991074,
+  "generated_sets": 10,
+  "reserved_sets": 20,
+  "policies": [
+    "SKIP",
+    "OVERWRITE",
+    "OVERWRITE_IF_OLDER",
+    "OVERWRITE_IF_SIZE_DIFFERS"
+  ],
+  "default_modified_ms": 1577836800123,
+  "default_file_mode": 420,
+  "default_directory_mode": 493,
+  "cases": [
+    {
+      "id": "empty-selection",
+      "source": [
+        {
+          "path": "untouched",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [],
+      "names": [],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "zero-file",
+      "source": [
+        {
+          "path": "zero",
+          "kind": "file",
+          "size": 0
+        }
+      ],
+      "destination": [],
+      "names": [
+        "zero"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "binary-chunk-boundaries",
+      "source": [
+        {
+          "path": "binary",
+          "kind": "file",
+          "size": 262151
+        }
+      ],
+      "destination": [],
+      "names": [
+        "binary"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "unicode-and-hidden",
+      "source": [
+        {
+          "path": "a space",
+          "kind": "file",
+          "size": 9
+        },
+        {
+          "path": "\u00e9.\u4e2d",
+          "kind": "file",
+          "size": 45
+        },
+        {
+          "path": ".hidden",
+          "kind": "file",
+          "size": 3
+        }
+      ],
+      "destination": [],
+      "names": [
+        ".hidden",
+        "\u00e9.\u4e2d",
+        "a space"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "empty-folder",
+      "source": [
+        {
+          "path": "empty",
+          "kind": "directory"
+        }
+      ],
+      "destination": [],
+      "names": [
+        "empty"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "nested-tree",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/one",
+          "kind": "file",
+          "size": 1
+        },
+        {
+          "path": "tree/sub",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/sub/large",
+          "kind": "file",
+          "size": 65539
+        },
+        {
+          "path": "tree/sub/empty",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/.hidden",
+          "kind": "file",
+          "size": 7
+        }
+      ],
+      "destination": [],
+      "names": [
+        "tree"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "readonly-and-executable",
+      "source": [
+        {
+          "path": "readonly",
+          "kind": "file",
+          "size": 5,
+          "mode": 292
+        },
+        {
+          "path": "executable",
+          "kind": "file",
+          "size": 21,
+          "mode": 489
+        }
+      ],
+      "destination": [],
+      "names": [
+        "readonly",
+        "executable"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "signed-millisecond-dates",
+      "source": [
+        {
+          "path": "before",
+          "kind": "file",
+          "size": 7,
+          "modified_ms": -1234
+        },
+        {
+          "path": "last-ms",
+          "kind": "file",
+          "size": 8,
+          "modified_ms": -1
+        },
+        {
+          "path": "epoch",
+          "kind": "file",
+          "size": 9,
+          "modified_ms": 0
+        },
+        {
+          "path": "precise",
+          "kind": "file",
+          "size": 10,
+          "modified_ms": 1577836800123
+        }
+      ],
+      "destination": [],
+      "names": [
+        "before",
+        "last-ms",
+        "epoch",
+        "precise"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "collision-same-size",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17,
+          "modified_ms": 946684800000,
+          "pattern": 199
+        }
+      ],
+      "names": [
+        "file"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "collision-different-size",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 23,
+          "modified_ms": 946684800000,
+          "pattern": 199
+        }
+      ],
+      "names": [
+        "file"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "collision-newer-destination",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17,
+          "modified_ms": 1893456000000,
+          "pattern": 199
+        }
+      ],
+      "names": [
+        "file"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "collision-equal-date",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 23,
+          "modified_ms": 1577836800123,
+          "pattern": 199
+        }
+      ],
+      "names": [
+        "file"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "merge-existing-folders",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/both",
+          "kind": "file",
+          "size": 4
+        },
+        {
+          "path": "tree/new",
+          "kind": "file",
+          "size": 2
+        },
+        {
+          "path": "tree/empty",
+          "kind": "directory"
+        }
+      ],
+      "destination": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/both",
+          "kind": "file",
+          "size": 13,
+          "pattern": 200
+        },
+        {
+          "path": "tree/retained",
+          "kind": "file",
+          "size": 31
+        },
+        {
+          "path": "tree/other",
+          "kind": "directory"
+        }
+      ],
+      "names": [
+        "tree"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "folder-over-file",
+      "source": [
+        {
+          "path": "item",
+          "kind": "directory"
+        },
+        {
+          "path": "item/inside",
+          "kind": "file",
+          "size": 5
+        }
+      ],
+      "destination": [
+        {
+          "path": "item",
+          "kind": "file",
+          "size": 10,
+          "pattern": 211
+        }
+      ],
+      "names": [
+        "item"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "file-over-folder",
+      "source": [
+        {
+          "path": "item",
+          "kind": "file",
+          "size": 5
+        }
+      ],
+      "destination": [
+        {
+          "path": "item",
+          "kind": "directory"
+        },
+        {
+          "path": "item/keep",
+          "kind": "file",
+          "size": 11
+        }
+      ],
+      "names": [
+        "item"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "unreadable-source-and-continue",
+      "source": [
+        {
+          "path": "locked",
+          "kind": "file",
+          "size": 11,
+          "mode": 0
+        },
+        {
+          "path": "next",
+          "kind": "file",
+          "size": 17
+        }
+      ],
+      "destination": [],
+      "names": [
+        "locked",
+        "next"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "unwritable-file",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 7
+        }
+      ],
+      "destination": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 13,
+          "mode": 292
+        }
+      ],
+      "names": [
+        "file"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "unwritable-folder",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/new",
+          "kind": "file",
+          "size": 5
+        }
+      ],
+      "destination": [
+        {
+          "path": "tree",
+          "kind": "directory",
+          "mode": 365
+        }
+      ],
+      "names": [
+        "tree"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "unreadable-directory",
+      "source": [
+        {
+          "path": "locked",
+          "kind": "directory",
+          "mode": 0
+        },
+        {
+          "path": "locked/child",
+          "kind": "file",
+          "size": 31
+        }
+      ],
+      "destination": [],
+      "names": [
+        "locked"
+      ],
+      "ignore_destination_mtime": [
+        "locked"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "partial-child-failure",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/locked",
+          "kind": "file",
+          "size": 29,
+          "mode": 0
+        },
+        {
+          "path": "tree/good",
+          "kind": "file",
+          "size": 13
+        },
+        {
+          "path": "tree/denied",
+          "kind": "directory",
+          "mode": 0
+        },
+        {
+          "path": "tree/denied/child",
+          "kind": "file",
+          "size": 11
+        }
+      ],
+      "destination": [],
+      "names": [
+        "tree"
+      ],
+      "ignore_destination_mtime": [
+        "tree/denied"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "missing-source-and-continue",
+      "source": [
+        {
+          "path": "next",
+          "kind": "file",
+          "size": 23
+        }
+      ],
+      "destination": [],
+      "names": [
+        "missing",
+        "next"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "source-parent-readonly",
+      "source": [
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 19
+        },
+        {
+          "path": "folder",
+          "kind": "directory"
+        },
+        {
+          "path": "folder/child",
+          "kind": "file",
+          "size": 23
+        }
+      ],
+      "destination": [],
+      "names": [
+        "file",
+        "folder"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ],
+      "source_root_mode": 365
+    },
+    {
+      "id": "empty-destination-folder-replaced",
+      "source": [
+        {
+          "path": "folder",
+          "kind": "directory",
+          "mode": 448
+        },
+        {
+          "path": "folder/file",
+          "kind": "file",
+          "size": 7
+        }
+      ],
+      "destination": [
+        {
+          "path": "folder",
+          "kind": "directory",
+          "mode": 493
+        }
+      ],
+      "names": [
+        "folder"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "atomic-folder-with-links",
+      "source": [
+        {
+          "path": "folder",
+          "kind": "directory"
+        },
+        {
+          "path": "folder/target",
+          "kind": "file",
+          "size": 11
+        },
+        {
+          "path": "folder/link",
+          "kind": "symlink",
+          "target": "target"
+        },
+        {
+          "path": "folder/broken",
+          "kind": "symlink",
+          "target": "missing"
+        }
+      ],
+      "destination": [],
+      "names": [
+        "folder"
+      ],
+      "arrangements": [
+        "same"
+      ]
+    },
+    {
+      "id": "atomic-relative-file-link",
+      "source": [
+        {
+          "path": "target",
+          "kind": "file",
+          "size": 9
+        },
+        {
+          "path": "link",
+          "kind": "symlink",
+          "target": "target"
+        }
+      ],
+      "destination": [],
+      "names": [
+        "link"
+      ],
+      "arrangements": [
+        "same"
+      ]
+    },
+    {
+      "id": "broken-link-not-renamed",
+      "source": [
+        {
+          "path": "broken",
+          "kind": "symlink",
+          "target": "missing"
+        }
+      ],
+      "destination": [],
+      "names": [
+        "broken"
+      ],
+      "arrangements": [
+        "same",
+        "cross"
+      ]
+    },
+    {
+      "id": "rename-simple",
+      "source": [
+        {
+          "path": "old",
+          "kind": "file",
+          "size": 23
+        }
+      ],
+      "destination": [],
+      "names": [
+        "old"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": "new",
+      "rename_mode": true,
+      "destination_use": "source"
+    },
+    {
+      "id": "rename-case-only",
+      "source": [
+        {
+          "path": "File.txt",
+          "kind": "file",
+          "size": 23
+        }
+      ],
+      "destination": [],
+      "names": [
+        "File.txt"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": "file.txt",
+      "rename_mode": true,
+      "destination_use": "source"
+    },
+    {
+      "id": "rename-unicode",
+      "source": [
+        {
+          "path": "\u00e9 old",
+          "kind": "file",
+          "size": 23
+        }
+      ],
+      "destination": [],
+      "names": [
+        "\u00e9 old"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": "\u4e2d new",
+      "rename_mode": true,
+      "destination_use": "source"
+    },
+    {
+      "id": "rename-hidden",
+      "source": [
+        {
+          "path": "visible",
+          "kind": "file",
+          "size": 23
+        }
+      ],
+      "destination": [],
+      "names": [
+        "visible"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": ".hidden",
+      "rename_mode": true,
+      "destination_use": "source"
+    },
+    {
+      "id": "rename-unchanged",
+      "source": [
+        {
+          "path": "same",
+          "kind": "file",
+          "size": 23
+        }
+      ],
+      "destination": [],
+      "names": [
+        "same"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": "same",
+      "rename_mode": true,
+      "destination_use": "source",
+      "policies": [
+        "SKIP"
+      ]
+    },
+    {
+      "id": "rename-folder",
+      "source": [
+        {
+          "path": "old",
+          "kind": "directory",
+          "mode": 448
+        },
+        {
+          "path": "old/empty",
+          "kind": "directory"
+        },
+        {
+          "path": "old/child",
+          "kind": "file",
+          "size": 31
+        }
+      ],
+      "destination": [],
+      "names": [
+        "old"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": "new",
+      "rename_mode": true,
+      "destination_use": "source"
+    },
+    {
+      "id": "rename-collision-same-size",
+      "source": [
+        {
+          "path": "old",
+          "kind": "file",
+          "size": 17
+        },
+        {
+          "path": "new",
+          "kind": "file",
+          "size": 17,
+          "pattern": 200,
+          "modified_ms": 946684800000
+        }
+      ],
+      "destination": [],
+      "names": [
+        "old"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": "new",
+      "rename_mode": true,
+      "destination_use": "source"
+    },
+    {
+      "id": "rename-collision-size-differs",
+      "source": [
+        {
+          "path": "old",
+          "kind": "file",
+          "size": 17
+        },
+        {
+          "path": "new",
+          "kind": "file",
+          "size": 23,
+          "pattern": 200,
+          "modified_ms": 946684800000
+        }
+      ],
+      "destination": [],
+      "names": [
+        "old"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": "new",
+      "rename_mode": true,
+      "destination_use": "source"
+    },
+    {
+      "id": "rename-collision-newer",
+      "source": [
+        {
+          "path": "old",
+          "kind": "file",
+          "size": 17
+        },
+        {
+          "path": "new",
+          "kind": "file",
+          "size": 17,
+          "pattern": 200,
+          "modified_ms": 1893456000000
+        }
+      ],
+      "destination": [],
+      "names": [
+        "old"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": "new",
+      "rename_mode": true,
+      "destination_use": "source"
+    },
+    {
+      "id": "rename-merge-partial",
+      "source": [
+        {
+          "path": "old",
+          "kind": "directory"
+        },
+        {
+          "path": "old/both",
+          "kind": "file",
+          "size": 17
+        },
+        {
+          "path": "old/new",
+          "kind": "file",
+          "size": 7
+        },
+        {
+          "path": "new",
+          "kind": "directory"
+        },
+        {
+          "path": "new/both",
+          "kind": "file",
+          "size": 23,
+          "pattern": 199
+        }
+      ],
+      "destination": [],
+      "names": [
+        "old"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "new_name": "new",
+      "rename_mode": true,
+      "destination_use": "source"
+    },
+    {
+      "id": "identical-overlap-skip",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/file",
+          "kind": "file",
+          "size": 7
+        },
+        {
+          "path": "file",
+          "kind": "file",
+          "size": 13
+        }
+      ],
+      "destination": [],
+      "names": [
+        "tree",
+        "file"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "destination_use": "source",
+      "policies": [
+        "SKIP"
+      ]
+    },
+    {
+      "id": "descendant-overlap-skip",
+      "source": [
+        {
+          "path": "tree",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/inside",
+          "kind": "directory"
+        },
+        {
+          "path": "tree/file",
+          "kind": "file",
+          "size": 7
+        }
+      ],
+      "destination": [],
+      "names": [
+        "tree"
+      ],
+      "arrangements": [
+        "same"
+      ],
+      "destination_use": "source/tree/inside",
+      "policies": [
+        "SKIP"
+      ]
+    }
+  ]
+}

@@ -75,6 +75,16 @@ records the original runtime boundary and native path guards. Original-JAR
 adapters and full-application dialog observations remain test-only; the native
 copy implementation uses Rust's standard library and requires no Java runtime.
 
+## Local move and single-item rename
+
+Move, rename-first/copy-delete fallback, source retention after partial failures,
+and focused single-item rename were reconstructed from the pinned `MoveJob`,
+`LocalFile`, transfer/collision callers and `FileTable$FilenameEditor` binaries.
+The upstream attribution and GPL notices above apply. [The W04 contract](evidence/workflows/W04-move-rename/contract.md)
+records real same/cross-filesystem observations and the native guard that declines
+fallback through symlinks. Original dialogs/editor and JAR execution are test-only;
+the native implementation uses Rust's standard library and requires no Java.
+
 ## Investigation tools
 
 [REA](https://github.com/morluto/rea) **6.5.0** and [CFR](https://github.com/leibnitz27/cfr) **0.152** are installed locally as investigation tools. Their downloaded implementations and dependencies are in ignored storage, separate from the future Rust application's source and dependencies. [Readiness evidence](evidence/toolchain/readiness.json) records their actual commands and results.

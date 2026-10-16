@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "destination_tree_checks": 1,
+  "source_integrity_checks": 1,
+  "reference_case": "partial-child-failure-skip"
+}

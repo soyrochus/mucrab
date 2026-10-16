@@ -60,7 +60,7 @@ pub struct CopyReport {
     pub links_copied: usize,
 }
 
-fn leaf(name: &str) -> bool {
+pub fn is_valid_leaf_name(name: &str) -> bool {
     !name.is_empty()
         && !name.contains('\0')
         && !name.contains('/')
@@ -87,7 +87,7 @@ fn normalize(path: &Path) -> PathBuf {
     }
     clean
 }
-fn resolved(path: &Path) -> io::Result<PathBuf> {
+pub(crate) fn resolved(path: &Path) -> io::Result<PathBuf> {
     if let Ok(path) = fs::canonicalize(path) {
         return Ok(path);
     }
@@ -100,7 +100,7 @@ fn resolved(path: &Path) -> io::Result<PathBuf> {
         .ok_or_else(|| invalid("Cannot resolve filename"))?;
     Ok(resolved(parent)?.join(name))
 }
-fn modified_ms(metadata: Option<&fs::Metadata>) -> i128 {
+pub(crate) fn modified_ms(metadata: Option<&fs::Metadata>) -> i128 {
     metadata.and_then(|m| m.modified().ok()).map_or(0, |time| {
         match time.duration_since(UNIX_EPOCH) {
             Ok(value) => value.as_millis() as i128,
@@ -108,7 +108,7 @@ fn modified_ms(metadata: Option<&fs::Metadata>) -> i128 {
         }
     })
 }
-fn apply_metadata(source: Option<&fs::Metadata>, destination: &Path, permissions: bool) {
+pub(crate) fn apply_metadata(source: Option<&fs::Metadata>, destination: &Path, permissions: bool) {
     let millis = modified_ms(source).max(0);
     if let Ok(millis) = u64::try_from(millis)
         && let Some(time) = UNIX_EPOCH.checked_add(Duration::from_millis(millis))
@@ -302,7 +302,7 @@ impl Copier {
 /// Copy the ordered selection into an existing folder. Validate all names before
 /// writing. Scope assumes stable local trees; this is not a race-proof sandbox.
 pub fn copy_entries(request: &CopyRequest) -> io::Result<CopyReport> {
-    if request.names.iter().any(|name| !leaf(name))
+    if request.names.iter().any(|name| !is_valid_leaf_name(name))
         || request
             .names
             .iter()
@@ -311,7 +311,7 @@ pub fn copy_entries(request: &CopyRequest) -> io::Result<CopyReport> {
         || request
             .new_name
             .as_ref()
-            .is_some_and(|name| !leaf(name) || request.names.len() != 1)
+            .is_some_and(|name| !is_valid_leaf_name(name) || request.names.len() != 1)
     {
         return Err(invalid(
             "Use distinct direct child names and rename only one item",
