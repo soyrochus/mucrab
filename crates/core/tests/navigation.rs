@@ -158,3 +158,94 @@ fn links_and_dotfiles_are_visible_and_directory_flags_follow_links() {
     assert!(!broken.is_directory && broken.is_symlink);
     assert!(entries.iter().any(|entry| entry.name == ".hidden"));
 }
+
+#[test]
+fn hidden_filter_discards_marks_and_falls_back_without_resurrecting_selection() {
+    let fixture = Fixture::new();
+    fs::write(fixture.0.join(".hidden"), b"hidden").unwrap();
+    let sorter = NameSorter::en_us().unwrap();
+    let mut pane = BrowserPane {
+        show_hidden: true,
+        ..Default::default()
+    };
+    assert!(pane.open(&fixture.0, &sorter));
+    let hidden_row = pane
+        .order
+        .iter()
+        .position(|i| pane.entries[*i].name == ".hidden")
+        .unwrap()
+        + 1;
+    pane.apply_event(&PaneEvent::All, &sorter).unwrap();
+    pane.apply_event(&PaneEvent::Focus { row: hidden_row }, &sorter)
+        .unwrap();
+    pane.set_show_hidden(false, &sorter);
+    let hidden = pane.selection.snapshot(&pane.entries, &pane.order);
+    assert!(
+        !hidden
+            .visible
+            .iter()
+            .any(|name| name.starts_with('.') && name != "..")
+    );
+    assert_eq!(
+        hidden.focus_row,
+        Some(hidden_row.min(hidden.visible.len() - 1))
+    );
+    assert_eq!(hidden.marked.len(), 3);
+    pane.set_show_hidden(true, &sorter);
+    let shown = pane.selection.snapshot(&pane.entries, &pane.order);
+    assert!(shown.visible.iter().any(|name| name == ".hidden"));
+    assert!(!shown.marked.iter().any(|name| name == ".hidden"));
+    assert_eq!(shown.focused, hidden.focused);
+    assert_eq!(shown.marked.len(), 3);
+    // The original table's held-Space guard survives a filter-triggered reload.
+    pane.apply_event(&PaneEvent::None, &sorter).unwrap();
+    pane.apply_event(&PaneEvent::Last, &sorter).unwrap();
+    pane.apply_event(&PaneEvent::Space, &sorter).unwrap();
+    pane.set_show_hidden(false, &sorter);
+    pane.apply_event(&PaneEvent::Space, &sorter).unwrap();
+    assert_eq!(pane.selection.marked_count(), 1);
+    pane.apply_event(&PaneEvent::Release, &sorter).unwrap();
+    pane.apply_event(&PaneEvent::Space, &sorter).unwrap();
+    assert_eq!(pane.selection.marked_count(), 0);
+}
+
+#[cfg(unix)]
+#[test]
+fn hidden_setting_follows_navigation_and_classifies_links_by_their_own_names() {
+    let fixture = Fixture::new();
+    fs::write(fixture.0.join(".hidden"), b"hidden").unwrap();
+    fs::write(fixture.0.join("child/.child-hidden"), b"child").unwrap();
+    std::os::unix::fs::symlink(".hidden", fixture.0.join("visible-link")).unwrap();
+    std::os::unix::fs::symlink("missing", fixture.0.join(".hidden-broken-link")).unwrap();
+    let sorter = NameSorter::en_us().unwrap();
+    let mut pane = BrowserPane::default();
+    assert!(pane.open(&fixture.0, &sorter));
+    assert!(
+        pane.entries
+            .iter()
+            .any(|entry| entry.name == "visible-link")
+    );
+    assert!(!pane.entries.iter().any(|entry| entry.name.starts_with('.')));
+    pane.set_show_hidden(true, &sorter);
+    assert!(
+        pane.entries
+            .iter()
+            .any(|entry| entry.name == ".hidden-broken-link")
+    );
+    assert!(pane.open(&fixture.0.join("child"), &sorter));
+    assert_eq!(pane.entries[0].name, ".child-hidden");
+    pane.set_show_hidden(false, &sorter);
+    assert!(pane.entries.is_empty());
+    assert_eq!(
+        pane.selection
+            .snapshot(&pane.entries, &pane.order)
+            .focused
+            .as_deref(),
+        Some("..")
+    );
+    assert!(!pane.open(&fixture.0.join("absent"), &sorter));
+    assert!(pane.entries.is_empty());
+    pane.parent(&sorter);
+    assert!(!pane.show_hidden);
+    assert!(!pane.entries.iter().any(|entry| entry.name.starts_with('.')));
+}

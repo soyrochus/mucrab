@@ -39,6 +39,12 @@ The same upstream attribution and GPL notices apply to this recovered behavior.
 [The W02 contract](evidence/workflows/W02-selection-marking/contract.md) records
 the runtime adapter boundary and deferred interactions.
 
+Hidden-file filtering and reload restoration were reconstructed from
+`ConfigurableFolderFilter`, `LocalFile`, `FileTable$FolderChangeThread` and their
+callers in the same pinned binaries. The same upstream attribution and GPL
+notices apply. [The W02b contract](evidence/workflows/W02b-hidden-filtering/contract.md)
+records the Unix dotfile scope and original runtime/GUI boundaries.
+
 The native collator uses ICU4X `icu_collator` **2.2.1**, with compiled collation data **2.2.0**. [The preserved ICU4X license](third_party/icu4x/LICENSE) includes Unicode License V3 and ICU adaptation attribution. [The provenance note](third_party/icu4x/README.md) explains the dependency and scope. muCrab remains `GPL-3.0-only`; dependency versions and checksums are recorded in `Cargo.lock`.
 
 ## Investigation tools

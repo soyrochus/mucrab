@@ -11,16 +11,16 @@ session can continue without the original conversation.
 
 | Field | Current value |
 | --- | --- |
-| Last updated | 2026-10-15 |
+| Last updated | 2026-10-16 |
 | Last verified implementation commit | `3af9346` — Migrate verified focus and marking workflows to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W02a — selection and marking verified within its bounded contract; next is W02b |
+| Active workflow | W02b — hidden-file filtering verified within its bounded contract; next is W02c |
 | W01 status | `verified` within en-US/macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | W02b: recover hidden-file filtering and selection interaction; freeze a separate contract before implementation |
-| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking |
-| Behavioral comparison cases run | W01: 342 configuration/error cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences, 4,022 state snapshots. Zero differences/skips in both scopes |
-| Known blocker | None within the bounded W01/W02a scopes; original shortcut dispatch and exhaustive GUI parity remain unverified |
-| Verification platform | macOS arm64, APFS with case-insensitive/canonically equivalent lookup; other platforms unverified |
+| Next executable task | W02c: recover one bounded additional-sort-criteria contract before implementation; keep all three suites passing |
+| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering |
+| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. Zero differences/skips |
+| Known blocker | None within the bounded contracts; original OS shortcut dispatch, Wayland and exhaustive GUI parity remain unverified |
+| Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
 
 The commit above identifies the implementation baseline, not the commit adding
 this plan. On resumption, inspect the actual checkout and reconcile this table
@@ -59,7 +59,7 @@ complete, observable workflow before expanding the scope.
 | 2. Binary acquisition | Complete | `15427e7`; `tools/acquire_mucommander.py`, `tools/manifests/mucommander.json`, `evidence/acquisition/mucommander-1.6.2-1.json` |
 | 3. Analysis toolchain | Complete for static inspection | `9996a3e`; `tools/analysis_tools.py`, pinned manifests and npm lockfile, `evidence/toolchain/readiness.json` |
 | 4. Cargo workspace and preview | Complete | `88baf29`; `Cargo.toml`, `Cargo.lock`, `crates/`, `evidence/workspace/readiness.json` |
-| 5. Verified workflows | W01 and W02a verified within contracts | W01/W02 evidence directories and gate ledgers below |
+| 5. Verified workflows | W01, W02a and W02b verified within contracts | Workflow evidence directories and gate ledgers below |
 | 6. Broader comparison and demo | Not started | Final acceptance below |
 
 The workspace contains:
@@ -157,7 +157,9 @@ configure a writable remote separately if needed. No push is required to resume.
   same JDK major version.
 - The host's native build tools and desktop libraries required by the existing
   Cargo dependencies, plus a graphical desktop for UI checks. Only macOS arm64
-  has been verified; establish other hosts separately.
+  has historical GUI evidence; native input checks also run on Linux X11/Xvfb.
+  Component comparisons pass on Linux x86_64/ext4. Establish each desktop backend
+  separately; Wayland remains unverified.
 
 ### Rehydrate and check the baseline
 
@@ -193,6 +195,8 @@ cargo run --locked -p mucrab-compare -- --suite w01
 cargo run --locked -p mucrab-compare -- --suite w01 --reserved
 cargo run --locked -p mucrab-compare -- --suite w02
 cargo run --locked -p mucrab-compare -- --suite w02 --reserved
+cargo run --locked -p mucrab-compare -- --suite w02b
+cargo run --locked -p mucrab-compare -- --suite w02b --reserved
 ```
 
 Expect exit 0 and scoped passing reports when all required cases run. Exit 1
@@ -420,7 +424,7 @@ further when their acceptance criteria cannot be closed in one increment.
 | --- | --- | --- | --- |
 | W01 | Local folder browsing and name sorting | Entry identities, pairwise signs, ordered listings, both-pane native navigation | `verified` within contract |
 | W02a | Focus and marking in a loaded directory | Ordered selected identities and marks after every event; both native panes | `verified` within contract |
-| W02b | Hidden-file filtering and selection interaction | Visible entries, surviving marks/focus, parent handling | `not_started` |
+| W02b | Hidden-file filtering and selection interaction | Visible entries, surviving marks/focus, parent handling | `verified` within Unix/en-US contract |
 | W02c | Additional sort criteria | Metadata ordering and ties | `not_started` |
 | W03 | Recursive copy | Paths, byte contents, empty folders, declared metadata, collisions, errors | `not_started` |
 | W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `not_started` |
@@ -509,14 +513,32 @@ claimed for it. See `evidence/workflows/W02-selection-marking/README.md` and
 `gui-observations.json` for the exact scope. Regenerate with `tools/w02.py` and
 `tools/w02_inspect.py`; raw inputs/outputs are in each report's `raw_run`.
 
+### W02b gate ledger
+
+| Gate | State | Evidence / unresolved work |
+| --- | --- | --- |
+| G1: original Java adapter | `verified` within boundary | Original ConfigurableFolderFilter, configuration listener and complete FolderChangeThread.run; field-only UI wiring, no method overrides |
+| G2: recovered contract | `verified` within scope | Fourteen-class recovery; global preference/default, Unix classification, focus/marks, parent and repeat guards |
+| G3: fixtures and protocol | `verified` | 20 named + 12 generated predefined sequences, 24 reserved; seeds frozen before Rust; every event includes both panes |
+| G4: Rust and comparison | `verified` within scope | 56 sequences, 2,520 global/5,040 pane snapshots, zero differences/skips; W01/W02a regressions pass |
+| G5: native workflow | `verified` within X11/Xvfb scope | Shared checkbox, marks/focus, navigation, sort, keyboard, filtered-empty/error/refresh; original full-application menu action/live tables and Swing renders |
+| G6: reproducible closure | `verified` for local development | Portable replay, original GUI probe, source/input hashes, nine Rust/nineteen Python tests, checks and retained evidence; release packaging remains open |
+
+W02b's isolated suite supplies same-folder reload inputs and executes the original
+worker on the event thread. The separate original GUI probe invokes the actual
+menu action in the full application, without replacing code. It uses direct Swing
+renders because raw AWT/Xvfb screen captures can be black without a window manager.
+Full OS shortcut/mouse dispatch and asynchronous refresh scheduling are not proved.
+See `evidence/workflows/W02b-hidden-filtering/README.md` and `decisions.md`.
+
 ### Open issues
 
 | ID | Issue | Next investigation |
 | --- | --- | --- |
 | R01 | Resolved: original comparator/table sorter execute | Keep original JAR/class pins and adapter initialization in regression checks |
 | R02 | Scoped resolution: ICU4X matches en-US fixtures | New locales/data versions need new contract and comparisons |
-| R03 | Scoped resolution: local callers and representative GUI states recovered | W02a selection/marking is scoped and verified; filtering/additional criteria remain; exhaustive original GUI automation is not claimed |
-| R04 | Original GUI launched on macOS arm64; unrelated native components/other hosts unverified | Establish each additional platform/provider separately |
+| R03 | Scoped resolution: local callers and representative GUI states recovered | W02b hidden filtering is scoped and verified; additional criteria/filters remain; exhaustive GUI parity is not claimed |
+| R04 | Original GUI launched on macOS arm64 and Linux Xvfb; unrelated components/backend behavior unverified | Establish Wayland/physical desktop and additional providers separately; original portable distribution emits optional bundle/logging warnings |
 | R05 | Ignored raw artifacts still need rehydration | Use W01/W02 scripts and retained GUI evidence; regenerate or transfer required caches/raw runs |
 | R06 | Original shortcut dispatch/AX mark count and full OS mouse-event parity unverified | Adapter isolates original methods; GUI captures are representative. Establish full dispatch separately before making broader GUI claims |
 
@@ -588,6 +610,100 @@ Exact next executable action:
   Next executable action: recover W02b hidden-file filtering and how focus/marks
   behave when visible entries change. Freeze its own contract before coding.
 
+- **2026-10-16, 11:14 Europe/Madrid — Linux machine setup:** started at
+  `115f946`, clean main. Host: Linux x86_64, ext4; comparison locale en-US.
+  Existing runtimes: Rust/Cargo 1.99.0, Python 3.14.4, Node 24.15.0, npm 12.0.2,
+  OpenJDK/javac/javap 25.0.4.1. Downloaded the pinned muCommander 1.6.2-1 archive
+  and verified all 202 extracted files/196 JARs against the manifest. Installed
+  REA 6.5.0 and CFR 0.152 locally, with npm lifecycle scripts disabled. No global
+  tool installation or upstream Java implementation source fetch was needed.
+  Initial restricted-network attempts could not resolve download hosts; retries
+  with network access succeeded. Interrupted npm cleanup removed the first
+  installation; repeating setup from the populated offline cache succeeded.
+
+  Commands: `python3 -B tools/acquire_mucommander.py`,
+  `python3 -B tools/analysis_tools.py setup`,
+  `python3 -B tools/analysis_tools.py setup --offline`, and
+  `python3 -B tools/analysis_tools.py probe`. The final static probe passes REA
+  inventory, expected APK-only refusal, CFR recovery and javap inspection;
+  `evidence/toolchain/readiness.json` now records Linux. Acquisition evidence
+  is unchanged. The archive SHA-256 remains
+  `e6769537bbb56cc52c1289ebef2e3d051912bb8b10691d320f28b945f15819a4`;
+  Cargo.lock SHA-256 is
+  `212045012290eef50e019a366ed06726627683a30d347bdbd193217130847bf7`.
+
+  `cargo run --locked --offline -p mucrab-compare -- --suite w01`, followed by
+  `target/debug/mucrab-compare --suite w01 --reserved`, `--suite w02`, and
+  `--suite w02 --reserved`, all exited 0. W01: 187 + 155 cases, 45,696 pair
+  signs, 336 ordered lists, 54 enumeration/error checks. W02a: 28 + 32 sequences,
+  4,022 snapshots. Zero differences/skips in all four runs. The earlier checkout
+  review also ran `cargo test --workspace --all-features --locked --offline`
+  (seven tests) and `python3 -B -m unittest discover -s tools -p 'test_*.py' -v`
+  (fifteen tests), both passing on this host.
+
+  Raw run IDs: W01 `20261016T091547Z-5aa27741` and
+  `20261016T091651Z-ced22b6e`; W02 `20261016T091700Z-19875422` and
+  `20261016T091710Z-6e976426`. Each current `comparison-*.json` records its
+  source/input hashes, commands, host and raw-run path. Historical macOS results
+  remain in Git history; retained GUI/validation records still describe macOS.
+  No Linux GUI checks or broader equivalence claims were made. No workflow gate
+  advanced and no Rust implementation changed. README, this ledger, workflow
+  evidence READMEs, the tool readiness record and four comparison reports are
+  uncommitted setup evidence. Ignored inputs are regenerated with the commands
+  above. Next executable action remains W02b hidden-file filtering and
+  focus/mark interaction recovery; freeze its contract before implementing it.
+
+- **2026-10-16, from 14:28 Europe/Madrid — W02b hidden filtering:** started at
+  `115f946` with the nine setup/evidence files from the preceding session still
+  uncommitted. Host: Linux x86_64/ext4, en-US, Rust/Cargo 1.99.0, OpenJDK 25.0.4.1.
+  Recovered fourteen pinned classes; ran the original-only adapter first
+  (`20261016T123431Z-28bef7df`, 32 sequences/960 two-pane states), then froze the
+  W02b contract and predefined/reserved seeds before Rust implementation.
+  Original behavior uses a global hidden-file preference, default false,
+  filters before sorting, preserves surviving marks/focus, forgets hidden
+  marks, clamps missing focus and retains held-Space guards through reload.
+
+  Implemented shared native Show hidden files, core filtered listing reload,
+  original filter/worker oracle and Rust adapter, two-pane fixtures/protocol,
+  integration/protocol checks and portable GUI preparation/replay/probe tools.
+  No original behavioral methods are replaced. Comparisons invoke the complete
+  original reload worker on the Swing event thread with isolated UI wiring.
+  First predefined and reserved comparisons passed without behavioral changes.
+  Final source-pinned W02b runs are `20261016T124651Z-4d445232` (32 sequences,
+  960 global states) and `20261016T124743Z-e61d54ac` (24 sequences, 1,560 global
+  states): 56 sequences, 2,520 global/5,040 pane snapshots, zero differences/skips.
+  W01 regressions: `20261016T124101Z-1fd306f4` and
+  `20261016T124124Z-48b23946`, all 342 cases passing. W02a regressions:
+  `20261016T124159Z-705eda56` and `20261016T124236Z-0cd4a24e`, 60 sequences and
+  4,022 states passing. Exact commands, source/JAR hashes and raw-output digests
+  are in the respective comparison reports; fixture source stayed frozen.
+
+  Native X11/Xvfb input checks cover both panes, global filtering, marks/focus,
+  keyboard/Tab/Space, child/parent navigation, independent sorting, filtered
+  empty state, navigation error and refresh recovery. A portable 32-action replay
+  passed with Java excluded from the native app's PATH at
+  `artifacts/gui/W02b-20261016T125029Z-8f1b342c`. Full original application
+  probe `artifacts/gui/W02b-20261016T124741Z-6e7994c4` invokes the actual menu
+  action, validates five states/ten live pane states and retains direct Swing
+  window renders. Raw AWT/Xvfb captures can be black, and original OS input was
+  unreliable; those attempts are not claimed as GUI parity. Native sandbox
+  display refusal and an unmapped-window driver BadMatch were resolved using
+  isolated display access and mapped-window readiness. See W02b decisions.
+
+  Final validation run `W02b-validation-20261016T125227Z-e192b874` records passing
+  format, Clippy with warnings denied, build, nine Rust/nineteen Python tests,
+  original integrity, native version without Java, and native linkage without
+  libjvm. Current comparison source hashes match the final worktree. Updated
+  README, notices, preview and ledger; retained GUI artifacts and producer/scope
+  details are under `evidence/workflows/W02b-hidden-filtering/`. Gates G1–G6 are
+  verified within the contract. No upstream implementation source, global
+  configuration change, release or push. The implementation checkpoint is
+  recorded in the live table after commit; reports pin the tested `115f946`
+  worktree by exact source hashes. Ignored inputs regenerate via w02b_inspect.py,
+  w02b.py and w02b_gui.py; follow the evidence README for GUI replay.
+  Next executable action: recover one bounded W02c additional-sort-criteria
+  contract, keeping W01, W02 and W02b predefined/reserved suites passing.
+
 ## Final demonstration acceptance
 
 After the selected workflows are verified, run an agreed suite targeting
@@ -612,9 +728,10 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > Inspect Git, repository instructions, code, and committed evidence first;
 > reconcile the live checkpoint before acting. Rehydrate ignored inputs on this
 > machine and record fresh verification. Resume the first unfinished workflow
-> gate. W01 and W02a are verified within their declared en-US/macOS scopes;
-> the next action is W02b hidden-file filtering/selection contract recovery.
-> Keep both W01 and W02 selection suites passing. Continue through each workflow's gates before expanding
+> gate. W01, W02a and W02b are verified within their declared contracts; Linux
+> component comparisons and representative X11/Xvfb checks are recorded.
+> The next action is W02c additional-sort-criteria contract recovery.
+> Keep W01, W02 and W02b suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
 > Java. Update the plan and evidence at each checkpoint, including exact next

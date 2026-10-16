@@ -18,7 +18,7 @@ fn main() -> ExitCode {
                  Usage: mucrab [LEFT_FOLDER [RIGHT_FOLDER]]\n\
                         mucrab [--help | --version]\n\n\
                  Opens the native two-pane local browser.\n\
-                 Name ordering uses en-US; hidden entries are shown.\n\
+                 Name ordering uses en-US; Show hidden files applies to both panes.\n\
                  File operations and opening symbolic links are deferred."
             );
             return ExitCode::SUCCESS;

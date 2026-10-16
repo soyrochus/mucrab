@@ -43,6 +43,8 @@ pub struct BrowserPane {
     pub options: SortOptions,
     pub error: Option<String>,
     pub selection: FileSelection,
+    /// Shared by the desktop application's panes; Unix dotfiles are hidden by default.
+    pub show_hidden: bool,
 }
 
 impl BrowserPane {
@@ -62,59 +64,86 @@ impl BrowserPane {
         })();
         match result {
             Ok((path, entries)) => {
-                let old = self.selection.snapshot(&self.entries, &self.order);
-                let same_folder = self.location.as_ref() == Some(&path);
-                let returning = self.location.as_deref().and_then(Path::parent) == Some(&path);
-                let restore_focus = if same_folder {
-                    old.focused.filter(|name| name != "..")
-                } else if returning {
-                    self.location
-                        .as_deref()
-                        .and_then(Path::file_name)
-                        .and_then(|name| name.to_str())
-                        .map(str::to_owned)
-                } else {
-                    None
-                };
                 let has_parent = path.parent().is_some();
-                self.path_input = path.to_string_lossy().into_owned();
-                self.location = Some(path);
-                self.entries = entries;
-                self.order = sorter.sorted_indices(&self.entries, self.options);
-                self.selection = FileSelection::new(self.entries.len(), has_parent);
-                if let Some(name) = restore_focus {
-                    let row = self
-                        .order
-                        .iter()
-                        .position(|index| self.entries[*index].name == name)
-                        .map(|index| index + usize::from(has_parent))
-                        .or_else(|| {
-                            same_folder.then(|| {
-                                old.focus_row
-                                    .unwrap_or(0)
-                                    .min(self.selection.row_count(&self.order).saturating_sub(1))
-                            })
-                        });
-                    if let Some(row) = row {
-                        self.selection.focus(row, &self.order);
-                    }
-                }
-                if same_folder {
-                    for row in 0..self.selection.row_count(&self.order) {
-                        if let Some(index) = self.selection.entry_at(row, &self.order)
-                            && old.marked.contains(&self.entries[index].name)
-                        {
-                            self.selection.set_marked(row, true, &self.order);
-                        }
-                    }
-                }
-                self.error = None;
+                self.load_listing(path, entries, has_parent, sorter);
                 true
             }
             Err(error) => {
                 self.error = Some(error.to_string());
                 false
             }
+        }
+    }
+
+    /// Load an enumerated canonical location, filtering before sorting.
+    /// Explicit parent presence also supports the original-binary adapters.
+    pub fn load_listing(
+        &mut self,
+        path: PathBuf,
+        mut entries: Vec<FileEntry>,
+        has_parent: bool,
+        sorter: &NameSorter,
+    ) {
+        let old = self.selection.snapshot(&self.entries, &self.order);
+        let same_folder = self.location.as_ref() == Some(&path);
+        let returning = self.location.as_deref().and_then(Path::parent) == Some(&path);
+        let restore_focus = if same_folder {
+            old.focused.filter(|name| name != "..")
+        } else if returning {
+            self.location
+                .as_deref()
+                .and_then(Path::file_name)
+                .and_then(|name| name.to_str())
+                .map(str::to_owned)
+        } else {
+            None
+        };
+        if !self.show_hidden {
+            entries.retain(|entry| !entry.name.starts_with('.'));
+        }
+        self.path_input = path.to_string_lossy().into_owned();
+        self.location = Some(path);
+        self.entries = entries;
+        self.order = sorter.sorted_indices(&self.entries, self.options);
+        let mut focus_row = (self.entries.len() + usize::from(has_parent) > 0).then_some(0);
+        if let Some(name) = restore_focus {
+            let row = self
+                .order
+                .iter()
+                .position(|index| self.entries[*index].name == name)
+                .map(|index| index + usize::from(has_parent))
+                .or_else(|| {
+                    same_folder.then(|| {
+                        old.focus_row
+                            .unwrap_or(0)
+                            .min((self.order.len() + usize::from(has_parent)).saturating_sub(1))
+                    })
+                });
+            if let Some(row) = row {
+                focus_row = Some(row);
+            }
+        }
+        if self.order.is_empty() && !has_parent {
+            focus_row = None;
+        }
+        self.selection
+            .reload(self.entries.len(), has_parent, focus_row);
+        if same_folder {
+            for row in 0..self.selection.row_count(&self.order) {
+                if let Some(index) = self.selection.entry_at(row, &self.order)
+                    && old.marked.contains(&self.entries[index].name)
+                {
+                    self.selection.set_marked(row, true, &self.order);
+                }
+            }
+        }
+        self.error = None;
+    }
+
+    pub fn set_show_hidden(&mut self, show: bool, sorter: &NameSorter) {
+        if self.show_hidden != show {
+            self.show_hidden = show;
+            self.refresh(sorter);
         }
     }
 

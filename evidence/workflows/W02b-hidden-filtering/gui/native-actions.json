@@ -1,0 +1,197 @@
+[
+  {
+    "op": "capture",
+    "name": "initial",
+    "wait": 2
+  },
+  {
+    "op": "click",
+    "x": 130,
+    "y": 352,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 680,
+    "y": 310,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 156,
+    "y": 69,
+    "capture": "shown-with-surviving-marks"
+  },
+  {
+    "op": "click",
+    "x": 125,
+    "y": 374,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 680,
+    "y": 267,
+    "modifiers": [
+      "Control_L"
+    ],
+    "capture": "hidden-and-visible-marked"
+  },
+  {
+    "op": "click",
+    "x": 156,
+    "y": 69,
+    "capture": "filtered-focus-fallback"
+  },
+  {
+    "op": "click",
+    "x": 156,
+    "y": 69,
+    "capture": "reshown-hidden-marks-cleared"
+  },
+  {
+    "op": "click",
+    "x": 120,
+    "y": 478
+  },
+  {
+    "op": "key",
+    "keys": [
+      "End"
+    ],
+    "capture": "keyboard-end"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Tab"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Home"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Down"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "space"
+    ],
+    "capture": "keyboard-tab-space"
+  },
+  {
+    "op": "click",
+    "x": 72,
+    "y": 217
+  },
+  {
+    "op": "click",
+    "x": 628,
+    "y": 217
+  },
+  {
+    "op": "click",
+    "x": 115,
+    "y": 289,
+    "count": 2
+  },
+  {
+    "op": "click",
+    "x": 675,
+    "y": 310,
+    "count": 2,
+    "capture": "both-panes-child-navigation"
+  },
+  {
+    "op": "click",
+    "x": 45,
+    "y": 175
+  },
+  {
+    "op": "click",
+    "x": 600,
+    "y": 175
+  },
+  {
+    "op": "click",
+    "x": 135,
+    "y": 196,
+    "capture": "independent-sort-after-parent"
+  },
+  {
+    "op": "click",
+    "x": 156,
+    "y": 69
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 154
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "{run}/only-hidden"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ],
+    "capture": "filtered-empty-folder"
+  },
+  {
+    "op": "click",
+    "x": 156,
+    "y": 69,
+    "capture": "shown-only-hidden-folder"
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 154
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "{run}/missing"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ],
+    "capture": "navigation-error-retains-listing"
+  },
+  {
+    "op": "click",
+    "x": 100,
+    "y": 175,
+    "capture": "refresh-recovers-after-error"
+  }
+]

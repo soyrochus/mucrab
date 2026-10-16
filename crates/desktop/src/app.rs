@@ -31,6 +31,7 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 sorter,
                 panes,
                 active: PaneSide::Left,
+                show_hidden: false,
             }))
         }),
     )
@@ -40,6 +41,7 @@ struct MuCrabApp {
     sorter: NameSorter,
     panes: [BrowserPane; 2],
     active: PaneSide,
+    show_hidden: bool,
 }
 
 impl eframe::App for MuCrabApp {
@@ -64,11 +66,20 @@ impl eframe::App for MuCrabApp {
                 ui.add_space(12.0);
                 ui.label("Two claws, two panes.");
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.colored_label(egui::Color32::from_rgb(115, 211, 165), "W02 · Selection and marking");
+                    ui.colored_label(egui::Color32::from_rgb(115, 211, 165), "Two-pane file browser");
                 });
             });
             ui.add_space(6.0);
-            ui.label("Name sorting · en-US · All entries shown, including hidden files");
+            ui.horizontal(|ui| {
+                ui.label("Name sorting · en-US");
+                ui.add_space(12.0);
+                if ui.checkbox(&mut self.show_hidden, "Show hidden files").changed() {
+                    for pane in &mut self.panes {
+                        pane.set_show_hidden(self.show_hidden, &self.sorter);
+                    }
+                    ui.memory_mut(|memory| memory.request_focus(listing_id(self.active)));
+                }
+            });
             ui.small("Click to focus · Ctrl-click to mark · Shift-click for a range · Space to mark and advance · Tab to switch panes");
             ui.add_space(14.0);
             let height = (ui.available_height() - 40.0).max(180.0);

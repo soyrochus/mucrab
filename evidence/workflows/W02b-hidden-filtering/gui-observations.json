@@ -1,0 +1,165 @@
+{
+  "scope": "Representative Linux X11/Xvfb native input and original full-application menu-action observations; exhaustive OS dispatch excluded",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "filesystem": "ext4",
+    "locale": "en-US",
+    "native_backend": "X11/Xvfb",
+    "original_jdk": "25.0.4.1"
+  },
+  "native_raw_run": "artifacts/gui/W02b-20261016T125029Z-8f1b342c",
+  "original_raw_run": "artifacts/gui/W02b-20261016T124741Z-6e7994c4",
+  "native_argv": [
+    "/home/iwk/src/mucrab/target/debug/mucrab",
+    "/home/iwk/src/mucrab/artifacts/runs/W02b-20261016T124651Z-4d445232/fixtures/visible-focus-and-surviving-marks-natural/0",
+    "/home/iwk/src/mucrab/artifacts/runs/W02b-20261016T124651Z-4d445232/fixtures/visible-focus-and-surviving-marks-natural/1"
+  ],
+  "native_env": {
+    "PATH": "/nonexistent"
+  },
+  "native_checks": [
+    "Default-off listing excludes dotfiles in both panes; visible symlink to a hidden target remains",
+    "Shared checkbox shows/hides both panes; visible marks survive",
+    "Hidden marked file/folder disappear; focus falls back to file10.txt and folder2 respectively",
+    "Re-showing preserves surviving focus/marks and does not revive hidden marks",
+    "End, Tab, Home, Down and Space act on the focused listing",
+    "Both panes enter separate child folders and return; left descending sort does not alter right settings",
+    "Hidden-only directory becomes empty with parent retained; toggling reveals the child",
+    "Missing-path error retains the loaded listing; Refresh restores valid input and clears error"
+  ],
+  "native_review": "Retained captures inspected visually; no pixel-level or accessibility equivalence claimed",
+  "original_probe": {
+    "source": "tools/java/W02bGuiProbe.java",
+    "source_sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8",
+    "mechanism": "Observe full application frames; original hidden-file JMenuItem.doClick on EDT; original mark/focus methods; no class transformation",
+    "states": "evidence/workflows/W02b-hidden-filtering/gui/original-states.json",
+    "stages": 5,
+    "pane_states": 10,
+    "result": "evidence/workflows/W02b-hidden-filtering/gui/original-result.json",
+    "checks": [
+      "Both real tables follow the actual global menu action",
+      "Visible marks survive; hidden marks are lost",
+      "Focus falls back to file10.txt/folder2 and survives re-showing"
+    ]
+  },
+  "retained": [
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-both-panes-child-navigation.png",
+      "sha256": "46d2cafc508c937b455bb4979e190cb0a9b0bdc39167030cf727b5103f611b75",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-filtered-empty-folder.png",
+      "sha256": "b2b54ca1d6c469a4c7c54ffe9c914ed222f341e1dce65e760df498a8c917bacd",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-filtered-focus-fallback.png",
+      "sha256": "591e85f71cb951f74b22cf8c79896215b5aa58a6ba091334398c5fe60784dd92",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-hidden-and-visible-marked.png",
+      "sha256": "59deb03a3cfe7978aab82d7ec3fc5bee66b0b1668f777caf9dee252af24af183",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-independent-sort-after-parent.png",
+      "sha256": "5b1165d4dd92ff6033e9edb49ecf8ea24a65015cf0ae22d25b48f73c206d079b",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-initial.png",
+      "sha256": "949ca90328352ad05ea091393e5c8f9b980a801f7f8da6f4440dff02b3dcb22d",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-keyboard-end.png",
+      "sha256": "fd76eca9bc439d20629d5a438fe464727b5db55684f99daa3a372fe004c17182",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-keyboard-tab-space.png",
+      "sha256": "77cc5b73e23dd4d30679b5ccb7ddac3d8a790cc81189d6eafd7bfad86ddfc43a",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-navigation-error-retains-listing.png",
+      "sha256": "bc70c92d66dbad1d1689c5c3329eb23d69445e9e40976b0204974e46db47547c",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-refresh-recovers-after-error.png",
+      "sha256": "f7682cc44e4c78697c89d76ad4385b21279eb2ba2ba2f5541aea9349ff13316e",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-reshown-hidden-marks-cleared.png",
+      "sha256": "0f7f340d6cd9abba9200d76aaf50187086f456e76217f2befa176c9358611233",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-shown-only-hidden-folder.png",
+      "sha256": "d5c559dc60d99e802bb6cb792b259e81dacb97e14b45c945492f938b5eeeafde",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-shown-with-surviving-marks.png",
+      "sha256": "b778aabd5b0eaf5ff4809586e29bb690bdf4c503275f8ed64ae51c1c42f15c0b",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/original-filtered-focus-fallback.png",
+      "sha256": "3df303161c81c0af4954d73a2ebd3d7db59de8dd4020ffc312afd119facf6415",
+      "producer": "actual original Swing window printAll"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/original-hidden-and-visible-marked.png",
+      "sha256": "e9ca702df671494a634265ecffaa022149fd87677a375cf755c51f10931d1e9e",
+      "producer": "actual original Swing window printAll"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/original-hidden-off.png",
+      "sha256": "c0bb609f1336e55d0ff5f68c9c6e16773fbdeb93d6a74750894290eefa3523c4",
+      "producer": "actual original Swing window printAll"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/original-hidden-on.png",
+      "sha256": "8ee4e11799d1b65eac5f9742c299467f655688583875da6504f1a3c47e251836",
+      "producer": "actual original Swing window printAll"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/original-reshown-hidden-marks-cleared.png",
+      "sha256": "cdcb7afed66e7a24cdf040eae91418d7d0d5f1d062b33216e26173ca43c2d1ee",
+      "producer": "actual original Swing window printAll"
+    }
+  ],
+  "source_inputs": [
+    {
+      "path": "tools/linux_gui.py",
+      "sha256": "11d0c5f7cfae27d363af8d941a68e48000456df1c3ed06511ac6e64825217b26"
+    },
+    {
+      "path": "tools/w02b_gui.py",
+      "sha256": "6236144efc149f6ed8e2d89a7a9813e54c9abf377c84fc857ea62484eb811c96"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/gui/native-actions.json",
+      "sha256": "ff9b78249db52b5d0f062ff1fc4d97ca1275171196a46dcc0566aee6bacf44a1"
+    }
+  ],
+  "limitations": [
+    "Virtual X11 only: physical desktop, Wayland and macOS W02b UI remain unverified",
+    "Original OS input proved unreliable; full shortcut/mouse dispatch not claimed",
+    "Original image producer is Swing printAll; unreliable/black raw AWT/Xvfb screen captures remain in ignored runs",
+    "Optional original OSGi/logging warnings remain in raw startup/shutdown logs; unrelated components not verified",
+    "Same-folder original-worker suite and full-GUI menu-action observations have separate boundaries"
+  ],
+  "reference_unchanged": true,
+  "reproduce": "See README.md: w02b_gui.py preparation, linux_gui.py --replay, w02b_gui.py --original-probe"
+}

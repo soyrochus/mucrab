@@ -60,6 +60,15 @@ pub struct SelectionSnapshot {
 }
 
 impl FileSelection {
+    /// Original reload preserves held-key guards and sets the range anchor to
+    /// the resulting focus before restoring surviving marks.
+    pub(crate) fn reload(&mut self, children: usize, has_parent: bool, focus: Option<usize>) {
+        self.marked = vec![false; children];
+        self.has_parent = has_parent;
+        self.focus_row = focus;
+        self.last_row = focus.unwrap_or(0);
+    }
+
     pub fn new(children: usize, has_parent: bool) -> Self {
         Self {
             focus_row: (children + usize::from(has_parent) > 0).then_some(0),

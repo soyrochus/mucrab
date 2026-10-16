@@ -1,0 +1,1427 @@
+{
+  "schema_version": 1,
+  "generated_seed": 52061,
+  "reserved_seed": 99017,
+  "generated_sequences": 12,
+  "reserved_sequences": 24,
+  "events_per_sequence": 64,
+  "names": [
+    "file10.txt",
+    "folder2",
+    ".hidden",
+    ".hidden-dir",
+    "folder10",
+    "Alpha.txt",
+    "link-to-hidden",
+    ".link-to-visible",
+    ".broken-link",
+    "broken-link",
+    ".DS_Store",
+    "normal.dot"
+  ],
+  "cases": [
+    {
+      "id": "visible-focus-and-surviving-marks-natural",
+      "mode": "NATURAL",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "normal.dot",
+            ".DS_Store",
+            "broken-link",
+            ".broken-link",
+            ".link-to-visible",
+            "link-to-hidden",
+            "Alpha.txt",
+            "folder10",
+            ".hidden-dir",
+            ".hidden",
+            "file2.txt",
+            "folder2",
+            "file10.txt"
+          ],
+          "parent": true
+        }
+      ],
+      "events": [
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "all",
+          "pane": 1
+        },
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": "file2.txt"
+        },
+        {
+          "op": "focus_name",
+          "pane": 1,
+          "name": "Alpha.txt"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "invert",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "refresh",
+          "pane": 1
+        }
+      ]
+    },
+    {
+      "id": "visible-focus-and-surviving-marks-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "normal.dot",
+            ".DS_Store",
+            "broken-link",
+            ".broken-link",
+            ".link-to-visible",
+            "link-to-hidden",
+            "Alpha.txt",
+            "folder10",
+            ".hidden-dir",
+            ".hidden",
+            "file2.txt",
+            "folder2",
+            "file10.txt"
+          ],
+          "parent": true
+        }
+      ],
+      "events": [
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "all",
+          "pane": 1
+        },
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": "file2.txt"
+        },
+        {
+          "op": "focus_name",
+          "pane": 1,
+          "name": "Alpha.txt"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "invert",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "refresh",
+          "pane": 1
+        }
+      ]
+    },
+    {
+      "id": "hidden-focus-fallback-natural",
+      "mode": "NATURAL",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "click_name",
+          "pane": 0,
+          "name": ".hidden",
+          "ctrl": true
+        },
+        {
+          "op": "click_name",
+          "pane": 0,
+          "name": "file2.txt",
+          "ctrl": true
+        },
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": ".hidden"
+        },
+        {
+          "op": "focus_name",
+          "pane": 1,
+          "name": ".hidden-dir"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "click_name",
+          "pane": 0,
+          "name": "file10.txt",
+          "shift": true
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "hidden-focus-fallback-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "click_name",
+          "pane": 0,
+          "name": ".hidden",
+          "ctrl": true
+        },
+        {
+          "op": "click_name",
+          "pane": 0,
+          "name": "file2.txt",
+          "ctrl": true
+        },
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": ".hidden"
+        },
+        {
+          "op": "focus_name",
+          "pane": 1,
+          "name": ".hidden-dir"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "click_name",
+          "pane": 0,
+          "name": "file10.txt",
+          "shift": true
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "final-hidden-focus-clamps-natural",
+      "mode": "NATURAL",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file2.txt",
+            ".zlast"
+          ],
+          "parent": false
+        },
+        {
+          "names": [
+            ".hidden"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "sort",
+          "pane": 0,
+          "ascending": false,
+          "directories_first": false,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": ".zlast"
+        },
+        {
+          "op": "focus_name",
+          "pane": 1,
+          "name": ".hidden"
+        },
+        {
+          "op": "all",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "final-hidden-focus-clamps-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file2.txt",
+            ".zlast"
+          ],
+          "parent": false
+        },
+        {
+          "names": [
+            ".hidden"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "sort",
+          "pane": 0,
+          "ascending": false,
+          "directories_first": false,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": ".zlast"
+        },
+        {
+          "op": "focus_name",
+          "pane": 1,
+          "name": ".hidden"
+        },
+        {
+          "op": "all",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "only-hidden-and-parent-natural",
+      "mode": "NATURAL",
+      "show_hidden": false,
+      "panes": [
+        {
+          "names": [
+            ".hidden",
+            ".hidden-dir"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            ".hidden"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "all",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "refresh",
+          "pane": 0
+        },
+        {
+          "op": "refresh",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "only-hidden-and-parent-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": false,
+      "panes": [
+        {
+          "names": [
+            ".hidden",
+            ".hidden-dir"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            ".hidden"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "all",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "refresh",
+          "pane": 0
+        },
+        {
+          "op": "refresh",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "empty-folders-natural",
+      "mode": "NATURAL",
+      "show_hidden": false,
+      "panes": [
+        {
+          "names": [],
+          "parent": true
+        },
+        {
+          "names": [],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "refresh",
+          "pane": 0
+        },
+        {
+          "op": "refresh",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "empty-folders-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": false,
+      "panes": [
+        {
+          "names": [],
+          "parent": true
+        },
+        {
+          "names": [],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "refresh",
+          "pane": 0
+        },
+        {
+          "op": "refresh",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "parent-focus-and-mark-exclusion-natural",
+      "mode": "NATURAL",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        }
+      ],
+      "events": [
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": ".."
+        },
+        {
+          "op": "focus_name",
+          "pane": 1,
+          "name": ".."
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "invert",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "none",
+          "pane": 1
+        }
+      ]
+    },
+    {
+      "id": "parent-focus-and-mark-exclusion-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        }
+      ],
+      "events": [
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": ".."
+        },
+        {
+          "op": "focus_name",
+          "pane": 1,
+          "name": ".."
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "invert",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "none",
+          "pane": 1
+        }
+      ]
+    },
+    {
+      "id": "held-space-through-filter-refresh-natural",
+      "mode": "NATURAL",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "last",
+          "pane": 0
+        },
+        {
+          "op": "space",
+          "pane": 0
+        },
+        {
+          "op": "last",
+          "pane": 1
+        },
+        {
+          "op": "space",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "space",
+          "pane": 0
+        },
+        {
+          "op": "space",
+          "pane": 1
+        },
+        {
+          "op": "release",
+          "pane": 0
+        },
+        {
+          "op": "release",
+          "pane": 1
+        },
+        {
+          "op": "space",
+          "pane": 0
+        },
+        {
+          "op": "space",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "held-space-through-filter-refresh-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "last",
+          "pane": 0
+        },
+        {
+          "op": "space",
+          "pane": 0
+        },
+        {
+          "op": "last",
+          "pane": 1
+        },
+        {
+          "op": "space",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "space",
+          "pane": 0
+        },
+        {
+          "op": "space",
+          "pane": 1
+        },
+        {
+          "op": "release",
+          "pane": 0
+        },
+        {
+          "op": "release",
+          "pane": 1
+        },
+        {
+          "op": "space",
+          "pane": 0
+        },
+        {
+          "op": "space",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "hidden-symlink-name-not-target-natural",
+      "mode": "NATURAL",
+      "show_hidden": false,
+      "panes": [
+        {
+          "names": [
+            "file2.txt",
+            ".hidden",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        }
+      ],
+      "events": [
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "invert",
+          "pane": 0
+        },
+        {
+          "op": "all",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "hidden-symlink-name-not-target-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": false,
+      "panes": [
+        {
+          "names": [
+            "file2.txt",
+            ".hidden",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        }
+      ],
+      "events": [
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "invert",
+          "pane": 0
+        },
+        {
+          "op": "all",
+          "pane": 1
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "shift-and-boundary-after-reload-natural",
+      "mode": "NATURAL",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": ".hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "click_name",
+          "pane": 0,
+          "name": "file10.txt",
+          "shift": true
+        },
+        {
+          "op": "mark_previous",
+          "pane": 0
+        },
+        {
+          "op": "mark_next",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "first",
+          "pane": 1
+        },
+        {
+          "op": "space",
+          "pane": 1
+        },
+        {
+          "op": "release",
+          "pane": 1
+        },
+        {
+          "op": "refresh",
+          "pane": 1
+        },
+        {
+          "op": "click_name",
+          "pane": 1,
+          "name": "file2.txt",
+          "ctrl": true,
+          "shift": true
+        }
+      ]
+    },
+    {
+      "id": "shift-and-boundary-after-reload-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": true,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "focus_name",
+          "pane": 0,
+          "name": ".hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "click_name",
+          "pane": 0,
+          "name": "file10.txt",
+          "shift": true
+        },
+        {
+          "op": "mark_previous",
+          "pane": 0
+        },
+        {
+          "op": "mark_next",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "first",
+          "pane": 1
+        },
+        {
+          "op": "space",
+          "pane": 1
+        },
+        {
+          "op": "release",
+          "pane": 1
+        },
+        {
+          "op": "refresh",
+          "pane": 1
+        },
+        {
+          "op": "click_name",
+          "pane": 1,
+          "name": "file2.txt",
+          "ctrl": true,
+          "shift": true
+        }
+      ]
+    },
+    {
+      "id": "start-hidden-repeat-toggle-and-sort-natural",
+      "mode": "NATURAL",
+      "show_hidden": false,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "sort",
+          "pane": 0,
+          "ascending": false,
+          "directories_first": false,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "sort",
+          "pane": 1,
+          "ascending": false,
+          "directories_first": true,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "sort",
+          "pane": 0,
+          "ascending": true,
+          "directories_first": true,
+          "mode": "NATURAL"
+        },
+        {
+          "op": "refresh",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    },
+    {
+      "id": "start-hidden-repeat-toggle-and-sort-lexicographic",
+      "mode": "LEXICOGRAPHIC",
+      "show_hidden": false,
+      "panes": [
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": true
+        },
+        {
+          "names": [
+            "file10.txt",
+            "folder2",
+            "file2.txt",
+            ".hidden",
+            ".hidden-dir",
+            "folder10",
+            "Alpha.txt",
+            "link-to-hidden",
+            ".link-to-visible",
+            ".broken-link",
+            "broken-link",
+            ".DS_Store",
+            "normal.dot"
+          ],
+          "parent": false
+        }
+      ],
+      "events": [
+        {
+          "op": "sort",
+          "pane": 0,
+          "ascending": false,
+          "directories_first": false,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "sort",
+          "pane": 1,
+          "ascending": false,
+          "directories_first": true,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "all",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "toggle_hidden"
+        },
+        {
+          "op": "sort",
+          "pane": 0,
+          "ascending": true,
+          "directories_first": true,
+          "mode": "LEXICOGRAPHIC"
+        },
+        {
+          "op": "refresh",
+          "pane": 0
+        },
+        {
+          "op": "toggle_hidden"
+        }
+      ]
+    }
+  ],
+  "kinds": {
+    "folder2": "directory",
+    "folder10": "directory",
+    ".hidden-dir": "directory",
+    "link-to-hidden": "symlink",
+    ".link-to-visible": "symlink",
+    ".broken-link": "symlink",
+    "broken-link": "symlink"
+  },
+  "targets": {
+    "link-to-hidden": ".hidden",
+    ".link-to-visible": "file2.txt",
+    ".broken-link": "missing",
+    "broken-link": "missing"
+  }
+}
