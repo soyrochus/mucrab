@@ -4,6 +4,7 @@
 [![Rust 1.95 or newer](https://img.shields.io/badge/Rust-1.95%2B-orange?logo=rust)](#build-and-run-mucrab)
 [![License: GPL-3.0-only](https://img.shields.io/badge/license-GPL--3.0--only-blue)](LICENSE)
 [![Status: experimental](https://img.shields.io/badge/status-experimental-yellow)](#current-status)
+[![Verified on macOS arm64](https://img.shields.io/badge/verified-macOS%20arm64-lightgrey?logo=apple)](#current-status)
 [![Verified on Linux x86_64](https://img.shields.io/badge/verified-Linux%20x86__64-lightgrey?logo=linux)](#current-status)
 
 **Two claws, two panes.**
@@ -13,6 +14,11 @@ muCrab is an experimental Rust port of selected [muCommander](https://github.com
 The experiment uses [REA](https://github.com/morluto/rea), a JVM decompiler, and observations of the original application to recover behavior, implement it in Rust, and compare the two implementations.
 
 ## Current status
+
+The current verified milestone is **W04 — local move and focused rename**
+(implementation commit `8396865`). The latest full verification was recorded on
+**2026-10-16**. **W05 — batch rename** is next; ZIP browsing/extraction (W06) and
+background-operation cancellation (W07) remain planned.
 
 **W01 is implemented:** the native application opens local folders in two independent panes, navigates into regular subfolders and back, and sorts names using recovered muCommander behavior. The Java/Rust suite passes **187 predefined and 155 reserved cases**, including **45,696 pairwise signs**, **336 complete ordered lists**, and **54 enumeration/error checks**, with no differences in the declared scope. Counts include option combinations and repeated real-folder checks; they are not counts of distinct user journeys.
 
@@ -60,10 +66,12 @@ destination trees and inode-identity relations. Native code declines fallback
 through symlinks because the original can consume their targets.
 [W04 evidence](evidence/workflows/W04-move-rename/README.md) records the boundary.
 
-All six component suites pass on **Linux x86_64/ext4**, OpenJDK **25.0.4.1**,
-with en-US ordering. Native input checks run under X11/Xvfb; representative
+The latest recorded verification passes all six component suites on
+**Linux x86_64/ext4**, OpenJDK **25.0.4.1**, with en-US ordering and a separate
+`/tmp` filesystem for cross-device moves. Native input checks run under X11/Xvfb; representative
 original menu-action checks retain live-table states and Swing renders.
-Earlier W01/W02a GUI evidence covers macOS arm64. Wayland/physical-desktop
+The macOS badge refers to earlier W01/W02a checks on macOS arm64; W03/W04
+validation covers Linux. Wayland/physical-desktop
 behavior, Windows hidden attributes and exhaustive OS shortcut parity remain
 unverified. Opening symbolic links, other filters, batch rename, archives, cancellation
 and other locales remain for later increments. Copy rejects overlapping source/
@@ -75,8 +83,9 @@ filesystem handling and full background-job parity remain unverified.
 ### muCrab — current Rust implementation
 
 The W04 checkpoint provides two independent file panes, local folder browsing,
-name/metadata sorting, focus/marking, hidden-file filtering, and reviewed recursive copy, move and single-item rename. The native
-Rust application runs independently of Java.
+name/metadata sorting, focus/marking, hidden-file filtering, and reviewed recursive
+copy, move and single-item rename. The native Rust application runs independently
+of Java.
 
 ![muCrab's native Rust interface with two file panes, move review with source/destination paths, selected items and collision policy](images/mucrab.png)
 
@@ -134,10 +143,11 @@ cargo run --locked -p mucrab-compare -- --suite w04
 cargo run --locked -p mucrab-compare -- --suite w04 --reserved
 ```
 
-W04 comparisons require unprivileged execution and two real filesystems: this host
-uses repository ext4 and a different `/tmp` mount. The suite fails as unavailable
-if that arrangement cannot be established; EXDEV is never mocked. GUI checks
-also require Xvfb, X11/XTest tools and Python Pillow.
+W04 comparisons and Rust move tests require unprivileged execution and two real
+filesystems: the verified host uses repository ext4 and a different `/tmp` mount.
+The comparison suite fails as unavailable if that arrangement cannot be
+established; EXDEV is never mocked. Linux GUI checks also require Xvfb,
+X11/XTest tools and Python Pillow.
 
 The runner exits 0 for a complete scoped pass, 1 for differences, and 2 for unavailable/incomplete execution. Raw results are kept under ignored `artifacts/runs/`; compact reports are in each directory under `evidence/workflows/`. W01 requires a real access-denied fixture, so running with privileges that can read it cannot produce a passing W01 result.
 
@@ -147,6 +157,7 @@ Workspace checks:
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 cargo test --workspace --all-features --locked
+python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
 The Rust suite has twenty-one tests covering recovered rules, navigation/error state,
@@ -175,7 +186,12 @@ EFRAME_SCREENSHOT_TO="$PWD/artifacts/workspace/mucrab-preview.png" \
   cargo run --locked -p mucrab-desktop --features screenshot
 ```
 
-The optional `screenshot` feature is for development captures. [Workspace readiness evidence](evidence/workspace/readiness.json) is the historical phase 4 scaffold snapshot; [W01 evidence](evidence/workflows/W01-local-browse-sort/README.md) records the current workflow. A screenshot supplements runtime comparisons.
+The optional `screenshot` feature is for development captures.
+[Workspace readiness evidence](evidence/workspace/readiness.json) is the historical
+phase 4 scaffold snapshot. [W04 evidence](evidence/workflows/W04-move-rename/README.md),
+[validation](evidence/workflows/W04-move-rename/validation.json) and
+[regression results](evidence/workflows/W04-move-rename/regressions.json) record
+the latest implementation checks. A screenshot supplements runtime comparisons.
 
 ## Reference application
 
@@ -185,7 +201,13 @@ The reference is muCommander **1.6.2**, release tag **`1.6.2-1`**:
 - [Binary distribution](https://github.com/mucommander/mucommander/releases/download/1.6.2-1/mucommander-1.6.2-1-portable-x86_64.zip).
 - Published archive SHA-256: `e6769537bbb56cc52c1289ebef2e3d051912bb8b10691d320f28b945f15819a4`.
 
-The input is the complete distribution, including the launcher, application JARs, dependencies, resources, and notices. This portable archive includes a Windows executable launcher and a shell launcher, with no bundled JRE. W01 ran original Java classes and launched the original GUI from a separate runtime copy on macOS arm64. Native components unrelated to W01 remain unverified. Acquisition preserves the distribution layout and does not execute its contents.
+The input is the complete distribution, including the launcher, application JARs,
+dependencies, resources, and notices. This portable archive includes a Windows
+executable launcher and a shell launcher, with no bundled JRE. Original classes
+and isolated GUI copies have been exercised on macOS arm64 for earlier workflows
+and Linux x86_64 through W04. Those checks do not verify unrelated bundled
+components. Acquisition preserves the distribution layout and does not execute
+its contents.
 
 ## Acquire or verify the reference
 
@@ -218,7 +240,8 @@ Check acquisition failure handling and extraction boundaries:
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-Keep the extracted tree unchanged as the binary reference. Later runtime tests will use a separate working copy and disposable configuration.
+Keep the extracted tree unchanged as the binary reference. Runtime tests use
+separate working copies, disposable configuration and isolated fixture trees.
 
 ## Analysis tools
 
@@ -255,7 +278,10 @@ The selected class was previously examined during the feasibility investigation.
 
 REA is installed under ignored `tools/rea/node_modules/`; CFR is stored under ignored `tools/.cache/cfr/`. The npm lockfile carries REA's registry integrity value. CFR's SHA-256 was computed from the official author download and pinned locally; the author's published MD5 also matches. That SHA-256 is a reproducibility pin, not a publisher-supplied signature. Preserved tool licenses and provenance are listed in [NOTICE.md](NOTICE.md).
 
-No JADX, Hopper, Ghidra, or other native analysis engine is needed for these probes. Native, browser, and instrumentation providers are outside the static probe's verified capabilities. W01 adds separate original-Java execution, scoped comparisons, and GUI observations.
+No JADX, Hopper, Ghidra, or other native analysis engine is needed for these probes.
+Native, browser, and instrumentation providers are outside the static probe's
+verified capabilities. Original-Java execution, scoped comparisons and GUI
+observations are recorded separately for each implemented workflow.
 
 ## Initial demo scope
 
@@ -287,9 +313,16 @@ Upstream Java implementation source will be withheld during reconstruction; lice
 
 Each workflow will have explicit inputs and acceptance criteria established before its Rust implementation. A harness will exercise the original JARs and the Rust implementation against equivalent fixtures, comparing observable results and recording discrepancies. Any normalization of paths, timestamps, or platform details must be stated explicitly.
 
-W01 meets the first implementation milestone: a real workflow recovered from pinned JARs, implemented in Rust, and compared with the original. The broader demo still needs cases across the remaining workflows, including reserved cases and mandatory file-integrity checks. W01's configuration-case count does not close that broader acceptance target.
+W01 through W04 have scoped original-JAR/Rust comparisons, reserved cases,
+integrity checks and representative GUI evidence. The broader demo still needs
+batch rename, ZIP handling and cancellation coverage; the existing case counts
+do not close those acceptance targets.
 
-Fixtures will include numeric and Unicode names, existing destinations, symbolic links, unreadable files, and cancellation. File operations will run inside disposable fixture directories. GUI demonstrations supplement the behavioral comparisons. Build success alone does not establish equivalence.
+Current fixtures include numeric and Unicode names, existing destinations,
+symbolic links, unreadable files, and partial copy/move failures. File operations
+run inside disposable fixture directories. Cancellation fixtures remain for W07.
+GUI demonstrations supplement the behavioral comparisons. Build success alone
+does not establish equivalence.
 
 The experiment will distinguish evidence that binary-to-Rust reconstruction works from evidence that REA improves the process. Tool provenance, human interventions, and remaining gaps will be recorded with the results.
 
@@ -302,7 +335,10 @@ The experiment will distinguish evidence that binary-to-Rust reconstruction work
 - `evidence/`: selected provenance records and comparison results suitable for Git.
 - `third_party/`: preserved upstream notices and their provenance.
 
-The repository includes acquisition/analysis helpers, pinned manifests and lockfiles, the native workspace, W01/W02a/W02b/W02c/W03 Java/Rust adapters and fixtures, scoped results, GUI evidence, and the maintained implementation plan. Later workflows remain unimplemented.
+The repository includes acquisition/analysis helpers, pinned manifests and
+lockfiles, the native workspace, W01/W02a/W02b/W02c/W03/W04 Java/Rust adapters
+and fixtures, scoped results, GUI evidence, and the maintained implementation
+plan. W05, W06 and W07 remain unimplemented.
 
 ## License and attribution
 
