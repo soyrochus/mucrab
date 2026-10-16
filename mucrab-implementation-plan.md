@@ -12,7 +12,7 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-16 |
-| Last verified implementation commit | W04 implementation/evidence checkpoint prepared; exact commit recorded after commit creation |
+| Last verified implementation commit | `8396865` — Migrate verified local move and focused rename to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
 | Active workflow | W04 — bounded local move/rename verified; next is W05 batch rename |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
@@ -928,8 +928,9 @@ Exact next executable action:
   original integrity, native version without Java on PATH and no JVM linkage.
   Cargo.lock is unchanged. README/NOTICE, preview, reproducible tools and gate
   ledger are updated. Gates G1–G6 are verified only within the declared contract.
-  Implementation/evidence checkpoint is being committed; exact hash follows in
-  the handoff update. No push or release. Raw ignored runs and uniquely named
+  Implementation/evidence checkpoint: `8396865`; reports record tested base
+  `027078f` plus exact source hashes matching that implementation. No required
+  implementation work remains uncommitted. No push or release. Raw ignored runs and uniquely named
   `/tmp/mucrab-W04-*` trees require regeneration or separate transfer. Next is
   W05 batch rename: recover original generated names/preview/apply/collision
   behavior, freeze fixtures/contract, then port while keeping all six suites passing.
