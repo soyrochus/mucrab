@@ -12,7 +12,7 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-16 |
-| Last verified implementation commit | `3af9346` — Migrate verified focus and marking workflows to muCrab |
+| Last verified implementation commit | `3d81beb` — Migrate verified hidden-file filtering to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
 | Active workflow | W02b — hidden-file filtering verified within its bounded contract; next is W02c |
 | W01 status | `verified` within en-US/macOS arm64/APFS scope; representative original GUI evidence |
@@ -697,9 +697,10 @@ Exact next executable action:
   README, notices, preview and ledger; retained GUI artifacts and producer/scope
   details are under `evidence/workflows/W02b-hidden-filtering/`. Gates G1–G6 are
   verified within the contract. No upstream implementation source, global
-  configuration change, release or push. The implementation checkpoint is
-  recorded in the live table after commit; reports pin the tested `115f946`
-  worktree by exact source hashes. Ignored inputs regenerate via w02b_inspect.py,
+  configuration change, release or push. Implementation/evidence checkpoint:
+  `3d81beb`; reports pin the tested `115f946` worktree by exact source hashes,
+  matching the implementation in that checkpoint. No required implementation
+  work remains uncommitted. Ignored inputs regenerate via w02b_inspect.py,
   w02b.py and w02b_gui.py; follow the evidence README for GUI replay.
   Next executable action: recover one bounded W02c additional-sort-criteria
   contract, keeping W01, W02 and W02b predefined/reserved suites passing.
