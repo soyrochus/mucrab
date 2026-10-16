@@ -12,10 +12,10 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-16 |
-| Last verified implementation commit | `3d81beb` — Migrate verified hidden-file filtering to muCrab |
+| Last verified implementation commit | `228d79d` — Migrate verified size, date and extension sorting to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
 | Active workflow | W02c — Name/Size/Modified/Extension sorting verified within its bounded contract; next is W03 |
-| W01 status | `verified` within en-US/macOS arm64/APFS scope; representative original GUI evidence |
+| W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
 | Next executable task | W03: recover a bounded recursive-copy contract and original adapter before Rust; keep all four comparison suites passing |
 | Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting |
 | Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. Zero differences/skips within scope |
@@ -770,8 +770,9 @@ Exact next executable action:
   metadata races, Wayland/physical desktop, other JDK case data/locales and full
   shortcut parity remain unverified. No upstream implementation source fetch,
   global configuration change, release or push. Implementation/evidence
-  checkpoint: pending local commit; reports identify tested base `d32930f`
-  plus exact matching source hashes. Ignored inputs regenerate through w02c.py,
+  checkpoint: `228d79d`; reports identify tested base `d32930f`
+  plus exact source hashes matching that implementation commit. No required
+  implementation work remains uncommitted. Ignored inputs regenerate through w02c.py,
   w02c_inspect.py, w02c_case_data.py and w02c_gui.py; GUI replay commands are in
   `evidence/workflows/W02c-metadata-sorting/README.md`.
   Next executable action: recover W03's bounded recursive-copy contract and
