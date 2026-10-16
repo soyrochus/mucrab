@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "java_version": "25.0.4.1",
+  "mappings": 1483,
+  "facts_sha256": "8657be1be20a74bdc08b987e808731ccf9ad8e3370e25887a5ebc73870e96b7d",
+  "producer": "tools/java/W02cCaseData.java",
+  "rule": "Character.toLowerCase(Character.toUpperCase(codepoint)) for Unicode scalar values",
+  "scope": "Simple-case facts pinned from installed OpenJDK, not a publisher signature or an ordering oracle"
+}

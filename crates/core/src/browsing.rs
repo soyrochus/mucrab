@@ -8,11 +8,68 @@ use std::{
     path::{Path, PathBuf},
 };
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct FileEntry {
     pub name: String,
     pub is_directory: bool,
     pub is_symlink: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<FileMetadata>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct FileMetadata {
+    pub size: i64,
+    pub modified_ms: i64,
+    pub extension: Option<String>,
+}
+
+impl FileMetadata {
+    /// Bounds for terminating metadata sort transitions. Extreme arithmetic
+    /// remains available to the comparator, separately from table sorting.
+    pub fn is_sortable(&self) -> bool {
+        self.size >= -1 && self.modified_ms.unsigned_abs() <= (i64::MAX / 2) as u64
+    }
+}
+
+pub fn filename_extension(name: &str) -> Option<&str> {
+    let (prefix, extension) = name.rsplit_once('.')?;
+    (!prefix.is_empty() && !extension.is_empty()).then_some(extension)
+}
+
+fn local_metadata(path: &Path, name: &str) -> io::Result<FileMetadata> {
+    let (size, modified_ms) = if let Ok(metadata) = fs::metadata(path) {
+        let size = i64::try_from(metadata.len()).map_err(|_| {
+            io::Error::new(
+                io::ErrorKind::InvalidData,
+                "File size exceeds supported range",
+            )
+        })?;
+        let modified_ms = metadata
+            .modified()
+            .map(|time| match time.duration_since(std::time::UNIX_EPOCH) {
+                Ok(duration) => i64::try_from(duration.as_millis()).unwrap_or(i64::MAX),
+                Err(error) => i64::try_from(error.duration().as_nanos().div_ceil(1_000_000))
+                    .map_or(i64::MIN, |value| -value),
+            })
+            .unwrap_or(0);
+        (size, modified_ms)
+    } else {
+        // java.io.File.length/lastModified return zero for unavailable targets.
+        (0, 0)
+    };
+    let result = FileMetadata {
+        size,
+        modified_ms,
+        extension: filename_extension(name).map(str::to_owned),
+    };
+    if !result.is_sortable() {
+        return Err(io::Error::new(
+            io::ErrorKind::InvalidData,
+            "Modified date exceeds supported sort range",
+        ));
+    }
+    Ok(result)
 }
 
 pub fn list_directory(path: &Path) -> io::Result<Vec<FileEntry>> {
@@ -26,6 +83,7 @@ pub fn list_directory(path: &Path) -> io::Result<Vec<FileEntry>> {
                 )
             })?;
             Ok(FileEntry {
+                metadata: Some(local_metadata(&item.path(), &name)?),
                 name,
                 is_directory: item.path().is_dir(),
                 is_symlink: item.file_type()?.is_symlink(),
@@ -169,12 +227,14 @@ impl BrowserPane {
         sorter: &NameSorter,
     ) -> Result<(), &'static str> {
         if let PaneEvent::Sort {
+            criterion,
             ascending,
             directories_first,
             mode,
         } = *event
         {
             self.options = SortOptions {
+                criterion,
                 ascending,
                 directories_first,
                 mode,

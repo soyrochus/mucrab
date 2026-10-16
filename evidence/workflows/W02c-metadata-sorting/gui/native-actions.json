@@ -1,0 +1,202 @@
+[
+  {
+    "op": "capture",
+    "name": "initial",
+    "wait": 2
+  },
+  {
+    "op": "capture",
+    "name": "initial",
+    "wait": 2
+  },
+  {
+    "op": "capture",
+    "name": "native-initial"
+  },
+  {
+    "op": "click",
+    "x": 91,
+    "y": 416,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 108,
+    "y": 331,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 90,
+    "y": 416
+  },
+  {
+    "op": "click",
+    "x": 659,
+    "y": 436,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 655,
+    "y": 478,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 660,
+    "y": 436
+  },
+  {
+    "op": "capture",
+    "name": "native-marked"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 196,
+    "capture": "criterion-menu"
+  },
+  {
+    "op": "click",
+    "x": 44,
+    "y": 243
+  },
+  {
+    "op": "click",
+    "x": 640,
+    "y": 196
+  },
+  {
+    "op": "click",
+    "x": 603,
+    "y": 263
+  },
+  {
+    "op": "click",
+    "x": 789,
+    "y": 196
+  },
+  {
+    "op": "click",
+    "x": 876,
+    "y": 196
+  },
+  {
+    "op": "capture",
+    "name": "native-size-date"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 196
+  },
+  {
+    "op": "click",
+    "x": 60,
+    "y": 284
+  },
+  {
+    "op": "click",
+    "x": 320,
+    "y": 196
+  },
+  {
+    "op": "click",
+    "x": 640,
+    "y": 196
+  },
+  {
+    "op": "click",
+    "x": 603,
+    "y": 243
+  },
+  {
+    "op": "click",
+    "x": 876,
+    "y": 196
+  },
+  {
+    "op": "capture",
+    "name": "native-extension-size"
+  },
+  {
+    "op": "click",
+    "x": 212,
+    "y": 69
+  },
+  {
+    "op": "capture",
+    "name": "native-hidden-refresh"
+  },
+  {
+    "op": "click",
+    "x": 100,
+    "y": 174
+  },
+  {
+    "op": "click",
+    "x": 656,
+    "y": 174
+  },
+  {
+    "op": "capture",
+    "name": "native-explicit-refresh"
+  },
+  {
+    "op": "click",
+    "x": 640,
+    "y": 196
+  },
+  {
+    "op": "click",
+    "x": 603,
+    "y": 263
+  },
+  {
+    "op": "click",
+    "x": 789,
+    "y": 196
+  },
+  {
+    "op": "click",
+    "x": 876,
+    "y": 196
+  },
+  {
+    "op": "capture",
+    "name": "native-preepoch-date"
+  },
+  {
+    "op": "click",
+    "x": 640,
+    "y": 196
+  },
+  {
+    "op": "click",
+    "x": 603,
+    "y": 243
+  },
+  {
+    "op": "click",
+    "x": 789,
+    "y": 196
+  },
+  {
+    "op": "click",
+    "x": 876,
+    "y": 196
+  },
+  {
+    "op": "capture",
+    "name": "native-metadata-checkpoint"
+  }
+]

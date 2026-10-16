@@ -1,0 +1,5 @@
+[{"stage":"original-name","panes":[{"criterion":"NAME","ascending":true,"directories_first":true},{"criterion":"NAME","ascending":true,"directories_first":true}]},
+{"stage":"original-marked","panes":[{"criterion":"NAME","ascending":true,"directories_first":true},{"criterion":"NAME","ascending":true,"directories_first":true}]},
+{"stage":"original-size-date","panes":[{"criterion":"SIZE","ascending":true,"directories_first":true},{"criterion":"DATE","ascending":false,"directories_first":false}]},
+{"stage":"original-extension-size","panes":[{"criterion":"EXTENSION","ascending":true,"directories_first":false},{"criterion":"SIZE","ascending":false,"directories_first":true}]},
+{"stage":"original-hidden-refresh","panes":[{"criterion":"EXTENSION","ascending":true,"directories_first":false},{"criterion":"SIZE","ascending":false,"directories_first":true}]}]

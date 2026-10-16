@@ -4,6 +4,7 @@
 use mucrab_core::{FileEntry, NameSorter, SortOptions, list_directory};
 mod w02;
 mod w02b;
+mod w02c;
 use serde::{Deserialize, Serialize};
 use std::{
     io::{self, BufRead},
@@ -88,6 +89,15 @@ fn adapter() -> Result<(), Box<dyn std::error::Error>> {
 
 fn main() -> ExitCode {
     let arguments: Vec<_> = std::env::args_os().skip(1).collect();
+    if arguments.as_slice() == ["--adapter-w02c"] {
+        return match w02c::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("W02c adapter unavailable: {error}");
+                ExitCode::from(2)
+            }
+        };
+    }
     if arguments.as_slice() == ["--adapter-w02b"] {
         return match w02b::adapter() {
             Ok(()) => ExitCode::SUCCESS,
@@ -121,13 +131,13 @@ fn main() -> ExitCode {
     }
     if arguments.as_slice() == ["--help"] || arguments.as_slice() == ["-h"] {
         println!(
-            "muCrab comparison harness\n\nUsage: mucrab-compare --suite w01|w02|w02b [--reserved]\n       mucrab-compare --status\n\nRuns original Java binary behavior and the Rust adapter.\nRequires the acquired reference and a JDK. Status alone exits 2 with zero cases."
+            "muCrab comparison harness\n\nUsage: mucrab-compare --suite w01|w02|w02b|w02c [--reserved]\n       mucrab-compare --status\n\nRuns original Java binary behavior and the Rust adapter.\nRequires the acquired reference and a JDK. Status alone exits 2 with zero cases."
         );
         return ExitCode::SUCCESS;
     }
     if (arguments.len() == 2 || (arguments.len() == 3 && arguments[2] == "--reserved"))
         && arguments[0] == "--suite"
-        && ["w01", "w02", "w02b"]
+        && ["w01", "w02", "w02b", "w02c"]
             .iter()
             .any(|suite| arguments[1] == *suite)
     {
@@ -135,7 +145,9 @@ fn main() -> ExitCode {
         let mut command = Command::new("python3");
         command
             .arg("-B")
-            .arg(root.join(if arguments[1] == "w02b" {
+            .arg(root.join(if arguments[1] == "w02c" {
+                "tools/w02c.py"
+            } else if arguments[1] == "w02b" {
                 "tools/w02b.py"
             } else if arguments[1] == "w02" {
                 "tools/w02.py"
@@ -158,7 +170,7 @@ fn main() -> ExitCode {
     }
     if arguments.is_empty() || arguments.as_slice() == ["--status"] {
         println!(
-            r#"{{"status":"not_run","cases_run":0,"reason":"Run --suite w01, w02 or w02b for a fresh scoped comparison"}}"#
+            r#"{{"status":"not_run","cases_run":0,"reason":"Run --suite w01, w02, w02b or w02c for a fresh scoped comparison"}}"#
         );
     } else {
         eprintln!("Unsupported arguments. Use mucrab-compare --help.");

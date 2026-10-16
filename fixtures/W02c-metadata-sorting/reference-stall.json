@@ -1,0 +1,233 @@
+{
+  "id": "generated-0-natural",
+  "kind": "synthetic",
+  "entries": [
+    {
+      "name": "x0.TXT",
+      "is_directory": false,
+      "is_symlink": false,
+      "metadata": {
+        "size": 2,
+        "modified_ms": 0,
+        "extension": "ı"
+      }
+    },
+    {
+      "name": ".hidden1.txt",
+      "is_directory": false,
+      "is_symlink": false,
+      "metadata": {
+        "size": 0,
+        "modified_ms": 0,
+        "extension": ""
+      }
+    },
+    {
+      "name": "é2",
+      "is_directory": true,
+      "is_symlink": false,
+      "metadata": {
+        "size": -1,
+        "modified_ms": -9223372036854775808,
+        "extension": "İ"
+      }
+    },
+    {
+      "name": ".hidden3.txt",
+      "is_directory": true,
+      "is_symlink": false,
+      "metadata": {
+        "size": 0,
+        "modified_ms": 0,
+        "extension": "txt"
+      }
+    },
+    {
+      "name": "file4",
+      "is_directory": false,
+      "is_symlink": false,
+      "metadata": {
+        "size": -2,
+        "modified_ms": 0,
+        "extension": "𐐀"
+      }
+    },
+    {
+      "name": "file5.txt",
+      "is_directory": false,
+      "is_symlink": false,
+      "metadata": {
+        "size": 9223372036854775807,
+        "modified_ms": 9223372036854775807,
+        "extension": "txt"
+      }
+    },
+    {
+      "name": ".hidden6",
+      "is_directory": true,
+      "is_symlink": false,
+      "metadata": {
+        "size": -2,
+        "modified_ms": -9223372036854775808,
+        "extension": "ᾀ"
+      }
+    },
+    {
+      "name": "File7.TXT",
+      "is_directory": true,
+      "is_symlink": false,
+      "metadata": {
+        "size": 9223372036854775806,
+        "modified_ms": 1577836800123,
+        "extension": "Σ"
+      }
+    },
+    {
+      "name": "é8",
+      "is_directory": true,
+      "is_symlink": false,
+      "metadata": {
+        "size": -9223372036854775808,
+        "modified_ms": 1577836800123,
+        "extension": "Σ"
+      }
+    },
+    {
+      "name": "é9.𐐀",
+      "is_directory": false,
+      "is_symlink": false,
+      "metadata": {
+        "size": -9223372036854775808,
+        "modified_ms": -1234,
+        "extension": "TXT"
+      }
+    },
+    {
+      "name": "file10.TXT",
+      "is_directory": false,
+      "is_symlink": false,
+      "metadata": {
+        "size": 1,
+        "modified_ms": 946684800000,
+        "extension": "ᾈ"
+      }
+    }
+  ],
+  "mode": "NATURAL",
+  "parent": true,
+  "events": [
+    {
+      "op": "mark",
+      "row": 1
+    },
+    {
+      "op": "mark",
+      "row": 6
+    },
+    {
+      "op": "mark",
+      "row": 11
+    },
+    {
+      "op": "focus",
+      "row": 6
+    },
+    {
+      "op": "sort",
+      "criterion": "NAME",
+      "ascending": true,
+      "directories_first": true
+    },
+    {
+      "op": "sort",
+      "criterion": "NAME",
+      "ascending": true,
+      "directories_first": false
+    },
+    {
+      "op": "sort",
+      "criterion": "NAME",
+      "ascending": false,
+      "directories_first": true
+    },
+    {
+      "op": "sort",
+      "criterion": "NAME",
+      "ascending": false,
+      "directories_first": false
+    },
+    {
+      "op": "sort",
+      "criterion": "SIZE",
+      "ascending": true,
+      "directories_first": true
+    },
+    {
+      "op": "sort",
+      "criterion": "SIZE",
+      "ascending": true,
+      "directories_first": false
+    },
+    {
+      "op": "sort",
+      "criterion": "SIZE",
+      "ascending": false,
+      "directories_first": true
+    },
+    {
+      "op": "sort",
+      "criterion": "SIZE",
+      "ascending": false,
+      "directories_first": false
+    },
+    {
+      "op": "sort",
+      "criterion": "DATE",
+      "ascending": true,
+      "directories_first": true
+    },
+    {
+      "op": "sort",
+      "criterion": "DATE",
+      "ascending": true,
+      "directories_first": false
+    },
+    {
+      "op": "sort",
+      "criterion": "DATE",
+      "ascending": false,
+      "directories_first": true
+    },
+    {
+      "op": "sort",
+      "criterion": "DATE",
+      "ascending": false,
+      "directories_first": false
+    },
+    {
+      "op": "sort",
+      "criterion": "EXTENSION",
+      "ascending": true,
+      "directories_first": true
+    },
+    {
+      "op": "sort",
+      "criterion": "EXTENSION",
+      "ascending": true,
+      "directories_first": false
+    },
+    {
+      "op": "sort",
+      "criterion": "EXTENSION",
+      "ascending": false,
+      "directories_first": true
+    },
+    {
+      "op": "sort",
+      "criterion": "EXTENSION",
+      "ascending": false,
+      "directories_first": false
+    }
+  ],
+  "reason": "Original DATE descending/folders-first sort stalls when overflow produces positive comparisons in both directions"
+}

@@ -14,12 +14,12 @@ session can continue without the original conversation.
 | Last updated | 2026-10-16 |
 | Last verified implementation commit | `3d81beb` — Migrate verified hidden-file filtering to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W02b — hidden-file filtering verified within its bounded contract; next is W02c |
+| Active workflow | W02c — Name/Size/Modified/Extension sorting verified within its bounded contract; next is W03 |
 | W01 status | `verified` within en-US/macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | W02c: recover one bounded additional-sort-criteria contract before implementation; keep all three suites passing |
-| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering |
-| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. Zero differences/skips |
-| Known blocker | None within the bounded contracts; original OS shortcut dispatch, Wayland and exhaustive GUI parity remain unverified |
+| Next executable task | W03: recover a bounded recursive-copy contract and original adapter before Rust; keep all four comparison suites passing |
+| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting |
+| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. Zero differences/skips within scope |
+| Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); OS dispatch/Wayland remain unverified |
 | Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
 
 The commit above identifies the implementation baseline, not the commit adding
@@ -59,7 +59,7 @@ complete, observable workflow before expanding the scope.
 | 2. Binary acquisition | Complete | `15427e7`; `tools/acquire_mucommander.py`, `tools/manifests/mucommander.json`, `evidence/acquisition/mucommander-1.6.2-1.json` |
 | 3. Analysis toolchain | Complete for static inspection | `9996a3e`; `tools/analysis_tools.py`, pinned manifests and npm lockfile, `evidence/toolchain/readiness.json` |
 | 4. Cargo workspace and preview | Complete | `88baf29`; `Cargo.toml`, `Cargo.lock`, `crates/`, `evidence/workspace/readiness.json` |
-| 5. Verified workflows | W01, W02a and W02b verified within contracts | Workflow evidence directories and gate ledgers below |
+| 5. Verified workflows | W01, W02a, W02b and bounded W02c verified within contracts | Workflow evidence directories and gate ledgers below |
 | 6. Broader comparison and demo | Not started | Final acceptance below |
 
 The workspace contains:
@@ -68,7 +68,7 @@ The workspace contains:
 | --- | --- | --- |
 | `mucrab-core` | Local enumeration, focus/marks, pane state, recovered comparator/table sorting, ICU4X collation | Recovered behavior, independent of the GUI |
 | `mucrab-desktop` | Native two-pane local browser using eframe/egui 0.36.2 and OpenGL | Navigation, sorting and marking in both panes; later file-operation UI |
-| `mucrab-compare` | Original-JAR/Rust W01/W02 adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
+| `mucrab-compare` | Original-JAR/Rust W01/W02/W02b/W02c adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
 
 Historical checks passed on the baseline: Cargo build, formatting, Clippy with
 warnings denied, Rust tests, CLI checks, and native preview capture. The Rust
@@ -425,7 +425,7 @@ further when their acceptance criteria cannot be closed in one increment.
 | W01 | Local folder browsing and name sorting | Entry identities, pairwise signs, ordered listings, both-pane native navigation | `verified` within contract |
 | W02a | Focus and marking in a loaded directory | Ordered selected identities and marks after every event; both native panes | `verified` within contract |
 | W02b | Hidden-file filtering and selection interaction | Visible entries, surviving marks/focus, parent handling | `verified` within Unix/en-US contract |
-| W02c | Additional sort criteria | Metadata ordering and ties | `not_started` |
+| W02c | Size/date/extension sorting | Metadata ordering, ties, selection persistence | `verified` within bounded metadata contract; permissions/owner/group deferred |
 | W03 | Recursive copy | Paths, byte contents, empty folders, declared metadata, collisions, errors | `not_started` |
 | W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `not_started` |
 | W05 | Batch rename | Generated names, preview/apply consistency, collisions, partial failures | `not_started` |
@@ -531,16 +531,35 @@ renders because raw AWT/Xvfb screen captures can be black without a window manag
 Full OS shortcut/mouse dispatch and asynchronous refresh scheduling are not proved.
 See `evidence/workflows/W02b-hidden-filtering/README.md` and `decisions.md`.
 
+### W02c gate ledger
+
+| Gate | State | Evidence / unresolved work |
+| --- | --- | --- |
+| G1: original Java adapter | `verified` within boundary | Original comparator/model/table methods; literal synthetic metadata overrides only; independent real getters/enumeration |
+| G2: recovered contract | `verified` within bounded scope | Ten-class recovery; name/size/date/extension, ties, direction, folders-first, metadata and original extreme-sort limitation |
+| G3: fixtures and protocol | `verified` | Named/generated fixtures and frozen seeds; 4 explicit pair-only extreme sequences; malformed/incomplete output rejected; failed original trial preserved |
+| G4: Rust and comparison | `verified` within scope | 74 sequences, 1,454 snapshots, 223,432 pair signs, 1,386 full lists, 8 metadata enumeration checks; zero differences/skips; all earlier suites pass |
+| G5: native workflow | `verified` within X11/Xvfb scope | Independent criteria/direction/folders-first; readable metadata; sort/refresh/hidden-toggle retain focus/marks; original full-GUI sort entry points and menu action |
+| G6: reproducible closure | `verified` for local development | Pinned simple-case facts, source/input/binary hashes, 12 Rust/23 Python tests, checks, GUI replay, notices and checkpoint; release packaging remains open |
+
+See `evidence/workflows/W02c-metadata-sorting/README.md`, `contract.md` and
+`decisions.md`. Extreme metadata arithmetic is tested only as comparison signs;
+the original nonterminating sort is a separate diagnostic, never a passing
+ordered-list case. Supported full sorting uses size -1/nonnegative i64 and dates
+within ±(i64::MAX / 2) milliseconds. Native enumeration rejects dates outside
+that bound. Permissions/owner/group remain deferred; W03 copy is next.
+
 ### Open issues
 
 | ID | Issue | Next investigation |
 | --- | --- | --- |
 | R01 | Resolved: original comparator/table sorter execute | Keep original JAR/class pins and adapter initialization in regression checks |
 | R02 | Scoped resolution: ICU4X matches en-US fixtures | New locales/data versions need new contract and comparisons |
-| R03 | Scoped resolution: local callers and representative GUI states recovered | W02b hidden filtering is scoped and verified; additional criteria/filters remain; exhaustive GUI parity is not claimed |
+| R03 | Scoped resolution: local callers and representative GUI states recovered | W02b filtering and W02c size/date/extension sorting are scoped and verified; permissions/owner/group and other filters remain; exhaustive GUI parity is not claimed |
 | R04 | Original GUI launched on macOS arm64 and Linux Xvfb; unrelated components/backend behavior unverified | Establish Wayland/physical desktop and additional providers separately; original portable distribution emits optional bundle/logging warnings |
 | R05 | Ignored raw artifacts still need rehydration | Use W01/W02 scripts and retained GUI evidence; regenerate or transfer required caches/raw runs |
 | R06 | Original shortcut dispatch/AX mark count and full OS mouse-event parity unverified | Adapter isolates original methods; GUI captures are representative. Establish full dispatch separately before making broader GUI claims |
+| R07 | Original table sorter stalls on certain extreme signed-metadata inputs | Preserved original failure/reproducer; pair-only arithmetic coverage; enforce declared native sortable range |
 
 ### Session entry template
 
@@ -705,6 +724,60 @@ Exact next executable action:
   Next executable action: recover one bounded W02c additional-sort-criteria
   contract, keeping W01, W02 and W02b predefined/reserved suites passing.
 
+- **2026-10-16, from 16:00 Europe/Madrid — W02c metadata sorting:** started at
+  `d32930f`, clean main. Linux x86_64/ext4, en-US, Rust/Cargo 1.99.0,
+  OpenJDK 25.0.4.1. Recovered ten original classes using CFR/javap and ran the
+  original-only candidate before Rust. Original quicksort stalled on extreme
+  synthetic timestamp overflow. Preserved incomplete runs, requests, thread
+  stacks and a portable 20-second reproducer (exit 2, zero equivalence cases).
+  Bounded full sorting to size -1/nonnegative i64 and dates within
+  ±(i64::MAX / 2) milliseconds; four extreme sequences are explicitly pair-only.
+  Original-only run `20261016T141444Z-7c72ef61` completed 38 sequences/698
+  snapshots, freezing contract and seeds before implementation. No original
+  method was replaced; the synthetic subclass supplies literal metadata only.
+
+  Implemented Name/Size/Modified/Extension options, recovered metadata rules,
+  native link-target size/date and own-name extensions, millisecond/pre-epoch
+  times, pane-specific sorting with preserved marks/focus, readable metadata
+  suffixes and UTC display. Pinned 1,483 JDK simple-case facts in the native
+  binary, with a reproducible probe; no JDK code or runtime is redistributed.
+  Added chrono 0.4.45 with std only and its notice; all prior Cargo pins remain.
+
+  Final W02c runs `20261016T142935Z-946303ab` and
+  `20261016T142939Z-12cde06b` pass 74 sequences/1,454 snapshots, 223,432 pair
+  signs, 1,386 full lists and eight metadata enumeration checks. Four pair-only
+  sequences do not count as lists/selection coverage. Zero differences/skips
+  within the contract. All six earlier suites pass again: W01 342 cases,
+  W02a 60 sequences/4,022 snapshots, W02b 56 sequences/2,520 global snapshots.
+  Commands are retained in
+  `artifacts/runs/W02c-regressions-20261016T142912Z-1d3f676f`.
+
+  Native XTest replay `artifacts/gui/W02c-20261016T142847Z-7ea49855` passes
+  with PATH=/nonexistent. Original GUI probe
+  `artifacts/gui/W02c-20261016T142753Z-3f132b2a` verifies five stages/ten pane
+  states using original sortBy, marks/focus and the hidden menu action. Thirteen
+  screenshots and live states are retained. The first original capture failed
+  from inherited Wayland settings; removing WAYLAND_DISPLAY fixed isolated X11
+  capture. Raw original screen captures may be black; Swing renders are retained.
+  Native display is UTC; original localized formatting is outside the claim.
+
+  Validation `W02c-validation-20261016T143201Z-eafc85b6` passes format,
+  Clippy with warnings denied, 12 Rust/23 Python tests, locked offline build,
+  case-data reproduction, original integrity, Java-independent native version
+  and linkage. Current comparison source/input hashes match the worktree.
+  README, notices, screenshot, gate ledger, scripts and evidence are updated.
+  Gates G1–G6 are verified within the bounded contract. Permissions/owner/group,
+  metadata races, Wayland/physical desktop, other JDK case data/locales and full
+  shortcut parity remain unverified. No upstream implementation source fetch,
+  global configuration change, release or push. Implementation/evidence
+  checkpoint: pending local commit; reports identify tested base `d32930f`
+  plus exact matching source hashes. Ignored inputs regenerate through w02c.py,
+  w02c_inspect.py, w02c_case_data.py and w02c_gui.py; GUI replay commands are in
+  `evidence/workflows/W02c-metadata-sorting/README.md`.
+  Next executable action: recover W03's bounded recursive-copy contract and
+  original adapter, using separate disposable Java/Rust fixture trees. Keep
+  all four predefined/reserved suites passing before expanding scope.
+
 ## Final demonstration acceptance
 
 After the selected workflows are verified, run an agreed suite targeting
@@ -729,10 +802,10 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > Inspect Git, repository instructions, code, and committed evidence first;
 > reconcile the live checkpoint before acting. Rehydrate ignored inputs on this
 > machine and record fresh verification. Resume the first unfinished workflow
-> gate. W01, W02a and W02b are verified within their declared contracts; Linux
+> gate. W01, W02a, W02b and W02c are verified within their declared contracts; Linux
 > component comparisons and representative X11/Xvfb checks are recorded.
-> The next action is W02c additional-sort-criteria contract recovery.
-> Keep W01, W02 and W02b suites passing. Continue through each workflow's gates before expanding
+> The next action is W03 bounded recursive-copy contract recovery and original adapter.
+> Keep W01, W02, W02b and W02c suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
 > Java. Update the plan and evidence at each checkpoint, including exact next

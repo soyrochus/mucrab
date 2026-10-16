@@ -15,6 +15,7 @@ path = "src/main.rs"
 [dependencies]
 mucrab-core.workspace = true
 eframe.workspace = true
+chrono = { version = "=0.4.45", default-features = false, features = ["std"] }
 
 [features]
 screenshot = ["eframe/__screenshot"]

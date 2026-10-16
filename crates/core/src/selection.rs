@@ -4,7 +4,7 @@
 // Recovered from muCommander FileTable, FileTableModel and selection actions.
 // See NOTICE.md and evidence/workflows/W02-selection-marking/contract.md.
 
-use crate::{FileEntry, SortMode};
+use crate::{FileEntry, SortCriterion, SortMode};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize)]
@@ -32,6 +32,8 @@ pub enum PaneEvent {
     None,
     Invert,
     Sort {
+        #[serde(default)]
+        criterion: SortCriterion,
         ascending: bool,
         directories_first: bool,
         mode: SortMode,

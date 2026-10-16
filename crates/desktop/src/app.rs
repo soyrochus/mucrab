@@ -2,7 +2,9 @@
 // Copyright (C) 2026 muCrab contributors
 
 use eframe::egui;
-use mucrab_core::{BrowserPane, NameSorter, PaneEvent, PaneSide, SortMode};
+use mucrab_core::{
+    BrowserPane, FileEntry, NameSorter, PaneEvent, PaneSide, SortCriterion, SortMode,
+};
 use std::path::PathBuf;
 
 pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
@@ -71,7 +73,7 @@ impl eframe::App for MuCrabApp {
             });
             ui.add_space(6.0);
             ui.horizontal(|ui| {
-                ui.label("Name sorting · en-US");
+                ui.label("File sorting · en-US · Times UTC");
                 ui.add_space(12.0);
                 if ui.checkbox(&mut self.show_hidden, "Show hidden files").changed() {
                     for pane in &mut self.panes {
@@ -157,7 +159,26 @@ fn pane(
                 });
                 let before = pane.options;
                 ui.horizontal(|ui| {
+                    egui::ComboBox::from_id_salt("criterion")
+                        .width(90.0)
+                        .selected_text(match pane.options.criterion {
+                            SortCriterion::Name => "Name",
+                            SortCriterion::Size => "Size",
+                            SortCriterion::Date => "Modified",
+                            SortCriterion::Extension => "Extension",
+                        })
+                        .show_ui(ui, |ui| {
+                            for (value, label) in [
+                                (SortCriterion::Name, "Name"),
+                                (SortCriterion::Size, "Size"),
+                                (SortCriterion::Date, "Modified"),
+                                (SortCriterion::Extension, "Extension"),
+                            ] {
+                                ui.selectable_value(&mut pane.options.criterion, value, label);
+                            }
+                        });
                     egui::ComboBox::from_id_salt("mode")
+                        .width(100.0)
                         .selected_text(match pane.options.mode {
                             SortMode::Natural => "Natural",
                             SortMode::Lexicographic => "Lexicographic",
@@ -285,9 +306,10 @@ fn pane(
                             };
                             let marked = pane.selection.is_marked(row, &pane.order);
                             let text = format!(
-                                "{} {prefix}  {}",
+                                "{} {prefix}  {}{}",
                                 if marked { "[x]" } else { "[ ]" },
-                                entry.name
+                                entry.name,
+                                metadata_label(entry, pane.options.criterion)
                             );
                             let label = egui::RichText::new(text).color(if marked {
                                 egui::Color32::from_rgb(245, 210, 110)
@@ -348,6 +370,31 @@ fn listing_id(side: PaneSide) -> egui::Id {
         PaneSide::Left => "left-file-list",
         PaneSide::Right => "right-file-list",
     })
+}
+
+fn metadata_label(entry: &FileEntry, criterion: SortCriterion) -> String {
+    if criterion == SortCriterion::Name {
+        return String::new();
+    }
+    let Some(metadata) = &entry.metadata else {
+        return " · Metadata unavailable".to_owned();
+    };
+    let value = match criterion {
+        SortCriterion::Name => return String::new(),
+        SortCriterion::Size if entry.is_directory => "<DIR>".to_owned(),
+        SortCriterion::Size if metadata.size == -1 => "Unknown size".to_owned(),
+        SortCriterion::Size => format!("{} bytes", metadata.size),
+        SortCriterion::Date => chrono::DateTime::from_timestamp_millis(metadata.modified_ms)
+            .map_or_else(
+                || "Date out of range".to_owned(),
+                |date| date.format("%Y-%m-%d %H:%M:%S%.3f UTC").to_string(),
+            ),
+        SortCriterion::Extension => metadata
+            .extension
+            .clone()
+            .unwrap_or_else(|| "No extension".to_owned()),
+    };
+    format!(" · {value}")
 }
 
 fn click_modifiers(ui: &egui::Ui, rect: egui::Rect) -> egui::Modifiers {

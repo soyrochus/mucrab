@@ -40,6 +40,7 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
                     name: name.clone(),
                     is_directory: path.is_dir(),
                     is_symlink: metadata.is_symlink(),
+                    metadata: None,
                 })
             })
             .collect::<Result<Vec<_>, std::io::Error>>()?;

@@ -30,7 +30,17 @@ suite passes **56 sequences, 2,520 global snapshots and 5,040 pane snapshots**,
 with zero differences. [W02b evidence](evidence/workflows/W02b-hidden-filtering/README.md)
 records the contract, original reload-worker boundary and GUI checks.
 
-All three component suites pass on **Linux x86_64/ext4**, OpenJDK **25.0.4.1**,
+**W02c adds metadata sorting:** each pane can sort by Name, Size, Modified or
+Extension, with independent direction and folders-first settings. Focus and
+marks survive sort changes. The original-JAR/Rust suites pass **74 sequences,
+1,454 snapshots, 223,432 pair signs, 1,386 ordered lists and eight metadata
+enumeration checks**, with zero differences. Four extreme-value sequences cover
+comparison signs only: the original sorter can stall on overflowing synthetic
+timestamps. [W02c evidence](evidence/workflows/W02c-metadata-sorting/README.md)
+records that limitation and the supported range. The native display shows bytes,
+extensions and millisecond UTC dates for the selected criterion.
+
+All four component suites pass on **Linux x86_64/ext4**, OpenJDK **25.0.4.1**,
 with en-US ordering. Native input checks run under X11/Xvfb; representative
 original menu-action checks retain live-table states and Swing renders.
 Earlier W01/W02a GUI evidence covers macOS arm64. Wayland/physical-desktop
@@ -42,11 +52,11 @@ background operations and other locales remain for later increments.
 
 ### muCrab — current Rust implementation
 
-The W02b checkpoint provides two independent file panes, local folder
-browsing, name sorting, focus/marking controls, and shared hidden-file filtering. The native
+The W02c checkpoint provides two independent file panes, local folder
+browsing, name/metadata sorting, focus/marking controls, and shared hidden-file filtering. The native
 Rust application runs independently of Java.
 
-![muCrab's native Rust interface with two file panes, shared Show hidden files control, independent sorting, and marking controls](images/mucrab.png)
+![muCrab's native Rust interface with two file panes, shared hidden-file control, independent extension/size sorting, and marked rows](images/mucrab.png)
 
 ### muCommander — Java reference application
 
@@ -65,9 +75,9 @@ The [Cargo workspace](Cargo.toml) contains:
 
 | Package | Role | Current contents |
 | --- | --- | --- |
-| `mucrab-core` | Framework-independent behavior | Local enumeration, dotfile filtering, focus/mark restoration, ICU4X name comparison, recovered table quicksort |
+| `mucrab-core` | Framework-independent behavior | Local enumeration, dotfile filtering, focus/mark restoration, ICU4X name comparison, metadata comparison, recovered table quicksort |
 | `mucrab-desktop` | Native `mucrab` executable | Two-pane browser using eframe/egui 0.36.2 with the OpenGL backend |
-| `mucrab-compare` | Java/Rust comparison harness | W01, W02a and W02b original-binary oracles, Rust adapters, and difference reports |
+| `mucrab-compare` | Java/Rust comparison harness | W01, W02a, W02b and W02c original-binary oracles, Rust adapters, and difference reports |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
 
@@ -94,6 +104,8 @@ cargo run --locked -p mucrab-compare -- --suite w02
 cargo run --locked -p mucrab-compare -- --suite w02 --reserved
 cargo run --locked -p mucrab-compare -- --suite w02b
 cargo run --locked -p mucrab-compare -- --suite w02b --reserved
+cargo run --locked -p mucrab-compare -- --suite w02c
+cargo run --locked -p mucrab-compare -- --suite w02c --reserved
 ```
 
 The runner exits 0 for a complete scoped pass, 1 for differences, and 2 for unavailable/incomplete execution. Raw results are kept under ignored `artifacts/runs/`; compact reports are in each directory under `evidence/workflows/`. W01 requires a real access-denied fixture, so running with privileges that can read it cannot produce a passing W01 result.
@@ -106,9 +118,9 @@ cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 cargo test --workspace --all-features --locked
 ```
 
-The Rust suite has nine tests covering recovered rules, navigation/error state,
-filtering, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard. The Python helper/protocol suite has nineteen tests. The separate
+The Rust suite has twelve tests covering recovered rules, navigation/error state,
+filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
+readiness guard. The Python helper/protocol suite has twenty-three tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 
@@ -230,7 +242,7 @@ The [implementation plan and progress ledger](mucrab-implementation-plan.md) rec
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
-5. **In progress:** W01 browsing/name sorting, W02a selection/marking and W02b hidden-file filtering are verified within their contracts. Next is W02c additional sort criteria, applying the same recovery and comparison gates.
+5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering and W02c size/date/extension sorting are verified within their contracts. Next is W03 recursive copy, applying the same recovery and comparison gates. Permissions/owner/group sorting and additional filters remain deferred.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
 
 Upstream Java implementation source will be withheld during reconstruction; license and attribution material remains available. Decompiled representations, binary metadata, and observations of the original are permitted inputs. Findings from the earlier feasibility investigation must be identified as prior evidence if reused.
@@ -254,7 +266,7 @@ The experiment will distinguish evidence that binary-to-Rust reconstruction work
 - `evidence/`: selected provenance records and comparison results suitable for Git.
 - `third_party/`: preserved upstream notices and their provenance.
 
-The repository includes acquisition/analysis helpers, pinned manifests and lockfiles, the native workspace, W01/W02a/W02b Java/Rust adapters and fixtures, scoped results, GUI evidence, and the maintained implementation plan. Later workflows remain unimplemented.
+The repository includes acquisition/analysis helpers, pinned manifests and lockfiles, the native workspace, W01/W02a/W02b/W02c Java/Rust adapters and fixtures, scoped results, GUI evidence, and the maintained implementation plan. Later workflows remain unimplemented.
 
 ## License and attribution
 

@@ -1,0 +1,137 @@
+{
+  "scope": "Representative native XTest input and original live-table entry points on Linux X11/Xvfb; no exhaustive OS dispatch or pixel equivalence",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "filesystem": "ext4",
+    "locale": "en-US",
+    "native_backend": "X11/Xvfb",
+    "original_jdk": "25.0.4.1"
+  },
+  "native_raw_run": "artifacts/gui/W02c-20261016T142847Z-7ea49855",
+  "original_raw_run": "artifacts/gui/W02c-20261016T142753Z-3f132b2a",
+  "native_env": {
+    "PATH": "/nonexistent"
+  },
+  "native_binary_sha256": "0cd7723193ecc09abd253bceb6ae8c9888653c31048c6f5d5b4376ded85b10e2",
+  "inputs": [
+    {
+      "path": "tools/w02c_gui.py",
+      "sha256": "f7a27c31586ee330b43e2cbb37d974e065c0348fb2c07249e89452a05f093df9"
+    },
+    {
+      "path": "tools/java/W02cGuiProbe.java",
+      "sha256": "8d661c5194b2461d5f72ca07c74ba2766226f49f9af0ed84b22c93103894881a"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    },
+    {
+      "path": "tools/linux_gui.py",
+      "sha256": "11d0c5f7cfae27d363af8d941a68e48000456df1c3ed06511ac6e64825217b26"
+    },
+    {
+      "path": "fixtures/W02c-metadata-sorting/native-gui-actions.json",
+      "sha256": "ccf72c67bd6bdae24a8f231cd6d316880a3f605b2669ad3d46de7f59586a23e0"
+    }
+  ],
+  "native_checks": [
+    "Independent Name/Size/Modified/Extension choices, direction and folders-first",
+    "Both panes retain two marked identities and focused identity through sort transitions",
+    "Shared hidden toggle and explicit refresh retain criteria, focus and marks",
+    "Bytes, directory indicators, extensions, missing extensions and millisecond UTC dates are readable",
+    "Pre-epoch -1234ms and -1ms render accurately; broken symlink metadata is zero",
+    "Saved XTest actions replayed on a fresh isolated display; retained captures visually inspected"
+  ],
+  "original_probe": {
+    "mechanism": "Startup agent observes unmodified application; original FileTable.sortBy and mark/focus methods on EDT, actual hidden menu doClick; no class transformation",
+    "stages": 5,
+    "pane_states": 10,
+    "checks": [
+      "Sort options observed on both real tables",
+      "Focus and marked identities persist after sort and hidden-file refresh"
+    ],
+    "states": "gui/original-states.json",
+    "options": "gui/original-sort-options.json",
+    "result": "gui/original-result.json"
+  },
+  "limitations": [
+    "Native UTC formatting differs intentionally from original localized date display; sorting compares raw signed milliseconds",
+    "Original optional OSGi/logging startup warnings remain; unrelated components are unverified",
+    "Original first attempt failed screen capture because it inherited WAYLAND_DISPLAY; run retained at artifacts/gui/W02c-20261016T142705Z-c8ba4a0f; corrected helper removes that variable",
+    "Physical desktop, Wayland and exhaustive shortcuts remain unverified; raw original AWT captures can be black"
+  ],
+  "retained": [
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/native-explicit-refresh.png",
+      "sha256": "30872d8a47796f10a859caf68dcdf1ca47b86a02d77bc0f0294df053fe2a2a8f",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/native-extension-size.png",
+      "sha256": "655475e3a3c3ac27172bbe3d6d46771d4f9bb4aac8e018910918d77ba4b16b80",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/native-hidden-refresh.png",
+      "sha256": "7bee78d2290ed768d7ec5f60517917393186537518154e770288375e1626027e",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/native-initial.png",
+      "sha256": "432f6a774277d0a324b3c0f90a46c1a3c1f618e8bd7390bb721984bd0ad87e84",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/native-marked.png",
+      "sha256": "929e4e273a6f1b0f263da966292a49f75f282a57c0017c6932b345df602fec26",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/native-metadata-checkpoint.png",
+      "sha256": "67a4472245374f5ac9e91fd3d3964802ee54e3d217292d2b5f2b445de38ab7c7",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/native-preepoch-date.png",
+      "sha256": "4418a64628e32138ac721e40817e83e2f1ee3a7990fb71aa3f589dad1181f48a",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/native-size-date.png",
+      "sha256": "de80da7b82185680f7028b05d451d4f7487fdc7b9931a5dd7e0d227927f685a7",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/original-extension-size.png",
+      "sha256": "ee3dd8bc2d9c0320d8f0ad8ebe1e622accd969714d8f686854bff94c9958d3f5",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/original-hidden-refresh.png",
+      "sha256": "ce3ff737ae727dbc673a9975309b5ac5619ed4094cfdadf0898971eba32e919a",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/original-marked.png",
+      "sha256": "153323bcb49632b8962fae1a261c3a7248207c842ccff2e7279bb9e0b31d54fb",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/original-name.png",
+      "sha256": "a80b619f1c0fbdc632cbe65d8ef2307cbe922e5eaad7e785303d6d3c1527f2dd",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/gui/original-size-date.png",
+      "sha256": "a71fc913fcfa53dbedac8166e194ca0f472f95bc0bcdc8624d3a39c9361b3eda",
+      "producer": "original Swing Window.printAll"
+    }
+  ],
+  "preview": {
+    "path": "images/mucrab.png",
+    "sha256": "0b3a66ccf23693838d0e32d2bc1191bb2674306178ea8dcbd339d9f15344dcff",
+    "operation": "Crop unused virtual-screen margin to native 1120x720 window"
+  }
+}

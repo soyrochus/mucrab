@@ -1,0 +1,48 @@
+{
+  "scope": "JDK simple-case data, not Java/Rust behavioral equivalence",
+  "producer_source": "tools/java/W02cCaseData.java",
+  "producer_sha256": "533ae870c0879fa529f11b22010c5900e9635fd3dc006b6b1b3ad2e129ad79ef",
+  "java_version": "25.0.4.1",
+  "mappings": 1483,
+  "facts_sha256": "8657be1be20a74bdc08b987e808731ccf9ad8e3370e25887a5ebc73870e96b7d",
+  "native_data": "crates/core/src/java_case_data.rs",
+  "native_sha256": "47bf627ab3cb7e29eebdf2728412a1276fff2fc87b535ed80623cfe7af2fb683",
+  "commands": {
+    "javac": {
+      "argv": [
+        "javac",
+        "-proc:none",
+        "-d",
+        "{repository}/artifacts/runs/W02c-case-data-20261016T141538Z-695af5f7",
+        "{repository}/tools/java/W02cCaseData.java"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-case-data-20261016T141538Z-695af5f7/javac.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-case-data-20261016T141538Z-695af5f7/javac.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "java": {
+      "argv": [
+        "java",
+        "-cp",
+        "{repository}/artifacts/runs/W02c-case-data-20261016T141538Z-695af5f7",
+        "W02cCaseData"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-case-data-20261016T141538Z-695af5f7/java.stdout",
+        "sha256": "8657be1be20a74bdc08b987e808731ccf9ad8e3370e25887a5ebc73870e96b7d"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-case-data-20261016T141538Z-695af5f7/java.stderr",
+        "sha256": "cffa2051596320b76d58c79e278d4391dacf41b53e51e584648b655e4e4ef25c"
+      }
+    }
+  },
+  "raw_run": "artifacts/runs/W02c-case-data-20261016T141538Z-695af5f7"
+}

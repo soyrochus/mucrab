@@ -249,3 +249,87 @@ fn hidden_setting_follows_navigation_and_classifies_links_by_their_own_names() {
     assert!(!pane.show_hidden);
     assert!(!pane.entries.iter().any(|entry| entry.name.starts_with('.')));
 }
+
+#[cfg(unix)]
+#[test]
+fn local_metadata_follows_links_but_extensions_use_the_entry_name() {
+    use std::time::{Duration, UNIX_EPOCH};
+    let fixture = Fixture::new();
+    let target = fixture.0.join("target.TxT");
+    fs::write(&target, b"four").unwrap();
+    fs::File::open(&target)
+        .unwrap()
+        .set_times(fs::FileTimes::new().set_modified(UNIX_EPOCH - Duration::from_millis(1)))
+        .unwrap();
+    std::os::unix::fs::symlink("target.TxT", fixture.0.join("visible.other")).unwrap();
+    std::os::unix::fs::symlink("missing", fixture.0.join("broken.zz")).unwrap();
+    fs::write(fixture.0.join(".config"), b"").unwrap();
+    fs::write(fixture.0.join("trailing."), b"").unwrap();
+    let entries = list_directory(&fixture.0).unwrap();
+    let metadata = |name: &str| {
+        entries
+            .iter()
+            .find(|e| e.name == name)
+            .unwrap()
+            .metadata
+            .as_ref()
+            .unwrap()
+    };
+    assert_eq!(
+        (
+            metadata("visible.other").size,
+            metadata("visible.other").modified_ms
+        ),
+        (4, -1)
+    );
+    assert_eq!(
+        metadata("visible.other").extension.as_deref(),
+        Some("other")
+    );
+    assert_eq!(
+        (
+            metadata("broken.zz").size,
+            metadata("broken.zz").modified_ms
+        ),
+        (0, 0)
+    );
+    assert_eq!(metadata(".config").extension, None);
+    assert_eq!(metadata("trailing.").extension, None);
+}
+
+#[test]
+fn metadata_sort_refresh_retains_criterion_focus_marks_and_pane_independence() {
+    use mucrab_core::SortCriterion;
+    let fixture = Fixture::new();
+    let sorter = NameSorter::en_us().unwrap();
+    let mut left = BrowserPane::default();
+    let mut right = BrowserPane::default();
+    assert!(left.open(&fixture.0, &sorter));
+    assert!(right.open(&fixture.0, &sorter));
+    let row = left
+        .order
+        .iter()
+        .position(|i| left.entries[*i].name == "file2")
+        .unwrap()
+        + 1;
+    left.apply_event(
+        &PaneEvent::Click {
+            row,
+            ctrl: true,
+            shift: false,
+        },
+        &sorter,
+    )
+    .unwrap();
+    left.options.criterion = SortCriterion::Size;
+    left.resort(&sorter);
+    fs::write(fixture.0.join("file2"), vec![0; 1024]).unwrap();
+    left.refresh(&sorter);
+    let snapshot = left.selection.snapshot(&left.entries, &left.order);
+    assert_eq!(snapshot.visible.last().map(String::as_str), Some("file2"));
+    assert_eq!(snapshot.focused.as_deref(), Some("file2"));
+    assert_eq!(snapshot.marked, ["file2"]);
+    left.set_show_hidden(true, &sorter);
+    assert_eq!(left.options.criterion, SortCriterion::Size);
+    assert_eq!(right.options.criterion, SortCriterion::Name);
+}

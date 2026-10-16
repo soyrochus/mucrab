@@ -50,6 +50,7 @@ fn load(pane: &mut BrowserPane, input: &PaneInput, sorter: &NameSorter) -> io::R
                 name: name.clone(),
                 is_directory: path.is_dir(),
                 is_symlink: path.symlink_metadata()?.is_symlink(),
+                metadata: None,
             })
         })
         .collect::<io::Result<Vec<_>>>()?;
