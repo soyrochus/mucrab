@@ -12,7 +12,7 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-16 |
-| Last verified implementation commit | W05 implementation/evidence checkpoint prepared; exact commit recorded after commit creation |
+| Last verified implementation commit | `3fb6b51` — Migrate verified local batch rename to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
 | Active workflow | W05 — bounded local batch rename verified; next is W06 ZIP browsing/extraction |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
@@ -1003,8 +1003,10 @@ Exact next executable action:
   original integrity, Java-absent native version/help and no JVM linkage.
   README/NOTICE, preview, gate ledger and reproducible tools are updated. Exact
   source fingerprints match the final implementation. Gates G1–G6 are verified
-  only within the declared contract; implementation/evidence checkpoint is being
-  committed and its exact hash follows in the handoff update. Ignored raw runs
+  only within the declared contract. Implementation/evidence checkpoint:
+  `3fb6b51`; reports identify tested base `cd25ffe` and exact source hashes
+  matching that implementation. No required implementation work remains
+  uncommitted. Ignored raw runs
   need regeneration or separate transfer; every mutating GUI replay needs fresh
   trees. Next is W06: recover original ZIP listing/extraction/path errors, freeze
   oracle/fixtures before Rust and keep all seven suites passing.
