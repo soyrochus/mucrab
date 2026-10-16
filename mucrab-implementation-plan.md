@@ -12,7 +12,7 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-16 |
-| Last verified implementation commit | `228d79d` — Migrate verified size, date and extension sorting to muCrab |
+| Last verified implementation commit | `e9b9587` — Migrate verified recursive local copy to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
 | Active workflow | W03 — bounded recursive local copy verified; next is W04 move/rename |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
@@ -854,8 +854,9 @@ Exact next executable action:
   gate ledger are updated. No new dependency, upstream implementation-source
   fetch, global tool change, release or push. Current sources match comparison
   fingerprints. Gates G1–G6 are verified only within the bounded contract.
-  Implementation/evidence checkpoint: pending local commit; reports identify
-  tested base `2960c45` and exact matching source hashes. Ignored artifacts
+  Implementation/evidence checkpoint: `e9b9587`; reports identify
+  tested base `2960c45` and exact source hashes matching that implementation.
+  No required implementation work remains uncommitted. Ignored artifacts
   regenerate with w03_inspect.py, w03.py and w03_gui.py; mutating GUI replay
   always needs a fresh prepared run. Next executable task: recover W04 local
   move/rename behavior and its original adapter, freezing a new contract before
