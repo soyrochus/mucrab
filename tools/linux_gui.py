@@ -88,6 +88,11 @@ def main():
                 py = round(action["y"] + (action["to_y"] - action["y"]) * step / 10)
                 xt.XTestFakeMotionEvent(display, -1, px, py, 0); x.XFlush(display); time.sleep(0.03)
             xt.XTestFakeButtonEvent(display, 1, 0, 0); x.XFlush(display)
+        elif op == "await_exit":
+            code = process.wait(timeout=min(float(action.get("timeout", 10)), 10.0))
+            if code != action.get("exit_code", 0):
+                raise ValueError("Unexpected application exit: " + str(code))
+            print(json.dumps(dict(application_exit_code=code)), flush=True)
         elif op == "resize":
             x.XResizeWindow(display, window, action["width"], action["height"]); x.XFlush(display)
         elif op == "key":

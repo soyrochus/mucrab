@@ -8,9 +8,10 @@ use crate::{
 use eframe::egui;
 use mucrab_core::{
     BatchRenameOptions, BatchRenamePlan, BrowserPane, CopyIssue, CopyIssueKind, CopyOutcome,
-    CopyPolicy, CopyRequest, MoveRequest, NameSorter, PaneEvent, PaneSide, SortCriterion, SortMode,
-    ZipExtractPlan, apply_batch_rename, copy_entries, extract_zip, is_valid_leaf_name,
-    move_entries,
+    CopyPolicy, CopyRequest, JobControl, JobState, MoveRequest, NameSorter, PaneEvent, PaneSide,
+    SortCriterion, SortMode, ZipExtractPlan, apply_batch_rename_with_control,
+    copy_entries_with_control, extract_zip_with_control, is_valid_leaf_name,
+    move_entries_with_control,
 };
 use std::{path::PathBuf, sync::mpsc, time::Duration};
 
@@ -51,6 +52,7 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 batch_review: None,
                 zip_review: None,
                 copy_job: None,
+                close_after_job: false,
                 copy_summary: None,
                 copy_details: Vec::new(),
                 show_copy_details: false,
@@ -74,6 +76,7 @@ struct MuCrabApp {
     batch_review: Option<BatchReview>,
     zip_review: Option<ZipReview>,
     copy_job: Option<PendingCopy>,
+    close_after_job: bool,
     copy_summary: Option<String>,
     copy_details: Vec<String>,
     show_copy_details: bool,
@@ -85,6 +88,8 @@ struct CopyConfirmation {
     request: CopyRequest,
 }
 struct PendingCopy {
+    control: JobControl,
+    worker: std::thread::JoinHandle<()>,
     action: FileAction,
     renamed_to: Option<String>,
     source_side: PaneSide,
@@ -111,6 +116,7 @@ impl FileAction {
     }
 }
 struct JobResult {
+    cancelled: bool,
     outcomes: Vec<CopyOutcome>,
     issues: Vec<CopyIssue>,
     summary: String,
@@ -262,18 +268,23 @@ impl MuCrabApp {
             && let Ok(mut plan) = review.plan
         {
             plan.policy = review.policy;
-            let (sender, receiver) = mpsc::channel();
             self.restore_copy_focus = true;
             let names = review.source_names;
-            match std::thread::Builder::new()
-                .name("mucrab-extract-zip".to_owned())
-                .spawn(move || {
-                    let result = extract_zip(&plan)
+            self.start_job(
+                FileAction::Extract,
+                review.source_side,
+                review.source_directory,
+                None,
+                move |control| {
+                    extract_zip_with_control(&plan, &control)
                         .map(|report| JobResult {
+                            cancelled: report.cancelled,
                             summary: format!(
                                 "ZIP extraction {}: {} files · {} folders",
                                 if report.success {
                                     "finished"
+                                } else if report.cancelled {
+                                    "cancelled"
                                 } else {
                                     "stopped after an error"
                                 },
@@ -289,23 +300,9 @@ impl MuCrabApp {
                                 .collect(),
                             issues: report.issues,
                         })
-                        .map_err(|error| error.to_string());
-                    let _ = sender.send(result);
-                }) {
-                Ok(_) => {
-                    self.copy_job = Some(PendingCopy {
-                        action: FileAction::Extract,
-                        renamed_to: None,
-                        source_side: review.source_side,
-                        source_directory: review.source_directory,
-                        receiver,
-                    })
-                }
-                Err(error) => {
-                    self.copy_summary = Some("ZIP extraction could not start".to_owned());
-                    self.copy_details = vec![error.to_string()];
-                }
-            }
+                        .map_err(|error| error.to_string())
+                },
+            );
             ctx.request_repaint();
         }
     }
@@ -389,13 +386,16 @@ impl MuCrabApp {
             && let Some(review) = self.batch_review.take()
             && let Ok(plan) = review.plan
         {
-            let (sender, receiver) = mpsc::channel();
             self.restore_copy_focus = true;
-            match std::thread::Builder::new()
-                .name("mucrab-batch-rename".to_owned())
-                .spawn(move || {
-                    let result = apply_batch_rename(&plan)
+            self.start_job(
+                FileAction::BatchRename,
+                review.source_side,
+                review.directory,
+                None,
+                move |control| {
+                    apply_batch_rename_with_control(&plan, &control)
                         .map(|report| JobResult {
+                            cancelled: report.cancelled,
                             summary: format!(
                                 "Batch rename finished: {} items completed",
                                 report
@@ -414,23 +414,9 @@ impl MuCrabApp {
                                 .collect(),
                             issues: report.issues,
                         })
-                        .map_err(|error| error.to_string());
-                    let _ = sender.send(result);
-                }) {
-                Ok(_) => {
-                    self.copy_job = Some(PendingCopy {
-                        action: FileAction::BatchRename,
-                        renamed_to: None,
-                        source_side: review.source_side,
-                        source_directory: review.directory,
-                        receiver,
-                    })
-                }
-                Err(error) => {
-                    self.copy_summary = Some("Batch rename could not start".to_owned());
-                    self.copy_details = vec![error.to_string()];
-                }
-            }
+                        .map_err(|error| error.to_string())
+                },
+            );
             ctx.request_repaint();
         }
     }
@@ -483,6 +469,7 @@ impl MuCrabApp {
             ),
         };
         let job = self.copy_job.take().unwrap();
+        let _ = job.worker.join();
         self.copy_details.clear();
         let mut rename_succeeded = false;
         match result {
@@ -505,10 +492,22 @@ impl MuCrabApp {
                     .iter()
                     .filter(|issue| issue.kind == CopyIssueKind::Skipped)
                     .count();
-                let problems = report.issues.len() - skipped;
+                let cancelled = report
+                    .issues
+                    .iter()
+                    .filter(|issue| issue.kind == CopyIssueKind::Cancelled)
+                    .count();
+                let problems = report.issues.len() - skipped - cancelled;
                 self.copy_summary = Some(format!(
                     "{} · {skipped} skipped · {problems} problems",
-                    report.summary
+                    if report.cancelled {
+                        format!(
+                            "{} cancelled; completed and partial results retained",
+                            job.action.label()
+                        )
+                    } else {
+                        report.summary
+                    }
                 ));
                 self.copy_details = report
                     .issues
@@ -517,7 +516,10 @@ impl MuCrabApp {
                     .collect();
             }
             Err(message) => {
-                self.copy_summary = Some(format!("{} could not finish", job.action.label()));
+                self.copy_summary = Some(format!(
+                    "{} failed; inspect partial results",
+                    job.action.label()
+                ));
                 self.copy_details.push(message);
             }
         }
@@ -534,6 +536,10 @@ impl MuCrabApp {
             && self.panes[source_index].location.as_ref() == Some(&job.source_directory)
         {
             self.panes[source_index].focus_name(&name);
+        }
+        self.restore_copy_focus = true;
+        if self.close_after_job {
+            ctx.send_viewport_cmd(egui::ViewportCommand::Close);
         }
     }
     fn copy_dialogs(&mut self, ctx: &egui::Context) {
@@ -585,38 +591,21 @@ impl MuCrabApp {
             } else {
                 None
             };
-            let (sender, receiver) = mpsc::channel();
-            match std::thread::Builder::new()
-                .name(format!("mucrab-{}",action.label().to_lowercase()))
-                .spawn(move || {
-                    let result = if action == FileAction::Copy {
-                        copy_entries(&confirmation.request).map(|report| JobResult {
-                            summary: format!("Copy finished: {} files · {} folders processed · {} links",report.files_copied,report.directories_processed,report.links_copied),
-                            outcomes: report.outcomes, issues: report.issues,
-                        })
-                    } else {
-                        move_entries(&MoveRequest { transfer: confirmation.request, rename_mode: action == FileAction::Rename }).map(|report| JobResult {
-                            summary: format!("{} finished: {} items completed · {} renamed entries · {} files transferred",action.label(),report.outcomes.iter().filter(|outcome| outcome.success).count(),report.renamed_entries,report.files_transferred),
-                            outcomes: report.outcomes, issues: report.issues,
-                        })
-                    }.map_err(|error| error.to_string());
-                    let _ = sender.send(result);
-                }) {
-                Ok(_) => {
-                    self.copy_job = Some(PendingCopy {
-                        action,
-                        renamed_to,
-                        source_side: confirmation.source_side,
-                        source_directory,
-                        receiver,
-                    });
-                    ctx.request_repaint();
-                }
-                Err(error) => {
-                    self.copy_summary = Some(format!("{} could not start",action.label()));
-                    self.copy_details = vec![error.to_string()];
-                }
-            }
+            self.start_job(action, confirmation.source_side, source_directory, renamed_to, move |control| {
+                if action == FileAction::Copy {
+                    copy_entries_with_control(&confirmation.request, &control).map(|report| JobResult {
+                        cancelled: report.cancelled,
+                        summary: format!("Copy finished: {} files · {} folders processed · {} links", report.files_copied, report.directories_processed, report.links_copied),
+                        outcomes: report.outcomes, issues: report.issues,
+                    })
+                } else {
+                    move_entries_with_control(&MoveRequest { transfer: confirmation.request, rename_mode: action == FileAction::Rename }, &control).map(|report| JobResult {
+                        cancelled: report.cancelled,
+                        summary: format!("{} finished: {} items completed · {} renamed entries · {} files transferred", action.label(), report.outcomes.iter().filter(|outcome| outcome.success).count(), report.renamed_entries, report.files_transferred),
+                        outcomes: report.outcomes, issues: report.issues,
+                    })
+                }.map_err(|error| error.to_string())
+            });
         }
         if self.show_copy_details {
             let response = egui::Modal::new(egui::Id::new("copy-details")).show(ctx, |ui| {
@@ -670,9 +659,22 @@ impl eframe::App for MuCrabApp {
                 ui.ctx().request_repaint();
             }
         }
+        if ui.input(|input| input.viewport().close_requested())
+            && let Some(job) = &self.copy_job
+        {
+            ui.ctx()
+                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
+            job.control.cancel();
+            self.close_after_job = true;
+        }
         self.poll_copy(ui.ctx());
         let idle = self.copy_job.is_none()
             && self.copy_confirmation.is_none()
+            && self.batch_review.is_none()
+            && self.zip_review.is_none()
+            && !self.show_copy_details
+            && self.help.is_none();
+        let browsing = self.copy_confirmation.is_none()
             && self.batch_review.is_none()
             && self.zip_review.is_none()
             && !self.show_copy_details
@@ -719,7 +721,7 @@ impl eframe::App for MuCrabApp {
             };
             ui.memory_mut(|memory| memory.request_focus(listing_id(self.active)));
         }
-        let idle = idle && self.copy_confirmation.is_none() && self.zip_review.is_none();
+        let browsing = browsing && self.copy_confirmation.is_none() && self.zip_review.is_none();
         let mut command = None;
         let old_appearance = self.appearance;
         egui::Panel::top("menus").show(ui, |ui| {
@@ -776,13 +778,13 @@ impl eframe::App for MuCrabApp {
                         ("Unmark all", PaneEvent::None),
                         ("Invert selection", PaneEvent::Invert),
                     ] {
-                        menu_action(ui, label, "", idle, Command::Mark(event), &mut command);
+                        menu_action(ui, label, "", browsing, Command::Mark(event), &mut command);
                     }
                 });
                 ui.menu_button("View", |ui| {
                     if ui
                         .add_enabled(
-                            idle,
+                            browsing,
                             egui::Checkbox::new(&mut self.show_hidden, "Show hidden files"),
                         )
                         .changed()
@@ -793,7 +795,7 @@ impl eframe::App for MuCrabApp {
                     }
                     let pane = &mut self.panes[active_index];
                     let before = pane.options;
-                    ui.add_enabled_ui(idle, |ui| {
+                    ui.add_enabled_ui(browsing, |ui| {
                         ui.checkbox(&mut pane.options.directories_first, "Folders first");
                         ui.checkbox(&mut pane.options.ascending, "Ascending order");
                         ui.menu_button("Sort by", |ui| {
@@ -830,19 +832,19 @@ impl eframe::App for MuCrabApp {
                         ui,
                         "Parent folder",
                         "Backspace",
-                        idle,
+                        browsing,
                         Command::Parent,
                         &mut command,
                     );
-                    menu_action(ui, "Home folder", "", idle, Command::Home, &mut command);
-                    menu_action(ui, "Refresh", "", idle, Command::Refresh, &mut command);
+                    menu_action(ui, "Home folder", "", browsing, Command::Home, &mut command);
+                    menu_action(ui, "Refresh", "", browsing, Command::Refresh, &mut command);
                 });
                 ui.menu_button("Window", |ui| {
                     menu_action(
                         ui,
                         "Switch pane",
                         "Tab",
-                        idle,
+                        browsing,
                         Command::SwitchPane,
                         &mut command,
                     );
@@ -868,11 +870,16 @@ impl eframe::App for MuCrabApp {
                     (
                         Icon::Parent,
                         "Parent folder (Backspace)",
-                        idle,
+                        browsing,
                         Command::Parent,
                     ),
-                    (Icon::Home, "Home folder", idle, Command::Home),
-                    (Icon::Refresh, "Refresh active pane", idle, Command::Refresh),
+                    (Icon::Home, "Home folder", browsing, Command::Home),
+                    (
+                        Icon::Refresh,
+                        "Refresh active pane",
+                        browsing,
+                        Command::Refresh,
+                    ),
                     (
                         Icon::Copy,
                         "Copy to other pane (F5)",
@@ -909,8 +916,21 @@ impl eframe::App for MuCrabApp {
                     "Right > Left"
                 });
                 if let Some(job) = &self.copy_job {
-                    ui.spinner();
-                    ui.label(format!("{} in progress…", job.action.label()));
+                    let state = job.control.snapshot().state;
+                    if state != JobState::Paused {
+                        ui.add(egui::Spinner::new().size(16.0));
+                    }
+                    ui.label(format!(
+                        "{} {}",
+                        job.action.label(),
+                        if state == JobState::Paused {
+                            "paused"
+                        } else if state == JobState::Cancelling {
+                            "cancelling…"
+                        } else {
+                            "in progress…"
+                        }
+                    ));
                 }
             });
         });
@@ -919,7 +939,57 @@ impl eframe::App for MuCrabApp {
                 ui.colored_label(ui.visuals().error_fg_color, error);
             }
             ui.horizontal(|ui| {
-                if let Some(summary) = &self.copy_summary {
+                if let Some(job) = &self.copy_job {
+                    let progress = job.control.snapshot();
+                    let fraction = progress
+                        .current_file_size
+                        .filter(|size| *size > 0)
+                        .map_or(0.0, |size| progress.current_file_bytes as f32 / size as f32);
+                    ui.add(
+                        egui::ProgressBar::new(fraction.clamp(0.0, 1.0))
+                            .desired_width(155.0)
+                            .text(format!(
+                                "{} / {} B",
+                                progress.current_file_bytes,
+                                progress.current_file_size.unwrap_or(0)
+                            )),
+                    );
+                    ui.label(format!(
+                        "{} / {} items",
+                        progress.completed_items, progress.total_items
+                    ));
+                    let stopping = matches!(progress.state, JobState::Cancelling);
+                    if ui
+                        .add_enabled(
+                            !stopping,
+                            egui::Button::new(if progress.state == JobState::Paused {
+                                "Resume"
+                            } else {
+                                "Pause"
+                            }),
+                        )
+                        .clicked()
+                    {
+                        job.control.set_paused(progress.state != JobState::Paused);
+                    }
+                    if ui
+                        .add_enabled(
+                            !stopping,
+                            egui::Button::new(if stopping { "Cancelling…" } else { "Cancel" }),
+                        )
+                        .clicked()
+                    {
+                        job.control.cancel();
+                    }
+                    let path = progress
+                        .current_path
+                        .map_or_else(|| "Starting…".to_owned(), |path| path.display().to_string());
+                    ui.add(egui::Label::new(path.clone()).truncate())
+                        .on_hover_text(format!(
+                            "{path}\nTotal transferred: {} B",
+                            progress.transferred_bytes
+                        ));
+                } else if let Some(summary) = &self.copy_summary {
                     ui.label(summary);
                     if !self.copy_details.is_empty() && ui.small_button("Details…").clicked() {
                         self.show_copy_details = true;
@@ -950,7 +1020,7 @@ impl eframe::App for MuCrabApp {
                     ),
                     ("Batch rename…", can_batch, Command::Batch),
                     ("Extract ZIP…", can_extract, Command::Extract),
-                    ("Refresh", idle, Command::Refresh),
+                    ("Refresh", browsing, Command::Refresh),
                 ] {
                     if ui
                         .add_enabled(
@@ -1015,7 +1085,9 @@ impl eframe::App for MuCrabApp {
                                 &self.sorter,
                                 &mut self.active,
                                 &mut self.column_widths[index],
-                                idle,
+                                browsing
+                                    && self.copy_confirmation.is_none()
+                                    && self.zip_review.is_none(),
                             );
                         },
                     );
@@ -1221,5 +1293,217 @@ impl MuCrabApp {
         {
             ctx.memory_mut(|m| m.request_focus(listing_id(self.active)));
         }
+    }
+}
+
+impl MuCrabApp {
+    fn start_job(
+        &mut self,
+        action: FileAction,
+        source_side: PaneSide,
+        source_directory: PathBuf,
+        renamed_to: Option<String>,
+        work: impl FnOnce(JobControl) -> Result<JobResult, String> + Send + 'static,
+    ) {
+        // The UI disables every mutation trigger while this worker exists.
+        if self.copy_job.is_some() {
+            return;
+        }
+        let control = JobControl::default();
+        let worker_control = control.clone();
+        let (sender, receiver) = mpsc::channel();
+        let worker = std::thread::Builder::new()
+            .name(format!("mucrab-{}", action.label().to_lowercase()))
+            .spawn(move || {
+                let mut result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                    work(worker_control.clone())
+                }))
+                .unwrap_or_else(|_| {
+                    Err("File worker panicked; inspect both folders for partial results".to_owned())
+                });
+                worker_control.finish(result.is_err());
+                if let Ok(report) = &mut result {
+                    report.cancelled = worker_control.snapshot().state == JobState::Cancelled;
+                }
+                // No filesystem work follows this acknowledgement.
+                let _ = sender.send(result);
+            });
+        match worker {
+            Ok(worker) => {
+                self.copy_summary = None;
+                self.copy_details.clear();
+                self.copy_job = Some(PendingCopy {
+                    control,
+                    worker,
+                    action,
+                    renamed_to,
+                    source_side,
+                    source_directory,
+                    receiver,
+                });
+            }
+            Err(error) => {
+                self.copy_summary = Some(format!("{} could not start", action.label()));
+                self.copy_details = vec![error.to_string()];
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod job_tests {
+    use super::*;
+    use std::{
+        sync::{
+            Arc,
+            atomic::{AtomicBool, Ordering},
+        },
+        time::Instant,
+    };
+
+    fn app() -> MuCrabApp {
+        MuCrabApp {
+            appearance: Appearance::System,
+            preference_error: None,
+            help: None,
+            split: 0.5,
+            column_widths: [[65.0, 84.0, 145.0]; 2],
+            sorter: NameSorter::en_us().unwrap(),
+            panes: [BrowserPane::default(), BrowserPane::default()],
+            active: PaneSide::Left,
+            show_hidden: false,
+            copy_confirmation: None,
+            batch_review: None,
+            zip_review: None,
+            copy_job: None,
+            close_after_job: false,
+            copy_summary: None,
+            copy_details: Vec::new(),
+            show_copy_details: false,
+            restore_copy_focus: false,
+        }
+    }
+    fn report() -> JobResult {
+        JobResult {
+            cancelled: false,
+            outcomes: vec![],
+            issues: vec![],
+            summary: "Finished".into(),
+        }
+    }
+    fn await_job(app: &mut MuCrabApp, ctx: &egui::Context) {
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while app.copy_job.is_some() {
+            assert!(
+                Instant::now() < deadline,
+                "worker acknowledgement timed out"
+            );
+            app.poll_copy(ctx);
+            std::thread::sleep(Duration::from_millis(2));
+        }
+    }
+    #[test]
+    fn cancelling_waits_for_worker_acknowledgement_and_blocks_a_second_job() {
+        let mut app = app();
+        let ctx = egui::Context::default();
+        let (release, wait) = mpsc::channel();
+        app.start_job(
+            FileAction::Copy,
+            PaneSide::Left,
+            PathBuf::from("/unused"),
+            None,
+            move |_| {
+                wait.recv().unwrap();
+                Ok(report())
+            },
+        );
+        let control = app.copy_job.as_ref().unwrap().control.clone();
+        control.cancel();
+        app.poll_copy(&ctx);
+        assert_eq!(control.snapshot().state, JobState::Cancelling);
+        assert!(app.copy_job.is_some());
+        assert!(app.copy_summary.is_none());
+        let invoked = Arc::new(AtomicBool::new(false));
+        let second = invoked.clone();
+        app.start_job(
+            FileAction::Move,
+            PaneSide::Right,
+            PathBuf::from("/unused"),
+            None,
+            move |_| {
+                second.store(true, Ordering::SeqCst);
+                Ok(report())
+            },
+        );
+        release.send(()).unwrap();
+        await_job(&mut app, &ctx);
+        assert!(!invoked.load(Ordering::SeqCst));
+        assert_eq!(control.snapshot().state, JobState::Cancelled);
+        assert!(app.copy_summary.as_ref().unwrap().contains("cancelled"));
+    }
+    #[test]
+    fn worker_errors_and_panics_become_visible_terminal_failures() {
+        let mut app = app();
+        let ctx = egui::Context::default();
+        for panic in [false, true] {
+            app.start_job(
+                FileAction::Copy,
+                PaneSide::Left,
+                PathBuf::from("/unused"),
+                None,
+                move |_| {
+                    if panic {
+                        panic!("injected worker fault");
+                    }
+                    Err("injected I/O failure".into())
+                },
+            );
+            let control = app.copy_job.as_ref().unwrap().control.clone();
+            await_job(&mut app, &ctx);
+            assert_eq!(control.snapshot().state, JobState::Failed);
+            assert!(app.copy_summary.as_ref().unwrap().contains("failed"));
+            assert!(app.copy_details[0].contains(if panic {
+                "panicked"
+            } else {
+                "injected I/O failure"
+            }));
+        }
+    }
+    #[test]
+    fn completion_does_not_clear_marks_in_an_unrelated_browsed_location() {
+        let mut app = app();
+        let ctx = egui::Context::default();
+        let path = std::env::temp_dir().join(format!(
+            "mucrab-worker-navigation-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::create_dir(&path).unwrap();
+        std::fs::write(path.join("same-name"), b"unrelated").unwrap();
+        app.panes[0].open(&path, &app.sorter);
+        app.panes[0]
+            .apply_event(&PaneEvent::All, &app.sorter)
+            .unwrap();
+        app.start_job(
+            FileAction::Copy,
+            PaneSide::Left,
+            path.join("elsewhere"),
+            None,
+            move |_| {
+                let mut report = report();
+                report.outcomes.push(CopyOutcome {
+                    name: "same-name".into(),
+                    success: true,
+                });
+                Ok(report)
+            },
+        );
+        await_job(&mut app, &ctx);
+        assert_eq!(app.panes[0].selection.marked_count(), 1);
+        assert_eq!(std::fs::read(path.join("same-name")).unwrap(), b"unrelated");
+        std::fs::remove_dir_all(path).unwrap();
     }
 }

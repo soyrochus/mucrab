@@ -52,10 +52,10 @@ behavioral fidelity and the contribution of the discovery tools to migration.
 
 ## Current status
 
-**W06 — ZIP browsing and extraction** is the latest verified milestone.
-**W08 — classic desktop UI** is implemented ahead of W07, with compact menus,
-file tables and saved Light/Dark/System appearance. **W07 — background operations
-and cancellation** follows W08.
+**W07 — background operations and cancellation** is the latest verified functional
+milestone. File operations show progress and support Pause/Resume/Cancel while
+browsing remains available. **W08 — classic desktop UI** was delivered first, with
+compact menus, file tables and saved Light/Dark/System appearance.
 See the [current status report](docs/current-status.md) for workflow details,
 comparison results, verification dates, supported platforms and remaining limits.
 
@@ -101,7 +101,7 @@ The [Cargo workspace](Cargo.toml) contains:
 | --- | --- | --- |
 | `mucrab-core` | Framework-independent behavior | Local/ZIP enumeration, filtering, focus/marks, sorting, copy/move/rename, batch preview/apply and reviewed ZIP extraction |
 | `mucrab-desktop` | Native `mucrab` executable | Local/ZIP two-pane browser using eframe/egui 0.36.2 with the OpenGL backend |
-| `mucrab-compare` | Java/Rust comparison harness | W01–W06 original-binary oracles, Rust adapters, and difference reports (eight suites including W02 splits) |
+| `mucrab-compare` | Java/Rust comparison harness | W01–W07 original-binary oracles, Rust adapters, and difference reports (nine suites including W02 splits) |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
 
@@ -141,6 +141,9 @@ cargo run --locked -p mucrab-compare -- --suite w05
 cargo run --locked -p mucrab-compare -- --suite w05 --reserved
 cargo run --locked -p mucrab-compare -- --suite w06
 cargo run --locked -p mucrab-compare -- --suite w06 --reserved
+# W07 observes real original jobs on an isolated Linux desktop:
+xvfb-run -a cargo run --locked -p mucrab-compare -- --suite w07
+xvfb-run -a cargo run --locked -p mucrab-compare -- --suite w07 --reserved
 ```
 
 W04 comparisons and Rust move tests require unprivileged execution and two real
@@ -160,9 +163,9 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The Rust suite has thirty-six tests covering recovered rules, navigation/error state,
+The Rust suite has forty-six tests covering recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes and large-table UI interaction. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has forty-six tests. The separate
+readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes and large-table UI interaction. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has forty-nine tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 
@@ -176,7 +179,10 @@ with live generated names and an explicit Apply button. Batch operations skip
 existing files; copy/move/single rename initially select the same policy. Successful
 top-level items are unmarked, skipped items stay marked, and both panes refresh.
 The result details report failed children even when their parent folder was
-processed. The worker has no pause/cancel controls yet. A focused row is
+processed. The status area shows job progress with Pause/Resume/Cancel; browsing stays
+available while one mutation job runs. Cancel preserves completed work and may
+leave a partial destination file; an unfinished fallback move retains its source.
+Closing the window waits for the worker to acknowledge cancellation. A focused row is
 highlighted; marked rows use a dot and theme-aware colors. With no marks, the focused child is the effective
 selection. The parent row can be focused but is never included in file selection.
 
@@ -322,7 +328,7 @@ The [implementation plan and progress ledger](mucrab-implementation-plan.md) rec
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
-5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. W08 implements the classic desktop interface as a presentation increment. W07 background operations and cancellation follows, with the existing recovery and comparison gates. Permissions/owner/group sorting and additional filters remain deferred.
+5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. W08 implements the classic desktop interface as a presentation increment. W07 adds bounded background operations, progress and cancellation with original full-job lifecycle comparisons. Permissions/owner/group sorting and additional filters remain deferred.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
 
 Upstream Java implementation source will be withheld during reconstruction; license and attribution material remains available. Decompiled representations, binary metadata, and observations of the original are permitted inputs. Findings from the earlier feasibility investigation must be identified as prior evidence if reused.
@@ -333,12 +339,13 @@ Each workflow will have explicit inputs and acceptance criteria established befo
 
 W01 through W06 have scoped original-JAR/Rust comparisons, reserved cases,
 integrity checks and representative GUI evidence. The broader demo still needs
-job lifecycle and cancellation coverage; the existing case counts
-do not close those acceptance targets.
+broader platform/end-to-end acceptance; W07 now covers bounded job lifecycle
+and cancellation separately from the earlier component case counts.
 
 Current fixtures include numeric and Unicode names, existing destinations,
 symbolic links, unreadable files, and partial copy/move failures. File operations
-run inside disposable fixture directories. Cancellation fixtures remain for W07.
+run inside disposable fixture directories. W07 adds cancellation, paused jobs,
+partial-prefix checks and real cross-device source-retention fixtures.
 GUI demonstrations supplement the behavioral comparisons. Build success alone
 does not establish equivalence.
 
@@ -357,7 +364,8 @@ The repository includes acquisition/analysis helpers, pinned manifests and
 lockfiles, the native workspace, W01/W02a/W02b/W02c/W03/W04/W05/W06 Java/Rust adapters
 and fixtures, scoped results, GUI evidence, and the maintained implementation
 plan. [W08 UI evidence](evidence/workflows/W08-desktop-ui/README.md) records the
-UI changes and scoped checks. W07 remains unimplemented; W05 manual row overrides remain deferred.
+UI changes and scoped checks. [W07 evidence](evidence/workflows/W07-background-operations/README.md)
+records lifecycle recovery, comparisons and native progress/cancellation checks; W05 manual row overrides remain deferred.
 
 ## License and attribution
 

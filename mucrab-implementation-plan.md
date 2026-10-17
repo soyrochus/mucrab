@@ -12,13 +12,13 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-17 |
-| Last verified implementation commit | `4cf1b3f` — Migrate verified ZIP browsing and extraction to muCrab |
-| Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W08 — classic desktop UI implemented and prioritized ahead of W07; scoped UI validation recorded separately |
+| Last verified implementation commit | `4ca2195` — W08 baseline; W07 changes currently uncommitted |
+| Current phase | Phase 5 bounded workflow closure: W07 implemented and scoped checks passed; broader Phase 6 acceptance remains |
+| Active workflow | W07 — background operations/progress/Pause/Resume/Cancel verified within bounded Linux lifecycle scope; W08 UI preserved |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | W07: recover original FileJob start/run/finish, progress and cancellation boundaries; freeze lifecycle fixtures before adding controls; preserve all eight predefined/reserved suites |
-| Ported workflows | W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
-| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. Zero differences/omitted test cases within scope |
+| Next executable task | Phase 6 broader end-to-end/platform acceptance; inspect W07 limits and preserve all nine suites plus W08 UI replay before expanding scope |
+| Ported workflows | W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
+| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. W07: 30 full-job lifecycle/marks/tree comparisons (18 predefined + 12 reserved). Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
 | Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4 plus distinct /tmp for W04, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
 | Release automation | Stable version tag workflow added for Linux x86_64 and macOS arm64; source/notices/checksums bundled. Local Linux packaging verified; first hosted build/publication pending |
@@ -64,7 +64,7 @@ complete, observable workflow before expanding the scope.
 | 2. Binary acquisition | Complete | `15427e7`; `tools/acquire_mucommander.py`, `tools/manifests/mucommander.json`, `evidence/acquisition/mucommander-1.6.2-1.json` |
 | 3. Analysis toolchain | Complete for static inspection | `9996a3e`; `tools/analysis_tools.py`, pinned manifests and npm lockfile, `evidence/toolchain/readiness.json` |
 | 4. Cargo workspace and preview | Complete | `88baf29`; `Cargo.toml`, `Cargo.lock`, `crates/`, `evidence/workspace/readiness.json` |
-| 5. Verified workflows | W01, W02a, W02b, bounded W02c, W03, W04, W05 and W06 verified within contracts | Workflow evidence directories and gate ledgers below |
+| 5. Verified workflows | W01, W02a, W02b, bounded W02c, W03, W04, W05, W06 and W07 verified within contracts; W08 UI scoped separately | Workflow evidence directories and gate ledgers below |
 | 6. Broader comparison and demo | Not started | Final acceptance below |
 
 The workspace contains:
@@ -436,7 +436,7 @@ further when their acceptance criteria cannot be closed in one increment.
 | W05 | Batch rename | Generated names, preview/apply consistency, collisions, partial failures | `verified` within bounded ASCII-case/UTC/local-owned-file contract; manual row controls deferred |
 | W06 | ZIP browsing and extraction | Entry listing, extracted paths and bytes, supported edge/error cases | `verified` within ZIP32 stored/deflate UTF-8/UTC DOS/local-owned-file contract |
 | W08 | Classic desktop UI, file tables and Light/Dark/System appearance | Reference layout/menu evidence, native input/file integrity replay, headless theme/table regressions | `implemented` with Linux X11/Xvfb checks; platform limits recorded |
-| W07 | Background operations and cancellation | Completion, cancellation boundaries, partial results, UI responsiveness | `not_started` |
+| W07 | Background operations and cancellation | Completion, cancellation boundaries, partial results, UI responsiveness | `verified` within cooperative local/ZIP/Linux lifecycle contract; 30 original/native cases + native replay |
 
 Order after W01 is provisional and may be changed with a recorded reason.
 On 2026-10-17 the user explicitly prioritized W08 UI fidelity ahead of W07.
@@ -1148,7 +1148,9 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > component comparisons and representative X11/Xvfb checks are recorded.
 > W08 UI fidelity was prioritized and implemented before W07; consult
 > `evidence/workflows/W08-desktop-ui/` for scoped checks and platform limits.
-> The next functional action is W07 background-job/lifecycle/cancellation recovery and original adapter.
+> W07 now has bounded full-job lifecycle/cancellation verification; consult
+> `evidence/workflows/W07-background-operations/`. The next scope is Phase 6
+> broader end-to-end/platform acceptance, preserving all nine suites and W08 UI.
 > Keep all eight W01/W02/W02b/W02c/W03/W04/W05/W06 predefined/reserved suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
@@ -1180,3 +1182,51 @@ currently render in-window on all systems. Native macOS menus, physical OS theme
 notification delivery, Wayland/scaling, extra metadata and disk free space remain
 outside the verified W08 scope. Prior workflow GUI replays have old coordinates;
 use the W08 replay for the new layout, and retain earlier captures as historical.
+
+
+## W07 checkpoint — 2026-10-17
+
+Implemented after W08, preserving the classic UI. Shared JobControl/JobProgress
+snapshots drive one background mutation job with current-path/file-byte/item
+progress, Pause/Resume, cooperative Cancel and explicit worker acknowledgement.
+Copy/move streams and ZIP extraction use 64 KiB checkpoints; recursion and batch
+renames stop between entries. Interrupted moves retain sources, prior commits
+remain, incomplete destination prefixes remain, and interrupted/later roots stay
+marked. Browsing/marking/sorting continue; unrelated location marks survive
+completion. A close request wakes/cancels a paused worker and waits for completion.
+Worker failures/panics/disconnection surface details; a second mutation is blocked.
+
+Recovered nine classes with pinned CFR/javap, including FileJob.run and
+AbstractFile.copyStream. An observation-only startup agent runs actual jobs in
+an intact isolated runtime with a real MainFrame. Eighteen predefined and twelve
+reserved cases pass (30 total, zero differences), with source/destination trees,
+marks, pause stability, prefix integrity and real cross-device retention checks.
+Exact partial lengths and runtime clocks are deliberately normalized, never
+reported as byte-for-byte scheduling equivalence. REA adds no new semantic proof.
+
+All sixteen earlier predefined/reserved suite executions pass and their owning
+reports are refreshed. W08's 54-action UI regression passes. W07's 27-action
+real-file UI replay passes on 20,000 source files, including normal exit after
+cancelling a paused job; every source/destination prefix is inspected. Cargo
+format/build/Clippy and 46 Rust / 49 Python tests pass. Evidence and commands are
+under `evidence/workflows/W07-background-operations/`. W07 source is uncommitted;
+no release was created. No new dependencies or upstream notices were needed.
+
+Remaining boundaries: one mutation job, cooperative chunks/entry checkpoints,
+noninterruptible OS calls/atomic renames, retained partial overwrites, existing
+synchronous review/list-loading behavior, no full scheduler/remote/parallel job
+parity or crash/power-loss recovery. macOS/Wayland/physical-desktop checks and the
+broader Phase 6 acceptance remain. Read this checkpoint after historical W06/W08
+entries that still describe W07 as the then-next workflow.
+
+
+### W07 gate ledger
+
+| Gate | State | Evidence / boundary |
+| --- | --- | --- |
+| G1: original Java adapter | `verified` within full-job boundary | Observation-only startup agent; real MainFrame and original FileJob.start/run/interrupt/setPaused plus concrete jobs; no class transformations or overrides; full scheduler concurrency excluded |
+| G2: recovered contract | `verified` within bounded scope | Nine-class CFR/javap recovery; retained prefixes, source deletion guard, interrupted-root marks, request/acknowledgement distinction; see W07 contract and decisions |
+| G3: fixtures and protocol | `verified` with documented sequencing limit | 18 predefined cases and separately seeded 12-case reserved run, real EXDEV and permission errors; exact transition/tree/mark checks and source-prefix validation; no blind-holdout claim |
+| G4: Rust and comparison | `verified` within scope | 30 cases, zero differences; all 16 earlier predefined/reserved suite runs pass; native lifecycle guards tested separately |
+| G5: native workflow | `verified` within X11/Xvfb scope | 27-action real-file replay: pause/resume/cancel, disabled second mutation, browsing/marks while paused, details, close-and-cancel with normal exit before driver cleanup; 20,000 source files conserved |
+| G6: reproducible closure | `verified` for local development | 46 Rust/49 Python tests, locked build/format/Clippy, native W08 regression, source/input/binary hashes and retained screenshots/replays; uncommitted checkpoint, release/platform work remains |

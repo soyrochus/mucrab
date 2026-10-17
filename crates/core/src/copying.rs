@@ -3,6 +3,7 @@
 
 // Recovered from original muCommander CopyJob and its transfer/collision callers.
 // See NOTICE.md and evidence/workflows/W03-recursive-copy/contract.md.
+use crate::{JobControl, jobs::copy_stream};
 use serde::{Deserialize, Serialize};
 #[cfg(unix)]
 use std::os::unix::fs::{MetadataExt, PermissionsExt, symlink};
@@ -44,6 +45,7 @@ pub enum CopyIssueKind {
     Skipped,
     Failed,
     Unsupported,
+    Cancelled,
 }
 #[derive(Clone, Debug)]
 pub struct CopyIssue {
@@ -53,6 +55,7 @@ pub struct CopyIssue {
 }
 #[derive(Clone, Debug, Default)]
 pub struct CopyReport {
+    pub cancelled: bool,
     pub outcomes: Vec<CopyOutcome>,
     pub issues: Vec<CopyIssue>,
     pub files_copied: usize,
@@ -124,13 +127,14 @@ pub(crate) fn apply_metadata(source: Option<&fs::Metadata>, destination: &Path, 
     }
 }
 
-struct Copier {
+struct Copier<'a> {
+    control: &'a JobControl,
     source_root: PathBuf,
     destination_root: PathBuf,
     policy: CopyPolicy,
     report: CopyReport,
 }
-impl Copier {
+impl Copier<'_> {
     fn issue(&mut self, path: &Path, kind: CopyIssueKind, message: impl ToString) -> bool {
         self.report.issues.push(CopyIssue {
             path: path.to_owned(),
@@ -140,10 +144,19 @@ impl Copier {
         false
     }
     fn process(&mut self, source: &Path, destination: &Path) -> bool {
+        if !self.control.checkpoint() {
+            return false;
+        }
         let link_metadata = match fs::symlink_metadata(source) {
             Ok(value) => value,
             Err(error) => return self.issue(source, CopyIssueKind::Failed, error),
         };
+        if !self.control.entry(
+            source,
+            link_metadata.is_file().then_some(link_metadata.len()),
+        ) {
+            return false;
+        }
         let source_metadata = fs::metadata(source).ok();
         let destination_metadata = fs::metadata(destination).ok();
         let source_is_dir = source_metadata.as_ref().is_some_and(fs::Metadata::is_dir);
@@ -263,7 +276,13 @@ impl Copier {
                     Ok(child) => child,
                     Err(error) => return self.issue(source, CopyIssueKind::Failed, error),
                 };
+                if !self.control.checkpoint() {
+                    return false;
+                }
                 self.process(&child.path(), &destination.join(child.file_name()));
+                if self.control.is_cancelled() {
+                    return false;
+                }
             }
             apply_metadata(source_metadata.as_ref(), destination, false);
             self.report.directories_processed += 1;
@@ -289,8 +308,16 @@ impl Copier {
             Ok(file) => file,
             Err(error) => return self.issue(destination, CopyIssueKind::Failed, error),
         };
-        if let Err(error) = io::copy(&mut input, &mut output) {
-            return self.issue(destination, CopyIssueKind::Failed, error);
+        if let Err(error) = copy_stream(&mut input, &mut output, self.control) {
+            return self.issue(
+                destination,
+                if self.control.is_cancelled() {
+                    CopyIssueKind::Cancelled
+                } else {
+                    CopyIssueKind::Failed
+                },
+                error,
+            );
         }
         drop(output);
         apply_metadata(source_metadata.as_ref(), destination, true);
@@ -302,6 +329,20 @@ impl Copier {
 /// Copy the ordered selection into an existing folder. Validate all names before
 /// writing. Scope assumes stable local trees; this is not a race-proof sandbox.
 pub fn copy_entries(request: &CopyRequest) -> io::Result<CopyReport> {
+    copy_entries_with_control(request, &JobControl::default())
+}
+
+pub fn copy_entries_with_control(
+    request: &CopyRequest,
+    control: &JobControl,
+) -> io::Result<CopyReport> {
+    control.total(request.names.len());
+    if !control.checkpoint() {
+        return Ok(CopyReport {
+            cancelled: true,
+            ..Default::default()
+        });
+    }
     if request.names.iter().any(|name| !is_valid_leaf_name(name))
         || request
             .names
@@ -323,19 +364,41 @@ pub fn copy_entries(request: &CopyRequest) -> io::Result<CopyReport> {
         return Err(invalid("Existing source and destination folders required"));
     }
     let mut copier = Copier {
+        control,
         source_root: source.clone(),
         destination_root: destination.clone(),
         policy: request.policy,
         report: CopyReport::default(),
     };
     for name in &request.names {
+        if !control.checkpoint() {
+            break;
+        }
         let success = copier.process(
             &source.join(name),
             &destination.join(request.new_name.as_ref().unwrap_or(name)),
         );
         copier.report.outcomes.push(CopyOutcome {
             name: name.clone(),
-            success,
+            success: success && !control.is_cancelled(),
+        });
+        if control.is_cancelled() {
+            break;
+        }
+        control.completed();
+    }
+    copier.report.cancelled = control.is_cancelled();
+    if copier.report.cancelled
+        && !copier
+            .report
+            .issues
+            .iter()
+            .any(|issue| issue.kind == CopyIssueKind::Cancelled)
+    {
+        copier.report.issues.push(CopyIssue {
+            path: control.snapshot().current_path.unwrap_or(source),
+            kind: CopyIssueKind::Cancelled,
+            message: "Copy cancelled; completed and partial destinations retained".to_owned(),
         });
     }
     Ok(copier.report)

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 // Recovered listing/extraction rules: evidence/workflows/W06-zip-browsing-extraction/contract.md.
+use crate::{JobControl, jobs::copy_stream};
 
 use crate::{CopyIssue, CopyIssueKind, CopyPolicy, FileEntry, FileMetadata, filename_extension};
 #[cfg(unix)]
@@ -347,6 +348,7 @@ pub struct ZipExtractPlan {
 }
 #[derive(Debug, Default)]
 pub struct ZipExtractReport {
+    pub cancelled: bool,
     pub success: bool,
     pub issues: Vec<CopyIssue>,
     pub files_extracted: usize,
@@ -471,6 +473,20 @@ impl ZipExtractPlan {
 }
 
 pub fn extract_zip(plan: &ZipExtractPlan) -> io::Result<ZipExtractReport> {
+    extract_zip_with_control(plan, &JobControl::default())
+}
+
+pub fn extract_zip_with_control(
+    plan: &ZipExtractPlan,
+    control: &JobControl,
+) -> io::Result<ZipExtractReport> {
+    control.total(plan.indices.len());
+    if !control.checkpoint() {
+        return Ok(ZipExtractReport {
+            cancelled: true,
+            ..Default::default()
+        });
+    }
     let source_metadata = fs::symlink_metadata(&plan.archive)?;
     if source_metadata.file_type().is_symlink()
         || ArchiveStamp::read(&source_metadata)? != plan.catalog.stamp
@@ -500,6 +516,12 @@ pub fn extract_zip(plan: &ZipExtractPlan) -> io::Result<ZipExtractReport> {
         }
     }
     for index in &plan.indices {
+        if !control.checkpoint() {
+            return Ok(ZipExtractReport {
+                cancelled: true,
+                ..Default::default()
+            });
+        }
         let relative = &plan.catalog.members[*index].path[plan.prefix.len()..];
         check_target(&plan.destination, relative, &plan.archive)?;
     }
@@ -512,6 +534,10 @@ pub fn extract_zip(plan: &ZipExtractPlan) -> io::Result<ZipExtractReport> {
         let entry = &plan.catalog.members[*index];
         let relative = &entry.path[plan.prefix.len()..];
         let target = plan.destination.join(relative.trim_end_matches('/'));
+        if !control.entry(&target, (!entry.directory).then_some(entry.size)) {
+            report.success = false;
+            break;
+        }
         let result = (|| {
             check_target(&plan.destination, relative, &plan.archive)?;
             let existing = fs::metadata(&target).ok();
@@ -548,7 +574,7 @@ pub fn extract_zip(plan: &ZipExtractPlan) -> io::Result<ZipExtractReport> {
                 .create(true)
                 .truncate(true)
                 .open(&target)?;
-            let copied = io::copy(&mut member.take(entry.size + 1), &mut output)?;
+            let copied = copy_stream(&mut member.take(entry.size + 1), &mut output, control)?;
             if copied != entry.size {
                 return Err(invalid("Expanded ZIP data differs from its declared size"));
             }
@@ -566,10 +592,38 @@ pub fn extract_zip(plan: &ZipExtractPlan) -> io::Result<ZipExtractReport> {
             report.success = false;
             report.issues.push(CopyIssue {
                 path: target,
-                kind: CopyIssueKind::Failed,
+                kind: if control.is_cancelled() {
+                    CopyIssueKind::Cancelled
+                } else {
+                    CopyIssueKind::Failed
+                },
                 message: error.to_string(),
             });
             break;
+        }
+        if control.is_cancelled() {
+            report.success = false;
+            break;
+        }
+        control.completed();
+    }
+    report.cancelled = control.is_cancelled();
+    if report.cancelled {
+        report.success = false;
+        if !report
+            .issues
+            .iter()
+            .any(|issue| issue.kind == CopyIssueKind::Cancelled)
+        {
+            report.issues.push(CopyIssue {
+                path: control
+                    .snapshot()
+                    .current_path
+                    .unwrap_or_else(|| plan.destination.clone()),
+                kind: CopyIssueKind::Cancelled,
+                message: "Extraction cancelled; completed and partial destinations retained"
+                    .to_owned(),
+            });
         }
     }
     Ok(report)

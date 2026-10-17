@@ -1,0 +1,85 @@
+{
+  "workflow": "W07",
+  "date": "2026-10-17",
+  "status": "passed_with_declared_limits",
+  "platform": "Linux x86_64/ext4; different /tmp filesystem; unprivileged X11/Xvfb",
+  "baseline_commit": "4ca21955e3a31547dffd67f187a9f7a7bd98d8f4",
+  "source_sha256": {
+    "crates/core/src/jobs.rs": "9867949df8e4ed1b226608794188a7ecc84a30a94014e37e0c33cbe8cfae7b62",
+    "crates/core/src/copying.rs": "76ad778a8ff937495c9b2ff7eca34cbcffad5e5e577f46c5c7ac7139de954f08",
+    "crates/core/src/moving.rs": "c25cd5b081e353b4814b6fece1f57ff1a66e92a77e8114b501d75f3669e63b58",
+    "crates/core/src/batch_renaming.rs": "8406f8d74136011c345edc2850924f23d2cd90785d11b85282a4268ec950a400",
+    "crates/core/src/archives.rs": "c03aa928724d51dfe9341f56df8b415db6de5ba25736dbc788ec05af34c6d751",
+    "crates/core/src/lib.rs": "1d3d7f162690f846c587ac36e18fed32f5d9be705c67e7d91d61b6175b0eab9e",
+    "crates/core/tests/jobs.rs": "e338c5741df3e435179e4279a7fab14574f016de9babb84184de1665fab38197",
+    "crates/desktop/src/app.rs": "73e05de9ea08ced70e859764f7e1459bd2e9826ac2d0f0a2208344fd29aa9526",
+    "crates/compare/src/main.rs": "0a63fa9d06882954ecc3289483f0519f004087f60bd337abbe048da061537ddd",
+    "crates/compare/src/w07.rs": "d70148177df51fda566dd2a0ce778b80c1dea0720825103e2dd278c0deeabebb",
+    "tools/w07.py": "78043859fd34bc6685aa2548955692dad124e5a3b784f4a426ed91c672d38e08",
+    "tools/w07_gui.py": "920c11f8d0d8eead451e53bc626ab813d5918bdda2596019cb77a08661c1c34c",
+    "tools/w07_inspect.py": "6e446986debd06dc53e172d0d37904b0b470fe3184525947b2411be02a43c9c6",
+    "tools/java/W07GuiProbe.java": "1c3e1b60e0b379349586452b7e0adf1c89f9e55dd51449a1f426059a9077ca50",
+    "tools/test_w07.py": "bad9f58fc6663f1e414b82c0b5107ccb79942e8a42a9db6c126c6648fa6c6145",
+    "tools/linux_gui.py": "135c0eab7574068abf964042dd865885a97e9fea10a23e55596bf4e5362e607f",
+    "fixtures/W07-background-operations/cases.json": "152b2884c4f36056207f910db663a87a213e0ebcef50715c306e839a72d36136",
+    "fixtures/W07-background-operations/native-gui-actions.json": "ccceeef712709ecf4588694d1e035f3e15262f6cbfa32f64ee3fd2a5752c3958"
+  },
+  "native_binary_sha256": "4c9b3d10dac36649f88be744f876c8c9d7966323f0e502c802278becd04eabe4",
+  "comparison_binary_sha256": "fd9decddec73f3a0450b486b61c4be04b6edabb4a3edc4ec9a723bcc488a8ccc",
+  "comparison_cases": 30,
+  "differences": 0,
+  "regression_suite_executions": 16,
+  "native_ui_actions": 27,
+  "w08_regression_actions": 54,
+  "checks": [
+    {
+      "command": "cargo build --workspace --locked --offline",
+      "status": "passed"
+    },
+    {
+      "command": "cargo fmt --all -- --check",
+      "status": "passed"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --all-features --locked --offline -- -D warnings",
+      "status": "passed"
+    },
+    {
+      "command": "cargo test --workspace --all-features --locked --offline",
+      "status": "passed",
+      "tests": 46
+    },
+    {
+      "command": "python3 -B -m unittest discover -s tools -p 'test_*.py' -q",
+      "status": "passed",
+      "tests": 49
+    },
+    {
+      "command": "python3 -B tools/w07_gui.py verify",
+      "status": "passed"
+    },
+    {
+      "command": "python3 -B tools/w08_gui.py verify",
+      "status": "passed"
+    }
+  ],
+  "reference_unchanged": true,
+  "new_dependencies": false,
+  "process_boundary": "Contract/base cases/seed fixed before Rust; live runtime probe and reserved generator integrated during implementation, no blind-holdout claim (see decisions.md)",
+  "limits": [
+    "one mutation job; full scheduler/remote/concurrent execution excluded",
+    "cooperative chunks/entries; blocked calls and atomic renames must return",
+    "completed and incomplete overwrite destinations retained; no rollback",
+    "existing synchronous review/list loading unchanged",
+    "macOS/Wayland/physical desktop and kill/power-loss recovery unverified"
+  ],
+  "screenshots_sha256": {
+    "evidence/workflows/W07-background-operations/gui/browsing-while-busy.png": "f3612c453b1f7f10c2919e72c96bb7f3ca6343d64a82a82e6f9eee337d3fe70c",
+    "evidence/workflows/W07-background-operations/gui/cancelled-details.png": "bc9d5afb70711ee844c21b96fdcbd699c7de3ccb0d40c4ab2808d2197592924c",
+    "evidence/workflows/W07-background-operations/gui/cancelled.png": "37397c294d7afd38bb591084e5567e60916b6077c6d36a4c3a635e54ba2c0451",
+    "evidence/workflows/W07-background-operations/gui/close-paused.png": "0818b5d178fe99699c6dc94cbab6bb13b27b94cb5994b944e73e791482b4dc9e",
+    "evidence/workflows/W07-background-operations/gui/original-after-cancellation.png": "1c77e66f3ce371bc95b80979dcd42c8b1ef7096f8fd2b94aba781433d69e66d6",
+    "evidence/workflows/W07-background-operations/gui/paused.png": "1c50bcac51310b0cd1a669f7c11fcd98eb28c6d3fc0abb985b4b48083a38a136",
+    "evidence/workflows/W07-background-operations/gui/unrelated-marks-retained.png": "3ef7d249cd51eaa78984b692e2a3f57835939dbfdccfb5cc0172355b0b8a5b6d"
+  }
+}

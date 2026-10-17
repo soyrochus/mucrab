@@ -1,21 +1,19 @@
 {
   "schema_version": 1,
-  "run_id": "20261017T095809Z-eae4da02",
+  "run_id": "20261017T153531Z-a3a04dca",
   "workflow": "W02c-metadata-sorting",
   "suite": "reserved",
   "status": "passed",
   "scope": "Original FileComparator, FileTableModel sorting, FileTable focus/marks; explicit synthetic metadata fields and independent real enumeration; GUI excluded",
-  "source_revision": "16640b02c61012b8d07602bd49745a1f4b5e30f3",
+  "source_revision": "4ca21955e3a31547dffd67f187a9f7a7bd98d8f4",
   "source_status": [
-    " M Cargo.lock",
-    " M NOTICE.md",
-    " M README.md",
     " M crates/compare/src/main.rs",
-    " M crates/core/Cargo.toml",
-    " M crates/core/src/browsing.rs",
+    " M crates/core/src/archives.rs",
+    " M crates/core/src/batch_renaming.rs",
+    " M crates/core/src/copying.rs",
     " M crates/core/src/lib.rs",
+    " M crates/core/src/moving.rs",
     " M crates/desktop/src/app.rs",
-    " M crates/desktop/src/main.rs",
     " M evidence/workflows/W01-local-browse-sort/comparison-predefined.json",
     " M evidence/workflows/W01-local-browse-sort/comparison-reserved.json",
     " M evidence/workflows/W02-selection-marking/comparison-predefined.json",
@@ -23,28 +21,14 @@
     " M evidence/workflows/W02b-hidden-filtering/comparison-predefined.json",
     " M evidence/workflows/W02b-hidden-filtering/comparison-reserved.json",
     " M evidence/workflows/W02c-metadata-sorting/comparison-predefined.json",
-    " M evidence/workflows/W02c-metadata-sorting/comparison-reserved.json",
-    " M evidence/workflows/W03-recursive-copy/comparison-predefined.json",
-    " M evidence/workflows/W03-recursive-copy/comparison-reserved.json",
-    " M evidence/workflows/W04-move-rename/comparison-predefined.json",
-    " M evidence/workflows/W04-move-rename/comparison-reserved.json",
-    " M evidence/workflows/W05-batch-rename/comparison-predefined.json",
-    " M evidence/workflows/W05-batch-rename/comparison-reserved.json",
-    " M images/mucommander.png",
-    " M images/mucrab.png",
-    " M mucrab-implementation-plan.md",
-    "?? crates/compare/src/w06.rs",
-    "?? crates/core/src/archives.rs",
-    "?? crates/core/tests/archives.rs",
-    "?? evidence/workflows/W06-zip-browsing-extraction/",
-    "?? fixtures/W06-zip-browsing-extraction/",
-    "?? third_party/zip/",
-    "?? tools/java/W06GuiProbe.java",
-    "?? tools/java/W06Oracle.java",
-    "?? tools/test_w06.py",
-    "?? tools/w06.py",
-    "?? tools/w06_gui.py",
-    "?? tools/w06_inspect.py"
+    "?? crates/compare/src/w07.rs",
+    "?? crates/core/src/jobs.rs",
+    "?? crates/core/tests/jobs.rs",
+    "?? evidence/workflows/W07-background-operations/",
+    "?? fixtures/W07-background-operations/",
+    "?? tools/java/W07GuiProbe.java",
+    "?? tools/w07.py",
+    "?? tools/w07_inspect.py"
   ],
   "source_inputs": [
     {
@@ -69,11 +53,11 @@
     },
     {
       "path": "Cargo.lock",
-      "sha256": "ec9e5f07a6620f0ccd0c8bc91997c12f30f3f628e8a12469a0c86318340f7961"
+      "sha256": "193b56054b4c48c91bf90582e610f7fdee9d3ef7fb74cac5c2a722d7a1318896"
     },
     {
       "path": "Cargo.toml",
-      "sha256": "334ef83f41db18162f9079e59c5b3f2c8a62eaf5941daff0b294bbbeaa31a49d"
+      "sha256": "b1d9bf02ce969fd54bc2cedeb83724bd5d9ccaeef35edf50cc8a421c5194e774"
     },
     {
       "path": "evidence/workflows/W02c-metadata-sorting/contract.md",
@@ -85,7 +69,7 @@
     },
     {
       "path": "crates/compare/src/main.rs",
-      "sha256": "017bb6cda70fbe7bc5b9f8c83302439368e2b4a25d1cfbb3e690ca02771bc0ae"
+      "sha256": "0a63fa9d06882954ecc3289483f0519f004087f60bd337abbe048da061537ddd"
     },
     {
       "path": "crates/compare/src/w02.rs",
@@ -116,16 +100,20 @@
       "sha256": "2648a24015b7eef42a7c4368802ea5e9ad94699f2ff22d4cc0cc07c81c868b95"
     },
     {
+      "path": "crates/compare/src/w07.rs",
+      "sha256": "d70148177df51fda566dd2a0ce778b80c1dea0720825103e2dd278c0deeabebb"
+    },
+    {
       "path": "crates/compare/tests/readiness.rs",
       "sha256": "865d3bf51a809859f3944403111f469c36746ed16dd88fbc42eca45717c50d80"
     },
     {
       "path": "crates/core/src/archives.rs",
-      "sha256": "bae66a91ee3aab933a39693d17314089b3602393cad2aaececa0176a1a950426"
+      "sha256": "d59781545297bf636d4da9e19d4c7df2fede954521c6f8008da50095d24ac9a0"
     },
     {
       "path": "crates/core/src/batch_renaming.rs",
-      "sha256": "631c498d969b55a3212b968570a26318efcbf154e9c530b67db7522325388cfb"
+      "sha256": "d777bed0c28aec89e4d3d31baffb36741e221f2af4f5d72bb2a8f3d2f374ab1b"
     },
     {
       "path": "crates/core/src/browsing.rs",
@@ -133,19 +121,23 @@
     },
     {
       "path": "crates/core/src/copying.rs",
-      "sha256": "c8b04cef92be23fb01de23baa08f202dce6c119caf5f8f8d939aadba0179f524"
+      "sha256": "76ad778a8ff937495c9b2ff7eca34cbcffad5e5e577f46c5c7ac7139de954f08"
     },
     {
       "path": "crates/core/src/java_case_data.rs",
       "sha256": "47bf627ab3cb7e29eebdf2728412a1276fff2fc87b535ed80623cfe7af2fb683"
     },
     {
+      "path": "crates/core/src/jobs.rs",
+      "sha256": "9867949df8e4ed1b226608794188a7ecc84a30a94014e37e0c33cbe8cfae7b62"
+    },
+    {
       "path": "crates/core/src/lib.rs",
-      "sha256": "c7aed74370971a110dc083241f2876f46832f87b88425989f92139616a7de8a1"
+      "sha256": "1d3d7f162690f846c587ac36e18fed32f5d9be705c67e7d91d61b6175b0eab9e"
     },
     {
       "path": "crates/core/src/moving.rs",
-      "sha256": "2ad9f0213ebd922b3aad324e5e5b10b252684c4193730924d34ad11ef151fe5c"
+      "sha256": "c25cd5b081e353b4814b6fece1f57ff1a66e92a77e8114b501d75f3669e63b58"
     },
     {
       "path": "crates/core/src/selection.rs",
@@ -168,6 +160,10 @@
       "sha256": "8a03d2a772c305544621b6e7170a772612acc1e751bfcabd7fa162d4827fae2e"
     },
     {
+      "path": "crates/core/tests/jobs.rs",
+      "sha256": "e338c5741df3e435179e4279a7fab14574f016de9babb84184de1665fab38197"
+    },
+    {
       "path": "crates/core/tests/moving.rs",
       "sha256": "81ab36921b7a09fbab43f8931d8a4da53ed1c27dfff9ce2e23dac18b756ca752"
     },
@@ -177,11 +173,19 @@
     },
     {
       "path": "crates/desktop/src/app.rs",
-      "sha256": "10e874da0109bfb7c19948742490b4c48a863de52d47d926e07f0aa614a733f0"
+      "sha256": "933c0f12eafbd4a6dcdfb364d49ceb811018beb28b018d2483c6ef499fed0717"
+    },
+    {
+      "path": "crates/desktop/src/appearance.rs",
+      "sha256": "8db9aeb848e01389b893228ccba6b3ad61429fc426c01020ae9158d9b66ff03f"
+    },
+    {
+      "path": "crates/desktop/src/browser_ui.rs",
+      "sha256": "c074de88405d1994c9f4ff6a4e3f703e2f5269b1d6c1691f924a4677f0b97603"
     },
     {
       "path": "crates/desktop/src/main.rs",
-      "sha256": "4413555762845d300083acf4a0c6efbabdce34ba3e24b7b96c4689591406a582"
+      "sha256": "ccdfe0ff71fbc4101451c02f9d1143e6b47970778a8aba89dec7d997ff078268"
     },
     {
       "path": "crates/compare/Cargo.toml",
@@ -985,39 +989,39 @@
   ],
   "java_adapter_classes": [
     {
-      "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/classes/W02Oracle$Event.class",
+      "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes/W02Oracle$Event.class",
       "sha256": "d157adc97f6eb4d8a7aba08bda21584ef47f35af319434978378eeabe06c5b18"
     },
     {
-      "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/classes/W02Oracle$Request.class",
+      "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes/W02Oracle$Request.class",
       "sha256": "0f7846c04480cf3baee38ec31850725de6a68899b8c73b8a3c38ad6dc8c5146d"
     },
     {
-      "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/classes/W02Oracle$Snapshot.class",
+      "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes/W02Oracle$Snapshot.class",
       "sha256": "8f29aa4e80fd04279608bc4fdc4d28108c073a178b9b37db37db0cc20b0ce932"
     },
     {
-      "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/classes/W02Oracle.class",
+      "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes/W02Oracle.class",
       "sha256": "5032a1e2ce88c8f0ae4c101769c2c7a53630bccc4ed6e2df3506992d3fe20c3f"
     },
     {
-      "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/classes/W02cOracle$Entry.class",
+      "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes/W02cOracle$Entry.class",
       "sha256": "80753f4f9abf11b7cf5374423f97aba6c8183e53f6a5ab0675908a6c74092024"
     },
     {
-      "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/classes/W02cOracle$Metadata.class",
+      "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes/W02cOracle$Metadata.class",
       "sha256": "9f99325f2aaf9b0393c3d8785383a732fb538813a6a887a69b82fe3d5c044fff"
     },
     {
-      "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/classes/W02cOracle$MetadataFile.class",
+      "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes/W02cOracle$MetadataFile.class",
       "sha256": "045f29a2942bdee2851e53302ddd806effc20f5ea644a80d91d4aa385aa82b71"
     },
     {
-      "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/classes/W02cOracle$Request.class",
+      "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes/W02cOracle$Request.class",
       "sha256": "98bfc44ad56161fb0a66c431b836cbfa66453a6557623ad1864bad980dff36ed"
     },
     {
-      "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/classes/W02cOracle.class",
+      "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes/W02cOracle.class",
       "sha256": "e6ed5be00f76012db50ecf4403bc038b70872da0422503cffd212d1d090f7b81"
     }
   ],
@@ -1031,17 +1035,17 @@
         "-cp",
         "{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/accessors-smart-2.4.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-26.0.2-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/apache-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asm-9.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asn-one-0.6.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-1.41.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-http-netty-1.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-identity-1.9.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-json-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-xml-1.0.0-beta.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/base64-2.3.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk15on-1.62.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk18on-1.79.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-array-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-core-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-highlight-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.24.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.33.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.15.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.19.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-collections4-4.5.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-compress-1.28.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-io-2.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-lang3-3.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.3.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-net-3.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-vfs2-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/content-type-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dd-plist-1.23.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dropbox-core-sdk-7.0.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/el-api-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/error_prone_annotations-2.18.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/failureaccess-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/fastdoubleparser-0.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/gson-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/guava-32.1.2-jre.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.11.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/icu4j-78.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.9.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.15.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-datatype-jsr310-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jakarta.servlet-api-6.1.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/java-xmlbuilder-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.jws-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-10.0-b28.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-api-1.3.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxb-api-2.2.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxrpc-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxws-api-2.2.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcifs-ng-2.1.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcip-annotations-1.0-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jetbrains-jediterm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jets3t-0.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jmdns-3.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-platform-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsch-0.2.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-simple-1.1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-smart-2.4.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsr305-3.0.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/junrar-7.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-reflect-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk7-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk8-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/lang-tag-1.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/libguestfs.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-1.2-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-core-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-classic-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-core-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mail.osgi-1.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mbassador-1.3.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-5.67.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-core-2.0.19.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-1.13.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-persistence-extension-1.2.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-archiver-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-bonjour-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-command-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-collections-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-conf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-io-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-runtime-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-util-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-core-preload-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-encoding-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-ar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-cpio-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-gzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-iso-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-libguestfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-lst-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rpm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-sevenzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-tar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-xz-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-zip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-linux-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-macos-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-openvms-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-win-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-preferences-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-process-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-adb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-dropbox-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gcs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gdrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-http-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-nfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-onedrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ovirt-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-registry-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-s3-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-sftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-smb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-vsphere-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-translator-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-binary-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-image-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-pdf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-text-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-buffer-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http2-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-socks-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-proxy-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-classes-macos-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-native-macos-4.1.93.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-boringssl-static-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-classes-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-epoll-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-kqueue-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-epoll-4.1.94.Final-linux-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-kqueue-4.1.94.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-unix-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/nimbus-jose-jwt-9.30.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/oauth2-oidc-sdk-10.7.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okhttp-4.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okio-jvm-3.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.scr-2.0.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.shell-1.4.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactive-streams-1.0.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-core-3.4.30.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-core-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-http-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sdk-4.4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbinding-16.02-2.01.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbindings-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-1.7.36.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-2.0.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/smbj-0.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/snakeyaml-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/spotbugs-annotations-4.7.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sun-net-www-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/trove4j-1.0.20200330.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/vim25.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/xz-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/app/mucommander-core-1.6.2.jar",
         "-d",
-        "{repository}/artifacts/runs/W02c-20261017T095809Z-eae4da02/classes",
+        "{repository}/artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes",
         "{repository}/tools/java/W02Oracle.java",
         "{repository}/tools/java/W02cOracle.java"
       ],
       "exit_code": 0,
       "stdout": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/javac.stdout",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/javac.stdout",
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/javac.stderr",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/javac.stderr",
         "sha256": "c59dc09439c18b82cc287d353d2651a3428c0516ec3b96b9790d458e0e74007a"
       }
     },
@@ -1050,19 +1054,19 @@
         "java",
         "--add-opens=java.base/java.io=ALL-UNNAMED",
         "-Djava.awt.headless=true",
-        "-Duser.home={repository}/artifacts/runs/W02c-20261017T095809Z-eae4da02/home",
+        "-Duser.home={repository}/artifacts/runs/W02c-20261017T153531Z-a3a04dca/home",
         "-cp",
-        "{repository}/artifacts/runs/W02c-20261017T095809Z-eae4da02/classes:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/accessors-smart-2.4.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-26.0.2-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/apache-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asm-9.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asn-one-0.6.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-1.41.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-http-netty-1.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-identity-1.9.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-json-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-xml-1.0.0-beta.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/base64-2.3.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk15on-1.62.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk18on-1.79.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-array-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-core-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-highlight-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.24.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.33.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.15.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.19.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-collections4-4.5.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-compress-1.28.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-io-2.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-lang3-3.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.3.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-net-3.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-vfs2-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/content-type-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dd-plist-1.23.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dropbox-core-sdk-7.0.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/el-api-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/error_prone_annotations-2.18.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/failureaccess-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/fastdoubleparser-0.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/gson-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/guava-32.1.2-jre.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.11.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/icu4j-78.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.9.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.15.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-datatype-jsr310-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jakarta.servlet-api-6.1.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/java-xmlbuilder-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.jws-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-10.0-b28.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-api-1.3.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxb-api-2.2.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxrpc-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxws-api-2.2.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcifs-ng-2.1.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcip-annotations-1.0-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jetbrains-jediterm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jets3t-0.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jmdns-3.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-platform-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsch-0.2.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-simple-1.1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-smart-2.4.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsr305-3.0.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/junrar-7.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-reflect-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk7-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk8-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/lang-tag-1.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/libguestfs.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-1.2-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-core-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-classic-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-core-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mail.osgi-1.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mbassador-1.3.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-5.67.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-core-2.0.19.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-1.13.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-persistence-extension-1.2.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-archiver-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-bonjour-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-command-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-collections-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-conf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-io-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-runtime-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-util-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-core-preload-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-encoding-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-ar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-cpio-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-gzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-iso-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-libguestfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-lst-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rpm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-sevenzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-tar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-xz-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-zip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-linux-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-macos-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-openvms-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-win-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-preferences-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-process-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-adb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-dropbox-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gcs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gdrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-http-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-nfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-onedrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ovirt-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-registry-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-s3-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-sftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-smb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-vsphere-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-translator-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-binary-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-image-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-pdf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-text-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-buffer-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http2-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-socks-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-proxy-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-classes-macos-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-native-macos-4.1.93.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-boringssl-static-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-classes-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-epoll-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-kqueue-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-epoll-4.1.94.Final-linux-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-kqueue-4.1.94.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-unix-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/nimbus-jose-jwt-9.30.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/oauth2-oidc-sdk-10.7.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okhttp-4.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okio-jvm-3.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.scr-2.0.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.shell-1.4.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactive-streams-1.0.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-core-3.4.30.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-core-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-http-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sdk-4.4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbinding-16.02-2.01.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbindings-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-1.7.36.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-2.0.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/smbj-0.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/snakeyaml-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/spotbugs-annotations-4.7.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sun-net-www-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/trove4j-1.0.20200330.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/vim25.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/xz-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/app/mucommander-core-1.6.2.jar",
+        "{repository}/artifacts/runs/W02c-20261017T153531Z-a3a04dca/classes:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/accessors-smart-2.4.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/annotations-26.0.2-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/apache-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asm-9.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/asn-one-0.6.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-1.41.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-core-http-netty-1.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-identity-1.9.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-json-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/azure-xml-1.0.0-beta.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/base64-2.3.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk15on-1.62.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bcprov-jdk18on-1.79.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/binary_data-array-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-core-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-highlight-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-operation-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/bined-swing-section-0.2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.24.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/checker-qual-3.33.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.15.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.19.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-codec-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-collections4-4.5.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-compress-1.28.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-io-2.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-lang3-3.20.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-logging-1.3.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-net-3.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/commons-vfs2-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/content-type-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dd-plist-1.23.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/dropbox-core-sdk-7.0.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/el-api-2.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/error_prone_annotations-2.18.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/failureaccess-1.0.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/fastdoubleparser-0.8.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/gson-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/guava-32.1.2-jre.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpclient-4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/httpcore-4.4.11.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/icu4j-78.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-annotations-2.9.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.15.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-core-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.10.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-databind-2.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jackson-datatype-jsr310-2.13.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jakarta.servlet-api-6.1.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/java-xmlbuilder-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.jws-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-10.0-b28.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/javax.xml.soap-api-1.3.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxb-api-2.2.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxrpc-api-1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jaxws-api-2.2.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcifs-ng-2.1.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jcip-annotations-1.0-1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jetbrains-jediterm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jets3t-0.9.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jmdns-3.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jna-platform-5.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsch-0.2.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-simple-1.1.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/json-smart-2.4.10.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/jsr305-3.0.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/junrar-7.5.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-reflect-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk7-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/kotlin-stdlib-jdk8-2.1.20.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/lang-tag-1.7.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/libguestfs.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-1.2-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-api-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/log4j-core-2.25.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-classic-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/logback-core-1.2.13.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mail.osgi-1.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mbassador-1.3.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-5.67.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/microsoft-graph-core-2.0.19.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-1.13.8.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/msal4j-persistence-extension-1.2.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-archiver-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-bonjour-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-command-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-collections-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-conf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-file-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-io-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-runtime-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-commons-util-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-core-preload-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-encoding-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-ar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-bzip2-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-cpio-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-gzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-iso-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-libguestfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-lst-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-rpm-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-sevenzip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-tar-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-xz-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-format-zip-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-linux-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-macos-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-openvms-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-os-win-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-preferences-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-process-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-adb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-dropbox-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gcs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-gdrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-http-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-nfs-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-onedrive-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-ovirt-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-registry-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-s3-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-sftp-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-smb-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-protocol-vsphere-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-translator-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-api-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-binary-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-image-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-pdf-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/mucommander-viewer-text-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-buffer-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-http2-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-codec-socks-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-handler-proxy-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-classes-macos-4.1.93.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-resolver-dns-native-macos-4.1.93.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-boringssl-static-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-tcnative-classes-2.0.61.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-epoll-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-classes-kqueue-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-epoll-4.1.94.Final-linux-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-kqueue-4.1.94.Final-osx-x86_64.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/netty-transport-native-unix-common-4.1.94.Final.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/nimbus-jose-jwt-9.30.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/oauth2-oidc-sdk-10.7.1.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okhttp-4.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/okio-jvm-3.11.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.scr-2.0.12.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/org.apache.felix.shell-1.4.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactive-streams-1.0.4.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-core-3.4.30.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-core-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/reactor-netty-http-1.0.33.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sdk-4.4.5.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbinding-16.02-2.01.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sevenzipjbindings-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-1.7.36.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/slf4j-api-2.0.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/smbj-0.13.0.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/snakeyaml-2.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/spotbugs-annotations-4.7.3.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/sun-net-www-1.6.2.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/trove4j-1.0.20200330.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/vim25.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/bundle/xz-1.9.jar:{repository}/artifacts/reference/mucommander-1.6.2-1/app/mucommander-core-1.6.2.jar",
         "W02cOracle"
       ],
       "exit_code": 0,
       "stdout": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/java.stdout",
-        "sha256": "af42edca7a7811848ee70e7d319a02f8a561645eebb288b478dc634f74193218"
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/java.stdout",
+        "sha256": "2c5588020727ea68428578436f46bfe2d402cfa8072bcbd2e1ef400c198e45d9"
       },
       "stderr": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/java.stderr",
-        "sha256": "7c15ff27f4ea39f48846e42bc12297c540935c9d8ec6c526ead91a577e5af3b2"
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/java.stderr",
+        "sha256": "edfa89b2edcaf40ab3ac55f60a2d822214092b23b753ed16b3b310ed58b1feaa"
       }
     },
     "rust": {
@@ -1072,11 +1076,11 @@
       ],
       "exit_code": 0,
       "stdout": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/rust.stdout",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/rust.stdout",
         "sha256": "6f2583a173fa21abaf2c62191af1f8e53e78958fc22c188c48bb5968241b68b5"
       },
       "stderr": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/rust.stderr",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/rust.stderr",
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
@@ -1087,11 +1091,11 @@
       ],
       "exit_code": 0,
       "stdout": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/rust-enumeration.stdout",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/rust-enumeration.stdout",
         "sha256": "aa90544f98130262dcdd57e74b816f197a7972641939afc20f20c1cc520a477a"
       },
       "stderr": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/rust-enumeration.stderr",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/rust-enumeration.stderr",
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
@@ -1102,11 +1106,11 @@
       ],
       "exit_code": 0,
       "stdout": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/java-version.stdout",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/java-version.stdout",
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "stderr": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/java-version.stderr",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/java-version.stderr",
         "sha256": "b8656f4afb66367614199886688652dc18193995395b8feefe3bd7dc3b32ffb6"
       }
     },
@@ -1117,11 +1121,11 @@
       ],
       "exit_code": 0,
       "stdout": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/javac-version.stdout",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/javac-version.stdout",
         "sha256": "e363f8e03b49957921f029b1c2561410f555887c871907e627980343b70e1e28"
       },
       "stderr": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/javac-version.stderr",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/javac-version.stderr",
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
@@ -1132,11 +1136,11 @@
       ],
       "exit_code": 0,
       "stdout": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/rustc-version.stdout",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/rustc-version.stdout",
         "sha256": "b569b0c98ea3133c7252b4b8ea6b39b7b353813df0dd5f5c412c355691424112"
       },
       "stderr": {
-        "path": "artifacts/runs/W02c-20261017T095809Z-eae4da02/rustc-version.stderr",
+        "path": "artifacts/runs/W02c-20261017T153531Z-a3a04dca/rustc-version.stderr",
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     }
@@ -1152,11 +1156,11 @@
   "differences": [],
   "skipped": [],
   "reference_unchanged": true,
-  "raw_run": "artifacts/runs/W02c-20261017T095809Z-eae4da02",
-  "request_sha256": "186faab6bac240a461a044688fd0bf211ce1e62d1502e48727fccbc7f9b685c6",
+  "raw_run": "artifacts/runs/W02c-20261017T153531Z-a3a04dca",
+  "request_sha256": "c0521d9b992dc7966ce7e1aaab19a7c6ea5e3a56a0a924815418b444df5fad90",
   "rust_adapter": {
     "path": "{repository}/target/debug/mucrab-compare",
-    "sha256": "700b21eeb73d7795a9be5a9993cea996d5192c285dfb71adfcd5d48224831cd3"
+    "sha256": "fd9decddec73f3a0450b486b61c4be04b6edabb4a3edc4ec9a723bcc488a8ccc"
   },
   "reproduce": "target/debug/mucrab-compare --suite w02c --reserved"
 }

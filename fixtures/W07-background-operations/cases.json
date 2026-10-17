@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "chunk_size": 65536,
+  "large_size": 1048576,
+  "cancel_bytes": 131072,
+  "pause_bytes": 65536,
+  "original_throughput_limit": 262144,
+  "reserved_seed": 70717,
+  "cases": [
+    {"id":"copy-complete","action":"copy","mode":"finish"},
+    {"id":"move-complete","action":"move","mode":"finish"},
+    {"id":"rename-complete","action":"rename","mode":"finish"},
+    {"id":"batch-complete","action":"batch","mode":"finish"},
+    {"id":"extract-complete","action":"extract","mode":"finish"},
+    {"id":"copy-skip","action":"copy","mode":"skip"},
+    {"id":"copy-child-error","action":"copy","mode":"error"},
+    {"id":"copy-cancel-before","action":"copy","mode":"before"},
+    {"id":"move-cancel-before","action":"move","mode":"before"},
+    {"id":"rename-cancel-before","action":"rename","mode":"before"},
+    {"id":"batch-cancel-before","action":"batch","mode":"before"},
+    {"id":"extract-cancel-before","action":"extract","mode":"before"},
+    {"id":"copy-cancel-stream","action":"copy","mode":"stream"},
+    {"id":"copy-pause-cancel","action":"copy","mode":"pause"},
+    {"id":"copy-nested-cancel","action":"copy","mode":"nested"},
+    {"id":"move-fallback-cancel","action":"move","mode":"stream","cross_device":true},
+    {"id":"move-nested-fallback-cancel","action":"move","mode":"nested","cross_device":true},
+    {"id":"extract-cancel-stream","action":"extract","mode":"stream"}
+  ]
+}

@@ -5,6 +5,7 @@
 // See NOTICE.md and evidence/workflows/W04-move-rename/contract.md.
 use crate::copying::{apply_metadata, modified_ms, resolved};
 use crate::{CopyIssue, CopyIssueKind, CopyOutcome, CopyPolicy, CopyRequest, is_valid_leaf_name};
+use crate::{JobControl, jobs::copy_stream};
 use serde::Deserialize;
 #[cfg(unix)]
 use std::os::unix::fs::MetadataExt;
@@ -23,19 +24,21 @@ pub struct MoveRequest {
 }
 #[derive(Clone, Debug, Default)]
 pub struct MoveReport {
+    pub cancelled: bool,
     pub outcomes: Vec<CopyOutcome>,
     pub issues: Vec<CopyIssue>,
     pub renamed_entries: usize,
     pub files_transferred: usize,
     pub sources_removed: usize,
 }
-struct Mover {
+struct Mover<'a> {
+    control: &'a JobControl,
     source_root: PathBuf,
     destination_root: PathBuf,
     policy: CopyPolicy,
     report: MoveReport,
 }
-impl Mover {
+impl Mover<'_> {
     fn issue(&mut self, path: &Path, kind: CopyIssueKind, message: impl ToString) -> bool {
         self.report.issues.push(CopyIssue {
             path: path.to_owned(),
@@ -45,10 +48,19 @@ impl Mover {
         false
     }
     fn process(&mut self, source: &Path, destination: &Path) -> bool {
+        if !self.control.checkpoint() {
+            return false;
+        }
         let entry = match fs::symlink_metadata(source) {
             Ok(value) => value,
             Err(error) => return self.issue(source, CopyIssueKind::Failed, error),
         };
+        if !self
+            .control
+            .entry(source, entry.is_file().then_some(entry.len()))
+        {
+            return false;
+        }
         if !entry.is_file() && !entry.is_dir() && !entry.is_symlink() {
             return self.issue(
                 source,
@@ -149,6 +161,9 @@ impl Mover {
         }
         // Original attempts local rename before every fallback, including when
         // permissions deny rename while still allowing copy or in-place writing.
+        if !self.control.checkpoint() {
+            return false;
+        }
         if fs::rename(source, destination).is_ok() {
             self.report.renamed_entries += 1;
             self.report.sources_removed += 1;
@@ -174,12 +189,21 @@ impl Mover {
                     Ok(value) => value,
                     Err(error) => return self.issue(source, CopyIssueKind::Failed, error),
                 };
+                if !self.control.checkpoint() {
+                    return false;
+                }
                 if !self.process(&child.path(), &destination.join(child.file_name())) {
                     all_succeeded = false;
                 }
             }
+            if !self.control.checkpoint() {
+                return false;
+            }
             apply_metadata(metadata.as_ref(), destination, false);
             if !all_succeeded {
+                return false;
+            }
+            if !self.control.checkpoint() {
                 return false;
             }
             if let Err(error) = fs::remove_dir(source) {
@@ -205,16 +229,23 @@ impl Mover {
             Ok(file) => file,
             Err(error) => return self.issue(destination, CopyIssueKind::Failed, error),
         };
-        if let Err(error) = io::copy(&mut input, &mut output) {
+        if let Err(error) = copy_stream(&mut input, &mut output, self.control) {
             return self.issue(
                 destination,
-                CopyIssueKind::Failed,
-                format!("Copy failed; source retained: {error}"),
+                if self.control.is_cancelled() {
+                    CopyIssueKind::Cancelled
+                } else {
+                    CopyIssueKind::Failed
+                },
+                format!("Copy stopped; source retained: {error}"),
             );
         }
         drop(output);
         apply_metadata(metadata.as_ref(), destination, true);
         self.report.files_transferred += 1;
+        if !self.control.checkpoint() {
+            return false;
+        }
         if let Err(error) = fs::remove_file(source) {
             return self.issue(
                 source,
@@ -230,6 +261,30 @@ impl Mover {
 /// Move selected direct children, retaining sources on failed fallback/deletion.
 /// Stable owned local trees only; native guards do not establish race safety.
 pub fn move_entries(request: &MoveRequest) -> io::Result<MoveReport> {
+    move_entries_with_control(request, &JobControl::default())
+}
+
+pub fn move_entries_with_control(
+    request: &MoveRequest,
+    control: &JobControl,
+) -> io::Result<MoveReport> {
+    move_entries_controlled(request, control, true)
+}
+
+pub(crate) fn move_entries_controlled(
+    request: &MoveRequest,
+    control: &JobControl,
+    top_level: bool,
+) -> io::Result<MoveReport> {
+    if top_level {
+        control.total(request.transfer.names.len());
+    }
+    if !control.checkpoint() {
+        return Ok(MoveReport {
+            cancelled: true,
+            ..Default::default()
+        });
+    }
     let input = &request.transfer;
     if input.names.iter().any(|n| !is_valid_leaf_name(n))
         || input
@@ -257,19 +312,45 @@ pub fn move_entries(request: &MoveRequest) -> io::Result<MoveReport> {
         ));
     }
     let mut mover = Mover {
+        control,
         source_root: source.clone(),
         destination_root: dest.clone(),
         policy: input.policy,
         report: MoveReport::default(),
     };
     for name in &input.names {
+        if !control.checkpoint() {
+            break;
+        }
         let success = mover.process(
             &source.join(name),
             &dest.join(input.new_name.as_ref().unwrap_or(name)),
         );
         mover.report.outcomes.push(CopyOutcome {
             name: name.clone(),
-            success,
+            success: success && !control.is_cancelled(),
+        });
+        if control.is_cancelled() {
+            break;
+        }
+        if top_level {
+            control.completed();
+        }
+    }
+    mover.report.cancelled = control.is_cancelled();
+    if mover.report.cancelled
+        && !mover
+            .report
+            .issues
+            .iter()
+            .any(|issue| issue.kind == CopyIssueKind::Cancelled)
+    {
+        mover.report.issues.push(CopyIssue {
+            path: control.snapshot().current_path.unwrap_or(source),
+            kind: CopyIssueKind::Cancelled,
+            message:
+                "Move cancelled; completed destinations remain and unfinished sources are retained"
+                    .to_owned(),
         });
     }
     Ok(mover.report)

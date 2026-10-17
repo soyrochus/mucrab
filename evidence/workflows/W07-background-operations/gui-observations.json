@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "actions": 27,
+  "destination_children": 6933,
+  "partial_children": 1,
+  "source_files": 20000,
+  "checks": [
+    "actual Pause/Resume/Cancel controls",
+    "copy roots and marks",
+    "second job disabled",
+    "browse and mark unrelated location while paused",
+    "unrelated marks retained on acknowledgement",
+    "window close wakes paused worker and exits normally before driver cleanup",
+    "earlier destination preserved, interrupted folder partial, later roots untouched",
+    "all source and completed-child bytes"
+  ],
+  "scope": "Representative Linux X11/Xvfb production-build input and independent filesystem inspection",
+  "run": "artifacts/gui/W07-background",
+  "replay": "fixtures/W07-background-operations/native-gui-actions.json",
+  "captures": [
+    "initial",
+    "marked-roots",
+    "copy-review",
+    "paused",
+    "second-job-disabled",
+    "resumed",
+    "paused-again",
+    "cancelled",
+    "cancelled-details",
+    "navigation-review",
+    "navigation-paused",
+    "browsing-while-busy",
+    "unrelated-marks-retained",
+    "close-review",
+    "close-paused",
+    "close-menu",
+    "closed-after-cancel"
+  ],
+  "source_integrity": "All 20,000 source child contents and unrelated/later roots checked",
+  "prefix_integrity": "Every destination child is a valid source prefix; at most one interrupted child per cancelled job",
+  "normal_exit": "await_exit observed application return code 0 before driver finally cleanup",
+  "source_and_binary_provenance": {
+    "native_binary_sha256": "4c9b3d10dac36649f88be744f876c8c9d7966323f0e502c802278becd04eabe4",
+    "replay_sha256": "ccceeef712709ecf4588694d1e035f3e15262f6cbfa32f64ee3fd2a5752c3958",
+    "file_count": 20000
+  }
+}

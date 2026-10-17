@@ -2,12 +2,11 @@
 
 [Back to the README](../README.md).
 
-The current verified milestone is **W06 — bounded local ZIP browsing and extraction**
-(see the [implementation ledger](../mucrab-implementation-plan.md)). The latest full verification was recorded on
-**2026-10-17**. **W08 — classic desktop UI** is implemented ahead of
-**W07 — background operations and cancellation**, at the user’s request.
-[W08 evidence](../evidence/workflows/W08-desktop-ui/README.md) records the UI checks;
-the W01–W06 Java/Rust comparison counts below remain historical.
+The current verified functional milestone is **W07 — background operations,
+progress and cancellation**, delivered after the prioritized **W08 classic UI**.
+Checks recorded on **2026-10-17** include W07's original full-job comparisons,
+all eight earlier component suites, Rust/Python checks and W07/W08 native replays.
+See the [implementation ledger](../mucrab-implementation-plan.md).
 
 ## Verified workflows
 
@@ -95,18 +94,40 @@ shortcuts and About information. New headless regressions cover live reported
 OS changes and 10,000-row keyboard/selection/sort/scroll behavior; a native replay
 checks file-operation results, menus, themes and resizing. Menus are in-window;
 macOS native menu integration and physical theme notification delivery remain
-unverified. W07 is the next functional workflow.
+unverified. W07 adds the background-job controls described below.
+
+## W07 background operations
+
+Copy, move/focused rename, batch rename and ZIP extraction run with shared
+cooperative control. Progress shows current-file bytes and completed/total work
+items. Pause/Resume and Cancel are available while browsing, marking and sorting
+remain usable. Only one mutation job runs at a time. Cancel waits for worker
+acknowledgement; completed writes and partial destination files remain, unfinished
+fallback-move sources are retained, and interrupted/later roots stay marked.
+Closing the window cancels a running/paused job and defers exit until it stops.
+Unhandled worker errors/panics are visible as failures with partial-result details.
+
+The original's real start/run/interrupt/pause methods and concrete jobs pass
+**18 predefined + 12 reserved = 30 cases**, with **zero differences** in declared
+lifecycle, mark and filesystem outcomes. Streaming prefixes are independently
+validated rather than requiring identical scheduler-dependent lengths. The native
+27-action replay checks real Pause/Resume/Cancel, navigation/marks while busy and
+normal exit after cancelling a paused copy of 20,000 source files. All 16 earlier
+component suite executions and the W08 replay also pass. There are **46 Rust and
+49 Python tests**. [W07 evidence](../evidence/workflows/W07-background-operations/README.md)
+records recovery, comparison reports, source fingerprints, native checks and limits.
 
 ## Platform scope and limitations
 
-The latest recorded verification passes all eight component suites on
+The latest recorded verification passes all eight earlier component suites plus W07 full-job comparisons on
 **Linux x86_64/ext4**, OpenJDK **25.0.4.1**, with en-US ordering and a separate
 `/tmp` filesystem for cross-device moves. Native input checks run under X11/Xvfb; representative
 original menu-action checks retain live-table states and Swing renders.
 The macOS badge refers to earlier W01/W02a checks on macOS arm64; W03/W04/W05/W06
 validation covers Linux. Wayland/physical-desktop
 behavior, Windows hidden attributes and exhaustive OS shortcut parity remain
-unverified. Opening symbolic links, other filters, additional archive formats, cancellation
-and other locales remain for later increments. Copy rejects overlapping source/
+unverified. Opening symbolic links, other filters, additional archive formats and other locales remain for later increments. Copy rejects overlapping source/
 destination paths, outside link targets and destination aliases; race-free
-filesystem handling and full background-job parity remain unverified.
+filesystem handling and full scheduler/parallel-job parity remain unverified. W07 cancellation is
+cooperative between entries and 64 KiB chunks; blocked OS calls/atomic renames
+must return before acknowledgement, and cancellation does not roll back writes.

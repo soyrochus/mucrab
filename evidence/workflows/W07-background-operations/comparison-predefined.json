@@ -1,0 +1,109 @@
+{
+  "workflow": "W07",
+  "status": "passed",
+  "scope": "Real original start/run/interrupt/pause, full-job trees/marks, cooperative native control",
+  "cases_run": 18,
+  "reserved": false,
+  "difference_count": 0,
+  "raw_run": "artifacts/runs/W07-20261017T153440Z-29e3dd96",
+  "fixture_sha256": "152b2884c4f36056207f910db663a87a213e0ebcef50715c306e839a72d36136",
+  "sources": [
+    {
+      "path": "tools/java/W07GuiProbe.java",
+      "sha256": "1c3e1b60e0b379349586452b7e0adf1c89f9e55dd51449a1f426059a9077ca50"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    }
+  ],
+  "rust_adapter_sha256": "fd9decddec73f3a0450b486b61c4be04b6edabb4a3edc4ec9a723bcc488a8ccc",
+  "reference_unchanged": true,
+  "commands": {
+    "javac": {
+      "argv": [
+        "javac",
+        "-proc:none",
+        "-d",
+        "{repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/classes",
+        "{repository}/tools/java/W07GuiProbe.java",
+        "{repository}/tools/java/W02bGuiProbe.java"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W07-20261017T153440Z-29e3dd96/javac.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W07-20261017T153440Z-29e3dd96/javac.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "jar": {
+      "argv": [
+        "jar",
+        "--create",
+        "--file",
+        "{repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/agent.jar",
+        "--manifest",
+        "{repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/agent.mf",
+        "-C",
+        "{repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/classes",
+        "."
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W07-20261017T153440Z-29e3dd96/jar.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W07-20261017T153440Z-29e3dd96/jar.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "java": {
+      "argv": [
+        "java",
+        "-javaagent:{repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/agent.jar={repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/original-probe",
+        "-Duser.timezone=UTC",
+        "-Duser.home={repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/home",
+        "--add-opens=java.base/java.net=ALL-UNNAMED",
+        "--add-opens=java.base/java.io=ALL-UNNAMED",
+        "--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
+        "-cp",
+        "{repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/reference/mucommander-1.6.2.jar",
+        "com.mucommander.main.muCommander",
+        "--preferences",
+        "{repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/profile",
+        "{repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/original/copy-complete/source",
+        "{repository}/artifacts/runs/W07-20261017T153440Z-29e3dd96/original/copy-complete/destination"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W07-20261017T153440Z-29e3dd96/java.stdout",
+        "sha256": "8f78dc4974bef0ce9b5e7fed7552a273840f01a9c121bf919c7d02860ba34e2b"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W07-20261017T153440Z-29e3dd96/java.stderr",
+        "sha256": "340bfec31d7b782060cd52fe43a49a807c403e56312d6cbc5c1e218bbf4d2afa"
+      }
+    },
+    "rust": {
+      "argv": [
+        "{repository}/target/debug/mucrab-compare",
+        "--adapter-w07"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W07-20261017T153440Z-29e3dd96/rust.stdout",
+        "sha256": "f6b8a27a3edbb95790a85a50f9812a45f224cb4586f4fe7e7d7ea0ac0869bba1"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W07-20261017T153440Z-29e3dd96/rust.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "normalization": "Runtime clocks omitted; partial lengths/hashes compared as valid nonempty proper source prefixes, not equal byte counts",
+  "excluded": "Original scheduler concurrency/remote jobs and exact timing; native panic/close guarantees tested separately"
+}

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+use crate::{JobControl, moving::move_entries_controlled};
 
 // Recovered from original BatchRenameDialog tokens/preview and BatchRenameJob.
 // See NOTICE.md and evidence/workflows/W05-batch-rename/contract.md.
-use crate::{CopyIssue, CopyPolicy, CopyRequest, MoveRequest, is_valid_leaf_name, move_entries};
+use crate::{CopyIssue, CopyIssueKind, CopyPolicy, CopyRequest, MoveRequest, is_valid_leaf_name};
 use chrono::{Datelike, Timelike};
 use serde::{Deserialize, Serialize};
 #[cfg(unix)]
@@ -70,6 +71,7 @@ pub struct BatchRenameOutcome {
 }
 #[derive(Clone, Debug, Default)]
 pub struct BatchRenameReport {
+    pub cancelled: bool,
     pub outcomes: Vec<BatchRenameOutcome>,
     pub issues: Vec<CopyIssue>,
 }
@@ -416,6 +418,26 @@ impl BatchRenamePlan {
 /// Apply the reviewed ordered plan. Additional guards reject stale/unsafe plans;
 /// stable owned local trees remain required, as with W04. No race-safety claim.
 pub fn apply_batch_rename(plan: &BatchRenamePlan) -> io::Result<BatchRenameReport> {
+    apply_batch_rename_with_control(plan, &JobControl::default())
+}
+
+pub fn apply_batch_rename_with_control(
+    plan: &BatchRenamePlan,
+    control: &JobControl,
+) -> io::Result<BatchRenameReport> {
+    control.total(
+        plan.preview
+            .rows
+            .iter()
+            .filter(|row| row.name != row.new_name)
+            .count(),
+    );
+    if !control.checkpoint() {
+        return Ok(BatchRenameReport {
+            cancelled: true,
+            ..Default::default()
+        });
+    }
     if !plan.preview.can_apply() {
         return Err(invalid(
             "Resolve conflicts, invalid names or unchanged names before applying",
@@ -434,22 +456,49 @@ pub fn apply_batch_rename(plan: &BatchRenamePlan) -> io::Result<BatchRenameRepor
         .iter()
         .filter(|row| row.name != row.new_name)
     {
-        let report = move_entries(&MoveRequest {
-            transfer: CopyRequest {
-                source_directory: plan.directory.clone(),
-                destination_directory: plan.directory.clone(),
-                names: vec![row.name.clone()],
-                new_name: Some(row.new_name.clone()),
-                policy: CopyPolicy::Skip,
+        if !control.checkpoint() {
+            break;
+        }
+        let report = move_entries_controlled(
+            &MoveRequest {
+                transfer: CopyRequest {
+                    source_directory: plan.directory.clone(),
+                    destination_directory: plan.directory.clone(),
+                    names: vec![row.name.clone()],
+                    new_name: Some(row.new_name.clone()),
+                    policy: CopyPolicy::Skip,
+                },
+                rename_mode: true,
             },
-            rename_mode: true,
-        })?;
+            control,
+            false,
+        )?;
+        if report.outcomes.is_empty() {
+            break;
+        }
         result.outcomes.push(BatchRenameOutcome {
             name: row.name.clone(),
             new_name: row.new_name.clone(),
             success: report.outcomes[0].success,
         });
         result.issues.extend(report.issues);
+        if control.is_cancelled() {
+            break;
+        }
+        control.completed();
+    }
+    result.cancelled = control.is_cancelled();
+    if result.cancelled
+        && !result
+            .issues
+            .iter()
+            .any(|issue| issue.kind == CopyIssueKind::Cancelled)
+    {
+        result.issues.push(CopyIssue {
+            path: plan.directory.clone(),
+            kind: CopyIssueKind::Cancelled,
+            message: "Batch rename cancelled; completed renames remain".to_owned(),
+        });
     }
     Ok(result)
 }
