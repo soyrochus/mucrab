@@ -21,6 +21,7 @@ session can continue without the original conversation.
 | Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
 | Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4 plus distinct /tmp for W04, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
+| Release automation | Stable version tag workflow added for Linux x86_64 and macOS arm64; source/notices/checksums bundled. Local Linux packaging verified; first hosted build/publication pending |
 
 The commit above identifies the implementation baseline, not the commit adding
 this plan. On resumption, inspect the actual checkout and reconcile this table
@@ -1010,6 +1011,31 @@ Exact next executable action:
   need regeneration or separate transfer; every mutating GUI replay needs fresh
   trees. Next is W06: recover original ZIP listing/extraction/path errors, freeze
   oracle/fixtures before Rust and keep all seven suites passing.
+
+- 2026-10-16: Added `.github/workflows/release.yml` for pushed canonical
+  `vMAJOR.MINOR.PATCH` tags. Linux x86_64/Ubuntu 24.04 and Apple Silicon/macOS 15
+  are the only binary targets. CI pins Rust 1.99.1, exports the tagged source,
+  sets only exported workspace versions from the tag, vendors all 384 locked
+  external crates, and builds each target offline from that source archive.
+  Binary bundles preserve executable modes, provenance, GPL/dependency notices
+  and, on macOS, an ad-hoc signed `.app`. Missing upstream Cargo-package notices
+  are retained under `third_party/release-dependencies/` with revision and hash
+  pins. Source, binaries and SHA-256 checksums publish together after all builds
+  pass; existing published assets are never overwritten. Intel Macs were
+  excluded at the user's request. Instructions are in `docs/releases.md`.
+
+  Local validation: Actionlint 1.7.12 passes; 43 Python tests pass (10 release
+  tests added); formatting and 26 Rust tests pass from an exported, vendored
+  source snapshot using Rust 1.99.0 and an empty Cargo cache. The frozen Linux
+  release build and extracted binary bundle both report `muCrab 0.9.0` and pass
+  `--help`. All 384 dependency inventory entries have original or pinned
+  supplemental notices. Final source packaging retains the same 28 application
+  build-input files as the tested source. Publication shell checks with a fake
+  GitHub CLI cover new releases, draft retries, refusing a published release,
+  and aborting after an upload failure. Incomplete asset sets are rejected.
+  No tag was pushed and no release was published. Hosted execution, real macOS
+  build/signing and GUI checks remain pending. This changes release tooling,
+  not the W05 application or historical behavioral evidence; W06 remains next.
 
 ## Final demonstration acceptance
 

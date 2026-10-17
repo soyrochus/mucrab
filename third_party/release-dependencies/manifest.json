@@ -1,0 +1,542 @@
+{
+  "files": {
+    "texts/074e6e32c86a-Apache-2.0.txt": {
+      "origins": [
+        "https://raw.githubusercontent.com/spdx/license-list-data/v3.27.0/text/Apache-2.0.txt"
+      ],
+      "sha256": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff"
+    },
+    "texts/10d30a673cd5-LICENSE-APACHE": {
+      "origins": [
+        "https://raw.githubusercontent.com/aclysma/profiling/8271551172eb6fa4cba47369aedd93790c623df9/LICENSE-APACHE"
+      ],
+      "sha256": "10d30a673cd5e9349bdc02aeb48f14b3386d27d0da32df8f0a555d4aa16aa551"
+    },
+    "texts/1d85bd754b04-LICENSE-MIT": {
+      "origins": [
+        "https://raw.githubusercontent.com/jni-rs/jni-sys/64d77b7a5f119d7b55b4e2c169a4668067ff59e6/LICENSE-MIT"
+      ],
+      "sha256": "1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1"
+    },
+    "texts/23f18e03dc49-LICENSE-MIT": {
+      "origins": [
+        "https://raw.githubusercontent.com/AccessKit/accesskit/a55d3e1a18bb9ef0e4bccc9083fb13c3e0ad8969/LICENSE-MIT",
+        "https://raw.githubusercontent.com/AccessKit/accesskit/f40dfc01a0c0e76de535969f82fb35e19513737d/LICENSE-MIT",
+        "https://raw.githubusercontent.com/AccessKit/accesskit/1bbcf100942bac96c2c3a4a91cb67b0b20201a24/LICENSE-MIT",
+        "https://raw.githubusercontent.com/AccessKit/accesskit/c88605b96d04431f9c3c792464a0f2f253480e94/LICENSE-MIT"
+      ],
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+    },
+    "texts/508a77d2e7b5-LICENSE-MIT": {
+      "origins": [
+        "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-MIT",
+        "https://raw.githubusercontent.com/rust-windowing/android-ndk-rs/10f2ba388fca20f7349996ebae26ccda7a6fda5c/LICENSE-MIT"
+      ],
+      "sha256": "508a77d2e7b51d98adeed32648ad124b7b30241a8e70b2e72c99f92d8e5874d1"
+    },
+    "texts/62c7a1e35f56-LICENSE-APACHE": {
+      "origins": [
+        "https://raw.githubusercontent.com/AccessKit/accesskit/a55d3e1a18bb9ef0e4bccc9083fb13c3e0ad8969/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/AccessKit/accesskit/f40dfc01a0c0e76de535969f82fb35e19513737d/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/AccessKit/accesskit/1bbcf100942bac96c2c3a4a91cb67b0b20201a24/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/AccessKit/accesskit/c88605b96d04431f9c3c792464a0f2f253480e94/LICENSE-APACHE"
+      ],
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+    },
+    "texts/7f976f7e9cb2-LICENSE.md": {
+      "origins": [
+        "https://raw.githubusercontent.com/madsmtm/objc2/b4167b582b2f75f9a1be75495c41b765344fd03c/LICENSE.md",
+        "https://raw.githubusercontent.com/madsmtm/objc2/8852b424193ca41602281b3d7540d7c8ed51e49a/LICENSE.md",
+        "https://raw.githubusercontent.com/madsmtm/objc2/d7d2fa23ceaa5e6096c923b081040e5d81b3b9df/LICENSE.md",
+        "https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md",
+        "https://raw.githubusercontent.com/madsmtm/objc2/8d214f5477365ffcbcbb7de058c86ed9a518efb7/LICENSE.md"
+      ],
+      "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54"
+    },
+    "texts/8173d5c29b4f-LICENSE-APACHE": {
+      "origins": [
+        "https://raw.githubusercontent.com/emilk/egui/49682f8baa058bf49e011035cfbd6e825f88a5ef/LICENSE-APACHE"
+      ],
+      "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90"
+    },
+    "texts/845022e0c1db-LICENSE.chromium": {
+      "origins": [
+        "https://raw.githubusercontent.com/AccessKit/accesskit/a55d3e1a18bb9ef0e4bccc9083fb13c3e0ad8969/LICENSE.chromium",
+        "https://raw.githubusercontent.com/AccessKit/accesskit/f40dfc01a0c0e76de535969f82fb35e19513737d/LICENSE.chromium",
+        "https://raw.githubusercontent.com/AccessKit/accesskit/1bbcf100942bac96c2c3a4a91cb67b0b20201a24/LICENSE.chromium",
+        "https://raw.githubusercontent.com/AccessKit/accesskit/c88605b96d04431f9c3c792464a0f2f253480e94/LICENSE.chromium"
+      ],
+      "sha256": "845022e0c1db1abb41a6ba4cd3c4b674ec290f3359d9d3c78ae558d4c0ed9308"
+    },
+    "texts/95ca92f5f8ea-LICENSE-MIT": {
+      "origins": [
+        "https://raw.githubusercontent.com/emilk/egui/49682f8baa058bf49e011035cfbd6e825f88a5ef/LICENSE-MIT"
+      ],
+      "sha256": "95ca92f5f8ea5231f1580b3a2a799e8260af3114b900e1def5355a7f44bcf60c"
+    },
+    "texts/a60eea817514-LICENSE-APACHE": {
+      "origins": [
+        "https://raw.githubusercontent.com/jni-rs/jni-rs/5ae9458a4ec44c5318f37ddc7569c1d4ae8a69e7/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/jni-rs/jni-rs/33045a124105c939d1e2cbdcb5a39e5d868ffa03/LICENSE-APACHE"
+      ],
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+    },
+    "texts/b05785f9f18e-MIT.txt": {
+      "origins": [
+        "https://raw.githubusercontent.com/spdx/license-list-data/v3.27.0/text/MIT.txt"
+      ],
+      "sha256": "b05785f9f18e6716bab63424b11454513b9943a222595b70411009202fc592b5"
+    },
+    "texts/bfb1112d49db-Zlib.txt": {
+      "origins": [
+        "https://raw.githubusercontent.com/spdx/license-list-data/v3.27.0/text/Zlib.txt"
+      ],
+      "sha256": "bfb1112d49db5b1daecdfef24bd7e2f3ea0bafb33aa67aa0ab51e2bf8407c03d"
+    },
+    "texts/c6596eb7be85-LICENSE-APACHE": {
+      "origins": [
+        "https://raw.githubusercontent.com/jni-rs/jni-sys/64d77b7a5f119d7b55b4e2c169a4668067ff59e6/LICENSE-APACHE"
+      ],
+      "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+    },
+    "texts/c71d239df917-LICENSE-APACHE": {
+      "origins": [
+        "https://raw.githubusercontent.com/rust-mobile/ndk/49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/rust-windowing/android-ndk-rs/10f2ba388fca20f7349996ebae26ccda7a6fda5c/LICENSE-APACHE"
+      ],
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "texts/c8167fdeeed4-LICENSE-MIT": {
+      "origins": [
+        "https://raw.githubusercontent.com/aclysma/profiling/8271551172eb6fa4cba47369aedd93790c623df9/LICENSE-MIT"
+      ],
+      "sha256": "c8167fdeeed46d3f244d3f85c5bf998ce889343691c32be2c61a8bc4b5c08333"
+    },
+    "texts/c9bff7573892-LICENSE": {
+      "origins": [
+        "https://raw.githubusercontent.com/DoumanAsh/clipboard-win/3b27cf2bfd1adcfa6e0264eb51c1025ddaf0f342/LICENSE"
+      ],
+      "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+    },
+    "texts/cfc7749b96f6-LICENSE": {
+      "origins": [
+        "https://raw.githubusercontent.com/brendanzab/gl-rs/ea503e8d5fb6d73c6030e6191ce738cd3bf3433e/LICENSE",
+        "https://raw.githubusercontent.com/brendanzab/gl-rs/f150967b1c44ae888e6676f93f639ebc82771bdc/LICENSE"
+      ],
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "texts/e353f37b12ae-LICENSE.txt": {
+      "origins": [
+        "https://raw.githubusercontent.com/madsmtm/objc2/4fc083f1c6d6784577e38b0ee8dbd344481e2fd2/LICENSE.txt",
+        "https://raw.githubusercontent.com/madsmtm/objc2/5237cbf081d04ef75a1f6a207b4018e7c1ae7438/LICENSE.txt",
+        "https://raw.githubusercontent.com/madsmtm/objc2/e282618be4c3a3b9542957e0c8540e9588472ce8/LICENSE.txt"
+      ],
+      "sha256": "e353f37b12aefbb9f9b29490e837cfee05d9bda70804b3562839a3285c1df1e5"
+    },
+    "texts/fea1d5bf3dd7-LICENSE-MIT": {
+      "origins": [
+        "https://raw.githubusercontent.com/jni-rs/jni-rs/5ae9458a4ec44c5318f37ddc7569c1d4ae8a69e7/LICENSE-MIT",
+        "https://raw.githubusercontent.com/jni-rs/jni-rs/33045a124105c939d1e2cbdcb5a39e5d868ffa03/LICENSE-MIT"
+      ],
+      "sha256": "fea1d5bf3dd71605ce5d7d2ff695c1837e914c77195e523a86b5391716477960"
+    }
+  },
+  "packages": {
+    "accesskit@0.24.1": {
+      "crate_revision": "a55d3e1a18bb9ef0e4bccc9083fb13c3e0ad8969",
+      "notices": [
+        "texts/62c7a1e35f56-LICENSE-APACHE",
+        "texts/23f18e03dc49-LICENSE-MIT",
+        "texts/845022e0c1db-LICENSE.chromium"
+      ]
+    },
+    "accesskit_atspi_common@0.18.1": {
+      "crate_revision": "f40dfc01a0c0e76de535969f82fb35e19513737d",
+      "notices": [
+        "texts/62c7a1e35f56-LICENSE-APACHE",
+        "texts/23f18e03dc49-LICENSE-MIT",
+        "texts/845022e0c1db-LICENSE.chromium"
+      ]
+    },
+    "accesskit_consumer@0.35.0": {
+      "crate_revision": "1bbcf100942bac96c2c3a4a91cb67b0b20201a24",
+      "notices": [
+        "texts/62c7a1e35f56-LICENSE-APACHE",
+        "texts/23f18e03dc49-LICENSE-MIT",
+        "texts/845022e0c1db-LICENSE.chromium"
+      ]
+    },
+    "accesskit_consumer@0.36.0": {
+      "crate_revision": "f40dfc01a0c0e76de535969f82fb35e19513737d",
+      "notices": [
+        "texts/62c7a1e35f56-LICENSE-APACHE",
+        "texts/23f18e03dc49-LICENSE-MIT",
+        "texts/845022e0c1db-LICENSE.chromium"
+      ]
+    },
+    "accesskit_consumer@0.38.0": {
+      "crate_revision": "c88605b96d04431f9c3c792464a0f2f253480e94",
+      "notices": [
+        "texts/62c7a1e35f56-LICENSE-APACHE",
+        "texts/23f18e03dc49-LICENSE-MIT",
+        "texts/845022e0c1db-LICENSE.chromium"
+      ]
+    },
+    "accesskit_macos@0.26.3": {
+      "crate_revision": "c88605b96d04431f9c3c792464a0f2f253480e94",
+      "notices": [
+        "texts/62c7a1e35f56-LICENSE-APACHE",
+        "texts/23f18e03dc49-LICENSE-MIT",
+        "texts/845022e0c1db-LICENSE.chromium"
+      ]
+    },
+    "accesskit_unix@0.21.1": {
+      "crate_revision": "f40dfc01a0c0e76de535969f82fb35e19513737d",
+      "notices": [
+        "texts/62c7a1e35f56-LICENSE-APACHE",
+        "texts/23f18e03dc49-LICENSE-MIT",
+        "texts/845022e0c1db-LICENSE.chromium"
+      ]
+    },
+    "accesskit_windows@0.32.1": {
+      "crate_revision": "1bbcf100942bac96c2c3a4a91cb67b0b20201a24",
+      "notices": [
+        "texts/62c7a1e35f56-LICENSE-APACHE",
+        "texts/23f18e03dc49-LICENSE-MIT",
+        "texts/845022e0c1db-LICENSE.chromium"
+      ]
+    },
+    "accesskit_winit@0.32.2": {
+      "crate_revision": "1bbcf100942bac96c2c3a4a91cb67b0b20201a24",
+      "notices": [
+        "texts/62c7a1e35f56-LICENSE-APACHE",
+        "texts/23f18e03dc49-LICENSE-MIT",
+        "texts/845022e0c1db-LICENSE.chromium"
+      ]
+    },
+    "block2@0.5.1": {
+      "crate_revision": "4fc083f1c6d6784577e38b0ee8dbd344481e2fd2",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "block2@0.6.2": {
+      "crate_revision": "b4167b582b2f75f9a1be75495c41b765344fd03c",
+      "notices": [
+        "texts/7f976f7e9cb2-LICENSE.md",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "clipboard-win@5.4.1": {
+      "crate_revision": "3b27cf2bfd1adcfa6e0264eb51c1025ddaf0f342",
+      "notices": [
+        "texts/c9bff7573892-LICENSE"
+      ]
+    },
+    "dispatch2@0.3.1": {
+      "crate_revision": "8852b424193ca41602281b3d7540d7c8ed51e49a",
+      "notices": [
+        "texts/7f976f7e9cb2-LICENSE.md",
+        "texts/b05785f9f18e-MIT.txt",
+        "texts/074e6e32c86a-Apache-2.0.txt",
+        "texts/bfb1112d49db-Zlib.txt"
+      ]
+    },
+    "dispatch@0.2.0": {
+      "crate_revision": "82d6c7a5b75dc0c71c3f46f87bb6c16a476f7748",
+      "note": "The recorded upstream revision contains no standalone license file; license text follows the crate-declared SPDX identifier. See crate authors and source in the release inventory.",
+      "notices": [
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "ecolor@0.36.2": {
+      "crate_revision": "49682f8baa058bf49e011035cfbd6e825f88a5ef",
+      "notices": [
+        "texts/8173d5c29b4f-LICENSE-APACHE",
+        "texts/95ca92f5f8ea-LICENSE-MIT"
+      ]
+    },
+    "eframe@0.36.2": {
+      "crate_revision": "49682f8baa058bf49e011035cfbd6e825f88a5ef",
+      "notices": [
+        "texts/8173d5c29b4f-LICENSE-APACHE",
+        "texts/95ca92f5f8ea-LICENSE-MIT"
+      ]
+    },
+    "egui-wgpu@0.36.2": {
+      "crate_revision": "49682f8baa058bf49e011035cfbd6e825f88a5ef",
+      "notices": [
+        "texts/8173d5c29b4f-LICENSE-APACHE",
+        "texts/95ca92f5f8ea-LICENSE-MIT"
+      ]
+    },
+    "egui-winit@0.36.2": {
+      "crate_revision": "49682f8baa058bf49e011035cfbd6e825f88a5ef",
+      "notices": [
+        "texts/8173d5c29b4f-LICENSE-APACHE",
+        "texts/95ca92f5f8ea-LICENSE-MIT"
+      ]
+    },
+    "egui@0.36.2": {
+      "crate_revision": "49682f8baa058bf49e011035cfbd6e825f88a5ef",
+      "notices": [
+        "texts/8173d5c29b4f-LICENSE-APACHE",
+        "texts/95ca92f5f8ea-LICENSE-MIT"
+      ]
+    },
+    "egui_glow@0.36.2": {
+      "crate_revision": "49682f8baa058bf49e011035cfbd6e825f88a5ef",
+      "notices": [
+        "texts/8173d5c29b4f-LICENSE-APACHE",
+        "texts/95ca92f5f8ea-LICENSE-MIT"
+      ]
+    },
+    "emath@0.36.2": {
+      "crate_revision": "49682f8baa058bf49e011035cfbd6e825f88a5ef",
+      "notices": [
+        "texts/8173d5c29b4f-LICENSE-APACHE",
+        "texts/95ca92f5f8ea-LICENSE-MIT"
+      ]
+    },
+    "epaint@0.36.2": {
+      "crate_revision": "49682f8baa058bf49e011035cfbd6e825f88a5ef",
+      "notices": [
+        "texts/8173d5c29b4f-LICENSE-APACHE",
+        "texts/95ca92f5f8ea-LICENSE-MIT"
+      ]
+    },
+    "epaint_default_fonts@0.36.2": {
+      "crate_revision": "49682f8baa058bf49e011035cfbd6e825f88a5ef",
+      "notices": [
+        "texts/8173d5c29b4f-LICENSE-APACHE",
+        "texts/95ca92f5f8ea-LICENSE-MIT"
+      ]
+    },
+    "gl_generator@0.14.0": {
+      "crate_revision": "ea503e8d5fb6d73c6030e6191ce738cd3bf3433e",
+      "notices": [
+        "texts/cfc7749b96f6-LICENSE"
+      ]
+    },
+    "jni-macros@0.22.4": {
+      "crate_revision": "33045a124105c939d1e2cbdcb5a39e5d868ffa03",
+      "notices": [
+        "texts/a60eea817514-LICENSE-APACHE",
+        "texts/fea1d5bf3dd7-LICENSE-MIT"
+      ]
+    },
+    "jni-sys-macros@0.4.1": {
+      "crate_revision": "64d77b7a5f119d7b55b4e2c169a4668067ff59e6",
+      "notices": [
+        "texts/c6596eb7be85-LICENSE-APACHE",
+        "texts/1d85bd754b04-LICENSE-MIT"
+      ]
+    },
+    "jni@0.22.4": {
+      "crate_revision": "5ae9458a4ec44c5318f37ddc7569c1d4ae8a69e7",
+      "notices": [
+        "texts/a60eea817514-LICENSE-APACHE",
+        "texts/fea1d5bf3dd7-LICENSE-MIT"
+      ]
+    },
+    "khronos_api@3.1.0": {
+      "crate_revision": "f150967b1c44ae888e6676f93f639ebc82771bdc",
+      "notices": [
+        "texts/cfc7749b96f6-LICENSE"
+      ]
+    },
+    "ndk-context@0.1.1": {
+      "crate_revision": "10f2ba388fca20f7349996ebae26ccda7a6fda5c",
+      "notices": [
+        "texts/c71d239df917-LICENSE-APACHE",
+        "texts/508a77d2e7b5-LICENSE-MIT"
+      ]
+    },
+    "ndk-sys@0.6.0+11769913": {
+      "crate_revision": "49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25",
+      "notices": [
+        "texts/c71d239df917-LICENSE-APACHE",
+        "texts/508a77d2e7b5-LICENSE-MIT"
+      ]
+    },
+    "ndk@0.9.0": {
+      "crate_revision": "49bbbba16c58ff63cb8a0ad0eca5a9fb7ecaec25",
+      "notices": [
+        "texts/c71d239df917-LICENSE-APACHE",
+        "texts/508a77d2e7b5-LICENSE-MIT"
+      ]
+    },
+    "objc-sys@0.3.5": {
+      "crate_revision": "4fc083f1c6d6784577e38b0ee8dbd344481e2fd2",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-app-kit@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-app-kit@0.3.2": {
+      "crate_revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "notices": [
+        "texts/7f976f7e9cb2-LICENSE.md",
+        "texts/b05785f9f18e-MIT.txt",
+        "texts/074e6e32c86a-Apache-2.0.txt",
+        "texts/bfb1112d49db-Zlib.txt"
+      ]
+    },
+    "objc2-cloud-kit@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-contacts@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-core-data@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-core-foundation@0.3.2": {
+      "crate_revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "notices": [
+        "texts/7f976f7e9cb2-LICENSE.md",
+        "texts/b05785f9f18e-MIT.txt",
+        "texts/074e6e32c86a-Apache-2.0.txt",
+        "texts/bfb1112d49db-Zlib.txt"
+      ]
+    },
+    "objc2-core-graphics@0.3.2": {
+      "crate_revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "notices": [
+        "texts/7f976f7e9cb2-LICENSE.md",
+        "texts/b05785f9f18e-MIT.txt",
+        "texts/074e6e32c86a-Apache-2.0.txt",
+        "texts/bfb1112d49db-Zlib.txt"
+      ]
+    },
+    "objc2-core-image@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-core-location@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-encode@4.1.0": {
+      "crate_revision": "8d214f5477365ffcbcbb7de058c86ed9a518efb7",
+      "notices": [
+        "texts/7f976f7e9cb2-LICENSE.md",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-io-surface@0.3.2": {
+      "crate_revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "notices": [
+        "texts/7f976f7e9cb2-LICENSE.md",
+        "texts/b05785f9f18e-MIT.txt",
+        "texts/074e6e32c86a-Apache-2.0.txt",
+        "texts/bfb1112d49db-Zlib.txt"
+      ]
+    },
+    "objc2-link-presentation@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-metal@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-quartz-core@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-symbols@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-ui-kit@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-ui-kit@0.3.2": {
+      "crate_revision": "7b1abfd750a2cacaea71d6a56ecfb83cb7de560b",
+      "notices": [
+        "texts/7f976f7e9cb2-LICENSE.md",
+        "texts/b05785f9f18e-MIT.txt",
+        "texts/074e6e32c86a-Apache-2.0.txt",
+        "texts/bfb1112d49db-Zlib.txt"
+      ]
+    },
+    "objc2-uniform-type-identifiers@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2-user-notifications@0.2.2": {
+      "crate_revision": "e282618be4c3a3b9542957e0c8540e9588472ce8",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2@0.5.3": {
+      "crate_revision": "5237cbf081d04ef75a1f6a207b4018e7c1ae7438",
+      "notices": [
+        "texts/e353f37b12ae-LICENSE.txt",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "objc2@0.6.5": {
+      "crate_revision": "d7d2fa23ceaa5e6096c923b081040e5d81b3b9df",
+      "notices": [
+        "texts/7f976f7e9cb2-LICENSE.md",
+        "texts/b05785f9f18e-MIT.txt"
+      ]
+    },
+    "profiling@1.0.18": {
+      "crate_revision": "8271551172eb6fa4cba47369aedd93790c623df9",
+      "notices": [
+        "texts/10d30a673cd5-LICENSE-APACHE",
+        "texts/c8167fdeeed4-LICENSE-MIT"
+      ]
+    }
+  }
+}

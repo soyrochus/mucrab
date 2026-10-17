@@ -27,7 +27,7 @@ The preserved file contains muCommander's licensing statement, GPLv3 and LGPLv3 
 
 The Rust workspace packages are licensed under `GPL-3.0-only`. The desktop scaffold depends on eframe/egui **0.36.2** and their dependency graph pinned by [Cargo.lock](Cargo.lock). The egui project offers its framework code under `MIT OR Apache-2.0`; the [MIT notice](third_party/egui/LICENSE-MIT) is preserved here. Other dependencies retain their own terms and notices in their Cargo source packages.
 
-The embedded default fonts retain their original licenses, independently of the application license. [The framework/font notice index](third_party/egui/README.md) records the preserved notices and their provenance. Complete dependency source and notice packaging will accompany a distributable release; this is a local development experiment.
+The embedded default fonts retain their original licenses, independently of the application license. [The framework/font notice index](third_party/egui/README.md) records the preserved notices and their provenance. The [release workflow](.github/workflows/release.yml) packages complete locked Rust dependency sources in a corresponding-source archive and includes collected dependency notices and a license inventory with every binary bundle. See [release packaging](docs/releases.md).
 
 ## Recovered sorting and ICU4X
 
@@ -62,8 +62,8 @@ in [the case-data receipt](evidence/workflows/W02c-metadata-sorting/case-data.js
 The desktop and core use chrono **0.4.45**, with default features disabled, to
 display modified timestamps and expand batch-rename date tokens in UTC. Chrono offers `MIT OR Apache-2.0`; its unmodified
 [license notice](third_party/chrono/LICENSE.txt) and [provenance](third_party/chrono/README.md)
-are preserved. It does not supply file comparison behavior. Complete dependency
-source and notice packaging remain part of release preparation.
+are preserved. It does not supply file comparison behavior. Release packaging
+retains the complete vendored sources and applicable notices as described above.
 
 ## Recursive local copy
 

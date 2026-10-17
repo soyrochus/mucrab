@@ -109,6 +109,16 @@ described above.
 
 ![Original muCommander Java application showing its two-pane file browser, metadata columns, toolbar, and file-operation controls](images/mucommander.png)
 
+## Release downloads
+
+The [release workflow](.github/workflows/release.yml) builds **Linux x86_64** and
+**Apple Silicon macOS** when a stable tag such as `v0.9.0` is pushed. After all
+checks pass, archives, corresponding source with vendored dependencies, notices
+and SHA-256 checksums are published under [GitHub Releases](https://github.com/soyrochus/mucrab/releases).
+macOS bundles contain an ad-hoc signed `muCrab.app`; Developer ID signing and
+notarization are not configured. The first hosted release run is pending.
+See [release instructions and platform requirements](docs/releases.md).
+
 ## Build and run muCrab
 
 Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. Rust/Cargo **1.99.0** was used on macOS arm64 and Linux x86_64. The native GUI was exercised on macOS and under Linux X11/Xvfb; Wayland remains unverified.
@@ -175,7 +185,7 @@ python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 
 The Rust suite has twenty-six tests covering recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard, plus copy/move integrity, real cross-device fallback, failed source deletion, focused rename, batch preview/apply, stale-plan rejection and boundary checks. The Python helper/protocol suite has thirty-three tests. The separate
+readiness guard, plus copy/move integrity, real cross-device fallback, failed source deletion, focused rename, batch preview/apply, stale-plan rejection and boundary checks. The Python helper/protocol and release-packaging suite has forty-three tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 
