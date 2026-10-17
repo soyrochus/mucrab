@@ -95,8 +95,9 @@ and follows reported OS light/dark changes (Light fallback). Help contains
 shortcuts and About information. New headless regressions cover live reported
 OS changes and 10,000-row keyboard/selection/sort/scroll behavior; a native replay
 checks file-operation results, menus, themes and resizing. Menus are in-window;
-macOS native menu integration and physical theme notification delivery remain
-unverified. W07 adds the background-job controls described below.
+macOS native menu integration is not implemented. Physical theme notification
+delivery is verified on macOS 26.6.2 through a live Dark/Light/Dark change with
+the original system preference restored. W07 adds the background-job controls described below.
 
 ## W07 background operations
 
@@ -129,8 +130,8 @@ The current Mac run covers all nine suites on **macOS 26.6.2 / arm64 / APFS**,
 OpenJDK **21.0.10**, with a real second APFS volume for cross-device moves.
 Native desktop input verifies the W08 operations and W07 controls, including
 closing a paused job. See the [Mac receipts](../evidence/platforms/macos-arm64/README.md)
-for Unicode path rules and source hashes. Live OS theme-notification delivery
-awaits approval to change the system preference temporarily. Other macOS versions,
+for Unicode path rules and source hashes. Live OS theme-notification delivery,
+restoration of the original preference and the signed Mac release bundle pass. Other macOS versions,
 Wayland, Windows hidden attributes and exhaustive OS shortcut parity remain
 unverified. Opening symbolic links, other filters, additional archive formats and other locales remain for later increments. Copy rejects overlapping source/
 destination paths, outside link targets and destination aliases; race-free

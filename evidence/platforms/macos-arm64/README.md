@@ -65,6 +65,30 @@ Captures include [Dark](gui/w08-dark.png), [Light](gui/w08-light.png),
 [paused copy](gui/w07-paused.png), [browsing while paused](gui/w07-browsing-while-paused.png)
 and [close while paused](gui/w07-close-paused.png).
 
+Live macOS notification delivery also passes on the signed release bundle:
+with muCrab kept in System mode and running continuously, the user-authorized
+OS change **Dark → Light → Dark** changed the application palette immediately.
+The original Dark setting was restored and checked in System Settings and the
+system preference. See [live Light](gui/w08-system-live-light.png) and
+[restored Dark](gui/w08-system-live-dark-restored.png).
+
+## Local release acceptance
+
+[Release receipt](release.json) records the export of implementation commit
+`5a60e92`, vendored corresponding source, a successful frozen Apple Silicon
+release build with macOS deployment target 13.0, and another **47 Rust / 51
+Python** tests from the extracted source. Source manifests and Rust files match
+the checkout. The extracted `.app` passes strict/deep ad-hoc signature checks,
+version/help and native launch with `PATH=/nonexistent`; linkage contains no JVM.
+Archive structure, versions, dependency notices and local SHA-256 checksums pass.
+[The packaged app capture](gui/release-smoke.png) shows the actual extracted app.
+
+The local Mac archive and corresponding source are under
+`artifacts/macos-verification/2026-10-17/release/`, with `MACOS-SHA256SUMS`.
+These are local verification artifacts, not a published release. No Git tag was
+created. The full multi-platform release asset set and hosted CI execution remain
+separate from this Mac check. Rust 1.99.0 was used locally; hosted CI pins 1.99.1.
+
 ## Portability fixes established by this run
 
 - Mac directory enumeration now exposes NFC names before extension/sorting rules,
@@ -114,9 +138,8 @@ retain the observations rather than substituting the Linux action log.
 
 ## Remaining boundaries
 
-The live macOS Appearance change test awaits user permission to temporarily
-switch the OS preference and restore it. Current System rendering and injected
-live theme changes pass; actual OS notification delivery is not yet claimed.
+Current native input, live OS theme delivery and local packaging pass within
+the recorded contracts.
 Menus render in-window; native macOS menu integration is not implemented.
 Other macOS versions, Wayland, Windows, other locales, arbitrary owners/ACLs,
 xattrs/resource forks and exhaustive shortcut parity remain outside this scope.

@@ -205,6 +205,10 @@
   },
   "captures": [
     {
+      "path": "evidence/platforms/macos-arm64/gui/release-smoke.png",
+      "sha256": "f94c2ec518829a252e736b6b8ccbfb739fda660663899ddb63e0ce6f22924cdf"
+    },
+    {
       "path": "evidence/platforms/macos-arm64/gui/w07-browsing-while-paused.png",
       "sha256": "77b67e09ee4e27daac2a1b62b3730a85ae21e1bd1d55d8705ab43592cf22cd19"
     },
@@ -243,6 +247,14 @@
     {
       "path": "evidence/platforms/macos-arm64/gui/w08-system-initial.png",
       "sha256": "83c2ce74244d807bfc693fcc8bd1780c449f9e839a76a64b78e321f447661f57"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w08-system-live-dark-restored.png",
+      "sha256": "e876dcdcd886940054c7c2615529999c6230de6fa44f5857bd2a9e35bc50e8b9"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w08-system-live-light.png",
+      "sha256": "9a8746d5a0d81910f5251a408fd93ab722a33bcdf2884db91d176a8b8bfccd01"
     }
   ],
   "accessibility_records": [
@@ -260,8 +272,23 @@
     }
   ],
   "live_os_theme_notification": {
-    "status": "awaiting_user_permission",
-    "reason": "Requires temporarily changing macOS Appearance; explicit approval requested. Current OS System rendering and injected theme changes pass."
+    "status": "passed",
+    "user_authorized": true,
+    "original_os_appearance": "Dark",
+    "observed_os_sequence": [
+      "Dark",
+      "Light",
+      "Dark"
+    ],
+    "original_setting_restored": true,
+    "mucrab_preference": "System",
+    "application_restarted": false,
+    "tested_release_source_commit": "5a60e92a27eb1ef4b1fd1f6ee9d387a5509d4ebc",
+    "tested_release_binary_sha256": "5c9a4e418dccd2dabcfb38908235e3eb6f4f4814a62a87260f700d9f97e7fdef",
+    "captures": [
+      "gui/w08-system-live-light.png",
+      "gui/w08-system-live-dark-restored.png"
+    ]
   },
   "limitations": [
     "Menus render in-window; native macOS menu integration is not implemented",

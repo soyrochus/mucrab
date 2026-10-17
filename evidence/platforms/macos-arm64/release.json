@@ -1,0 +1,126 @@
+{
+  "status": "passed",
+  "date": "2026-10-17",
+  "scope": "Local macOS release packaging and frozen rebuild of committed corresponding source; no tag or publication",
+  "source_commit": "5a60e92a27eb1ef4b1fd1f6ee9d387a5509d4ebc",
+  "local_test_tag_name": "v0.9.0",
+  "rust_toolchain": "1.99.0",
+  "target": "aarch64-apple-darwin",
+  "macos_deployment_target": "13.0",
+  "tested_os": "macOS 26.6.2 arm64",
+  "source_matches_checkout_code": true,
+  "vendored_build": {
+    "exit_code": 0,
+    "argv": [
+      "cargo",
+      "build",
+      "--release",
+      "--frozen",
+      "-p",
+      "mucrab-desktop",
+      "--target",
+      "aarch64-apple-darwin",
+      "--target-dir",
+      "/Users/ivanderk/src/rea-test/target"
+    ],
+    "cwd": "artifacts/macos-verification/2026-10-17/release/extracted-source/mucrab-v0.9.0-source",
+    "log": "artifacts/macos-verification/2026-10-17/logs/vendored-release-build.log",
+    "log_sha256": "8e5ba6c98e8d77c0061c5e585dab09053464d56eda873240ea1c0be3fa778efb"
+  },
+  "exported_source_tests": {
+    "rust_passed": 47,
+    "python_passed": 51
+  },
+  "commands": {
+    "signature": {
+      "argv": [
+        "codesign",
+        "--verify",
+        "--deep",
+        "--strict",
+        "{repository}/artifacts/macos-verification/2026-10-17/release/extracted-binary/mucrab-v0.9.0-macos-arm64/muCrab.app"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "signature_details": {
+      "argv": [
+        "codesign",
+        "-dv",
+        "--verbose=2",
+        "{repository}/artifacts/macos-verification/2026-10-17/release/extracted-binary/mucrab-v0.9.0-macos-arm64/muCrab.app"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Executable=/Users/ivanderk/src/rea-test/artifacts/macos-verification/2026-10-17/release/extracted-binary/mucrab-v0.9.0-macos-arm64/muCrab.app/Contents/MacOS/mucrab\nIdentifier=io.github.soyrochus.mucrab\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=20499 flags=0x2(adhoc) hashes=634+3 location=embedded\nSignature=adhoc\nInfo.plist entries=9\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=0\nInternal requirements count=0 size=12\n"
+    },
+    "version": {
+      "argv": [
+        "{repository}/artifacts/macos-verification/2026-10-17/release/extracted-binary/mucrab-v0.9.0-macos-arm64/muCrab.app/Contents/MacOS/mucrab",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "muCrab 0.9.0\n",
+      "stderr": ""
+    },
+    "help": {
+      "argv": [
+        "{repository}/artifacts/macos-verification/2026-10-17/release/extracted-binary/mucrab-v0.9.0-macos-arm64/muCrab.app/Contents/MacOS/mucrab",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "muCrab \u2014 Two claws, two panes.\n\nUsage: mucrab [LEFT_PATH [RIGHT_PATH]]\nmucrab [--help | --version]\n\nOpens local folders or ZIP paths in the native two-pane browser.\nName ordering uses en-US; Show hidden files applies to both panes.\nF5 copies, F6 moves, F2 renames; Batch rename reviews masks and counters.\nInside a ZIP, F5 extracts to the other pane. Extract ZIP also opens a review.\nOpening symbolic links from the listing is deferred.\n",
+      "stderr": ""
+    },
+    "linkage": {
+      "argv": [
+        "otool",
+        "-L",
+        "{repository}/artifacts/macos-verification/2026-10-17/release/extracted-binary/mucrab-v0.9.0-macos-arm64/muCrab.app/Contents/MacOS/mucrab"
+      ],
+      "exit_code": 0,
+      "stdout": "/Users/ivanderk/src/rea-test/artifacts/macos-verification/2026-10-17/release/extracted-binary/mucrab-v0.9.0-macos-arm64/muCrab.app/Contents/MacOS/mucrab:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n\t/System/Library/Frameworks/OpenGL.framework/Versions/A/OpenGL (compatibility version 1.0.0, current version 1.0.0)\n\t/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 2775.10.103)\n\t/System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics (compatibility version 64.0.0, current version 2050.0.0)\n\t/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 5027.0.69)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.69)\n\t/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)\n\t/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices (compatibility version 1.0.0, current version 66.0.0)\n\t/System/Library/Frameworks/CoreVideo.framework/Versions/A/CoreVideo (compatibility version 1.2.0, current version 758.27.0)\n\t/System/Library/Frameworks/Carbon.framework/Versions/A/Carbon (compatibility version 2.0.0, current version 170.0.0)\n\t/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)\n\t/System/Library/Frameworks/ColorSync.framework/Versions/A/ColorSync (compatibility version 1.0.0, current version 3929.0.0)\n\t/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (compatibility version 1.0.0, current version 1226.0.0)\n",
+      "stderr": ""
+    },
+    "os_appearance": {
+      "argv": [
+        "defaults",
+        "read",
+        "-g",
+        "AppleInterfaceStyle"
+      ],
+      "exit_code": 0,
+      "stdout": "Dark\n",
+      "stderr": ""
+    }
+  },
+  "dependencies_with_notices": 387,
+  "artifacts": [
+    {
+      "path": "artifacts/macos-verification/2026-10-17/release/mucrab-v0.9.0-source.tar.gz",
+      "sha256": "7fa703b65ded0109822279df1b3aff587cc48695115eb8bfd149b0191c60a8ec",
+      "size": 74036175
+    },
+    {
+      "path": "artifacts/macos-verification/2026-10-17/release/mucrab-v0.9.0-macos-arm64.tar.gz",
+      "sha256": "12a30d82fdb98dee493be3417e0f3f768e642b626fc9aaaec93d15c7d120c60e",
+      "size": 4338545
+    },
+    {
+      "path": "artifacts/macos-verification/2026-10-17/release/MACOS-SHA256SUMS",
+      "sha256": "3d1c3ec0d34bdde13ce099329bfe6a795d49d95f5ed26f912a6815043429ab2b",
+      "size": 193
+    }
+  ],
+  "packaged_binary_sha256": "5c9a4e418dccd2dabcfb38908235e3eb6f4f4814a62a87260f700d9f97e7fdef",
+  "signing": "Ad-hoc signature verified; Developer ID and notarization are not configured",
+  "native_launch": {
+    "status": "passed",
+    "path_environment": "/nonexistent",
+    "launchservices_wait_exit_code": 0,
+    "capture": "evidence/platforms/macos-arm64/gui/release-smoke.png"
+  },
+  "git_tag_created": false,
+  "published": false
+}

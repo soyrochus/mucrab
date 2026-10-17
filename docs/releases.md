@@ -70,3 +70,10 @@ Only the publication job receives `contents: write`; it uses the automatic
 `GITHUB_TOKEN`, with no extra repository secret required. An existing draft can
 be completed on rerun. Already published releases are never overwritten: use a
 new version tag for a replacement. Do not move a published version tag.
+
+
+The [2026-10-17 macOS acceptance](../evidence/platforms/macos-arm64/README.md)
+locally verified the committed corresponding-source export, vendored frozen
+release build, full exported-source tests, archive/notices/checksums, ad-hoc
+signing and the extracted GUI without Java. It used macOS 26.6.2 arm64 and Rust
+1.99.0; it does not establish older-OS support or the pending hosted CI run.
