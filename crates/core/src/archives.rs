@@ -47,7 +47,8 @@ impl ArchiveStamp {
 }
 
 /// A virtual folder in a local, read-only ZIP.
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ZipLocation {
     pub archive: PathBuf,
     /// Empty for the root; otherwise a relative path ending in `/`.

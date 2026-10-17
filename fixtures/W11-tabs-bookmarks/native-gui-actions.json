@@ -1,0 +1,194 @@
+[
+  {
+    "op": "click",
+    "x": 80,
+    "y": 211
+  },
+  {
+    "op": "key",
+    "keys": [
+      "space"
+    ],
+    "capture": "origin-marked"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "Shift_L",
+      "t"
+    ],
+    "capture": "duplicate-clears-marks"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "b"
+    ],
+    "capture": "bookmark-review"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "Workspace"
+  },
+  {
+    "op": "click",
+    "x": 432,
+    "y": 399,
+    "capture": "bookmark-saved"
+  },
+  {
+    "op": "click",
+    "x": 20,
+    "y": 81,
+    "capture": "origin-restored"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "f"
+    ],
+    "capture": "search-form"
+  },
+  {
+    "op": "click",
+    "x": 210,
+    "y": 113
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Shift_L",
+      "8"
+    ]
+  },
+  {
+    "op": "text",
+    "text": ".txt"
+  },
+  {
+    "op": "click",
+    "x": 53,
+    "y": 255,
+    "wait": 0.5,
+    "capture": "wildcard-results"
+  },
+  {
+    "op": "click",
+    "x": 930,
+    "y": 165
+  },
+  {
+    "op": "click",
+    "x": 160,
+    "y": 318,
+    "count": 2,
+    "capture": "nested-result-right"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 211
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "f"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 150,
+    "y": 344,
+    "count": 2,
+    "capture": "alpha-result-left"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "w"
+    ],
+    "capture": "close-origin-tab"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "t"
+    ],
+    "capture": "new-home-tab"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "w"
+    ],
+    "capture": "home-tab-closed"
+  },
+  {
+    "op": "resize",
+    "width": 820,
+    "height": 500,
+    "capture": "narrow-tabs"
+  },
+  {
+    "op": "resize",
+    "width": 1120,
+    "height": 720
+  },
+  {
+    "op": "click",
+    "x": 119,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 164,
+    "y": 201,
+    "capture": "bookmark-menu"
+  },
+  {
+    "op": "click",
+    "x": 360,
+    "y": 227,
+    "capture": "manage-bookmarks"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 20,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 62,
+    "y": 347
+  },
+  {
+    "op": "await_exit"
+  }
+]

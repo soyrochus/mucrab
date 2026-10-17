@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "scope": "Supplemental Default/ClonedFileTableTabFactory and Bookmark value methods; not full tab UI/job/persistence parity and not frozen before implementation",
+  "run": "artifacts/runs/W11-probe-20261017T203726Z-4f0e2744",
+  "results": {
+    "original": {
+      "duplicate_history_length": 0,
+      "same_location": true,
+      "bookmark_same_name_equal": true,
+      "bookmark_clone_independent": true,
+      "independent_history": true
+    },
+    "native": {
+      "bookmark_clone_independent": true,
+      "duplicate_history_length": 2,
+      "independent_history": true,
+      "same_location": true
+    }
+  },
+  "intentional_differences": {
+    "duplicate_history_length": "Java factory starts a new empty history; W11 independently copies existing history"
+  },
+  "original_only_observation": "Bookmark.equals compares labels only; this is not a comparison against native storage validation, which is tested separately",
+  "sources": {
+    "tools/java/W11Oracle.java": "aeff560168d774222d05a59f11a2a6b2d4b28b13a0369558fb53a3f1d8feeb51",
+    "crates/compare/src/w11.rs": "3c609671fbeacce3e197c11b336309c446bca9ff7154d608fcaeec9f86de8094"
+  }
+}

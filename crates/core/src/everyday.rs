@@ -361,7 +361,7 @@ fn parse_mount_roots(text: &str) -> Vec<PathBuf> {
         })
         .collect()
 }
-fn mounted_roots() -> io::Result<Vec<PathBuf>> {
+pub(crate) fn mounted_roots() -> io::Result<Vec<PathBuf>> {
     #[cfg(target_os = "linux")]
     {
         Ok(parse_mount_roots(&fs::read_to_string(

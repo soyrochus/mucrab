@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "cases": 64,
+  "reserved": false,
+  "scope": "Pinned SearchBuilder.createFilenamePredicate only; metadata/traversal/GUI checked separately, no full original search-job parity claim",
+  "unexpected_differences": [],
+  "intentional_differences": [],
+  "run": "artifacts/runs/W12-20261017T203021Z-9fc3f350",
+  "sources": {
+    "tools/java/W12Oracle.java": "5172daa596a7aee6e6674288cb2e477f10a21671afb7f703d0daf0ca7d261826",
+    "crates/compare/src/w12.rs": "2f70ff5b4a98e0ec12e3da43d11ff41983e85b477412d6c06b10bb0499c07d28",
+    "tools/w11_w12_fixtures.py": "77e7b0e2551ed1177780ab40e5239c32a75949ff8efe7759cde48896d497222a"
+  }
+}

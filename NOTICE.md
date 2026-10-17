@@ -138,3 +138,15 @@ dependencies, offered under MIT or Apache-2.0. Their
 Linux selection ownership directly uses the existing locked **x11rb 0.13.2**
 (MIT); release packaging collects its dependency notices. `gio`, `xclip` and
 macOS `osascript` are system services invoked at runtime and are not bundled.
+
+
+## Tabs, bookmarks and file search (W11/W12)
+
+Tab factories/actions, bookmark values/persistence and search actions, predicates,
+providers and job behavior were investigated from pinned muCommander binaries
+using CFR, javap and original runtime probes. The upstream attribution and GPL
+notices above apply. [W11 evidence](evidence/workflows/W11-tabs-bookmarks/README.md)
+and [W12 evidence](evidence/workflows/W12-file-search/README.md) distinguish
+recovered boundaries, chosen native differences and outstanding host checks.
+The runtime remains Rust-only. Bookmark JSON reuses the already locked
+serde_json; search dates reuse chrono. No new dependency versions are introduced.

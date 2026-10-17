@@ -14,10 +14,10 @@ session can continue without the original conversation.
 | Last updated | 2026-10-17 |
 | Last verified implementation commit | `5a60e92` — macOS portability fixes and acceptance; exact tested source/binary hashes in the Mac receipts |
 | Current phase | Phase 6 in progress: bounded macOS acceptance completed; broader platform/product acceptance remains |
-| Active workflow | W10 everyday management implemented and Linux-verified; native Mac/IME and remaining original UI gates pending. W09 local/archive file opening is also implemented; see their evidence indexes |
+| Active workflow | W11 tabs/bookmarks and W12 local file search implemented; Linux native/input/regression checks pass. Native Mac and broader original UI/search traversal comparisons remain pending; see evidence indexes |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | Verify W09/W10 on macOS, including native clipboard/Trash and both-pane input; preserve declared W10 differences and fixture sequencing limits before closing its host gates |
-| Ported workflows | W10 — New Folder, reviewed Delete/Trash, native clipboard Copy/Paste, prefix-find, per-pane history; W09 — default-application local/archive opening; W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
+| Next executable task | Verify W09–W12 on macOS; retain pending full original tab/search UI and real-mount gates. W13 remote SFTP, W14 viewer and W15 checksums remain proposed |
+| Ported workflows | W11 — independent tabs and shared persisted local/ZIP bookmarks; W12 — bounded cancellable recursive local search and result navigation; W10 — New Folder, reviewed Delete/Trash, native clipboard Copy/Paste, prefix-find, per-pane history; W09 — default-application local/archive opening; W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
 | Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. W07: 30 full-job lifecycle/marks/tree comparisons (18 predefined + 12 reserved). Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
 | Verification platform | Linux x86_64/ext4/JDK 25.0.4.1 and macOS 26.6.2 arm64/APFS/JDK 21.0.10; all nine suites. Real second filesystem for W04/W07. Native input: X11/Xvfb and Mac cua_repl; Wayland unverified |
@@ -1327,3 +1327,41 @@ on this host. Pure Wayland clipboard publication is not implemented. New File,
 clipboard Cut, Trash restore UI, remote filesystems and recursive search remain
 outside this increment. W10 is implemented and Linux-verified, not fully closed
 across required hosts. See its task checklist before resuming acceptance work.
+
+
+## W11 and W12 — Tabs/bookmarks and file search (2026-10-17)
+
+Both OpenSpec implementation sections are delivered. W11 isolates BrowserPane,
+history and widths by stable tab ID, captures origins in all operation reviews
+and keeps completed-job unmarking bound to surviving origins. Bookmarks persist
+ordered structured local/ZIP locations with validated IDs/version and atomic
+replacement; corrupt/external-changed files and failed saves remain visible.
+
+W12 adds an immutable local query and a separate bounded read-only worker.
+Traversal uses lstat, never follows directory links or descendant mount roots,
+prunes excluded hidden trees and reports limits/errors as partial. Deterministic
+results retain identity across batches and revalidate before containing-folder
+navigation. Replacement joins the previous generation; full queue cancellation
+and app close retain worker ownership until acknowledgment. Mutation progress
+is independent. Tabs/history/search are not persisted.
+
+The executable generator and both case sets were frozen before Rust changes.
+W11 native generated journeys cover browsing invariants; named job/bookmark
+journeys have separate tests. They are not an original full-tab-state oracle.
+A supplemental pinned factory/Bookmark probe records intentionally copied
+history (Java starts empty) and original name-based Bookmark value equality.
+Native location+label duplicate validation is checked separately. W12's 64+64 pinned filename-predicate comparisons have no unexpected
+differences and two declared escape differences. Metadata/traversal/GUI are
+separate native checks, not full original search-job parity.
+
+Linux checks pass: 84 Rust tests, 51 Python tests, all-feature locked/offline
+build, format and Clippy, both-pane native tab/search navigation, persisted
+bookmark restart, 10,000-hit partial search beside paused copy, normal close,
+and W07–W10 native regressions. Permission failures, bounded diagnostics,
+same-path origin closure, stale results, queue saturation and generation
+replacement have deterministic tests. Mount discovery uses W10's kernel parser;
+a supplied mount-root boundary is tested, while a real bind-mount replay remains
+pending. Native macOS and full original-window/trace gates stay unchecked.
+See [W11 evidence](evidence/workflows/W11-tabs-bookmarks/README.md),
+[W12 evidence](evidence/workflows/W12-file-search/README.md) and their task lists.
+No dependency version changed: core now directly uses already-locked serde_json.

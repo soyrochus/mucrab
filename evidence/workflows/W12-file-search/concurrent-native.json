@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "run": "artifacts/gui/W12-concurrent-final",
+  "scope": "Real copy paused; focused-listing Ctrl+F opens search; 10,000 hits reported partial while copy progress remains unchanged; close acknowledges cancellation and exits normally",
+  "copied_children": 2480,
+  "source_files": 20000,
+  "visual_checks": [
+    "Search partial: 10000 visited/matches, one result-limit diagnostic",
+    "Copy Resume/Cancel remain available"
+  ],
+  "macos": "pending"
+}

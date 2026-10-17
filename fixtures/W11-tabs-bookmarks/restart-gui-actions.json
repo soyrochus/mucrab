@@ -1,0 +1,32 @@
+[
+  {
+    "op": "click",
+    "x": 119,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 164,
+    "y": 201,
+    "capture": "persisted-bookmark-menu"
+  },
+  {
+    "op": "click",
+    "x": 340,
+    "y": 288,
+    "capture": "persisted-bookmark-open"
+  },
+  {
+    "op": "click",
+    "x": 20,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 62,
+    "y": 347
+  },
+  {
+    "op": "await_exit"
+  }
+]

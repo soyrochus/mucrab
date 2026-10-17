@@ -78,6 +78,15 @@ on the target, host and configured providers. See REA's
 
 ## Current status
 
+**W11 — Tabs and bookmarks** and **W12 — File search** are implemented.
+Each pane has independent tabs; shared local/ZIP bookmarks persist across restarts.
+Background local search supports wildcard names, extension/type/size/UTC date
+filters, cancellation, partial results and Open Containing Folder in either pane.
+Linux native checks pass; macOS verification remains pending. See
+[W11 evidence](evidence/workflows/W11-tabs-bookmarks/README.md) and
+[W12 evidence](evidence/workflows/W12-file-search/README.md) for comparison scope
+and remaining acceptance checks.
+
 **W10 — Everyday file management** adds New Folder, reviewed Delete/Trash,
 system clipboard Copy/Paste, type-to-find and per-pane Back/Forward history.
 Linux X11 native checks and W07/W08/W09 regressions pass; native macOS W10 checks
@@ -210,7 +219,7 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The W10 Linux checkpoint passes 66 Rust tests plus a separately invoked native clipboard/Trash integration test. These cover recovered rules, navigation/error state,
+The W11/W12 Linux checkpoint passes 84 Rust tests (one native-service test remains separately invoked). These cover recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
 readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes, large-table UI interaction and W09 temporary-copy/cancellation/launcher checks, plus W10 mutations, clipboard URLs, quick-find and history. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has fifty-one tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
@@ -224,8 +233,25 @@ Paste into the current local folder. Text fields retain normal clipboard editing
 Type a prefix to find a visible name; Enter or Escape dismisses find before file
 activation. **Alt+Left/Right**, Go menu actions and toolbar arrows navigate each
 pane's independent session history, including ZIP locations. Clipboard Cut, Trash
-restore/emptying UI and recursive search remain deferred. Linux X11 is verified;
+restore/emptying UI remain deferred. Linux X11 is verified;
 native macOS W10 verification and real IME input remain pending.
+
+**Ctrl/Cmd+T** opens a Home tab; **Ctrl/Cmd+Shift+T** duplicates the current tab;
+**Ctrl/Cmd+W** closes it, retaining at least one tab per pane. **Ctrl+Tab** and
+**Ctrl+Shift+Tab** switch tabs. Tabs retain their own history, marks, sorting and
+column widths and are session-only. **Ctrl/Cmd+B** bookmarks the location;
+Go → Bookmarks opens, renames, reorders or removes saved local/ZIP bookmarks.
+
+**Ctrl/Cmd+F** or Go → Search files opens a separate search window. Choose a local
+root and a name pattern (`*`, `?`, or backslash to escape the next character),
+then optionally set extension, types, byte-size bounds and modified dates in UTC.
+Date-only To includes that day; timestamp To is exclusive. Matching defaults to
+case-insensitive Unicode lowercase, without canonical normalization. Hidden
+folders are pruned unless included; links and descendant mounts are never
+traversed. Search stops visibly partial at 10,000 hits, one million visited
+entries or depth 256. Cancel retains results; replacing waits for cancellation.
+Double-click a result or use Open Containing Folder to focus its name in the
+currently active tab. Search can run alongside a file operation.
 
 Click a row to give its listing keyboard focus. Ctrl-click toggles a mark and
 Shift-click toggles a range; Space toggles and advances. Up/Down, Home/End, and

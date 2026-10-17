@@ -19,17 +19,20 @@ pub(super) enum Action {
 pub(super) enum Review {
     Folder {
         side: PaneSide,
+        tab: TabId,
         directory: PinnedDirectory,
         name: String,
     },
     Delete {
         side: PaneSide,
+        tab: TabId,
         directory: PathBuf,
         plan: DeletePlan,
         permanent: bool,
     },
     Paste {
         side: PaneSide,
+        tab: TabId,
         directory: PathBuf,
         plan: PastePlan,
         policy: CopyPolicy,
@@ -37,6 +40,7 @@ pub(super) enum Review {
 }
 struct ClipboardWork {
     side: PaneSide,
+    tab: TabId,
     destination: Option<PinnedDirectory>,
     receiver: mpsc::Receiver<Result<Option<Vec<PathBuf>>, String>>,
 }
@@ -70,6 +74,7 @@ impl MuCrabApp {
             return;
         }
         let result = (|| -> Result<(), String> {
+            let tab = self.panes.stack(i).active().id;
             let pane = &self.panes[i];
             if pane.archive.is_some() {
                 return Err("This action requires a local folder.".into());
@@ -81,14 +86,16 @@ impl MuCrabApp {
             self.everyday.review = match action {
                 Action::NewFolder => Some(Review::Folder {
                     side: self.active,
+                    tab,
                     directory: pin,
                     name: "New folder".into(),
                 }),
                 Action::Trash | Action::Delete => {
                     let protected: Vec<_> = self
                         .panes
-                        .iter()
-                        .filter_map(|p| {
+                        .all()
+                        .filter_map(|t| {
+                            let p = &t.pane;
                             p.archive
                                 .as_ref()
                                 .map(|z| z.archive.clone())
@@ -98,6 +105,7 @@ impl MuCrabApp {
                     let plan = DeletePlan::new(&paths, &protected).map_err(|e| e.to_string())?;
                     Some(Review::Delete {
                         side: self.active,
+                        tab,
                         directory,
                         plan,
                         permanent: matches!(action, Action::Delete),
@@ -123,6 +131,7 @@ impl MuCrabApp {
                     drop(worker);
                     self.everyday.clipboard = Some(ClipboardWork {
                         side: self.active,
+                        tab,
                         destination: paste.then_some(pin),
                         receiver: rx,
                     });
@@ -173,6 +182,7 @@ impl MuCrabApp {
                     self.everyday.message = None;
                     self.everyday.review = Some(Review::Paste {
                         side: work.side,
+                        tab: work.tab,
                         directory: directory.path,
                         plan,
                         policy: CopyPolicy::Skip,
@@ -225,12 +235,14 @@ impl MuCrabApp {
             match review {
                 Review::Folder {
                     side,
+                    tab,
                     directory,
                     name,
                 } => {
                     self.start_job(
                         FileAction::NewFolder,
                         side,
+                        tab,
                         directory.path.clone(),
                         Some(name.clone()),
                         move |control| {
@@ -248,6 +260,7 @@ impl MuCrabApp {
                 }
                 Review::Delete {
                     side,
+                    tab,
                     directory,
                     plan,
                     permanent,
@@ -259,6 +272,7 @@ impl MuCrabApp {
                             FileAction::Trash
                         },
                         side,
+                        tab,
                         directory,
                         None,
                         move |control| {
@@ -279,15 +293,23 @@ impl MuCrabApp {
                 }
                 Review::Paste {
                     side,
+                    tab,
                     directory,
                     plan,
                     policy,
                 } => {
-                    self.start_job(FileAction::Paste, side, directory, None, move |control| {
-                        plan.apply(policy, &control)
-                            .map(|r| result(r, "Paste finished"))
-                            .map_err(|e| e.to_string())
-                    });
+                    self.start_job(
+                        FileAction::Paste,
+                        side,
+                        tab,
+                        directory,
+                        None,
+                        move |control| {
+                            plan.apply(policy, &control)
+                                .map(|r| result(r, "Paste finished"))
+                                .map_err(|e| e.to_string())
+                        },
+                    );
                 }
             }
             ctx.request_repaint();

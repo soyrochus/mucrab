@@ -11,6 +11,7 @@ publish.workspace = true
 workspace = true
 
 [dependencies]
+serde_json = "=1.0.151"
 icu_collator = "=2.2.1"
 icu_locale_core = "=2.3.0"
 serde = { version = "=1.0.229", features = ["derive"] }

@@ -2,6 +2,31 @@
 
 [Back to the README](../README.md).
 
+**W11 — Tabs and bookmarks** and **W12 — File search** are implemented and
+Linux-verified. Each pane supports 1–32 independent session tabs, including
+New Home/Duplicate/Close/switch commands and per-tab history, marks and column
+widths. Reviewed jobs retain their original tab identity and paths even when
+tabs switch or close. Shared local/ZIP bookmarks have ordered stable IDs,
+validated versioned storage, atomic saves and visible load/save failures.
+
+Search runs in a separate read-only worker alongside copy/move operations.
+Its filters cover Unicode filename wildcards, extension, file/folder/link type,
+inclusive byte sizes and UTC [From, To) modification times. Hidden pruning,
+link/mount boundaries, bounded traversal, 64-hit batches, an eight-batch queue,
+replacement acknowledgment and partial results keep scope and progress explicit.
+Results are sorted by relative path and open their containing folder in the
+current tab after revalidation. Changed/missing results retain the current pane.
+
+Verification: **84 Rust tests**, **51 Python tests**, locked/offline all-feature
+build and Clippy, both-pane native input, bookmark restart and W07–W10 native
+regressions. W12 compares **64 predefined + 64 reserved filename cases** against
+the pinned Java predicate: zero unexpected differences; two reserved escape
+cases intentionally differ. W11 includes a supplemental original factory/value
+probe, with a deliberate copied-history difference; native bookmark validation is tested separately.
+Full original tab/search UI parity, native macOS verification and real mount
+integration remain acceptance gates. See [W11 evidence](../evidence/workflows/W11-tabs-bookmarks/README.md)
+and [W12 evidence](../evidence/workflows/W12-file-search/README.md).
+
 **W10 — Everyday file management** now implements New Folder, reviewed
 Delete/Trash, system clipboard Copy/Paste, type-to-find and independent Back/Forward
 history. Linux X11 checks pass: 66 Rust tests, the separately invoked native

@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "cases": 64,
+  "reserved": true,
+  "scope": "Pinned SearchBuilder.createFilenamePredicate only; metadata/traversal/GUI checked separately, no full original search-job parity claim",
+  "unexpected_differences": [],
+  "intentional_differences": [
+    {
+      "case": {
+        "id": "reserved-37",
+        "name": "a*b.txt",
+        "pattern": "a\\*b.txt",
+        "case_sensitive": false,
+        "size": 1,
+        "modified_ms": 2000,
+        "min_size": null,
+        "max_size": 1024,
+        "from_ms": null,
+        "to_ms": null
+      },
+      "original": {
+        "matches": false,
+        "id": "reserved-37"
+      },
+      "native": {
+        "id": "reserved-37",
+        "matches": true
+      },
+      "reason": "W12 backslash escapes the next scalar; original wildcard conversion treats backslash literally before expanding the star"
+    },
+    {
+      "case": {
+        "id": "reserved-53",
+        "name": "a*b.txt",
+        "pattern": "a\\*b.txt",
+        "case_sensitive": false,
+        "size": 1024,
+        "modified_ms": 1000,
+        "min_size": null,
+        "max_size": 1024,
+        "from_ms": null,
+        "to_ms": 1000
+      },
+      "original": {
+        "matches": false,
+        "id": "reserved-53"
+      },
+      "native": {
+        "id": "reserved-53",
+        "matches": true
+      },
+      "reason": "W12 backslash escapes the next scalar; original wildcard conversion treats backslash literally before expanding the star"
+    }
+  ],
+  "run": "artifacts/runs/W12-20261017T203024Z-11c8f90b",
+  "sources": {
+    "tools/java/W12Oracle.java": "5172daa596a7aee6e6674288cb2e477f10a21671afb7f703d0daf0ca7d261826",
+    "crates/compare/src/w12.rs": "2f70ff5b4a98e0ec12e3da43d11ff41983e85b477412d6c06b10bb0499c07d28",
+    "tools/w11_w12_fixtures.py": "77e7b0e2551ed1177780ab40e5239c32a75949ff8efe7759cde48896d497222a"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "run": "artifacts/gui/W11-W12-verified",
+  "scope": "Native both-pane tab actions, mark isolation, local bookmark save and restart/open, nonmodal wildcard search and containing-folder activation in each pane, minimum window and session-only tabs",
+  "sources_unchanged": true,
+  "bookmark_restart": true,
+  "visual_checks": [
+    "origin mark retained on switching",
+    "duplicate marks cleared",
+    "nested.txt focused in right/Documents",
+    "alpha.txt focused in left",
+    "Home new tab and last-tab close disabled",
+    "820x500 tab strips reachable",
+    "restart contains one tab per pane and Workspace opens left"
+  ],
+  "host": "Linux X11 / isolated Xvfb",
+  "macos": "pending"
+}

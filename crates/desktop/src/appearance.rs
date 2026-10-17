@@ -81,7 +81,7 @@ impl Appearance {
     }
 }
 
-fn settings_path() -> Option<PathBuf> {
+pub(crate) fn settings_path() -> Option<PathBuf> {
     // XDG also makes isolated GUI checks independent of the user's preferences.
     let base = std::env::var_os("XDG_CONFIG_HOME")
         .map(PathBuf::from)

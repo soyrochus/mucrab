@@ -1767,6 +1767,7 @@ dependencies = [
  "icu_locale_core",
  "icu_normalizer",
  "serde",
+ "serde_json",
  "zip",
 ]
 

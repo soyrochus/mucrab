@@ -1,0 +1,167 @@
+{
+  "status": "passed",
+  "date": "2026-10-17T20:38:24.417292+00:00",
+  "run": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63",
+  "counts": {
+    "rust_passed": 84,
+    "rust_ignored": 1,
+    "python_passed": 51
+  },
+  "checks": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/0-stdout.log",
+      "stderr": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/0-stderr.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/1-stdout.log",
+      "stderr": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/1-stderr.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/2-stdout.log",
+      "stderr": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/2-stderr.log"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/3-stdout.log",
+      "stderr": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/3-stderr.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/4-stdout.log",
+      "stderr": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/4-stderr.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "tools/w11_w12_fixtures.py"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/5-stdout.log",
+      "stderr": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/5-stderr.log"
+    },
+    {
+      "command": [
+        "openspec",
+        "validate",
+        "w11-tabs-bookmarks",
+        "--strict"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/6-stdout.log",
+      "stderr": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/6-stderr.log"
+    },
+    {
+      "command": [
+        "openspec",
+        "validate",
+        "w12-file-search",
+        "--strict"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/7-stdout.log",
+      "stderr": "artifacts/runs/W11-W12-validation-20261017T203821Z-f3a5cb63/7-stderr.log"
+    }
+  ],
+  "source_sha256": {
+    "crates/core/src/archives.rs": "be4ba4c39b008ef6ddcaf31c24d018f52469b5fc447df0d07ec21fe3eb25f234",
+    "crates/core/src/bookmarks.rs": "dcca8b4a437c8418649e1bb5e4124f2dfdd48ccd5163a1867697a435cbc5ecec",
+    "crates/core/src/browsing.rs": "22e8957c2daf733c0e416ba622280f41e993d7522cf4b7ecac0516b062fd55ab",
+    "crates/core/src/moving.rs": "ac190ff79e753d1a54fbfe0d7c7a33e0354ea8efaf304cf11dee5135f381b4ff",
+    "crates/core/src/search.rs": "da46afdbfb5d3147afb8201acf0a0a107626b4dd5497f47acd5760e18734eae6",
+    "crates/core/src/sorting.rs": "ae9abb2213e7da9d42a705998a2ca4358a13c0d952bd82cd737cc99db64c09b8",
+    "crates/core/src/batch_renaming.rs": "8406f8d74136011c345edc2850924f23d2cd90785d11b85282a4268ec950a400",
+    "crates/core/src/jobs.rs": "9867949df8e4ed1b226608794188a7ecc84a30a94014e37e0c33cbe8cfae7b62",
+    "crates/core/src/java_case_data.rs": "47bf627ab3cb7e29eebdf2728412a1276fff2fc87b535ed80623cfe7af2fb683",
+    "crates/core/src/lib.rs": "acedc358c1c045d0a12435c5248788b69f3116d232dd4356ac378cb946e04886",
+    "crates/core/src/copying.rs": "29506cb33294aab4df9a51b67acb98ccd13d3a9ebcaab67df2502283bbf24d6a",
+    "crates/core/src/selection.rs": "2be6392fdf855365abf261d3c936b434ff8a778d2cd69b0a803c46a64050ae94",
+    "crates/core/src/tabs.rs": "e053f78d2478800a09de630384965ca11c6da8e4b267e90a02ea7b30f1a80657",
+    "crates/core/src/everyday.rs": "94add23992ed257b9bfbf03fed3a9ebdf5afa8652fbf28570945e604aca10eaf",
+    "crates/core/src/history.rs": "0b7e94b38330671567984b5d39881cef9fbdd3c429136c0909ea05ee3758bcb3",
+    "crates/core/tests/archives.rs": "880a4d6c69b23634c8e8453f30fb7a8d4afed1dd8a49c84b294da275a9b1d19a",
+    "crates/core/tests/tabs_bookmarks.rs": "d5e05c2a40106607ffc91b290fda3bf2dbbd9d5f7032510f43a97930255550ab",
+    "crates/core/tests/moving.rs": "8a45da793911a28cbe2b06f21f5d28f5323d20c9f0b228e6b9d9284d32657e18",
+    "crates/core/tests/search.rs": "b39754f3cb5ca097498e593729a47d3869277ca4d9f95bd902a057771c32fa81",
+    "crates/core/tests/batch_renaming.rs": "ba86d43de84bd17f4bf12d3bf9711c24dc8db2b3795d9467c11d0c852d761bc2",
+    "crates/core/tests/jobs.rs": "648cf89ce5e78beaeec70a12fdcd0aa74d26071d9d81c0928e0e4fdec432a47b",
+    "crates/core/tests/navigation.rs": "81daa142c59b3b213d750405100adf55be178545af600c00560eb8864d54d14d",
+    "crates/core/tests/copying.rs": "983489f7a9d0937c3211d41b7f21fa9d36b0413707b8d01818b9ec1193b1cd54",
+    "crates/core/tests/everyday.rs": "5abf8a6fb572f8a5a3159512b71152e2499236783d87c7154667e839fc17e0e8",
+    "crates/desktop/src/search_ui.rs": "835c71f97afcb5ec0aaef945523a8e763affdc8841767df37984b837d6c11bfc",
+    "crates/desktop/src/navigation_ui.rs": "a7314c74b5263843bd0dad42844bcb47964891c479564fc4e84eff2c640fe037",
+    "crates/desktop/src/native_files.rs": "d2066346e69cb2d3def8c540972a4b59692c587c1d38ac20b7ae58dd27d44adf",
+    "crates/desktop/src/main.rs": "b4ede239f08797851fdbdb30a367ece151b554b3628880e2e29f400749067dd6",
+    "crates/desktop/src/app.rs": "22d32c9532603bb161ca441cf0ddb5bffdc84d4689132e31504620f9d3ca1244",
+    "crates/desktop/src/opening.rs": "d9f7bae8bf79ba705e73059ac6301d5769c3ceadf6e674bb23fdb02bafafaa8a",
+    "crates/desktop/src/everyday_ui.rs": "fbd22ae51f404fb107733e2e711efa208902af2d0e70f91afb9060aeeb8af069",
+    "crates/desktop/src/browser_ui.rs": "d31eb303b4f1dc0eac83ba3790bd4f41dbf7040eed44229132de9f3175cfc5a5",
+    "crates/desktop/src/x11_clipboard.rs": "653e8e30efd1d88b817fd365a589f16dc97bf19418bf51ca72548048b16dd854",
+    "crates/desktop/src/appearance.rs": "49e7199543a24c7de5fe9b5d887796cb742d451aab73a67341872e5a6c370c7f",
+    "crates/compare/src/w10.rs": "3bf9fff421d1c4b16adf392159351029c9aeaa49d1862e4b3a32a6b5dc72317b",
+    "crates/compare/src/w03.rs": "3d771d02c47d1f2ed08dc90f50ff27beb2e12cf307729183c43951686c592ab8",
+    "crates/compare/src/w05.rs": "115ef1ae2fc86b582d0b45391de186f29c94463cb2b0d51b3d21b5c84fdaf15d",
+    "crates/compare/src/w06.rs": "2648a24015b7eef42a7c4368802ea5e9ad94699f2ff22d4cc0cc07c81c868b95",
+    "crates/compare/src/w04.rs": "211affbceee2d793613329db73e8d4da92a66050d250228a5e28e9ee9ca80c3f",
+    "crates/compare/src/w07.rs": "d70148177df51fda566dd2a0ce778b80c1dea0720825103e2dd278c0deeabebb",
+    "crates/compare/src/main.rs": "02ea7749498ec5b9ef0db6f9930f3bb064c068c8dbcbfb30525185cd0772c614",
+    "crates/compare/src/w12.rs": "2f70ff5b4a98e0ec12e3da43d11ff41983e85b477412d6c06b10bb0499c07d28",
+    "crates/compare/src/w02.rs": "a90d2b0fc5bb28ba3d36a7b597bab91fad2b7f00529f7a0e500eb7c4c34d04c3",
+    "crates/compare/src/w02c.rs": "c43f503bfd5f5d2d6891cc7fe74b3acc3f721e7bbce6807554a37accb909a95a",
+    "crates/compare/src/w02b.rs": "1e283d2dee8dee3d7f1f278a6eb7aa3b022611b82784a33217d928866ea8e00b",
+    "crates/compare/src/w11.rs": "3c609671fbeacce3e197c11b336309c446bca9ff7154d608fcaeec9f86de8094"
+  },
+  "binary_sha256": "c20fa6dfa8785e2124365328e233467f2619881482ae702213617848e0251cd6",
+  "frozen_generators_unchanged": true,
+  "host": "Linux x86_64",
+  "separate_gates": "Native receipts and original probes are separate; ignored W10 clipboard/Trash test is not counted as executed here; native macOS and broader original-window checks remain pending"
+}

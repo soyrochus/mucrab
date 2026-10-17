@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
-use crate::{BrowserPane, NameSorter, ZipCatalog, ZipLocation};
+use crate::{BrowserPane, NameSorter, ZipLocation};
+use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
+#[serde(tag = "kind", content = "location", deny_unknown_fields)]
 pub enum PaneLocation {
     Local(PathBuf),
     Zip(ZipLocation),
 }
-#[derive(Default)]
+#[derive(Clone, Default)]
 pub struct NavigationHistory {
     entries: Vec<PaneLocation>,
     cursor: usize,
@@ -64,24 +66,7 @@ impl BrowserPane {
             self.history.cursor - 1
         };
         let target = self.history.entries[cursor].clone();
-        let success = match target {
-            PaneLocation::Local(path) => self.open_unrecorded(&path, sorter),
-            PaneLocation::Zip(location) => {
-                match ZipCatalog::open(&location.archive).and_then(|c| c.list(&location.prefix)) {
-                    Ok(entries) => {
-                        let path = location.display_path();
-                        let parent = path.parent().is_some();
-                        self.load_listing(path, entries, parent, sorter);
-                        self.archive = Some(location);
-                        true
-                    }
-                    Err(error) => {
-                        self.error = Some(error.to_string());
-                        false
-                    }
-                }
-            }
-        };
+        let success = self.load_location(&target, sorter);
         if success {
             self.history.cursor = cursor;
             self.quick_find = None;

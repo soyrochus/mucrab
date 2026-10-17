@@ -9,7 +9,7 @@ use eframe::egui;
 use mucrab_core::{
     BatchRenameOptions, BatchRenamePlan, BrowserPane, CopyIssue, CopyIssueKind, CopyOutcome,
     CopyPolicy, CopyRequest, JobControl, JobState, MoveRequest, NameSorter, PaneEvent, PaneSide,
-    SortCriterion, SortMode, ZipExtractPlan, apply_batch_rename_with_control,
+    SortCriterion, SortMode, TabId, TabbedPanes, ZipExtractPlan, apply_batch_rename_with_control,
     copy_entries_with_control, extract_zip_with_control, is_valid_leaf_name,
     move_entries_with_control,
 };
@@ -18,6 +18,11 @@ use std::{path::PathBuf, sync::mpsc, time::Duration};
 #[path = "everyday_ui.rs"]
 mod everyday_ui;
 use everyday_ui::Action as EverydayAction;
+#[path = "navigation_ui.rs"]
+mod navigation_ui;
+use navigation_ui::Action as NavigationAction;
+#[path = "search_ui.rs"]
+mod search_ui;
 
 pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
     let options = eframe::NativeOptions {
@@ -47,14 +52,15 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 preference_error: None,
                 help: None,
                 split: 0.5,
-                column_widths: [[65.0, 84.0, 145.0]; 2],
                 sorter,
-                panes,
+                panes: panes.into(),
                 active: PaneSide::Left,
                 show_hidden: false,
                 copy_confirmation: None,
                 batch_review: None,
                 zip_review: None,
+                navigation: navigation_ui::Navigation::load(),
+                search: search_ui::Search::default(),
                 everyday: everyday_ui::Everyday::default(),
                 opener: crate::opening::Opener::default(),
                 copy_job: None,
@@ -73,14 +79,15 @@ struct MuCrabApp {
     preference_error: Option<String>,
     help: Option<bool>,
     split: f32,
-    column_widths: [[f32; 3]; 2],
     sorter: NameSorter,
-    panes: [BrowserPane; 2],
+    panes: TabbedPanes,
     active: PaneSide,
     show_hidden: bool,
     copy_confirmation: Option<CopyConfirmation>,
     batch_review: Option<BatchReview>,
     zip_review: Option<ZipReview>,
+    navigation: navigation_ui::Navigation,
+    search: search_ui::Search,
     everyday: everyday_ui::Everyday,
     opener: crate::opening::Opener,
     copy_job: Option<PendingCopy>,
@@ -93,6 +100,7 @@ struct MuCrabApp {
 struct CopyConfirmation {
     action: FileAction,
     source_side: PaneSide,
+    source_tab: TabId,
     request: CopyRequest,
 }
 struct PendingCopy {
@@ -100,7 +108,7 @@ struct PendingCopy {
     worker: std::thread::JoinHandle<()>,
     action: FileAction,
     renamed_to: Option<String>,
-    source_side: PaneSide,
+    source_tab: TabId,
     source_directory: PathBuf,
     receiver: mpsc::Receiver<Result<JobResult, String>>,
 }
@@ -139,6 +147,7 @@ struct JobResult {
 }
 struct BatchReview {
     source_side: PaneSide,
+    source_tab: TabId,
     directory: PathBuf,
     names: Vec<String>,
     options: BatchRenameOptions,
@@ -146,6 +155,7 @@ struct BatchReview {
 }
 struct ZipReview {
     source_side: PaneSide,
+    source_tab: TabId,
     source_directory: PathBuf,
     source_names: Vec<String>,
     policy: CopyPolicy,
@@ -205,6 +215,11 @@ impl MuCrabApp {
         .map_err(|error| error.to_string());
         Some(ZipReview {
             source_side: self.active,
+            source_tab: self
+                .panes
+                .stack(usize::from(self.active == PaneSide::Right))
+                .active()
+                .id,
             source_directory,
             source_names: names,
             policy: CopyPolicy::Skip,
@@ -289,6 +304,7 @@ impl MuCrabApp {
             self.start_job(
                 FileAction::Extract,
                 review.source_side,
+                review.source_tab,
                 review.source_directory,
                 None,
                 move |control| {
@@ -338,6 +354,11 @@ impl MuCrabApp {
             BatchRenamePlan::new(&directory, &names, &options).map_err(|error| error.to_string());
         Some(BatchReview {
             source_side: self.active,
+            source_tab: self
+                .panes
+                .stack(usize::from(self.active == PaneSide::Right))
+                .active()
+                .id,
             directory,
             names,
             options,
@@ -406,6 +427,7 @@ impl MuCrabApp {
             self.start_job(
                 FileAction::BatchRename,
                 review.source_side,
+                review.source_tab,
                 review.directory,
                 None,
                 move |control| {
@@ -456,6 +478,11 @@ impl MuCrabApp {
         Some(CopyConfirmation {
             action,
             source_side: self.active,
+            source_tab: self
+                .panes
+                .stack(usize::from(self.active == PaneSide::Right))
+                .active()
+                .id,
             request: CopyRequest {
                 source_directory: source.location.clone()?,
                 destination_directory: if action == FileAction::Rename {
@@ -495,15 +522,11 @@ impl MuCrabApp {
                         .outcomes
                         .first()
                         .is_some_and(|outcome| outcome.success);
-                let source_index = if job.source_side == PaneSide::Left {
-                    0
-                } else {
-                    1
-                };
                 if job.action != FileAction::Paste
-                    && self.panes[source_index].location.as_ref() == Some(&job.source_directory)
+                    && let Some(pane) = self.panes.find_mut(job.source_tab)
+                    && pane.location.as_ref() == Some(&job.source_directory)
                 {
-                    self.panes[source_index].unmark_copy_outcomes(&report.outcomes);
+                    pane.unmark_copy_outcomes(&report.outcomes);
                 }
                 let skipped = report
                     .issues
@@ -541,22 +564,18 @@ impl MuCrabApp {
                 self.copy_details.push(message);
             }
         }
-        for pane in &mut self.panes {
-            pane.refresh(&self.sorter);
+        for tab in self.panes.all_mut() {
+            tab.pane.refresh(&self.sorter);
         }
-        let source_index = if job.source_side == PaneSide::Left {
-            0
-        } else {
-            1
-        };
         if let Some(name) = job.renamed_to
             && rename_succeeded
-            && self.panes[source_index].location.as_ref() == Some(&job.source_directory)
+            && let Some(pane) = self.panes.find_mut(job.source_tab)
+            && pane.location.as_ref() == Some(&job.source_directory)
         {
-            self.panes[source_index].focus_name(&name);
+            pane.focus_name(&name);
         }
         self.restore_copy_focus = true;
-        if self.close_after_job && !self.opener.busy() {
+        if self.close_after_job && !self.opener.busy() && !self.search.busy() {
             ctx.send_viewport_cmd(egui::ViewportCommand::Close);
         }
     }
@@ -609,7 +628,7 @@ impl MuCrabApp {
             } else {
                 None
             };
-            self.start_job(action, confirmation.source_side, source_directory, renamed_to, move |control| {
+            self.start_job(action, confirmation.source_side, confirmation.source_tab, source_directory, renamed_to, move |control| {
                 if action == FileAction::Copy {
                     copy_entries_with_control(&confirmation.request, &control).map(|report| JobResult {
                         cancelled: report.cancelled,
@@ -691,16 +710,28 @@ impl eframe::App for MuCrabApp {
             self.opener.cancel();
             self.close_after_job = true;
         }
+        if ui.input(|input| input.viewport().close_requested()) && self.search.busy() {
+            ui.ctx()
+                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
+            self.search.cancel();
+            self.close_after_job = true;
+        }
+        self.search.poll(ui.ctx());
         self.poll_everyday(ui.ctx());
         self.opener.poll();
-        if self.close_after_job && self.copy_job.is_none() && !self.opener.busy() {
+        if self.close_after_job
+            && self.copy_job.is_none()
+            && !self.opener.busy()
+            && !self.search.busy()
+        {
             ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
         }
         if self.opener.watching() {
             ui.ctx().request_repaint_after(Duration::from_millis(100));
         }
         self.poll_copy(ui.ctx());
-        let idle = self.everyday.review.is_none()
+        let idle = !self.navigation.modal()
+            && self.everyday.review.is_none()
             && !self.everyday.busy()
             && self.copy_job.is_none()
             && self.copy_confirmation.is_none()
@@ -708,7 +739,8 @@ impl eframe::App for MuCrabApp {
             && self.zip_review.is_none()
             && !self.show_copy_details
             && self.help.is_none();
-        let browsing = self.everyday.review.is_none()
+        let browsing = !self.navigation.modal()
+            && self.everyday.review.is_none()
             && self.copy_confirmation.is_none()
             && self.batch_review.is_none()
             && self.zip_review.is_none()
@@ -731,6 +763,38 @@ impl eframe::App for MuCrabApp {
         let archive_active = self.panes[active_index].archive.is_some();
         let can_copy = can_copy || (archive_active && can_extract);
         let old_active = self.active;
+        if browsing && ui.memory(|m| m.has_focus(listing_id(self.active))) {
+            if ui.input_mut(|i| i.consume_key(egui::Modifiers::COMMAND, egui::Key::F)) {
+                self.open_search();
+            }
+            let nav = ui.input_mut(|i| {
+                if i.consume_key(
+                    egui::Modifiers::COMMAND | egui::Modifiers::SHIFT,
+                    egui::Key::T,
+                ) {
+                    Some(NavigationAction::Duplicate)
+                } else if i.consume_key(egui::Modifiers::COMMAND, egui::Key::T) {
+                    Some(NavigationAction::New)
+                } else if i.consume_key(egui::Modifiers::COMMAND, egui::Key::W) {
+                    Some(NavigationAction::Close)
+                } else if i.consume_key(
+                    egui::Modifiers::CTRL | egui::Modifiers::SHIFT,
+                    egui::Key::Tab,
+                ) {
+                    Some(NavigationAction::Previous)
+                } else if i.consume_key(egui::Modifiers::CTRL, egui::Key::Tab) {
+                    Some(NavigationAction::Next)
+                } else if i.consume_key(egui::Modifiers::COMMAND, egui::Key::B) {
+                    Some(NavigationAction::AddBookmark)
+                } else {
+                    None
+                }
+            });
+            if let Some(action) = nav {
+                self.navigation_action(action, ui.ctx());
+            }
+        }
+
         if browsing && ui.memory(|m| m.has_focus(listing_id(self.active))) {
             let next = ui.input_mut(|input| {
                 let copy = input.events.iter().any(|e| matches!(e, egui::Event::Copy));
@@ -800,7 +864,8 @@ impl eframe::App for MuCrabApp {
         let browsing = browsing
             && self.copy_confirmation.is_none()
             && self.zip_review.is_none()
-            && self.everyday.review.is_none();
+            && self.everyday.review.is_none()
+            && !self.navigation.modal();
         let mut command = None;
         let old_appearance = self.appearance;
         egui::Panel::top("menus").show(ui, |ui| {
@@ -912,8 +977,8 @@ impl eframe::App for MuCrabApp {
                         )
                         .changed()
                     {
-                        for pane in &mut self.panes {
-                            pane.set_show_hidden(self.show_hidden, &self.sorter);
+                        for tab in self.panes.all_mut() {
+                            tab.pane.set_show_hidden(self.show_hidden, &self.sorter);
                         }
                     }
                     let pane = &mut self.panes[active_index];
@@ -985,8 +1050,92 @@ impl eframe::App for MuCrabApp {
                     );
                     menu_action(ui, "Home folder", "", browsing, Command::Home, &mut command);
                     menu_action(ui, "Refresh", "", browsing, Command::Refresh, &mut command);
+                    menu_action(
+                        ui,
+                        "Search files…",
+                        "Ctrl/Cmd+F",
+                        browsing,
+                        Command::Search,
+                        &mut command,
+                    );
+                    ui.menu_button("Bookmarks", |ui| {
+                        menu_action(
+                            ui,
+                            "Add current location…",
+                            "Ctrl/Cmd+B",
+                            browsing && self.navigation.store.is_some(),
+                            Command::Navigation(NavigationAction::AddBookmark),
+                            &mut command,
+                        );
+                        menu_action(
+                            ui,
+                            "Manage bookmarks…",
+                            "",
+                            browsing,
+                            Command::Navigation(NavigationAction::ManageBookmarks),
+                            &mut command,
+                        );
+                        menu_action(
+                            ui,
+                            "Reload bookmarks",
+                            "",
+                            browsing,
+                            Command::Navigation(NavigationAction::ReloadBookmarks),
+                            &mut command,
+                        );
+                        ui.separator();
+                        if let Some(store) = &self.navigation.store {
+                            for b in store.entries() {
+                                menu_action(
+                                    ui,
+                                    &b.label,
+                                    "",
+                                    browsing,
+                                    Command::Navigation(NavigationAction::OpenBookmark(b.id)),
+                                    &mut command,
+                                );
+                            }
+                        }
+                    });
                 });
                 ui.menu_button("Window", |ui| {
+                    for (label, shortcut, action, enabled) in [
+                        (
+                            "New Tab",
+                            "Ctrl/Cmd+T",
+                            NavigationAction::New,
+                            browsing && self.panes.stack(active_index).len() < 32,
+                        ),
+                        (
+                            "Duplicate Tab",
+                            "Ctrl/Cmd+Shift+T",
+                            NavigationAction::Duplicate,
+                            browsing && self.panes.stack(active_index).len() < 32,
+                        ),
+                        (
+                            "Close Tab",
+                            "Ctrl/Cmd+W",
+                            NavigationAction::Close,
+                            browsing && self.panes.stack(active_index).len() > 1,
+                        ),
+                        ("Next Tab", "Ctrl+Tab", NavigationAction::Next, browsing),
+                        (
+                            "Previous Tab",
+                            "Ctrl+Shift+Tab",
+                            NavigationAction::Previous,
+                            browsing,
+                        ),
+                    ] {
+                        menu_action(
+                            ui,
+                            label,
+                            shortcut,
+                            enabled,
+                            Command::Navigation(action),
+                            &mut command,
+                        );
+                    }
+                    ui.separator();
                     menu_action(
                         ui,
                         "Switch pane",
@@ -1102,6 +1251,14 @@ impl eframe::App for MuCrabApp {
             });
         });
         egui::Panel::bottom("commands").show(ui, |ui| {
+            if let Some(error) = self.navigation.error.clone() {
+                ui.horizontal(|ui| {
+                    ui.colored_label(ui.visuals().error_fg_color, error);
+                    if ui.small_button("Dismiss").clicked() {
+                        self.navigation.error = None;
+                    }
+                });
+            }
             if let Some(message) = self.everyday.message.clone() {
                 ui.horizontal(|ui| {
                     ui.label(message);
@@ -1264,17 +1421,24 @@ impl eframe::App for MuCrabApp {
                             .max_rect(rect)
                             .layout(egui::Layout::top_down(egui::Align::Min)),
                         |ui| {
-                            if let Some(target) = pane(
-                                ui,
-                                side,
-                                &mut self.panes[index],
-                                &self.sorter,
-                                &mut self.active,
-                                &mut self.column_widths[index],
-                                browsing
-                                    && self.copy_confirmation.is_none()
-                                    && self.zip_review.is_none(),
-                            ) {
+                            self.tab_strip(ui, side, browsing);
+                            let tab = self.panes.stack_mut(index).active_mut();
+                            let target = ui
+                                .push_id(tab.id, |ui| {
+                                    pane(
+                                        ui,
+                                        side,
+                                        &mut tab.pane,
+                                        &self.sorter,
+                                        &mut self.active,
+                                        &mut tab.widths,
+                                        browsing
+                                            && self.copy_confirmation.is_none()
+                                            && self.zip_review.is_none(),
+                                    )
+                                })
+                                .inner;
+                            if let Some(target) = target {
                                 self.opener.start(target);
                             }
                         },
@@ -1305,6 +1469,9 @@ impl eframe::App for MuCrabApp {
                         "Tab / Shift+Tab — switch panes",
                         "Enter — open file, folder or ZIP",
                         "F7 — New Folder · F8 / Delete — Trash · Shift+F8 — permanent delete",
+                        "Ctrl/Cmd+T / Shift+T / W — new / duplicate / close tab",
+                        "Ctrl+Tab / Ctrl+Shift+Tab — next / previous tab",
+                        "Ctrl/Cmd+B — bookmark location · Ctrl/Cmd+F — search files",
                         "Ctrl/Cmd+C / V — copy/paste files with listing focus",
                         "Type a prefix — find a name · Alt+Left / Right — history",
                         "Backspace — parent folder",
@@ -1330,10 +1497,12 @@ impl eframe::App for MuCrabApp {
             }
         }
         if old_active != self.active {
-            for pane in &mut self.panes {
-                pane.quick_find = None;
+            for tab in self.panes.all_mut() {
+                tab.pane.quick_find = None;
             }
         }
+        self.search_window(ui.ctx());
+        self.bookmark_dialogs(ui.ctx());
         self.everyday_dialog(ui.ctx());
         self.copy_dialogs(ui.ctx());
         self.batch_dialog(ui.ctx());
@@ -1419,6 +1588,8 @@ pub(crate) fn selection_key(event: &egui::Event) -> Option<PaneEvent> {
 }
 
 enum Command {
+    Navigation(NavigationAction),
+    Search,
     Everyday(EverydayAction),
     Open,
     Action(FileAction),
@@ -1452,6 +1623,8 @@ impl MuCrabApp {
     fn execute(&mut self, command: Command, ctx: &egui::Context) {
         let index = usize::from(self.active == PaneSide::Right);
         match command {
+            Command::Navigation(action) => self.navigation_action(action, ctx),
+            Command::Search => self.open_search(),
             Command::Everyday(action) => self.everyday_action(action, ctx),
             Command::Open => {
                 let pane = &mut self.panes[index];
@@ -1519,7 +1692,8 @@ impl MuCrabApp {
     fn start_job(
         &mut self,
         action: FileAction,
-        source_side: PaneSide,
+        _source_side: PaneSide,
+        source_tab: TabId,
         source_directory: PathBuf,
         renamed_to: Option<String>,
         work: impl FnOnce(JobControl) -> Result<JobResult, String> + Send + 'static,
@@ -1556,7 +1730,7 @@ impl MuCrabApp {
                     worker,
                     action,
                     renamed_to,
-                    source_side,
+                    source_tab,
                     source_directory,
                     receiver,
                 });
@@ -1586,14 +1760,15 @@ mod job_tests {
             preference_error: None,
             help: None,
             split: 0.5,
-            column_widths: [[65.0, 84.0, 145.0]; 2],
             sorter: NameSorter::en_us().unwrap(),
-            panes: [BrowserPane::default(), BrowserPane::default()],
+            panes: [BrowserPane::default(), BrowserPane::default()].into(),
             active: PaneSide::Left,
             show_hidden: false,
             copy_confirmation: None,
             batch_review: None,
             zip_review: None,
+            navigation: navigation_ui::Navigation::default(),
+            search: search_ui::Search::default(),
             everyday: everyday_ui::Everyday::default(),
             opener: crate::opening::Opener::default(),
             copy_job: None,
@@ -1631,6 +1806,7 @@ mod job_tests {
         app.start_job(
             FileAction::Copy,
             PaneSide::Left,
+            app.panes.stack(0).active().id,
             PathBuf::from("/unused"),
             None,
             move |_| {
@@ -1649,6 +1825,7 @@ mod job_tests {
         app.start_job(
             FileAction::Move,
             PaneSide::Right,
+            app.panes.stack(1).active().id,
             PathBuf::from("/unused"),
             None,
             move |_| {
@@ -1670,6 +1847,7 @@ mod job_tests {
             app.start_job(
                 FileAction::Copy,
                 PaneSide::Left,
+                app.panes.stack(0).active().id,
                 PathBuf::from("/unused"),
                 None,
                 move |_| {
@@ -1711,6 +1889,7 @@ mod job_tests {
         app.start_job(
             FileAction::Copy,
             PaneSide::Left,
+            app.panes.stack(0).active().id,
             path.join("elsewhere"),
             None,
             move |_| {
@@ -1728,6 +1907,7 @@ mod job_tests {
         app.start_job(
             FileAction::Paste,
             PaneSide::Left,
+            app.panes.stack(0).active().id,
             path.clone(),
             None,
             move |_| {
@@ -1746,5 +1926,117 @@ mod job_tests {
             "Paste must not unmark destination selections"
         );
         std::fs::remove_dir_all(path).unwrap();
+    }
+    #[test]
+    fn jobs_unmark_only_surviving_origin_tab_even_at_the_same_path() {
+        for close_origin in [false, true] {
+            let mut app = app();
+            let ctx = egui::Context::default();
+            let root = std::env::temp_dir().join(format!(
+                "mucrab-tab-job-{}-{}-{close_origin}",
+                std::process::id(),
+                std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap()
+                    .as_nanos()
+            ));
+            std::fs::create_dir(&root).unwrap();
+            std::fs::write(root.join("same-name"), b"source").unwrap();
+            app.panes[0].open(&root, &app.sorter);
+            app.panes[0]
+                .apply_event(&PaneEvent::All, &app.sorter)
+                .unwrap();
+            let origin = app.panes.stack(0).active().id;
+            let (send, receive) = mpsc::channel();
+            app.start_job(
+                FileAction::Copy,
+                PaneSide::Left,
+                origin,
+                root.clone(),
+                None,
+                move |_| {
+                    receive.recv().unwrap();
+                    let mut r = report();
+                    r.outcomes.push(CopyOutcome {
+                        name: "same-name".into(),
+                        success: true,
+                    });
+                    Ok(r)
+                },
+            );
+            let duplicate = app.panes.stack_mut(0).duplicate(&app.sorter).unwrap();
+            app.panes[0]
+                .apply_event(&PaneEvent::All, &app.sorter)
+                .unwrap();
+            if close_origin {
+                assert!(app.panes.stack_mut(0).close(origin));
+            }
+            send.send(()).unwrap();
+            await_job(&mut app, &ctx);
+            assert_eq!(
+                app.panes
+                    .find_mut(duplicate)
+                    .unwrap()
+                    .selection
+                    .marked_count(),
+                1
+            );
+            if !close_origin {
+                assert_eq!(
+                    app.panes.find_mut(origin).unwrap().selection.marked_count(),
+                    0
+                );
+            }
+            std::fs::remove_dir_all(root).unwrap();
+        }
+    }
+    #[test]
+    fn search_finishes_without_changing_paused_mutation_or_its_progress() {
+        let mut app = app();
+        let ctx = egui::Context::default();
+        let root = std::env::temp_dir().join(format!(
+            "mucrab-concurrent-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::create_dir(&root).unwrap();
+        std::fs::write(root.join("hit.txt"), b"x").unwrap();
+        let (send, recv) = mpsc::channel();
+        app.start_job(
+            FileAction::Copy,
+            PaneSide::Left,
+            app.panes.stack(0).active().id,
+            root.clone(),
+            None,
+            move |_| {
+                recv.recv().unwrap();
+                Ok(report())
+            },
+        );
+        let control = app.copy_job.as_ref().unwrap().control.clone();
+        control.set_paused(true);
+        app.search.start(
+            mucrab_core::SearchPlan::new(mucrab_core::SearchQuery {
+                root: root.clone(),
+                ..Default::default()
+            })
+            .unwrap(),
+        );
+        let limit = Instant::now() + Duration::from_secs(5);
+        while app.search.busy() {
+            assert!(Instant::now() < limit);
+            app.search.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        assert_eq!(control.snapshot().state, JobState::Paused);
+        assert_eq!(control.snapshot().completed_items, 0);
+        assert!(app.copy_job.is_some());
+        assert!(app.copy_summary.is_none());
+        send.send(()).unwrap();
+        await_job(&mut app, &ctx);
+        std::fs::remove_dir_all(root).unwrap();
     }
 }

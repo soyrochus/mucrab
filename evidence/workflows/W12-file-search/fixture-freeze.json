@@ -1,0 +1,10 @@
+{
+  "stage": "before Rust implementation",
+  "files": {
+    "tools/w11_w12_fixtures.py": "77e7b0e2551ed1177780ab40e5239c32a75949ff8efe7759cde48896d497222a",
+    "fixtures/W11-tabs-bookmarks/cases.json": "e11cf7382d716ef9aa4026057f281f0c702d28b0e0c02400c67f314b0ee48958",
+    "fixtures/W11-tabs-bookmarks/reserved.json": "3d179fa13adaabc1310dbf600eefdd0407e7d71c9e3d63370b99d2a5c38fb481",
+    "fixtures/W12-file-search/cases.json": "051a15f1b71fa7a7a1895a01e547074109c79677b7783e04ee4568f573b41cdd",
+    "fixtures/W12-file-search/reserved.json": "ae5450bc8d1ddc7890abaa6a0f21e42f5d55b2627e7901404c5fcae1f4d7f022"
+  }
+}

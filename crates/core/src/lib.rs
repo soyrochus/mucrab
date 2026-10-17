@@ -13,9 +13,13 @@ mod java_case_data;
 mod jobs;
 pub use everyday::{DeletePlan, PastePlan, PinnedDirectory};
 pub use history::{NavigationHistory, PaneLocation};
+mod bookmarks;
 mod moving;
 mod selection;
 mod sorting;
+mod tabs;
+pub use bookmarks::{Bookmark, BookmarkStore};
+pub use tabs::{BrowserTab, TabId, TabStack, TabbedPanes};
 
 pub use archives::{
     ZipCatalog, ZipExtractPlan, ZipExtractReport, ZipLocation, extract_zip,
@@ -36,9 +40,14 @@ pub use selection::{FileSelection, PaneEvent, SelectionSnapshot};
 pub use sorting::{NameSorter, SortCriterion, SortMode, SortOptions};
 
 /// Identifies one of the application's two file panes.
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Hash)]
 pub enum PaneSide {
     #[default]
     Left,
     Right,
 }
+
+mod search;
+pub use search::{
+    SearchHit, SearchKind, SearchLimits, SearchPlan, SearchQuery, SearchReport, search_time_bound,
+};
