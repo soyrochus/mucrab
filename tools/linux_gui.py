@@ -44,6 +44,7 @@ def main():
         "XFlush": [c.c_void_p], "XCloseDisplay": [c.c_void_p],
         "XRaiseWindow": [c.c_void_p, c.c_ulong],
         "XSetInputFocus": [c.c_void_p, c.c_ulong, c.c_int, c.c_ulong],
+        "XResizeWindow": [c.c_void_p, c.c_ulong, c.c_uint, c.c_uint],
         "XKeysymToKeycode": [c.c_void_p, c.c_ulong],
     }.items():
         getattr(x, name).argtypes = types
@@ -79,6 +80,16 @@ def main():
                 xt.XTestFakeButtonEvent(display, 1, 1, 0); x.XFlush(display); time.sleep(0.10)
                 xt.XTestFakeButtonEvent(display, 1, 0, 0); x.XFlush(display); time.sleep(0.10)
             for modifier in reversed(action.get("modifiers", [])): key(modifier, False)
+        elif op == "drag":
+            xt.XTestFakeMotionEvent(display, -1, action["x"], action["y"], 0)
+            xt.XTestFakeButtonEvent(display, 1, 1, 0); x.XFlush(display); time.sleep(0.15)
+            for step in range(1, 11):
+                px = round(action["x"] + (action["to_x"] - action["x"]) * step / 10)
+                py = round(action["y"] + (action["to_y"] - action["y"]) * step / 10)
+                xt.XTestFakeMotionEvent(display, -1, px, py, 0); x.XFlush(display); time.sleep(0.03)
+            xt.XTestFakeButtonEvent(display, 1, 0, 0); x.XFlush(display)
+        elif op == "resize":
+            x.XResizeWindow(display, window, action["width"], action["height"]); x.XFlush(display)
         elif op == "key":
             for name in action["keys"]: key(name, True)
             time.sleep(action.get("hold", 0.08))

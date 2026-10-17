@@ -4,7 +4,10 @@
 
 The current verified milestone is **W06 — bounded local ZIP browsing and extraction**
 (see the [implementation ledger](../mucrab-implementation-plan.md)). The latest full verification was recorded on
-**2026-10-17**. **W07 — background operations and cancellation** is next.
+**2026-10-17**. **W08 — classic desktop UI** is implemented ahead of
+**W07 — background operations and cancellation**, at the user’s request.
+[W08 evidence](../evidence/workflows/W08-desktop-ui/README.md) records the UI checks;
+the W01–W06 Java/Rust comparison counts below remain historical.
 
 ## Verified workflows
 
@@ -17,7 +20,7 @@ original-JAR/Rust comparison passes **60 sequences and 4,022 state snapshots**,
 with zero differences. Native checks cover both panes. [The W02 evidence](../evidence/workflows/W02-selection-marking/README.md)
 explains the isolated runtime boundary and representative original GUI coverage.
 
-**W02b adds hidden-file filtering:** one shared **Show hidden files** checkbox,
+**W02b adds hidden-file filtering:** one shared **Show hidden files** option (in View since W08),
 initially off, refreshes both panes. Surviving marks/focus remain; hidden marks
 are cleared and missing focus falls back to a valid row. The original-JAR/Rust
 suite passes **56 sequences, 2,520 global snapshots and 5,040 pane snapshots**,
@@ -31,8 +34,9 @@ marks survive sort changes. The original-JAR/Rust suites pass **74 sequences,
 enumeration checks**, with zero differences. Four extreme-value sequences cover
 comparison signs only: the original sorter can stall on overflowing synthetic
 timestamps. [W02c evidence](../evidence/workflows/W02c-metadata-sorting/README.md)
-records that limitation and the supported range. The native display shows bytes,
-extensions and millisecond UTC dates for the selected criterion.
+records that limitation and the supported range. W08 now displays size, extension and minute-resolution UTC dates in simultaneous
+columns, with sorting through column headers; the underlying timestamp and
+sorting semantics retain their original precision.
 
 **W03 adds recursive local copy:** press **F5** or **Copy to other pane** to
 review the selection and collision policy before copying. Existing folders
@@ -77,6 +81,21 @@ differences in scope. DOS-derived dates are compared at whole-second precision;
 the original retains a stray millisecond fraction. Archive panes are read-only.
 [W06 evidence](../evidence/workflows/W06-zip-browsing-extraction/README.md) records
 the contract, native guards, original GUI boundary and limitations.
+
+## W08 interface
+
+W08 replaces the prototype shell with compact File/Mark/View/Go/Window/Help
+menus, a drawn-icon toolbar, pane location bars, virtualized metadata tables,
+selection counts/known file bytes, and a fixed bottom command bar. Column
+borders and the pane divider resize; names clip with hover text and narrow
+panes scroll horizontally. Existing review dialogs and core operations remain.
+View → Appearance offers only System, Light and Dark, saves the preference,
+and follows reported OS light/dark changes (Light fallback). Help contains
+shortcuts and About information. New headless regressions cover live reported
+OS changes and 10,000-row keyboard/selection/sort/scroll behavior; a native replay
+checks file-operation results, menus, themes and resizing. Menus are in-window;
+macOS native menu integration and physical theme notification delivery remain
+unverified. W07 is the next functional workflow.
 
 ## Platform scope and limitations
 

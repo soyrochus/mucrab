@@ -14,10 +14,10 @@ session can continue without the original conversation.
 | Last updated | 2026-10-17 |
 | Last verified implementation commit | `4cf1b3f` — Migrate verified ZIP browsing and extraction to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W06 — bounded local ZIP browsing/extraction verified; next is W07 background operations/cancellation |
+| Active workflow | W08 — classic desktop UI implemented and prioritized ahead of W07; scoped UI validation recorded separately |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
 | Next executable task | W07: recover original FileJob start/run/finish, progress and cancellation boundaries; freeze lifecycle fixtures before adding controls; preserve all eight predefined/reserved suites |
-| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
+| Ported workflows | W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
 | Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
 | Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4 plus distinct /tmp for W04, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
@@ -435,9 +435,13 @@ further when their acceptance criteria cannot be closed in one increment.
 | W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `verified` within bounded Linux/owned-file/same-and-cross-device contract |
 | W05 | Batch rename | Generated names, preview/apply consistency, collisions, partial failures | `verified` within bounded ASCII-case/UTC/local-owned-file contract; manual row controls deferred |
 | W06 | ZIP browsing and extraction | Entry listing, extracted paths and bytes, supported edge/error cases | `verified` within ZIP32 stored/deflate UTF-8/UTC DOS/local-owned-file contract |
+| W08 | Classic desktop UI, file tables and Light/Dark/System appearance | Reference layout/menu evidence, native input/file integrity replay, headless theme/table regressions | `implemented` with Linux X11/Xvfb checks; platform limits recorded |
 | W07 | Background operations and cancellation | Completion, cancellation boundaries, partial results, UI responsiveness | `not_started` |
 
 Order after W01 is provisional and may be changed with a recorded reason.
+On 2026-10-17 the user explicitly prioritized W08 UI fidelity ahead of W07.
+W08 is a presentation increment using existing binary observations; its contract
+and verification are in `evidence/workflows/W08-desktop-ui/`.
 Mutating tests must use separate equivalent fixture copies for Java and Rust.
 Measure results and partial failure states, not just return codes. These
 increments exclude full muCommander parity, remote/cloud filesystems, and
@@ -1142,7 +1146,9 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > machine and record fresh verification. Resume the first unfinished workflow
 > gate. W01, W02a, W02b, W02c, W03, W04, W05 and W06 are verified within their declared contracts; Linux
 > component comparisons and representative X11/Xvfb checks are recorded.
-> The next action is W07 background-job/lifecycle/cancellation recovery and original adapter.
+> W08 UI fidelity was prioritized and implemented before W07; consult
+> `evidence/workflows/W08-desktop-ui/` for scoped checks and platform limits.
+> The next functional action is W07 background-job/lifecycle/cancellation recovery and original adapter.
 > Keep all eight W01/W02/W02b/W02c/W03/W04/W05/W06 predefined/reserved suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
@@ -1150,3 +1156,27 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > actions, unresolved differences, and committed/uncommitted state. Never
 > report behavioral equivalence from the scaffold, static inspection, zero
 > comparisons, or historical results alone.
+
+
+## W08 checkpoint — 2026-10-17
+
+User-directed priority change: deliver the classic muCommander-style UI before
+W07. Implemented compact menus/toolbar, file icons, editable pane locations,
+resizable virtualized Name/Ext/Size/Modified tables, center divider, selection
+counts/known bytes, bottom commands, Help/About and consistent review actions.
+Appearance is exactly Light/Dark/System, defaults to System, follows egui's live
+OS signal, uses Light when unavailable and saves the choice per user.
+
+The core is unchanged. Original layout/menu observations are reused; no new
+Java equivalence cases or REA discoveries are claimed. Desktop action routing
+retains W01–W06 guards/reviews and makes the F5 command extract inside ZIPs.
+Validation, source fingerprints, screenshots, replay and boundaries live under
+`evidence/workflows/W08-desktop-ui/`; fresh native replay checks actual trees,
+bytes, archive integrity and preferences. Existing Cargo.toml/Cargo.lock version
+edits present at session start were preserved. No commit or release was made.
+
+W07 remains unimplemented and is next after this UI increment. Native menus
+currently render in-window on all systems. Native macOS menus, physical OS theme
+notification delivery, Wayland/scaling, extra metadata and disk free space remain
+outside the verified W08 scope. Prior workflow GUI replays have old coordinates;
+use the W08 replay for the new layout, and retain earlier captures as historical.

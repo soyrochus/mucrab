@@ -1,0 +1,319 @@
+[
+  {
+    "op": "click",
+    "x": 20,
+    "y": 162,
+    "capture": "dark-focused-folder"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ],
+    "capture": "entered-folder"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ],
+    "capture": "returned-parent"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 230
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "copy-review"
+  },
+  {
+    "op": "click",
+    "x": 794,
+    "y": 452,
+    "wait": 1,
+    "capture": "copy-complete"
+  },
+  {
+    "op": "click",
+    "x": 650,
+    "y": 162
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F2"
+    ],
+    "capture": "rename-review"
+  },
+  {
+    "op": "click",
+    "x": 430,
+    "y": 363
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "renamed.txt"
+  },
+  {
+    "op": "click",
+    "x": 783,
+    "y": 478,
+    "wait": 1,
+    "capture": "rename-complete"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F6"
+    ],
+    "capture": "move-review"
+  },
+  {
+    "op": "click",
+    "x": 790,
+    "y": 459,
+    "wait": 1,
+    "capture": "move-complete"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 231
+  },
+  {
+    "op": "click",
+    "x": 651,
+    "y": 704,
+    "capture": "batch-preview"
+  },
+  {
+    "op": "click",
+    "x": 480,
+    "y": 266
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "batch_[N].[E]",
+    "capture": "batch-changed-preview"
+  },
+  {
+    "op": "click",
+    "x": 863,
+    "y": 502,
+    "wait": 1,
+    "capture": "batch-complete"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 277,
+    "count": 2,
+    "capture": "zip-browsing"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 162
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "extract-review"
+  },
+  {
+    "op": "click",
+    "x": 812,
+    "y": 458,
+    "wait": 1,
+    "capture": "extract-complete"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 232,
+    "modifiers": [
+      "Control_L"
+    ],
+    "capture": "marked"
+  },
+  {
+    "op": "click",
+    "x": 370,
+    "y": 113,
+    "capture": "size-sort"
+  },
+  {
+    "op": "drag",
+    "x": 560,
+    "y": 330,
+    "to_x": 690,
+    "to_y": 330,
+    "capture": "split-resized"
+  },
+  {
+    "op": "drag",
+    "x": 392,
+    "y": 113,
+    "to_x": 440,
+    "to_y": 113,
+    "capture": "column-resized"
+  },
+  {
+    "op": "resize",
+    "width": 820,
+    "height": 500,
+    "capture": "minimum-window"
+  },
+  {
+    "op": "resize",
+    "width": 1120,
+    "height": 720
+  },
+  {
+    "op": "click",
+    "x": 88,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 126,
+    "y": 183
+  },
+  {
+    "op": "click",
+    "x": 245,
+    "y": 209
+  },
+  {
+    "op": "click",
+    "x": 850,
+    "y": 580,
+    "capture": "light-after-theme-switch"
+  },
+  {
+    "op": "click",
+    "x": 88,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 130,
+    "y": 45
+  },
+  {
+    "op": "click",
+    "x": 850,
+    "y": 580,
+    "capture": "hidden-files-visible"
+  },
+  {
+    "op": "click",
+    "x": 205,
+    "y": 14,
+    "capture": "help-menu"
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 45,
+    "capture": "keyboard-shortcuts"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 205,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 71,
+    "capture": "about"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 160,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 198,
+    "y": 71
+  },
+  {
+    "op": "click",
+    "x": 88,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 130,
+    "y": 45
+  },
+  {
+    "op": "click",
+    "x": 850,
+    "y": 580,
+    "capture": "light-final"
+  },
+  {
+    "op": "click",
+    "x": 88,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 126,
+    "y": 183,
+    "capture": "appearance-three-modes"
+  },
+  {
+    "op": "click",
+    "x": 245,
+    "y": 183
+  },
+  {
+    "op": "click",
+    "x": 850,
+    "y": 580,
+    "capture": "system-final"
+  }
+]

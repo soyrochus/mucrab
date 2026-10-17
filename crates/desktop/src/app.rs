@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
+use crate::{
+    appearance::{Appearance, Icon, icon_button},
+    browser_ui::pane,
+};
 use eframe::egui;
 use mucrab_core::{
     BatchRenameOptions, BatchRenamePlan, BrowserPane, CopyIssue, CopyIssueKind, CopyOutcome,
-    CopyPolicy, CopyRequest, FileEntry, MoveRequest, NameSorter, PaneEvent, PaneSide,
-    SortCriterion, SortMode, ZipExtractPlan, apply_batch_rename, copy_entries, extract_zip,
-    is_valid_leaf_name, move_entries,
+    CopyPolicy, CopyRequest, MoveRequest, NameSorter, PaneEvent, PaneSide, SortCriterion, SortMode,
+    ZipExtractPlan, apply_batch_rename, copy_entries, extract_zip, is_valid_leaf_name,
+    move_entries,
 };
 use std::{path::PathBuf, sync::mpsc, time::Duration};
 
@@ -25,7 +29,8 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
         "muCrab",
         options,
         Box::new(move |creation| {
-            creation.egui_ctx.set_visuals(egui::Visuals::dark());
+            let appearance = Appearance::load();
+            appearance.apply(&creation.egui_ctx);
             let sorter = NameSorter::en_us().map_err(std::io::Error::other)?;
             let mut panes = [BrowserPane::default(), BrowserPane::default()];
             let default = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("/"));
@@ -33,6 +38,11 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 pane.open(paths.get(i).unwrap_or(&default), &sorter);
             }
             Ok(Box::new(MuCrabApp {
+                appearance,
+                preference_error: None,
+                help: None,
+                split: 0.5,
+                column_widths: [[65.0, 84.0, 145.0]; 2],
                 sorter,
                 panes,
                 active: PaneSide::Left,
@@ -44,13 +54,18 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 copy_summary: None,
                 copy_details: Vec::new(),
                 show_copy_details: false,
-                restore_copy_focus: false,
+                restore_copy_focus: true,
             }))
         }),
     )
 }
 
 struct MuCrabApp {
+    appearance: Appearance,
+    preference_error: Option<String>,
+    help: Option<bool>,
+    split: f32,
+    column_widths: [[f32; 3]; 2],
     sorter: NameSorter,
     panes: [BrowserPane; 2],
     active: PaneSide,
@@ -205,7 +220,7 @@ impl MuCrabApp {
                         ));
                     }
                     Err(error) => {
-                        ui.colored_label(egui::Color32::LIGHT_RED, error);
+                        ui.colored_label(ui.visuals().error_fg_color, error);
                     }
                 }
                 egui::ComboBox::from_id_salt("zip-policy")
@@ -229,7 +244,7 @@ impl MuCrabApp {
                     "Folders merge. Extraction stops at the first error; earlier files remain.",
                 );
                 ui.label("The archive stays unchanged. Unsafe paths and links are rejected.");
-                ui.horizontal(|ui| {
+                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                     apply = ui
                         .add_enabled(review.plan.is_ok(), egui::Button::new("Extract"))
                         .clicked();
@@ -353,16 +368,16 @@ impl MuCrabApp {
                                 for row in &plan.preview.rows { ui.label(&row.name); ui.label("->"); ui.label(&row.new_name); ui.end_row(); }
                             });
                         });
-                        if plan.preview.duplicate_names { ui.colored_label(egui::Color32::LIGHT_RED, "Duplicate new names: change the mask or counter."); }
-                        else if plan.preview.old_names_conflict { ui.colored_label(egui::Color32::LIGHT_RED, "A new name conflicts with another selected original name."); }
-                        else if !plan.preview.rows.iter().all(|row| is_valid_leaf_name(&row.new_name)) { ui.colored_label(egui::Color32::LIGHT_RED, "Each new name must be a nonempty direct child name."); }
+                        if plan.preview.duplicate_names { ui.colored_label(ui.visuals().error_fg_color, "Duplicate new names: change the mask or counter."); }
+                        else if plan.preview.old_names_conflict { ui.colored_label(ui.visuals().error_fg_color, "A new name conflicts with another selected original name."); }
+                        else if !plan.preview.rows.iter().all(|row| is_valid_leaf_name(&row.new_name)) { ui.colored_label(ui.visuals().error_fg_color, "Each new name must be a nonempty direct child name."); }
                         ui.label(format!("{} changed · {} unchanged", plan.preview.changed_count, plan.preview.rows.len() - plan.preview.changed_count));
                         plan.preview.can_apply()
                     }
-                    Err(message) => { ui.colored_label(egui::Color32::LIGHT_RED, message); false }
+                    Err(message) => { ui.colored_label(ui.visuals().error_fg_color, message); false }
                 };
                 ui.label("Existing files are skipped; folders merge. Partial renames remain after errors.");
-                ui.horizontal(|ui| { apply = ui.add_enabled(enabled, egui::Button::new("Apply rename")).clicked(); cancel = ui.button("Cancel").clicked(); });
+                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| { apply = ui.add_enabled(enabled, egui::Button::new("Apply rename")).clicked(); cancel = ui.button("Cancel").clicked(); });
             });
             cancel |= response.should_close();
         }
@@ -552,7 +567,7 @@ impl MuCrabApp {
                 ui.label(if confirmation.action == FileAction::Copy { "Existing folders are merged. Files copied before an error remain in the destination." } else { "Existing folders are merged. Partial moves remain; skipped or failed sources are retained." });
                 ui.add_space(8.0);
                 let valid = confirmation.request.new_name.as_ref().is_none_or(|name| is_valid_leaf_name(name) && name != &confirmation.request.names[0]);
-                ui.horizontal(|ui| { start=ui.add_enabled(valid,egui::Button::new(confirmation.action.label())).clicked();cancel=ui.button("Cancel").clicked(); });
+                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| { start=ui.add_enabled(valid,egui::Button::new(confirmation.action.label())).clicked();cancel=ui.button("Cancel").clicked(); });
             });
             cancel |= response.should_close();
         }
@@ -660,7 +675,8 @@ impl eframe::App for MuCrabApp {
             && self.copy_confirmation.is_none()
             && self.batch_review.is_none()
             && self.zip_review.is_none()
-            && !self.show_copy_details;
+            && !self.show_copy_details
+            && self.help.is_none();
         let can_copy = idle && self.prepare_action(FileAction::Copy).is_some();
         let can_rename = idle && self.prepare_action(FileAction::Rename).is_some();
         let can_extract = idle && self.can_extract();
@@ -674,6 +690,9 @@ impl eframe::App for MuCrabApp {
                 .snapshot(&active_pane.entries, &active_pane.order)
                 .selected
                 .is_empty();
+        let can_move = can_copy;
+        let archive_active = self.panes[active_index].archive.is_some();
+        let can_copy = can_copy || (archive_active && can_extract);
         if idle && ui.memory(|memory| memory.has_focus(listing_id(self.active))) {
             for (key, action) in [
                 (egui::Key::F5, FileAction::Copy),
@@ -681,11 +700,7 @@ impl eframe::App for MuCrabApp {
                 (egui::Key::F2, FileAction::Rename),
             ] {
                 if ui.input_mut(|input| input.consume_key(egui::Modifiers::NONE, key)) {
-                    if action == FileAction::Copy && self.panes[active_index].archive.is_some() {
-                        self.zip_review = self.prepare_extract();
-                    } else {
-                        self.copy_confirmation = self.prepare_action(action);
-                    }
+                    self.execute(Command::Action(action), ui.ctx());
                     break;
                 }
             }
@@ -704,374 +719,367 @@ impl eframe::App for MuCrabApp {
             };
             ui.memory_mut(|memory| memory.request_focus(listing_id(self.active)));
         }
-        egui::CentralPanel::default().show(ui, |ui| {
-            ui.add_space(8.0);
-            ui.horizontal(|ui| {
-                ui.heading(egui::RichText::new("muCrab").size(30.0));
-                ui.add_space(12.0);
-                ui.label("Two claws, two panes.");
-                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.colored_label(egui::Color32::from_rgb(115, 211, 165), "Two-pane file manager");
+        let idle = idle && self.copy_confirmation.is_none() && self.zip_review.is_none();
+        let mut command = None;
+        let old_appearance = self.appearance;
+        egui::Panel::top("menus").show(ui, |ui| {
+            egui::MenuBar::new().ui(ui, |ui| {
+                ui.menu_button("File", |ui| {
+                    menu_action(
+                        ui,
+                        "Copy…",
+                        "F5",
+                        can_copy,
+                        Command::Action(FileAction::Copy),
+                        &mut command,
+                    );
+                    menu_action(
+                        ui,
+                        "Move…",
+                        "F6",
+                        can_move,
+                        Command::Action(FileAction::Move),
+                        &mut command,
+                    );
+                    menu_action(
+                        ui,
+                        "Rename…",
+                        "F2",
+                        can_rename,
+                        Command::Action(FileAction::Rename),
+                        &mut command,
+                    );
+                    menu_action(
+                        ui,
+                        "Batch rename…",
+                        "",
+                        can_batch,
+                        Command::Batch,
+                        &mut command,
+                    );
+                    menu_action(
+                        ui,
+                        "Extract ZIP…",
+                        "",
+                        can_extract,
+                        Command::Extract,
+                        &mut command,
+                    );
+                    ui.separator();
+                    if ui.button("Close window").clicked() {
+                        ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
+                    }
+                });
+                ui.menu_button("Mark", |ui| {
+                    for (label, event) in [
+                        ("Mark all", PaneEvent::All),
+                        ("Unmark all", PaneEvent::None),
+                        ("Invert selection", PaneEvent::Invert),
+                    ] {
+                        menu_action(ui, label, "", idle, Command::Mark(event), &mut command);
+                    }
+                });
+                ui.menu_button("View", |ui| {
+                    if ui
+                        .add_enabled(
+                            idle,
+                            egui::Checkbox::new(&mut self.show_hidden, "Show hidden files"),
+                        )
+                        .changed()
+                    {
+                        for pane in &mut self.panes {
+                            pane.set_show_hidden(self.show_hidden, &self.sorter);
+                        }
+                    }
+                    let pane = &mut self.panes[active_index];
+                    let before = pane.options;
+                    ui.add_enabled_ui(idle, |ui| {
+                        ui.checkbox(&mut pane.options.directories_first, "Folders first");
+                        ui.checkbox(&mut pane.options.ascending, "Ascending order");
+                        ui.menu_button("Sort by", |ui| {
+                            for (criterion, label) in [
+                                (SortCriterion::Name, "Name"),
+                                (SortCriterion::Extension, "Extension"),
+                                (SortCriterion::Size, "Size"),
+                                (SortCriterion::Date, "Modified"),
+                            ] {
+                                ui.radio_value(&mut pane.options.criterion, criterion, label);
+                            }
+                        });
+                        ui.menu_button("Name ordering", |ui| {
+                            ui.radio_value(&mut pane.options.mode, SortMode::Natural, "Natural");
+                            ui.radio_value(
+                                &mut pane.options.mode,
+                                SortMode::Lexicographic,
+                                "Lexicographic",
+                            );
+                        });
+                    });
+                    if pane.options != before {
+                        pane.resort(&self.sorter);
+                    }
+                    ui.separator();
+                    ui.menu_button("Appearance", |ui| {
+                        ui.radio_value(&mut self.appearance, Appearance::System, "System");
+                        ui.radio_value(&mut self.appearance, Appearance::Light, "Light");
+                        ui.radio_value(&mut self.appearance, Appearance::Dark, "Dark");
+                    });
+                });
+                ui.menu_button("Go", |ui| {
+                    menu_action(
+                        ui,
+                        "Parent folder",
+                        "Backspace",
+                        idle,
+                        Command::Parent,
+                        &mut command,
+                    );
+                    menu_action(ui, "Home folder", "", idle, Command::Home, &mut command);
+                    menu_action(ui, "Refresh", "", idle, Command::Refresh, &mut command);
+                });
+                ui.menu_button("Window", |ui| {
+                    menu_action(
+                        ui,
+                        "Switch pane",
+                        "Tab",
+                        idle,
+                        Command::SwitchPane,
+                        &mut command,
+                    );
+                    if ui.button("Split equally").clicked() {
+                        self.split = 0.5;
+                        ui.close();
+                    }
+                });
+                ui.menu_button("Help", |ui| {
+                    if ui.button("Keyboard shortcuts").clicked() {
+                        self.help = Some(false);
+                        ui.close();
+                    }
+                    if ui.button("About muCrab").clicked() {
+                        self.help = Some(true);
+                        ui.close();
+                    }
                 });
             });
-            ui.add_space(6.0);
+            ui.separator();
             ui.horizontal(|ui| {
-                ui.label("File sorting · en-US · Times UTC");
-                ui.add_space(12.0);
-                if ui.checkbox(&mut self.show_hidden, "Show hidden files").changed() {
-                    for pane in &mut self.panes {
-                        pane.set_show_hidden(self.show_hidden, &self.sorter);
+                for (icon, tip, enabled, action) in [
+                    (
+                        Icon::Parent,
+                        "Parent folder (Backspace)",
+                        idle,
+                        Command::Parent,
+                    ),
+                    (Icon::Home, "Home folder", idle, Command::Home),
+                    (Icon::Refresh, "Refresh active pane", idle, Command::Refresh),
+                    (
+                        Icon::Copy,
+                        "Copy to other pane (F5)",
+                        can_copy,
+                        Command::Action(FileAction::Copy),
+                    ),
+                    (
+                        Icon::Move,
+                        "Move to other pane (F6)",
+                        can_move,
+                        Command::Action(FileAction::Move),
+                    ),
+                    (
+                        Icon::Rename,
+                        "Rename focused item (F2)",
+                        can_rename,
+                        Command::Action(FileAction::Rename),
+                    ),
+                    (
+                        Icon::Archive,
+                        "Extract ZIP to other pane",
+                        can_extract,
+                        Command::Extract,
+                    ),
+                ] {
+                    if icon_button(ui, icon, tip, enabled).clicked() {
+                        command = Some(action);
                     }
-                    ui.memory_mut(|memory| memory.request_focus(listing_id(self.active)));
+                }
+                ui.separator();
+                ui.weak(if self.active == PaneSide::Left {
+                    "Left > Right"
+                } else {
+                    "Right > Left"
+                });
+                if let Some(job) = &self.copy_job {
+                    ui.spinner();
+                    ui.label(format!("{} in progress…", job.action.label()));
                 }
             });
-            ui.horizontal(|ui| {
-                let direction = if self.active == PaneSide::Left { "right" } else { "left" };
-                if ui.add_enabled(can_copy,egui::Button::new(format!("Copy to {direction} pane… (F5)"))).clicked() { self.copy_confirmation=self.prepare_action(FileAction::Copy); }
-                if ui.add_enabled(can_copy,egui::Button::new(format!("Move to {direction} pane… (F6)"))).clicked() { self.copy_confirmation=self.prepare_action(FileAction::Move); }
-                if ui.add_enabled(can_rename,egui::Button::new("Rename… (F2)")).clicked() { self.copy_confirmation=self.prepare_action(FileAction::Rename); }
-                if ui.add_enabled(can_batch,egui::Button::new("Batch rename…")).clicked() { self.batch_review=self.prepare_batch(); }
-                if ui.add_enabled(can_extract,egui::Button::new("Extract ZIP…")).clicked() { self.zip_review=self.prepare_extract(); }
-                if let Some(job) = &self.copy_job {ui.spinner();ui.label(format!("{} in progress…",job.action.label()));}
-            });
-            ui.small("Click to focus · Ctrl-click to mark · Shift-click for a range · Space to mark and advance · Tab to switch panes");
-            ui.add_space(14.0);
-            let height = (ui.available_height() - if self.copy_summary.is_some() { 62.0 } else { 40.0 }).max(180.0);
-            ui.columns(2, |columns| {
-                pane(&mut columns[0], PaneSide::Left, &mut self.panes[0], &self.sorter, height, &mut self.active);
-                pane(&mut columns[1], PaneSide::Right, &mut self.panes[1], &self.sorter, height, &mut self.active);
-            });
-            if let Some(summary) = &self.copy_summary {
-                ui.horizontal(|ui| {ui.small(summary);if !self.copy_details.is_empty() && ui.small_button("Details").clicked() {self.show_copy_details=true;}});
+        });
+        egui::Panel::bottom("commands").show(ui, |ui| {
+            if let Some(error) = &self.preference_error {
+                ui.colored_label(ui.visuals().error_fg_color, error);
             }
-            ui.add_space(10.0);
             ui.horizontal(|ui| {
-                ui.small(format!("muCrab {}", env!("CARGO_PKG_VERSION")));
-                ui.separator(); ui.small("GNU GPL version 3");
-                ui.separator(); ui.small("Based on muCommander");
+                if let Some(summary) = &self.copy_summary {
+                    ui.label(summary);
+                    if !self.copy_details.is_empty() && ui.small_button("Details…").clicked() {
+                        self.show_copy_details = true;
+                    }
+                } else {
+                    ui.weak("Ready");
+                }
+            });
+            ui.separator();
+            ui.horizontal(|ui| {
+                let width =
+                    ((ui.available_width() - 5.0 * ui.spacing().item_spacing.x) / 6.0).max(60.0);
+                for (label, enabled, action) in [
+                    (
+                        if archive_active {
+                            "Extract  F5"
+                        } else {
+                            "Copy  F5"
+                        },
+                        can_copy,
+                        Command::Action(FileAction::Copy),
+                    ),
+                    ("Move  F6", can_move, Command::Action(FileAction::Move)),
+                    (
+                        "Rename  F2",
+                        can_rename,
+                        Command::Action(FileAction::Rename),
+                    ),
+                    ("Batch rename…", can_batch, Command::Batch),
+                    ("Extract ZIP…", can_extract, Command::Extract),
+                    ("Refresh", idle, Command::Refresh),
+                ] {
+                    if ui
+                        .add_enabled(
+                            enabled,
+                            egui::Button::new(label).min_size(egui::vec2(width, 28.0)),
+                        )
+                        .clicked()
+                    {
+                        command = Some(action);
+                    }
+                }
             });
         });
+        egui::CentralPanel::default()
+            .frame(
+                egui::Frame::new()
+                    .fill(ui.visuals().panel_fill)
+                    .inner_margin(3.0),
+            )
+            .show(ui, |ui| {
+                let area = ui.available_rect_before_wrap();
+                let divider_width = 7.0;
+                let minimum = (220.0 / area.width()).min(0.4);
+                self.split = self.split.clamp(minimum, 1.0 - minimum);
+                let middle = area.left() + (area.width() - divider_width) * self.split;
+                let left = egui::Rect::from_min_max(area.min, egui::pos2(middle, area.bottom()));
+                let divider = egui::Rect::from_min_size(
+                    egui::pos2(middle, area.top()),
+                    egui::vec2(divider_width, area.height()),
+                );
+                let right =
+                    egui::Rect::from_min_max(egui::pos2(divider.right(), area.top()), area.max);
+                let response = ui
+                    .interact(divider, ui.id().with("divider"), egui::Sense::drag())
+                    .on_hover_cursor(egui::CursorIcon::ResizeHorizontal);
+                if response.dragged()
+                    && let Some(pos) = response.interact_pointer_pos()
+                {
+                    self.split = ((pos.x - area.left()) / (area.width() - divider_width))
+                        .clamp(minimum, 1.0 - minimum);
+                }
+                if response.double_clicked() {
+                    self.split = 0.5;
+                }
+                ui.painter().line_segment(
+                    [divider.center_top(), divider.center_bottom()],
+                    ui.visuals().widgets.noninteractive.bg_stroke,
+                );
+                for (index, (side, rect)) in [(PaneSide::Left, left), (PaneSide::Right, right)]
+                    .into_iter()
+                    .enumerate()
+                {
+                    ui.scope_builder(
+                        egui::UiBuilder::new()
+                            .max_rect(rect)
+                            .layout(egui::Layout::top_down(egui::Align::Min)),
+                        |ui| {
+                            pane(
+                                ui,
+                                side,
+                                &mut self.panes[index],
+                                &self.sorter,
+                                &mut self.active,
+                                &mut self.column_widths[index],
+                                idle,
+                            );
+                        },
+                    );
+                }
+            });
+        if self.appearance != old_appearance {
+            self.appearance.apply(ui.ctx());
+            self.preference_error = self
+                .appearance
+                .save()
+                .err()
+                .map(|e| format!("Could not save appearance: {e}"));
+        }
+        if let Some(command) = command {
+            self.execute(command, ui.ctx());
+        }
+        if let Some(about) = self.help {
+            let response = egui::Modal::new(egui::Id::new("help")).show(ui.ctx(), |ui| {
+                ui.set_width(420.0);
+                if about {
+                    ui.heading(format!("muCrab {}", env!("CARGO_PKG_VERSION")));
+                    ui.label("Two claws, two panes.");
+                    ui.label("Based on muCommander · GNU GPL version 3");
+                } else {
+                    ui.heading("Keyboard shortcuts");
+                    for text in [
+                        "Tab / Shift+Tab — switch panes",
+                        "Enter — enter folder or ZIP",
+                        "Backspace — parent folder",
+                        "Arrow keys / Home / End — move focus",
+                        "Space — mark and advance",
+                        "Ctrl-click — toggle mark; Shift-click — mark range",
+                        "Shift+Up / Down — mark range",
+                        "Ctrl+A / Ctrl+D (⌘ on macOS) — mark / unmark all",
+                        "F5 — copy (extract inside ZIP); F6 — move",
+                        "F2 — rename focused item",
+                        "Click a column header to sort; click again to reverse",
+                        "Drag column borders or the divider to resize",
+                    ] {
+                        ui.label(text);
+                    }
+                }
+                ui.add_space(8.0);
+                ui.button("Close").clicked()
+            });
+            if response.inner || response.should_close() {
+                self.help = None;
+                self.restore_copy_focus = true;
+            }
+        }
         self.copy_dialogs(ui.ctx());
         self.batch_dialog(ui.ctx());
         self.zip_dialog(ui.ctx());
     }
 }
 
-fn pane(
-    ui: &mut egui::Ui,
-    side: PaneSide,
-    pane: &mut BrowserPane,
-    sorter: &NameSorter,
-    height: f32,
-    active: &mut PaneSide,
-) {
-    let title = match side {
-        PaneSide::Left => "Left pane",
-        PaneSide::Right => "Right pane",
-    };
-    ui.push_id(title, |ui| {
-        egui::Frame::group(ui.style())
-            .inner_margin(12.0)
-            .show(ui, |ui| {
-                ui.set_min_height(height - 24.0);
-                let keyboard_focus = ui.memory(|memory| memory.has_focus(listing_id(side)));
-                ui.strong(if keyboard_focus {
-                    format!("{title} · active")
-                } else {
-                    title.to_owned()
-                });
-                ui.add_space(6.0);
-                let mut open = false;
-                ui.horizontal(|ui| {
-                    let edit = ui.add(
-                        egui::TextEdit::singleline(&mut pane.path_input)
-                            .hint_text("Folder or ZIP path")
-                            .desired_width((ui.available_width() - 56.0).max(140.0)),
-                    );
-                    open = ui.button("Open").clicked()
-                        || (edit.lost_focus()
-                            && ui.input(|input| input.key_pressed(egui::Key::Enter)));
-                });
-                if open {
-                    pane.open(&PathBuf::from(&pane.path_input), sorter);
-                }
-                ui.horizontal(|ui| {
-                    let has_parent = pane
-                        .location
-                        .as_deref()
-                        .and_then(std::path::Path::parent)
-                        .is_some();
-                    if ui
-                        .add_enabled(has_parent, egui::Button::new("Parent"))
-                        .clicked()
-                    {
-                        pane.parent(sorter);
-                    }
-                    if ui
-                        .add_enabled(pane.location.is_some(), egui::Button::new("Refresh"))
-                        .clicked()
-                    {
-                        pane.refresh(sorter);
-                    }
-                    ui.weak(format!(
-                        "{} entries{}",
-                        pane.entries.len(),
-                        if pane.archive.is_some() {
-                            " · ZIP (read-only)"
-                        } else {
-                            ""
-                        }
-                    ));
-                });
-                let before = pane.options;
-                ui.horizontal(|ui| {
-                    egui::ComboBox::from_id_salt("criterion")
-                        .width(90.0)
-                        .selected_text(match pane.options.criterion {
-                            SortCriterion::Name => "Name",
-                            SortCriterion::Size => "Size",
-                            SortCriterion::Date => "Modified",
-                            SortCriterion::Extension => "Extension",
-                        })
-                        .show_ui(ui, |ui| {
-                            for (value, label) in [
-                                (SortCriterion::Name, "Name"),
-                                (SortCriterion::Size, "Size"),
-                                (SortCriterion::Date, "Modified"),
-                                (SortCriterion::Extension, "Extension"),
-                            ] {
-                                ui.selectable_value(&mut pane.options.criterion, value, label);
-                            }
-                        });
-                    egui::ComboBox::from_id_salt("mode")
-                        .width(100.0)
-                        .selected_text(match pane.options.mode {
-                            SortMode::Natural => "Natural",
-                            SortMode::Lexicographic => "Lexicographic",
-                        })
-                        .show_ui(ui, |ui| {
-                            ui.selectable_value(
-                                &mut pane.options.mode,
-                                SortMode::Natural,
-                                "Natural",
-                            );
-                            ui.selectable_value(
-                                &mut pane.options.mode,
-                                SortMode::Lexicographic,
-                                "Lexicographic",
-                            );
-                        });
-                    ui.checkbox(&mut pane.options.ascending, "Ascending");
-                    ui.checkbox(&mut pane.options.directories_first, "Folders first");
-                });
-                if before != pane.options {
-                    pane.resort(sorter);
-                }
-                ui.horizontal(|ui| {
-                    for (label, event) in [
-                        ("All", PaneEvent::All),
-                        ("None", PaneEvent::None),
-                        ("Invert", PaneEvent::Invert),
-                    ] {
-                        if ui.button(label).clicked() {
-                            let _ = pane.apply_event(&event, sorter);
-                            *active = side;
-                            ui.memory_mut(|memory| memory.request_focus(listing_id(side)));
-                        }
-                    }
-                    ui.weak(format!("{} marked", pane.selection.marked_count()));
-                });
-                let mut scroll_focus = false;
-                if keyboard_focus {
-                    let events = ui.input_mut(|input| {
-                        let mut commands = Vec::new();
-                        input.events.retain(|event| {
-                            if let Some(command) = selection_key(event) {
-                                commands.push(command);
-                                false
-                            } else {
-                                true
-                            }
-                        });
-                        commands
-                    });
-                    scroll_focus = !events.is_empty();
-                    for event in events {
-                        let _ = pane.apply_event(&event, sorter);
-                    }
-                }
-                if let Some(error) = &pane.error {
-                    ui.colored_label(
-                        egui::Color32::from_rgb(245, 155, 135),
-                        format!("Cannot open location: {error}"),
-                    );
-                    ui.small("The last successfully opened folder is retained.");
-                }
-                ui.separator();
-                let mut navigate = None;
-                let mut clicked = None;
-                let mut go_parent = false;
-                let list = ui.interact(
-                    ui.available_rect_before_wrap(),
-                    listing_id(side),
-                    egui::Sense::focusable_noninteractive(),
-                );
-                if list.has_focus() {
-                    ui.memory_mut(|memory| {
-                        memory.set_focus_lock_filter(
-                            list.id,
-                            egui::EventFilter {
-                                tab: true,
-                                vertical_arrows: true,
-                                ..Default::default()
-                            },
-                        )
-                    });
-                }
-                egui::ScrollArea::vertical()
-                    .id_salt("entries")
-                    .max_height((height - 220.0).max(100.0))
-                    .auto_shrink([false, false])
-                    .show(ui, |ui| {
-                        if pane.selection.has_parent {
-                            let response = ui.selectable_label(
-                                pane.selection.focus_row == Some(0),
-                                "[parent]  ..",
-                            );
-                            let modifiers = click_modifiers(ui, response.rect);
-                            if response.clicked()
-                                || (response.clicked_by(egui::PointerButton::Secondary)
-                                    && modifiers.ctrl)
-                            {
-                                clicked = Some((0, modifiers));
-                            }
-                            if response.double_clicked() {
-                                go_parent = true;
-                            }
-                            if scroll_focus && pane.selection.focus_row == Some(0) {
-                                response.scroll_to_me(Some(egui::Align::Center));
-                            }
-                        }
-                        if pane.entries.is_empty() {
-                            ui.add_space(18.0);
-                            ui.weak(if pane.location.is_some() {
-                                "This folder is empty"
-                            } else {
-                                "No folder open"
-                            });
-                        }
-                        for (position, index) in pane.order.iter().enumerate() {
-                            let row = position + usize::from(pane.selection.has_parent);
-                            let entry = &pane.entries[*index];
-                            let prefix = if entry.is_symlink {
-                                "[link]"
-                            } else if entry.is_directory {
-                                "[folder]"
-                            } else if pane.archive.is_none()
-                                && entry.name.to_ascii_lowercase().ends_with(".zip")
-                            {
-                                "[zip]"
-                            } else {
-                                "[file]"
-                            };
-                            let marked = pane.selection.is_marked(row, &pane.order);
-                            let text = format!(
-                                "{} {prefix}  {}{}",
-                                if marked { "[x]" } else { "[ ]" },
-                                entry.name,
-                                metadata_label(entry, pane.options.criterion)
-                            );
-                            let label = egui::RichText::new(text).color(if marked {
-                                egui::Color32::from_rgb(245, 210, 110)
-                            } else if entry.is_directory {
-                                egui::Color32::from_rgb(150, 195, 245)
-                            } else {
-                                ui.visuals().text_color()
-                            });
-                            let response =
-                                ui.selectable_label(pane.selection.focus_row == Some(row), label);
-                            let modifiers = click_modifiers(ui, response.rect);
-                            if response.clicked()
-                                || (response.clicked_by(egui::PointerButton::Secondary)
-                                    && modifiers.ctrl)
-                            {
-                                clicked = Some((row, modifiers));
-                            }
-                            if response.double_clicked()
-                                && !entry.is_symlink
-                                && (entry.is_directory
-                                    || (pane.archive.is_none()
-                                        && entry.name.to_ascii_lowercase().ends_with(".zip")))
-                            {
-                                navigate =
-                                    pane.location.as_ref().map(|path| path.join(&entry.name));
-                            }
-                            if scroll_focus && pane.selection.focus_row == Some(row) {
-                                response.scroll_to_me(Some(egui::Align::Center));
-                            }
-                        }
-                    });
-                if let Some((row, modifiers)) = clicked {
-                    let _ = pane.apply_event(
-                        &PaneEvent::Click {
-                            row,
-                            ctrl: modifiers.ctrl,
-                            shift: modifiers.shift,
-                        },
-                        sorter,
-                    );
-                    *active = side;
-                    ui.memory_mut(|memory| memory.request_focus(listing_id(side)));
-                }
-                if go_parent {
-                    pane.parent(sorter);
-                }
-                if let Some(path) = navigate {
-                    pane.open(&path, sorter);
-                }
-                let selected = pane.selection.snapshot(&pane.entries, &pane.order);
-                ui.small(format!(
-                    "Focus: {} · {} selected",
-                    selected.focused.as_deref().unwrap_or("none"),
-                    selected.selected.len()
-                ));
-            });
-    });
-}
-
-fn listing_id(side: PaneSide) -> egui::Id {
+pub(crate) fn listing_id(side: PaneSide) -> egui::Id {
     egui::Id::new(match side {
         PaneSide::Left => "left-file-list",
         PaneSide::Right => "right-file-list",
     })
 }
 
-fn metadata_label(entry: &FileEntry, criterion: SortCriterion) -> String {
-    if criterion == SortCriterion::Name {
-        return String::new();
-    }
-    let Some(metadata) = &entry.metadata else {
-        return " · Metadata unavailable".to_owned();
-    };
-    let value = match criterion {
-        SortCriterion::Name => return String::new(),
-        SortCriterion::Size if entry.is_directory => "<DIR>".to_owned(),
-        SortCriterion::Size if metadata.size == -1 => "Unknown size".to_owned(),
-        SortCriterion::Size => format!("{} bytes", metadata.size),
-        SortCriterion::Date => chrono::DateTime::from_timestamp_millis(metadata.modified_ms)
-            .map_or_else(
-                || "Date out of range".to_owned(),
-                |date| date.format("%Y-%m-%d %H:%M:%S%.3f UTC").to_string(),
-            ),
-        SortCriterion::Extension => metadata
-            .extension
-            .clone()
-            .unwrap_or_else(|| "No extension".to_owned()),
-    };
-    format!(" · {value}")
-}
-
-fn click_modifiers(ui: &egui::Ui, rect: egui::Rect) -> egui::Modifiers {
+pub(crate) fn click_modifiers(ui: &egui::Ui, rect: egui::Rect) -> egui::Modifiers {
     // A quick modifier-click can release its modifier in the same frame.
     // Read the pointer event, rather than the frame's final keyboard state.
     ui.input(|input| {
@@ -1092,7 +1100,7 @@ fn click_modifiers(ui: &egui::Ui, rect: egui::Rect) -> egui::Modifiers {
     })
 }
 
-fn selection_key(event: &egui::Event) -> Option<PaneEvent> {
+pub(crate) fn selection_key(event: &egui::Event) -> Option<PaneEvent> {
     if let egui::Event::Text(text) = event
         && text == "*"
     {
@@ -1138,5 +1146,80 @@ fn selection_key(event: &egui::Event) -> Option<PaneEvent> {
         egui::Key::End if !modifiers.shift => Some(PaneEvent::Last),
         egui::Key::Space if !modifiers.shift => Some(PaneEvent::Space),
         _ => None,
+    }
+}
+
+enum Command {
+    Action(FileAction),
+    Batch,
+    Extract,
+    Parent,
+    Home,
+    Refresh,
+    SwitchPane,
+    Mark(PaneEvent),
+}
+
+fn menu_action(
+    ui: &mut egui::Ui,
+    text: &str,
+    shortcut: &str,
+    enabled: bool,
+    command: Command,
+    selected: &mut Option<Command>,
+) {
+    if ui
+        .add_enabled(enabled, egui::Button::new(text).shortcut_text(shortcut))
+        .clicked()
+    {
+        *selected = Some(command);
+        ui.close();
+    }
+}
+
+impl MuCrabApp {
+    fn execute(&mut self, command: Command, ctx: &egui::Context) {
+        let index = usize::from(self.active == PaneSide::Right);
+        match command {
+            Command::Action(FileAction::Copy) if self.panes[index].archive.is_some() => {
+                self.zip_review = self.prepare_extract();
+            }
+            Command::Action(action) => {
+                self.copy_confirmation = self.prepare_action(action);
+            }
+            Command::Batch => {
+                self.batch_review = self.prepare_batch();
+            }
+            Command::Extract => {
+                self.zip_review = self.prepare_extract();
+            }
+            Command::Parent => {
+                self.panes[index].parent(&self.sorter);
+            }
+            Command::Refresh => {
+                self.panes[index].refresh(&self.sorter);
+            }
+            Command::Home => {
+                if let Some(home) = std::env::var_os("HOME") {
+                    self.panes[index].open(&PathBuf::from(home), &self.sorter);
+                }
+            }
+            Command::Mark(event) => {
+                let _ = self.panes[index].apply_event(&event, &self.sorter);
+            }
+            Command::SwitchPane => {
+                self.active = if self.active == PaneSide::Left {
+                    PaneSide::Right
+                } else {
+                    PaneSide::Left
+                };
+            }
+        }
+        if self.copy_confirmation.is_none()
+            && self.batch_review.is_none()
+            && self.zip_review.is_none()
+        {
+            ctx.memory_mut(|m| m.request_focus(listing_id(self.active)));
+        }
     }
 }

@@ -53,7 +53,9 @@ behavioral fidelity and the contribution of the discovery tools to migration.
 ## Current status
 
 **W06 — ZIP browsing and extraction** is the latest verified milestone.
-**W07 — background operations and cancellation** is next.
+**W08 — classic desktop UI** is implemented ahead of W07, with compact menus,
+file tables and saved Light/Dark/System appearance. **W07 — background operations
+and cancellation** follows W08.
 See the [current status report](docs/current-status.md) for workflow details,
 comparison results, verification dates, supported platforms and remaining limits.
 
@@ -61,12 +63,14 @@ comparison results, verification dates, supported platforms and remaining limits
 
 ### muCrab — current Rust implementation
 
-The W06 checkpoint provides two independent file panes, local and ZIP folder browsing,
+The W08 interface provides compact menus, an icon toolbar, resizable file tables,
+a bottom command bar, and Light/Dark/System appearance. It retains two independent
+file panes, local and ZIP folder browsing,
 name/metadata sorting, focus/marking, hidden-file filtering, and reviewed recursive
 copy, move, single-item rename, batch rename and reviewed ZIP extraction. The native Rust application runs independently
 of Java.
 
-![muCrab's native Rust interface with a ZIP folder listing, marked entries, and a reviewed extraction into the other pane](images/mucrab.png)
+![muCrab W08 classic desktop interface with file icons, metadata tables, compact menus and a bottom command bar](images/mucrab.png)
 
 ### muCommander — Java reference application
 
@@ -108,7 +112,10 @@ cargo run --locked -p mucrab-desktop
 cargo run --locked -p mucrab-desktop -- /path/to/left /path/to/right
 ```
 
-The application supports local/ZIP browsing, sorting, marking, filtering, recursive local copy/move, focused/batch rename and ZIP extraction. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder or local `.zip` to enter it; each pane has Open, Parent, Refresh, and sort controls. ZIP paths such as `/path/archive.zip/folder` also work as initial locations. Check the native command-line entry points without opening a window:
+The application supports local/ZIP browsing, sorting, marking, filtering, recursive local copy/move, focused/batch rename and ZIP extraction. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder or local `.zip` to enter it; each pane has an editable location, Parent and Refresh icons, and sortable column headers.
+Press Enter to open a typed location. View contains sorting/filtering options and
+**Appearance → System / Light / Dark**; System follows the OS color preference
+and falls back to Light if unavailable. ZIP paths such as `/path/archive.zip/folder` also work as initial locations. Check the native command-line entry points without opening a window:
 
 ```sh
 cargo run --locked -p mucrab-desktop -- --version
@@ -153,16 +160,16 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The Rust suite has thirty-four tests covering recovered rules, navigation/error state,
+The Rust suite has thirty-six tests covering recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has forty-six tests. The separate
+readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes and large-table UI interaction. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has forty-six tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 
 Click a row to give its listing keyboard focus. Ctrl-click toggles a mark and
 Shift-click toggles a range; Space toggles and advances. Up/Down, Home/End, and
 Shift+Up/Down move/select; Tab switches panes. Cmd+A/Cmd+D (Ctrl on non-macOS)
-mark/unmark all; All/None/Invert buttons are also available. F5 reviews a copy
+mark/unmark all; Mark all/Unmark all/Invert selection are also available in the Mark menu. F5 reviews a copy
 to the other pane; F6 reviews a move and F2 renames the focused child, even when
 other children are marked. **Batch rename…** reviews the effective selection
 with live generated names and an explicit Apply button. Batch operations skip
@@ -170,7 +177,7 @@ existing files; copy/move/single rename initially select the same policy. Succes
 top-level items are unmarked, skipped items stay marked, and both panes refresh.
 The result details report failed children even when their parent folder was
 processed. The worker has no pause/cancel controls yet. A focused row is
-highlighted and marks use `[x]`. With no marks, the focused child is the effective
+highlighted; marked rows use a dot and theme-aware colors. With no marks, the focused child is the effective
 selection. The parent row can be focused but is never included in file selection.
 
 Use **Extract ZIP…** on one selected local ZIP to extract the whole archive,
@@ -315,7 +322,7 @@ The [implementation plan and progress ledger](mucrab-implementation-plan.md) rec
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
-5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. Next is W07 background operations and cancellation, applying the same recovery and comparison gates. Permissions/owner/group sorting and additional filters remain deferred.
+5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. W08 implements the classic desktop interface as a presentation increment. W07 background operations and cancellation follows, with the existing recovery and comparison gates. Permissions/owner/group sorting and additional filters remain deferred.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
 
 Upstream Java implementation source will be withheld during reconstruction; license and attribution material remains available. Decompiled representations, binary metadata, and observations of the original are permitted inputs. Findings from the earlier feasibility investigation must be identified as prior evidence if reused.
@@ -349,7 +356,8 @@ The experiment will distinguish evidence that binary-to-Rust reconstruction work
 The repository includes acquisition/analysis helpers, pinned manifests and
 lockfiles, the native workspace, W01/W02a/W02b/W02c/W03/W04/W05/W06 Java/Rust adapters
 and fixtures, scoped results, GUI evidence, and the maintained implementation
-plan. W07 remains unimplemented; W05 manual row overrides remain deferred.
+plan. [W08 UI evidence](evidence/workflows/W08-desktop-ui/README.md) records the
+UI changes and scoped checks. W07 remains unimplemented; W05 manual row overrides remain deferred.
 
 ## License and attribution
 

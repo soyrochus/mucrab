@@ -4,6 +4,8 @@
 use std::process::ExitCode;
 
 mod app;
+mod appearance;
+mod browser_ui;
 
 fn main() -> ExitCode {
     let arguments: Vec<_> = std::env::args_os().skip(1).collect();
