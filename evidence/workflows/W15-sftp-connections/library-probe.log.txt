@@ -1,0 +1,7 @@
+host key before auth: Ed25519, sha256 bytes:32
+generic rename overwrite result:Err(Error { code: SFTP(4), msg: "failure" })
+existing bytes:original
+protocol version:3 posix-rename advertised:true
+advertised posix-rename overwrite passed; prior destination never unlinked by client
+credential service available:false
+socket shutdown acknowledged in 100ms

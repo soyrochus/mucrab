@@ -91,6 +91,13 @@ impl MuCrabApp {
         })
     }
     pub(super) fn open_properties(&mut self) {
+        if self.panes[usize::from(self.active == PaneSide::Right)]
+            .remote
+            .is_some()
+        {
+            self.remote.message = Some("Remote Properties/metadata editing is unsupported.".into());
+            return;
+        }
         let Some(target) = self.focused_target() else {
             return;
         };

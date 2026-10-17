@@ -1,0 +1,154 @@
+{
+  "status": "passed",
+  "reserved": true,
+  "cases": 16,
+  "stream_calls": {
+    "original": 13,
+    "native": 16
+  },
+  "listing_pairs": 16,
+  "unexpected_differences": [],
+  "source_destination_hashes": {
+    "original/15002-0": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "native/15002-0": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "original/15002-1": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "destination_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native/15002-1": {
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "destination_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "original/15002-2": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "native/15002-2": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "original/15002-3": {
+      "source_sha256": "09fed9cbfb98b6ab0f3e8ff63b7b1f9b0e07d58b225295c78fdc023cc4985a72",
+      "destination_sha256": "09fed9cbfb98b6ab0f3e8ff63b7b1f9b0e07d58b225295c78fdc023cc4985a72"
+    },
+    "native/15002-3": {
+      "source_sha256": "09fed9cbfb98b6ab0f3e8ff63b7b1f9b0e07d58b225295c78fdc023cc4985a72",
+      "destination_sha256": "09fed9cbfb98b6ab0f3e8ff63b7b1f9b0e07d58b225295c78fdc023cc4985a72"
+    },
+    "original/15002-4": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "native/15002-4": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "original/15002-5": {
+      "source_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d",
+      "destination_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d"
+    },
+    "native/15002-5": {
+      "source_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d",
+      "destination_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d"
+    },
+    "original/15002-6": {
+      "source_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d",
+      "destination_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d"
+    },
+    "native/15002-6": {
+      "source_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d",
+      "destination_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d"
+    },
+    "original/15002-7": {
+      "source_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "destination_sha256": "bfc4668bda0fa79af37afecbd00615118d71004f462fd761e0ee581c279785c0"
+    },
+    "native/15002-7": {
+      "source_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "destination_sha256": "bfc4668bda0fa79af37afecbd00615118d71004f462fd761e0ee581c279785c0"
+    },
+    "original/15002-8": {
+      "source_sha256": "feb1e4409d009e0ec502eaabe321f86b5197a881e9b765252ec8a75d6957596d",
+      "destination_sha256": "feb1e4409d009e0ec502eaabe321f86b5197a881e9b765252ec8a75d6957596d"
+    },
+    "native/15002-8": {
+      "source_sha256": "feb1e4409d009e0ec502eaabe321f86b5197a881e9b765252ec8a75d6957596d",
+      "destination_sha256": "feb1e4409d009e0ec502eaabe321f86b5197a881e9b765252ec8a75d6957596d"
+    },
+    "original/15002-9": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "native/15002-9": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "original/15002-10": {
+      "source_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "destination_sha256": "bfc4668bda0fa79af37afecbd00615118d71004f462fd761e0ee581c279785c0"
+    },
+    "native/15002-10": {
+      "source_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "destination_sha256": "bfc4668bda0fa79af37afecbd00615118d71004f462fd761e0ee581c279785c0"
+    },
+    "original/15002-11": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "bfc4668bda0fa79af37afecbd00615118d71004f462fd761e0ee581c279785c0"
+    },
+    "native/15002-11": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "bfc4668bda0fa79af37afecbd00615118d71004f462fd761e0ee581c279785c0"
+    },
+    "original/15002-12": {
+      "source_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d",
+      "destination_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d"
+    },
+    "native/15002-12": {
+      "source_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d",
+      "destination_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d"
+    },
+    "original/15002-13": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "native/15002-13": {
+      "source_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf",
+      "destination_sha256": "12ac503ad686bf1dbc1c7b3e0d83c02a8eae02da9519d0ea51b6aa4198d08ddf"
+    },
+    "original/15002-14": {
+      "source_sha256": "09fed9cbfb98b6ab0f3e8ff63b7b1f9b0e07d58b225295c78fdc023cc4985a72",
+      "destination_sha256": "09fed9cbfb98b6ab0f3e8ff63b7b1f9b0e07d58b225295c78fdc023cc4985a72"
+    },
+    "native/15002-14": {
+      "source_sha256": "09fed9cbfb98b6ab0f3e8ff63b7b1f9b0e07d58b225295c78fdc023cc4985a72",
+      "destination_sha256": "09fed9cbfb98b6ab0f3e8ff63b7b1f9b0e07d58b225295c78fdc023cc4985a72"
+    },
+    "original/15002-15": {
+      "source_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d",
+      "destination_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d"
+    },
+    "native/15002-15": {
+      "source_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d",
+      "destination_sha256": "237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d"
+    }
+  },
+  "run": "artifacts/runs/W15-20261017T220719Z-c96b6bde",
+  "scope": "Pinned SFTPFile provider listings and getInputStream/getOutputStream on actual disposable SFTP server; regular-file names/types/length and observed whole-second modified time; native Skip integrity separate from original stream semantics; no full original CopyJob/trust/UI equivalence",
+  "intentional_design_differences": [
+    "Native explicit first-use trust and changed-key refusal; recovered original UserInfo.promptYesNo returns true",
+    "Native staged writes and advertised POSIX rename; recovered original rename may delete destination first",
+    "Native does not follow links or support remote mutation beyond mixed Copy"
+  ],
+  "sources": {
+    "tools/w15.py": "cee57f10726b877eee6005cc8434501e46eed08c723b19313987578ee02dcb6f",
+    "tools/java/W15Oracle.java": "13044951fa2b656ac49e3122db9b677100d35a106028f6cecf4f80ba2a6627a0",
+    "crates/compare/src/w15.rs": "14bda311cdeb8de3ecb8029bfa8b2262fd7cc616cbc7e6aa808b728aeaa49712",
+    "tools/w15_server.py": "e9da416407af6b2922e8d27a1546479e1331bc7d4483b6c4e60e0ce6e46b408a"
+  }
+}

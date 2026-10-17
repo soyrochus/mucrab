@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "run": "artifacts/runs/W15-license-audit",
+  "locked_packages": 429,
+  "inventory_sha256": "217ebf6b4690771545e85aab85ea6c79814a5440a5a8ea7e0ba7b41f5aa60c2e",
+  "scope": "Current full Cargo.lock release-notice collector over exact cached published package sources; no binary/source bundle release or Mac build claimed"
+}

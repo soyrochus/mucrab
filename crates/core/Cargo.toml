@@ -11,6 +11,10 @@ publish.workspace = true
 workspace = true
 
 [dependencies]
+percent-encoding = "=2.3.2"
+ssh2 = "=0.9.6"
+zeroize = "=1.9.0"
+base64 = "=0.22.1"
 crc32fast = "=1.5.2"
 image = { version = "=0.25.10", default-features = false, features = ["png", "jpeg"] }
 zune-core = "=0.5.3"
@@ -24,4 +28,9 @@ zip = { version = "=9.0.4", default-features = false, features = ["deflate-flate
 flate2 = { version = "=1.1.10", default-features = false, features = ["rust_backend"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
+keyring = { version = "=3.6.3", default-features = false, features = ["apple-native"] }
+ssh2 = { version = "=0.9.6", features = ["vendored-openssl"] }
 icu_normalizer = "=2.2.0"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+dbus-secret-service = { version = "=4.1.0", default-features = false, features = ["crypto-rust"] }

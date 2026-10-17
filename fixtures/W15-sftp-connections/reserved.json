@@ -1,0 +1,130 @@
+[
+  {
+    "id": "15002-0",
+    "name": "00-data.bin",
+    "size": 32767,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-1",
+    "name": "01-.hidden",
+    "size": 0,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-2",
+    "name": "02-data.bin",
+    "size": 32767,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-3",
+    "name": "03-café.txt",
+    "size": 32768,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-4",
+    "name": "04-data.bin",
+    "size": 32767,
+    "policy": "skip",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-5",
+    "name": "05-data.bin",
+    "size": 65537,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-6",
+    "name": "06-café.txt",
+    "size": 65537,
+    "policy": "skip",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-7",
+    "name": "07-.hidden",
+    "size": 1,
+    "policy": "skip",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15002-8",
+    "name": "08-.hidden",
+    "size": 131072,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15002-9",
+    "name": "09-file.txt",
+    "size": 32767,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15002-10",
+    "name": "10-file.txt",
+    "size": 1,
+    "policy": "skip",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-11",
+    "name": "11-data.bin",
+    "size": 32767,
+    "policy": "skip",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15002-12",
+    "name": "12-file.txt",
+    "size": 65537,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-13",
+    "name": "13-café.txt",
+    "size": 32767,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15002-14",
+    "name": "14-.hidden",
+    "size": 32768,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15002-15",
+    "name": "15-data.bin",
+    "size": 65537,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  }
+]

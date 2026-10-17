@@ -25,6 +25,8 @@ use navigation_ui::Action as NavigationAction;
 mod properties_ui;
 #[path = "read_job.rs"]
 mod read_job;
+#[path = "remote_ui.rs"]
+mod remote_ui;
 #[path = "search_ui.rs"]
 mod search_ui;
 #[path = "viewer_ui.rs"]
@@ -67,6 +69,7 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 zip_review: None,
                 navigation: navigation_ui::Navigation::load(),
                 search: search_ui::Search::default(),
+                remote: remote_ui::RemoteUi::load(),
                 properties: properties_ui::Properties::default(),
                 viewer: viewer_ui::Viewer::default(),
                 everyday: everyday_ui::Everyday::default(),
@@ -96,6 +99,7 @@ struct MuCrabApp {
     zip_review: Option<ZipReview>,
     navigation: navigation_ui::Navigation,
     search: search_ui::Search,
+    remote: remote_ui::RemoteUi,
     properties: properties_ui::Properties,
     viewer: viewer_ui::Viewer,
     everyday: everyday_ui::Everyday,
@@ -114,6 +118,7 @@ struct CopyConfirmation {
     request: CopyRequest,
 }
 struct PendingCopy {
+    source_remote: Option<mucrab_core::sftp::RemoteLocation>,
     control: JobControl,
     worker: std::thread::JoinHandle<()>,
     action: FileAction,
@@ -124,6 +129,7 @@ struct PendingCopy {
 }
 #[derive(Clone, Copy, PartialEq)]
 enum FileAction {
+    RemoteCopy,
     Metadata,
     NewFolder,
     Trash,
@@ -138,6 +144,7 @@ enum FileAction {
 impl FileAction {
     fn label(self) -> &'static str {
         match self {
+            Self::RemoteCopy => "SFTP copy",
             Self::Metadata => "Metadata changes",
             Self::NewFolder => "New folder",
             Self::Trash => "Move to Trash",
@@ -536,7 +543,13 @@ impl MuCrabApp {
                         .is_some_and(|outcome| outcome.success);
                 if !matches!(job.action, FileAction::Paste | FileAction::Metadata)
                     && let Some(pane) = self.panes.find_mut(job.source_tab)
-                    && pane.location.as_ref() == Some(&job.source_directory)
+                    && (job
+                        .source_remote
+                        .as_ref()
+                        .is_some_and(|r| pane.remote.as_ref() == Some(r))
+                        || (job.source_remote.is_none()
+                            && pane.remote.is_none()
+                            && pane.location.as_ref() == Some(&job.source_directory)))
                 {
                     pane.unmark_copy_outcomes(&report.outcomes);
                 }
@@ -582,7 +595,13 @@ impl MuCrabApp {
         if let Some(name) = job.renamed_to
             && rename_succeeded
             && let Some(pane) = self.panes.find_mut(job.source_tab)
-            && pane.location.as_ref() == Some(&job.source_directory)
+            && (job
+                .source_remote
+                .as_ref()
+                .is_some_and(|r| pane.remote.as_ref() == Some(r))
+                || (job.source_remote.is_none()
+                    && pane.remote.is_none()
+                    && pane.location.as_ref() == Some(&job.source_directory)))
         {
             pane.focus_name(&name);
         }
@@ -593,6 +612,7 @@ impl MuCrabApp {
         if self.close_after_job
             && !self.opener.busy()
             && !self.search.busy()
+            && !self.remote.busy()
             && !self.properties.busy()
             && !self.viewer.busy()
         {
@@ -745,6 +765,13 @@ impl eframe::App for MuCrabApp {
             self.viewer.cancel();
             self.close_after_job = true;
         }
+        if ui.input(|input| input.viewport().close_requested()) && self.remote.busy() {
+            ui.ctx()
+                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
+            self.remote.cancel();
+            self.close_after_job = true;
+        }
+        self.poll_remote(ui.ctx());
         self.properties.poll(ui.ctx());
         self.viewer.poll(ui.ctx());
         self.search.poll(ui.ctx());
@@ -754,6 +781,7 @@ impl eframe::App for MuCrabApp {
             && self.copy_job.is_none()
             && !self.opener.busy()
             && !self.search.busy()
+            && !self.remote.busy()
             && !self.properties.busy()
             && !self.viewer.busy()
         {
@@ -763,7 +791,8 @@ impl eframe::App for MuCrabApp {
             ui.ctx().request_repaint_after(Duration::from_millis(100));
         }
         self.poll_copy(ui.ctx());
-        let idle = self.properties.review.is_none()
+        let idle = !self.remote.modal()
+            && self.properties.review.is_none()
             && !self.navigation.modal()
             && self.everyday.review.is_none()
             && !self.everyday.busy()
@@ -773,7 +802,8 @@ impl eframe::App for MuCrabApp {
             && self.zip_review.is_none()
             && !self.show_copy_details
             && self.help.is_none();
-        let browsing = self.properties.review.is_none()
+        let browsing = !self.remote.modal()
+            && self.properties.review.is_none()
             && !self.navigation.modal()
             && self.everyday.review.is_none()
             && self.copy_confirmation.is_none()
@@ -781,7 +811,8 @@ impl eframe::App for MuCrabApp {
             && self.zip_review.is_none()
             && !self.show_copy_details
             && self.help.is_none();
-        let can_copy = idle && self.prepare_action(FileAction::Copy).is_some();
+        let can_copy =
+            idle && (self.prepare_action(FileAction::Copy).is_some() || self.can_remote_copy());
         let can_rename = idle && self.prepare_action(FileAction::Rename).is_some();
         let can_extract = idle && self.can_extract();
         let active_index = if self.active == PaneSide::Left { 0 } else { 1 };
@@ -794,7 +825,7 @@ impl eframe::App for MuCrabApp {
                 .snapshot(&active_pane.entries, &active_pane.order)
                 .selected
                 .is_empty();
-        let can_move = can_copy;
+        let can_move = idle && self.prepare_action(FileAction::Move).is_some();
         let archive_active = self.panes[active_index].archive.is_some();
         let can_copy = can_copy || (archive_active && can_extract);
         let old_active = self.active;
@@ -1002,7 +1033,9 @@ impl eframe::App for MuCrabApp {
                         ui,
                         "View file…",
                         "F3",
-                        browsing && self.focused_target().is_some(),
+                        browsing
+                            && (self.focused_target().is_some()
+                                || self.panes[active_index].remote.is_some()),
                         Command::View,
                         &mut command,
                     );
@@ -1112,7 +1145,7 @@ impl eframe::App for MuCrabApp {
                         ui,
                         "Search files…",
                         "Ctrl/Cmd+F",
-                        browsing,
+                        browsing && self.panes[active_index].remote.is_none(),
                         Command::Search,
                         &mut command,
                     );
@@ -1155,6 +1188,15 @@ impl eframe::App for MuCrabApp {
                             }
                         }
                     });
+                    ui.separator();
+                    menu_action(
+                        ui,
+                        "SFTP connections…",
+                        "",
+                        browsing,
+                        Command::Connections,
+                        &mut command,
+                    );
                 });
                 ui.menu_button("Window", |ui| {
                     for (label, shortcut, action, enabled) in [
@@ -1322,6 +1364,26 @@ impl eframe::App for MuCrabApp {
                     ui.label(message);
                     if ui.small_button("Dismiss").clicked() {
                         self.everyday.message = None;
+                    }
+                });
+            }
+            if let Some(message) = self.remote.message.clone() {
+                ui.horizontal_wrapped(|ui| {
+                    ui.label(message);
+                    if ui.small_button("Connections…").clicked() {
+                        self.remote.visible = true;
+                    }
+                    if ui.small_button("Dismiss").clicked() {
+                        self.remote.message = None;
+                    }
+                });
+            }
+            if self.remote.preparation_busy() {
+                ui.horizontal(|ui| {
+                    ui.spinner();
+                    ui.label("SFTP preparation…");
+                    if ui.button("Cancel SFTP preparation").clicked() {
+                        self.remote.cancel_preparation();
                     }
                 });
             }
@@ -1497,7 +1559,7 @@ impl eframe::App for MuCrabApp {
                                 })
                                 .inner;
                             if let Some(target) = target {
-                                self.opener.start(target);
+                                self.dispatch_target(target);
                             }
                         },
                     );
@@ -1559,9 +1621,13 @@ impl eframe::App for MuCrabApp {
                 tab.pane.quick_find = None;
             }
         }
+        if self.remote.busy() {
+            ui.ctx().request_repaint_after(Duration::from_millis(30));
+        }
         self.search_window(ui.ctx());
         self.properties_window(ui.ctx());
         self.viewer_window(ui.ctx());
+        self.remote_window(ui.ctx());
         self.bookmark_dialogs(ui.ctx());
         self.everyday_dialog(ui.ctx());
         self.copy_dialogs(ui.ctx());
@@ -1649,6 +1715,7 @@ pub(crate) fn selection_key(event: &egui::Event) -> Option<PaneEvent> {
 }
 
 enum Command {
+    Connections,
     View,
     Properties,
     Navigation(NavigationAction),
@@ -1686,6 +1753,11 @@ impl MuCrabApp {
     fn execute(&mut self, command: Command, ctx: &egui::Context) {
         let index = usize::from(self.active == PaneSide::Right);
         match command {
+            Command::Connections => {
+                self.remote.visible = true;
+                self.remote
+                    .target_active(self.panes.stack(index).active().id);
+            }
             Command::Navigation(action) => self.navigation_action(action, ctx),
             Command::Search => self.open_search(),
             Command::View => self.open_viewer(ctx),
@@ -1702,13 +1774,23 @@ impl MuCrabApp {
                 {
                     let e = &pane.entries[entry];
                     if crate::browser_ui::browsable(e, pane) {
-                        if let Some(path) = pane.location.as_ref().map(|p| p.join(&e.name)) {
+                        if let Some(remote) = &pane.remote {
+                            if let Ok(loc) = remote.child(&e.name) {
+                                pane.request_remote(loc, true, None);
+                            }
+                        } else if let Some(path) = pane.location.as_ref().map(|p| p.join(&e.name)) {
                             pane.open(&path, &self.sorter);
                         }
                     } else {
-                        self.opener.start(crate::opening::target(pane, &e.name));
+                        let target = crate::opening::target(pane, &e.name);
+                        self.dispatch_target(target);
                     }
                 }
+            }
+            Command::Action(FileAction::Copy)
+                if self.panes[index].remote.is_some() || self.panes[1 - index].remote.is_some() =>
+            {
+                self.prepare_remote_copy();
             }
             Command::Action(FileAction::Copy) if self.panes[index].archive.is_some() => {
                 self.zip_review = self.prepare_extract();
@@ -1791,6 +1873,7 @@ impl MuCrabApp {
                 self.copy_summary = None;
                 self.copy_details.clear();
                 self.copy_job = Some(PendingCopy {
+                    source_remote: None,
                     control,
                     worker,
                     action,
@@ -1834,6 +1917,7 @@ mod job_tests {
             zip_review: None,
             navigation: navigation_ui::Navigation::default(),
             search: search_ui::Search::default(),
+            remote: remote_ui::RemoteUi::load(),
             properties: properties_ui::Properties::default(),
             viewer: viewer_ui::Viewer::default(),
             everyday: everyday_ui::Everyday::default(),

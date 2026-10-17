@@ -1,0 +1,10 @@
+{
+  "stage": "Before W15 production Rust changes; library probes are isolated under /tmp",
+  "files": {
+    "tools/w15_fixtures.py": "b4ef28c10e2cb12e4095e4585b0f2c97f8e76670fb657f81d9200ff69171970f",
+    "tools/w15_server.py": "a7f43c8d96c7f8da4a2a0fa36b3f4b57bef72cc189c2dfb866097c0e14ce997a",
+    "fixtures/W15-sftp-connections/protocol.json": "6605e99a91e73902662df15cd63c19efd2621734fb773986f4c447bdf731db0c",
+    "fixtures/W15-sftp-connections/cases.json": "4987fa2e106ae3dea01152cd342ccfaed831eb3b5e360edb561f8a1d7a96087a",
+    "fixtures/W15-sftp-connections/reserved.json": "5dc398e3245aa25b43a2017457ca8271341db87e6eb2d6114c92f0af28a06c61"
+  }
+}

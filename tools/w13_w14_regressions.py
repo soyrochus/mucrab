@@ -25,7 +25,7 @@ def prepare():
   p=w11_w12_gui.RUN/name;p.write_text(json.dumps(adjust(json.loads(p.read_text())),indent=2))
  print('Replay the W11/W12 launch and restart-launch with their actions.json and restart-actions.json')
 
-def verify():
+def verify(evidence_slugs=None):
  results={};w07_gui.RUN=ROOT/f'artifacts/gui/{PREFIX}-W07';w07_gui.FIXTURE=ROOT/f'artifacts/gui/{PREFIX}-W07-actions.json';results['W07']=w07_gui.verify_filesystem();w08_gui.RUN=ROOT/f'artifacts/gui/{PREFIX}-W08';w08_gui.verify_filesystem();results['W08']=dict(status='passed',scope='Operation trees, unchanged archive and persisted appearance')
  r=ROOT/f'artifacts/gui/{PREFIX}-W09';records=list(map(json.loads,(r/'opened.jsonl').read_text().splitlines()));assert len(records)==3;assert [v['contents'] for v in records]==['Local W09 document\n','W09 archive document\n','Local W09 document\n'];assert Path(records[1]['path']).exists();results['W09']=dict(status='passed',dispatches=3)
  r=ROOT/f'artifacts/gui/{PREFIX}-W10-retry' if (ROOT/f'artifacts/gui/{PREFIX}-W10-retry').exists() else ROOT/f'artifacts/gui/{PREFIX}-W10';assert (r/'left/Created').is_dir() and (r/'right/RightCreated').is_dir();assert not (r/'right/New folder').exists();assert (r/'right/alpha.txt').read_text()=='alpha.txt\n';assert not (r/'left/to-delete.txt').exists();assert not (r/'left/to-trash.txt').exists();assert (r/'data/Trash/files/to-trash.txt').read_text()=='to-trash.txt\n';results['W10']=dict(status='passed',scope='Folder, clipboard, Trash and delete outcomes')
@@ -35,7 +35,7 @@ def verify():
  for folder,actions in [('native','actions.json'),('restart','restart-actions.json')]:assert json.loads((r/folder/'actions.json').read_text())==[dict(op='capture',name='initial',wait=2)]+json.loads((r/actions).read_text())
  results['W11-W12']=dict(status='passed',run=str(r.relative_to(ROOT)),scope='Tabs/Home/marks/bookmark restart and both-pane search result navigation; exact trace and unchanged source bytes')
  report=dict(status='passed',results=results,note='Fresh isolated fixtures; close-menu coordinates account for View/Properties. Earlier evidence is unchanged.')
- for slug in ['W13-properties-permissions','W14-built-in-viewer']:(ROOT/'evidence/workflows'/slug/'regressions.json').write_text(json.dumps(report,indent=2)+'\n')
+ for slug in (evidence_slugs or ['W13-properties-permissions','W14-built-in-viewer']):(ROOT/'evidence/workflows'/slug/'regressions.json').write_text(json.dumps(report,indent=2)+'\n')
  print(json.dumps(report,indent=2))
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('action',choices=['prepare','verify']);p.add_argument('--prefix',default=PREFIX);args=p.parse_args();PREFIX=args.prefix;globals()[args.action]()

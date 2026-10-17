@@ -1,0 +1,78 @@
+{
+  "status": "passed",
+  "host": "Linux x86_64",
+  "run": "artifacts/runs/W15-services-20261017T220907Z-95ccc9ac",
+  "test_executions": 4,
+  "distinct_tests": 3,
+  "checks": [
+    {
+      "command": [
+        "cargo",
+        "test",
+        "-p",
+        "mucrab-core",
+        "--test",
+        "sftp",
+        "--locked",
+        "--offline",
+        "real_sftp_",
+        "--",
+        "--ignored",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/0-stdout.log",
+      "stderr": "artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/0-stderr.log"
+    },
+    {
+      "command": [
+        "dbus-run-session",
+        "--config-file=/home/iwk/src/mucrab/artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/bus.conf",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/iwk/src/mucrab/artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/data",
+        "XDG_RUNTIME_DIR=/home/iwk/src/mucrab/artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/runtime",
+        "MUCRAB_W15_CREDENTIAL_FIXTURE=unavailable",
+        "cargo",
+        "test",
+        "-p",
+        "mucrab-core",
+        "--test",
+        "sftp",
+        "--locked",
+        "--offline",
+        "isolated_native_credential",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/1-stdout.log",
+      "stderr": "artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/1-stderr.log"
+    },
+    {
+      "command": [
+        "dbus-run-session",
+        "--config-file=/home/iwk/src/mucrab/artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/bus.conf",
+        "--",
+        "env",
+        "XDG_DATA_HOME=/home/iwk/src/mucrab/artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/data",
+        "XDG_RUNTIME_DIR=/home/iwk/src/mucrab/artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/runtime",
+        "MUCRAB_W15_CREDENTIAL_FIXTURE=available",
+        "bash",
+        "-c",
+        "printf %s w15-isolated-keyring-pass | gnome-keyring-daemon --unlock --components=secrets --control-directory \"$1\"; cargo test -p mucrab-core --test sftp --locked --offline isolated_native_credential -- --ignored --nocapture",
+        "w15",
+        "/home/iwk/src/mucrab/artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/control"
+      ],
+      "exit_code": 0,
+      "stdout": "artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/2-stdout.log",
+      "stderr": "artifacts/runs/W15-services-20261017T220907Z-95ccc9ac/2-stderr.log"
+    }
+  ],
+  "binary_sha256": "c16a4940ea26d99fc2e0057aa3e085bc930aab0267b3184b0cb210fdd1ae1699",
+  "scope": "Real disposable SSH/SFTP password and plain/encrypted-key authentication;48 frozen transfers; hidden trees, strict names/link guards, stale destination, missing POSIX rename, paused read independence, canceled partial upload/download, 5s timeout, shutdown interruption and post-commit lost acknowledgment; isolated unavailable and unlocked Secret Service save/read/delete",
+  "macos_keychain": "pending",
+  "credential_isolation": "Dedicated bus with no service activation directory; explicit private0700 keyring/runtime/data; only disposable profile IDs, no user key files or personal credentials"
+}

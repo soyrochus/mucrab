@@ -130,7 +130,12 @@ impl TabStack {
             options: source.pane.options,
             ..Default::default()
         };
-        if !pane.open_location(&location, sorter) {
+        if let PaneLocation::Sftp(loc) = &location {
+            pane.request_remote(loc.clone(), false, None);
+            let request = pane.remote_request.clone().expect("requested");
+            pane.remote_loaded(&request, source.pane.entries.clone(), sorter);
+            pane.remote_disconnected = source.pane.remote_disconnected;
+        } else if !pane.open_location(&location, sorter) {
             return Err(io::Error::other(
                 pane.error
                     .unwrap_or_else(|| "Cannot duplicate location".into()),
@@ -209,6 +214,10 @@ impl TabbedPanes {
 }
 impl BrowserPane {
     pub fn open_location(&mut self, location: &PaneLocation, sorter: &NameSorter) -> bool {
+        if let PaneLocation::Sftp(loc) = location {
+            self.request_remote(loc.clone(), true, None);
+            return true;
+        }
         if !self.load_location(location, sorter) {
             return false;
         }
@@ -218,6 +227,10 @@ impl BrowserPane {
     }
     pub(crate) fn load_location(&mut self, location: &PaneLocation, sorter: &NameSorter) -> bool {
         match location {
+            PaneLocation::Sftp(loc) => {
+                self.request_remote(loc.clone(), true, None);
+                false
+            }
             PaneLocation::Local(path) => self.open_unrecorded(path, sorter),
             PaneLocation::Zip(location) => match crate::ZipCatalog::open(&location.archive)
                 .and_then(|c| c.list(&location.prefix))

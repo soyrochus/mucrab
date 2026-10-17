@@ -78,6 +78,13 @@ on the target, host and configured providers. See REA's
 
 ## Current status
 
+**W15 — SFTP connections and transfers** is implemented. Go → SFTP connections
+manages saved profiles, verified host keys and session-only or optional native
+credentials. Browse remote folders, review local↔SFTP copies, and open/view files
+through retained private downloads. Linux checks pass within the documented scope;
+macOS build, Keychain and native interaction checks remain pending. See
+[W15 evidence](evidence/workflows/W15-sftp-connections/README.md).
+
 **W13 — Properties and permissions** and **W14 — Built-in viewer** are implemented.
 **Alt+Enter** opens properties for the focused entry, with cancellable folder totals
 and reviewed local permission/modified-time edits. **F3** opens a read-only text
@@ -150,15 +157,15 @@ See [release instructions and platform requirements](docs/releases.md).
 
 ## Build and run muCrab
 
-Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. Linux file opening also requires `xdg-open` and configured file associations. W10 uses `gio` for Trash and `xclip` for importing native file selections under X11; pure Wayland clipboard publication is not implemented. Rust/Cargo **1.99.0** was used on macOS arm64 and Linux x86_64. The native GUI was exercised on macOS and under Linux X11/Xvfb; Wayland remains unverified.
+Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. Linux source builds also need OpenSSL and DBus development packages (`libssl-dev`, `libdbus-1-dev` on Ubuntu); SFTP/credentials use system OpenSSL 3 and libdbus at runtime. macOS builds enable the locked vendored OpenSSL source. Linux file opening also requires `xdg-open` and configured file associations. W10 uses `gio` for Trash and `xclip` for importing native file selections under X11; pure Wayland clipboard publication is not implemented. Rust/Cargo **1.99.0** was used on macOS arm64 and Linux x86_64. The native GUI was exercised on macOS and under Linux X11/Xvfb; Wayland remains unverified.
 
 The [Cargo workspace](Cargo.toml) contains:
 
 | Package | Role | Current contents |
 | --- | --- | --- |
-| `mucrab-core` | Framework-independent behavior | Local/ZIP enumeration, filtering, focus/marks, sorting, copy/move/rename, batch preview/apply and reviewed ZIP extraction |
+| `mucrab-core` | Framework-independent behavior | Local/ZIP/SFTP providers, tabs/bookmarks/search, properties/view preparation, sorting/selection and reviewed file operations |
 | `mucrab-desktop` | Native `mucrab` executable | Local/ZIP two-pane browser using eframe/egui 0.36.2 with the OpenGL backend |
-| `mucrab-compare` | Java/Rust comparison harness | W01–W07 original-binary oracles, Rust adapters, and difference reports (nine suites including W02 splits) |
+| `mucrab-compare` | Java/Rust comparison harness | W01–W07 suites plus W10–W15 scoped original-binary probes/adapters and difference reports |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
 
@@ -227,7 +234,7 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The W13/W14 Linux checkpoint passes 101 Rust tests (one native-service test remains separately invoked). These cover recovered rules, navigation/error state,
+The W15 Linux checkpoint passes 106 Rust tests (four service-dependent tests are ignored in this command; three W15 service tests are separately exercised). These cover recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
 readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes, large-table UI interaction and W09 temporary-copy/cancellation/launcher checks, plus W10 mutations, clipboard URLs, quick-find and history. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has fifty-one tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
@@ -260,6 +267,33 @@ traversed. Search stops visibly partial at 10,000 hits, one million visited
 entries or depth 256. Cancel retains results; replacing waits for cancellation.
 Double-click a result or use Open Containing Folder to focus its name in the
 currently active tab. Search can run alongside a file operation.
+
+For **SFTP**, open Go → SFTP connections, enter a profile ID, host, port, user,
+authentication method and absolute initial directory, then Save profile and
+Connect. Passwords and key passphrases are separate session fields. First use
+shows the server's algorithm and SHA-256 fingerprint before authentication;
+a changed key is refused until a separate trusted-host removal. Remember Secret
+is explicit opt-in to Linux Secret Service or macOS Keychain; there is no
+plaintext fallback. Saved credentials are bound to the connection settings. Linux locked/unavailable stores visibly fail; use session-only
+authentication or unlock the OS store separately.
+
+Remote tabs support sorting, marks, hidden filtering, history and profile-backed
+bookmarks (`sftp://profile-id/path`). **F5** reviews local↔SFTP copies with Skip or
+Overwrite. Hidden descendants are included, links/special files are rejected, and
+owned staging paths remain visible after failure/cancellation. Overwrite requires
+the server's advertised POSIX-rename extension; it never deletes the destination
+first. Remote metadata checks use kind/size/whole-second time, with weaker identity
+guarantees than local files. Failed or uncertain publication is never retried
+automatically. Only one mutation job runs; browsing remains separate.
+
+Remote Enter/double-click downloads a regular file for the default application;
+**F3** downloads for the built-in viewer. Private owner-only copies retain the
+filename, survive application exit and never write back. The download limit is
+512 MiB, with W14's smaller viewer limits still applying. Remote archives require
+an explicit Copy to a local folder first. Remote↔remote copies, move/rename/delete,
+New Folder, permission edits, search, clipboard export, SSH agents/MFA and other
+protocols remain unsupported. SSH calls have finite timeouts; cancellation waits
+for acknowledgment and does not undo completed work.
 
 **Alt+Enter** or File → Properties captures the focused entry, independently of
 marks. Local properties show link metadata without following its target, available

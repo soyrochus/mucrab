@@ -232,13 +232,44 @@ fn text_canvas(
 }
 impl MuCrabApp {
     pub(super) fn open_viewer(&mut self, ctx: &egui::Context) {
+        let i = usize::from(self.active == PaneSide::Right);
+        if let Some(location) = self.panes[i].remote.clone() {
+            if let Some(name) = self.panes[i]
+                .selection
+                .snapshot(&self.panes[i].entries, &self.panes[i].order)
+                .focused
+                .filter(|n| n != "..")
+                && let Ok(child) = location.child(&name)
+            {
+                self.remote_open(child, true);
+            }
+            return;
+        }
         let Some(target) = self.focused_target() else {
             return;
         };
         let i = usize::from(self.active == PaneSide::Right);
+        let origin = (self.active, self.panes.stack(i).active().id);
+        self.start_view_target(target, origin, ctx);
+    }
+    pub(super) fn view_prepared_remote(
+        &mut self,
+        path: PathBuf,
+        side: PaneSide,
+        tab: TabId,
+        ctx: &egui::Context,
+    ) {
+        self.start_view_target(EntryTarget::Local(path), (side, tab), ctx);
+    }
+    fn start_view_target(
+        &mut self,
+        target: EntryTarget,
+        origin: (PaneSide, TabId),
+        ctx: &egui::Context,
+    ) {
         let v = &mut self.viewer;
         v.visible = true;
-        v.origin = Some((self.active, self.panes.stack(i).active().id));
+        v.origin = Some(origin);
         v.target = Some(target.clone());
         v.loaded = None;
         v.texture = None;

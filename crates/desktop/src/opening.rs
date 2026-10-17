@@ -16,6 +16,7 @@ use std::{
 
 pub enum Target {
     Local(PathBuf),
+    Remote(mucrab_core::sftp::RemoteLocation),
     Archived(ZipLocation, String),
 }
 type OpenResult = io::Result<(Child, bool)>;
@@ -49,6 +50,11 @@ impl Opener {
             let result = (|| {
                 let archived = matches!(target, Target::Archived(..));
                 let path = match target {
+                    Target::Remote(_) => {
+                        return Err(io::Error::other(
+                            "Remote Open requires connected SFTP preparation",
+                        ));
+                    }
                     Target::Local(path) => fs::canonicalize(path)?,
                     Target::Archived(location, name) => {
                         extract_member(&location, &name, &worker_control)?
@@ -186,6 +192,9 @@ fn private_directory(root: &Path) -> io::Result<PathBuf> {
 }
 
 pub fn target(pane: &mucrab_core::BrowserPane, name: &str) -> Target {
+    if let Some(location) = &pane.remote {
+        return Target::Remote(location.child(name).expect("validated listed remote name"));
+    }
     match &pane.archive {
         Some(location) => Target::Archived(location.clone(), name.to_owned()),
         None => Target::Local(pane.location.as_deref().unwrap_or(Path::new("")).join(name)),

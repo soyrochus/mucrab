@@ -11,13 +11,13 @@ session can continue without the original conversation.
 
 | Field | Current value |
 | --- | --- |
-| Last updated | 2026-10-17 |
-| Last verified implementation commit | `675bcd1` — W11 tabs/bookmarks and W12 file search; W13/W14 changes follow uncommitted, with source/binary hashes in their validation receipts |
+| Last updated | 2026-10-18 |
+| Implementation checkpoint | W15 SFTP connections/transfers included in this commit, following `e44dbb0` (W13/W14); exact verified source/binary hashes are in W15 evidence |
 | Current phase | Phase 6 in progress: bounded macOS acceptance completed; broader platform/product acceptance remains |
-| Active workflow | W13 properties/permissions and W14 built-in text/image viewer implemented; scoped comparisons and Linux native/input/regression checks pass. Mac/full original-window/real-mount checks remain pending |
+| Active workflow | W15 SFTP connections/transfers implemented; scoped provider comparisons, real protocol/credential checks and Linux native checks pass. Mac/full original UI and expanded remote active-job input gates remain pending |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | Verify W09–W14 on macOS and remaining original-window/real-mount gates; W15 checksums is the next proposed feature. W13 is properties/permissions, not SFTP |
-| Ported workflows | W13 — focused properties, bounded folder totals, reviewed local rwx/modified-time edits; W14 — bounded text/PNG/JPEG viewer with ZIP leases and external handoff; W11 — independent tabs and shared persisted local/ZIP bookmarks; W12 — bounded cancellable recursive local search and result navigation; W10 — New Folder, reviewed Delete/Trash, native clipboard Copy/Paste, prefix-find, per-pane history; W09 — default-application local/archive opening; W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
+| Next executable task | Verify W09–W15 on macOS, W15 Keychain/vendored OpenSSL build and remaining original-window/active-remote-job/real-mount gates. W15 is SFTP connections/transfers; earlier checksums wording was incorrect |
+| Ported workflows | W15 — saved SFTP profiles/trust, async browsing, staged mixed copies and retained Open/View downloads; W13 — focused properties, bounded folder totals, reviewed local rwx/modified-time edits; W14 — bounded text/PNG/JPEG viewer with ZIP leases and external handoff; W11 — independent tabs and shared persisted local/ZIP bookmarks; W12 — bounded cancellable recursive local search and result navigation; W10 — New Folder, reviewed Delete/Trash, native clipboard Copy/Paste, prefix-find, per-pane history; W09 — default-application local/archive opening; W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
 | Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. W07: 30 full-job lifecycle/marks/tree comparisons (18 predefined + 12 reserved). Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
 | Verification platform | Linux x86_64/ext4/JDK 25.0.4.1 and macOS 26.6.2 arm64/APFS/JDK 21.0.10; all nine suites. Real second filesystem for W04/W07. Native input: X11/Xvfb and Mac cua_repl; Wayland unverified |
@@ -1404,3 +1404,53 @@ regressions. Codec versions were already locked; features/direct edges and exact
 license notices are recorded. Native macOS, real bind mounts, foreign-owner chmod
 denial, broader GPU/font and original full-window gates remain explicitly open.
 See W13/W14 evidence indexes and OpenSpec tasks for reproducible commands/limits.
+
+
+## W15 — SFTP connections and transfers (2026-10-18)
+
+W13/W14 were committed first as `e44dbb0`. W15 implements its existing OpenSpec
+SFTP proposal, correcting the erroneous checksums reference in the old checkpoint.
+No release version changed. Structured profile-backed locations never enter local
+filesystem dispatch. Connect/listing results remain bound to tab/generation;
+failed navigation retains location/history, and profiles/trust are checked again
+before publishing an authenticated session. Disconnect cancels associated work
+and shuts down leased sockets; captured transfers keep their endpoints across
+ordinary tab changes/closure.
+
+Profiles/trust save atomically without passwords/passphrases. First-use keys need
+explicit approval; changed keys need separate trust management. Password/private-
+key auth and optional native credentials run on workers. Linux directly uses
+pinned dbus-secret-service4.1.0 with finite calls/five-second prompt maximum and
+locked-store refusal. macOS uses keyring3.6.3's Keychain adapter (unverified here).
+SSH2 0.9.6 supplies SSH transport/authenticated subsystem channels. A bounded SFTP
+v3 subset requires advertised POSIX rename for overwrite, because generic rename
+flags failed the real OpenSSH probe. Complete protocol exchanges are serialized
+per session, releasing between file chunks and before pauses, so read workers
+remain usable alongside a paused transfer.
+
+Mixed regular-file/tree copies use reviewed local pins/remote kind-size-second
+metadata, unique staging, close/length checks, Skip/Overwrite and no delete-first
+fallback or automatic uncertain-commit retry. Hidden descendants are included;
+links/special files are refused. Open/View use private retained downloads within
+512MiB and retain W14 preview limits; no remote archive or automatic writeback.
+Unsupported local-only actions are disabled or explicitly refused before local
+filesystem calls. Stable-tree/remote precision limits remain explicit.
+
+Evidence:106 ordinary Rust/51 Python tests; separate real SSH/SFTP tests with48
+frozen transfers and failure/timeout/cancel/paused-read checks, plus unavailable
+and unlocked native Secret Service fixtures (four test executions/three tests).
+Original provider listings/streams compare32 predefined+16 reserved cases with
+zero differences and independent bytes/hashes; this is not complete original
+CopyJob, host trust or credential-window equivalence. Native SFTP checks and fresh
+W07–W14 replays are retained with actual binary provenance. Earlier replays precede
+the final bounded credential/trust guards; final W15 workspace/service/native
+receipts cover the final source. Seeded recipes/protocol preceded Rust; server
+root/key corrections and later failure instrumentation are documented as errata,
+with GUI traces recorded after implementation.
+
+Linux build/release prerequisites now include OpenSSL/DBus development libraries.
+macOS enables locked vendored OpenSSL3.6.3 to avoid a Homebrew runtime dependency;
+its native build/Keychain verification remains pending. Complete notices are kept
+under third_party/sftp and collected for release. Expanded native remote-job
+closure/disconnect races, full original UI, other servers/key formats/IPv6 and
+macOS gates remain open. See W15 evidence/contract/tasks before further acceptance.

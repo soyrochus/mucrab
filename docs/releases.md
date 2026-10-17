@@ -51,12 +51,13 @@ rebuild the distributed binaries.
 To build that source on Ubuntu 24.04, install Rust (CI pins **1.99.1**) and:
 
 ```sh
-sudo apt-get install pkg-config libx11-dev libxi-dev libxcursor-dev libxrandr-dev libxkbcommon-dev libwayland-dev libgl1-mesa-dev
+sudo apt-get install pkg-config libssl-dev libdbus-1-dev libx11-dev libxi-dev libxcursor-dev libxrandr-dev libxkbcommon-dev libwayland-dev libgl1-mesa-dev
 cargo build --release --frozen -p mucrab-desktop
 ```
 
 On macOS, install the Xcode command-line tools and Rust, then run the same Cargo
-command. Rust and system build tools must already be installed for an offline
+command. W15 builds its pinned OpenSSL source on macOS so the SFTP runtime does not
+require a Homebrew OpenSSL installation; native W15 macOS verification is pending. Rust and system build tools must already be installed for an offline
 build. `BUILDING.md` in the source archive records its version and tagged commit.
 
 Linux release jobs run the Rust workspace tests and Python tool tests. The real

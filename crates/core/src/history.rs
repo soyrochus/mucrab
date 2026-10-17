@@ -9,6 +9,7 @@ use std::path::PathBuf;
 pub enum PaneLocation {
     Local(PathBuf),
     Zip(ZipLocation),
+    Sftp(crate::sftp::RemoteLocation),
 }
 #[derive(Clone, Default)]
 pub struct NavigationHistory {
@@ -18,6 +19,9 @@ pub struct NavigationHistory {
 
 impl BrowserPane {
     pub fn current_location(&self) -> Option<PaneLocation> {
+        if let Some(remote) = &self.remote {
+            return Some(PaneLocation::Sftp(remote.clone()));
+        }
         self.archive
             .clone()
             .map(PaneLocation::Zip)
@@ -66,6 +70,10 @@ impl BrowserPane {
             self.history.cursor - 1
         };
         let target = self.history.entries[cursor].clone();
+        if let PaneLocation::Sftp(location) = target {
+            self.request_remote(location, false, Some(cursor));
+            return false;
+        }
         let success = self.load_location(&target, sorter);
         if success {
             self.history.cursor = cursor;
@@ -106,6 +114,88 @@ impl BrowserPane {
                 .unwrap_or(*matches.last().unwrap()),
         };
         self.selection.focus(row, &self.order);
+        true
+    }
+}
+
+impl BrowserPane {
+    pub fn request_remote(
+        &mut self,
+        location: crate::sftp::RemoteLocation,
+        record: bool,
+        cursor: Option<usize>,
+    ) {
+        let Some(generation) = self.remote_generation.checked_add(1) else {
+            self.error = Some("Remote navigation generations exhausted".into());
+            return;
+        };
+        self.remote_generation = generation;
+        self.remote_request = Some(crate::sftp::RemoteNavigation {
+            location,
+            generation,
+            record,
+            cursor,
+        });
+        self.error = None;
+    }
+    pub fn remote_loaded(
+        &mut self,
+        request: &crate::sftp::RemoteNavigation,
+        mut entries: Vec<crate::FileEntry>,
+        sorter: &NameSorter,
+    ) -> bool {
+        if self.remote_request.as_ref().map(|r| r.generation) != Some(request.generation) {
+            return false;
+        }
+        let same = self.remote.as_ref() == Some(&request.location);
+        let old = self.selection.snapshot(&self.entries, &self.order);
+        let previous = self.remote.clone();
+        if !self.show_hidden {
+            entries.retain(|e| !e.name.starts_with('.'));
+        }
+        self.location = None;
+        self.archive = None;
+        self.remote = Some(request.location.clone());
+        self.remote_request = None;
+        self.remote_disconnected = false;
+        self.path_input = request.location.display();
+        self.entries = entries;
+        self.order = sorter.sorted_indices(&self.entries, self.options);
+        self.selection
+            .reload(self.entries.len(), request.location.path != "/", Some(0));
+        if same {
+            if let Some(name) = old.focused {
+                self.focus_name(&name);
+            }
+            for name in old.marked {
+                if let Some(i) = self
+                    .order
+                    .iter()
+                    .position(|i| self.entries[*i].name == name)
+                {
+                    self.selection.set_marked(
+                        i + usize::from(self.selection.has_parent),
+                        true,
+                        &self.order,
+                    );
+                }
+            }
+        } else if let Some(previous) = previous
+            && previous.profile == request.location.profile
+            && previous.parent() == request.location
+            && let Some(name) = previous.path.rsplit('/').next()
+        {
+            self.focus_name(name);
+        }
+        self.error = None;
+        self.quick_find = None;
+        if let Some(cursor) = request.cursor.filter(|i| {
+            self.history.entries.get(*i) == Some(&PaneLocation::Sftp(request.location.clone()))
+        }) {
+            self.history.cursor = cursor;
+        } else if request.record || request.cursor.is_some() {
+            self.record_location();
+        }
         true
     }
 }

@@ -103,6 +103,10 @@ pub fn list_directory(path: &Path) -> io::Result<Vec<FileEntry>> {
 pub struct BrowserPane {
     pub location: Option<PathBuf>,
     pub archive: Option<ZipLocation>,
+    pub remote: Option<crate::sftp::RemoteLocation>,
+    pub remote_request: Option<crate::sftp::RemoteNavigation>,
+    pub remote_disconnected: bool,
+    pub remote_generation: u64,
     pub path_input: String,
     pub entries: Vec<FileEntry>,
     pub order: Vec<usize>,
@@ -117,6 +121,20 @@ pub struct BrowserPane {
 
 impl BrowserPane {
     pub fn open(&mut self, path: &Path, sorter: &NameSorter) -> bool {
+        if let Some(text) = path.to_str()
+            && text.contains("://")
+        {
+            match crate::sftp::RemoteLocation::parse(text) {Ok(loc)=>self.request_remote(loc,true,None),Err(_)=>self.error=Some("Invalid remote location. Use sftp://saved-profile/path; credentials in URLs are not accepted.".into())};
+            self.path_input = self
+                .current_location()
+                .map(|l| match l {
+                    crate::PaneLocation::Local(p) => p.display().to_string(),
+                    crate::PaneLocation::Zip(z) => z.display_path().display().to_string(),
+                    crate::PaneLocation::Sftp(r) => r.display(),
+                })
+                .unwrap_or_default();
+            return false;
+        }
         if !self.open_unrecorded(path, sorter) {
             return false;
         }
@@ -166,6 +184,9 @@ impl BrowserPane {
         sorter: &NameSorter,
     ) {
         self.archive = None;
+        self.remote = None;
+        self.remote_request = None;
+        self.remote_disconnected = false;
         let old = self.selection.snapshot(&self.entries, &self.order);
         let same_folder = self.location.as_ref() == Some(&path);
         let returning = self.location.as_deref().and_then(Path::parent) == Some(&path);
@@ -271,6 +292,10 @@ impl BrowserPane {
     }
 
     pub fn parent(&mut self, sorter: &NameSorter) {
+        if let Some(loc) = self.remote.clone() {
+            self.request_remote(loc.parent(), true, None);
+            return;
+        }
         if let Some(parent) = self
             .location
             .as_deref()
@@ -321,6 +346,10 @@ impl BrowserPane {
     }
 
     pub fn refresh(&mut self, sorter: &NameSorter) {
+        if let Some(loc) = self.remote.clone() {
+            self.request_remote(loc, false, None);
+            return;
+        }
         if let Some(path) = self.location.clone() {
             self.open_unrecorded(&path, sorter);
             if let Some(query) = self.quick_find.clone() {

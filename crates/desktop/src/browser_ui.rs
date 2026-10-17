@@ -71,7 +71,7 @@ pub fn pane(
                         ui,
                         Icon::Parent,
                         "Parent folder (Backspace)",
-                        enabled && pane.location.is_some(),
+                        enabled && (pane.location.is_some()||pane.remote.is_some()),
                     )
                     .clicked()
                     {
@@ -82,7 +82,7 @@ pub fn pane(
                         ui,
                         Icon::Refresh,
                         "Refresh",
-                        enabled && pane.location.is_some(),
+                        enabled && (pane.location.is_some()||pane.remote.is_some()),
                     )
                     .clicked()
                     {
@@ -169,7 +169,7 @@ pub fn pane(
                             if let Some(index) = pane.order.get(position) {
                                 let entry = &pane.entries[*index];
                                 if browsable(entry, pane) {
-                                    navigate = pane.location.as_ref().map(|p| p.join(&entry.name));
+                                    navigate = Some(entry.name.clone());
                                 } else {
                                     open = Some(crate::opening::target(pane, &entry.name));
                                 }
@@ -492,8 +492,7 @@ pub fn pane(
                                         go_parent = true;
                                     } else if let Some(e) = entry {
                                         if browsable(e, pane) {
-                                            navigate =
-                                                pane.location.as_ref().map(|p| p.join(&e.name));
+                                            navigate = Some(e.name.clone());
                                         } else {
                                             open = Some(crate::opening::target(pane, &e.name));
                                         }
@@ -534,8 +533,8 @@ pub fn pane(
                 if go_parent {
                     pane.parent(sorter);
                 }
-                if let Some(path) = navigate {
-                    pane.open(&path, sorter);
+                if let Some(name) = navigate {
+                    if let Some(remote)=&pane.remote {if let Ok(location)=remote.child(&name){pane.request_remote(location,true,None);}}else if let Some(path)=pane.location.as_ref().map(|p|p.join(name)){pane.open(&path,sorter);}
                 }
                 let selected = pane.selection.snapshot(&pane.entries, &pane.order);
                 ui.separator();
@@ -558,6 +557,7 @@ pub fn pane(
                         pane.entries.len(),
                         selected_bytes
                     ));
+                    if pane.remote.is_some(){ui.label(if pane.remote_disconnected{"SFTP · disconnected"}else{"SFTP"});}
                     if pane.archive.is_some() {
                         ui.label("ZIP · read-only");
                     }
@@ -573,6 +573,9 @@ pub fn pane(
 }
 
 pub(crate) fn browsable(entry: &FileEntry, pane: &BrowserPane) -> bool {
+    if pane.remote.is_some() {
+        return entry.is_directory && !entry.is_symlink;
+    }
     if pane.archive.is_some() {
         return entry.is_directory;
     }

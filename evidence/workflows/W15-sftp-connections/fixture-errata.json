@@ -1,0 +1,8 @@
+{
+  "file": "tools/w15_server.py",
+  "before_sha256": "a7f43c8d96c7f8da4a2a0fa36b3f4b57bef72cc189c2dfb866097c0e14ce997a",
+  "after_sha256": "e9da416407af6b2922e8d27a1546479e1331bc7d4483b6c4e60e0ce6e46b408a",
+  "stage": "After production Rust started, before successful real protocol suite",
+  "reason": "Fixture root lstat incorrectly rejected its own root because the parent is outside the fixture. Allow ROOT itself while retaining descendant parent containment. Generated cases/protocol policies unchanged. Also authorize the separately generated encrypted test key; no personal keys accepted.",
+  "failure_instrumentation": "After production started: send raw filename bytes for non-Unicode rejection and add ambiguous-commit transport shutdown after actual os.replace. Existing protocol scenario names were frozen; instrumentation added during verification."
+}

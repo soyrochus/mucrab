@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "run": "artifacts/gui/W15-final-tested",
+  "binary_sha256": "c16a4940ea26d99fc2e0057aa3e085bc930aab0267b3184b0cb210fdd1ae1699",
+  "trace_sha256": "bef09ecff8fa12bb52bc5b16493b32ba06a154b9ddba1aa9c61ccb4a3e551135",
+  "actions": 44,
+  "scope": "Linux native first-use trust, session-only password auth, download Skip/Overwrite and upload Copy, hidden descendants, exact remote viewer clipboard, retained default-app opening, structured bookmark, tab duplication/close, disconnect/reconnect and surviving-tab refresh; normal exit",
+  "source_bytes_unchanged": true,
+  "config_and_app_log_no_secret": true,
+  "external_copy_retained": true,
+  "screenshot_sha256": {
+    "remote-duplicate-final.png": "a61ee4d19cc0c64f8054921b484c685eefb410c4f1cf49e6684192f537fb95c6",
+    "trust-final.png": "bbc999951947824fcf578712f3c3ffb69caf80c77e4cbc5f7ee12bd26fb78861",
+    "original-tab-refreshed-final.png": "3271b5c65653ece189db56ce0678eb4670f969d317591f606d157ae4e2bb047c",
+    "connected-final.png": "fe99de9e83ea34d1c520c94025d6dbe1cca838de95de512feb78fabf45983442",
+    "remote-open-final.png": "96c6a50c7f31491a944e8640094d0c925ca1bbd00ead57f009380d9ca3baa256",
+    "upload-review-final.png": "2df473b79c3597aca6d27e4b666a53b5b9b99b81dbd25f76287f84302f74a9cc",
+    "overwrite-review-final.png": "a279be010130020c629329561644f74226009a53d7299e39e74437059c29aa31",
+    "bookmark-remote-final.png": "c2eeacdd9eb4849bbcc63eb3102dbdd05fe6a14f77b49376afa41bbf1c42bf67",
+    "upload-result-final.png": "1aaddf30d2f55fa594c67564b20657804985277fa03a8a77c15afbb30549f879",
+    "remote-view-final.png": "1a68c58a67db88575adbf23514c8fab226db3b56e0eacd30c60eb043a7e35b81",
+    "reconnected-final.png": "a61ee4d19cc0c64f8054921b484c685eefb410c4f1cf49e6684192f537fb95c6",
+    "overwrite-final.png": "e8e2464333130e720dacc56afb7e4e383ab7b35f62d6146a8624c78ba19fa878",
+    "folder-final.png": "68dc956cfeb69c0118d8216d955d909df8b4f851d1bdbf23eba3036b0c5d9190",
+    "initial.png": "5fcd836fe139a8789a8ab8061e5da28ffcc0e96e7296aff8e47f5f27a061ea8e",
+    "skip-final.png": "12056fe80a2a3b7f2bf7f945341ee2615b9d69fc8390080ee7bc7893c7b23648",
+    "disconnected-final.png": "b534bd20e5239563d679d8b5b274f04e223e0cf3b1f4255de39e95204f6dea93",
+    "history-final.png": "f947803e663320294c0cc033e57aeecdcdc29c87149f3f1b8299c05bbd82a074"
+  },
+  "macos": "pending"
+}

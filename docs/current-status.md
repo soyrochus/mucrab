@@ -2,6 +2,53 @@
 
 [Back to the README](../README.md).
 
+**W15 — SFTP connections and transfers** is implemented and Linux-verified within
+its bounded contract. Saved non-secret profiles back typed remote tabs/history/
+bookmarks. Host keys are checked before authentication, first-use trust is
+explicit, changed keys fail, and trust/profile changes during authentication
+prevent a stale connection from becoming active. Password and key-file/passphrase
+authentication run on workers. Save changed profile settings before connecting;
+changing an endpoint disconnects its old sessions. Optional native credential
+storage has no plaintext fallback. Saved credentials are bound to endpoint, user
+and authentication method; changing those settings cannot reuse the old secret. Linux uses bounded Secret Service calls and
+refuses locked stores without prompting to unlock; macOS Keychain is implemented
+but awaits native verification.
+
+Local↔SFTP copies review endpoints/names/policy, include hidden descendants, reject
+links/special files, pin available source/destination metadata and use unique
+staging. Publication checks close/length; Overwrite requires advertised POSIX
+rename, while Skip preserves existing destinations. Source loss/delete-first
+fallback and automatic retry of uncertain commits are prohibited. Progress,
+pause/cancel and origin-tab-only outcomes reuse the single mutation worker.
+Listings use separate generation-tagged workers and serialized protocol exchanges
+on each SSH session, releasing the gate between chunks and before pauses.
+
+Remote Open/View downloads one private non-executable retained file (512 MiB max),
+preserving its leaf name and checking before/after metadata. External copies remain
+readable after exit; edits never update the server. Viewer limits still apply.
+Remote archives, search, clipboard export, remote↔remote copying, move/rename/
+delete/New Folder and metadata edits are unsupported. No SSH-agent/MFA/proxy or
+custom SSH-config execution is implemented.
+
+Linux verification: **106 Rust tests**, **51 Python tests**, four explicitly
+separate W15 service-test executions across three distinct tests, real password/
+plain-key/encrypted-key authentication, frozen **32 + 16** scoped original/native
+provider listing/stream cases with zero differences, actual bytes/hashes, staged
+failure/cancellation/timeout/uncertain-publication checks and isolated native
+credential save/read/delete/unavailable behavior. Native checks cover trust,
+both transfer directions, text clipboard/view/external opening, bookmarks, tab
+duplication/close, disconnect/reconnect and normal exit. Fresh W07–W14 native
+regressions pass on the preceding W15 candidate; final trust/credential adjustments
+have their own final workspace/service/native receipts. Historical receipts are
+not relabeled as final-source execution.
+
+Mac build/Keychain/UI, full original connection/job UI parity, active-tab closure
+or app-close during an active remote transfer through native input, and broader
+server/IPv6/agent-free key-format interoperability remain open acceptance gates.
+The server fixture needed documented root/key corrections and later failure
+instrumentation after Rust began; no fully blind server/GUI fixture claim is made.
+See [W15 evidence](../evidence/workflows/W15-sftp-connections/README.md).
+
 **W13 — Properties and permissions** and **W14 — Built-in viewer** are implemented
 and Linux-verified. Alt+Enter captures focused-entry local/ZIP properties, including
 lstat link details, available timestamps, allocated size and numeric/named Unix

@@ -15,6 +15,7 @@ mod w11;
 mod w12;
 mod w13;
 mod w14;
+mod w15;
 use serde::{Deserialize, Serialize};
 use std::{
     io::{self, BufRead},
@@ -124,6 +125,15 @@ fn main() -> ExitCode {
             Ok(()) => ExitCode::SUCCESS,
             Err(e) => {
                 eprintln!("W11 probe unavailable: {e}");
+                ExitCode::from(2)
+            }
+        };
+    }
+    if arguments.as_slice() == ["--adapter-w15"] {
+        return match w15::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(e) => {
+                eprintln!("W15 test adapter failed: {e}");
                 ExitCode::from(2)
             }
         };

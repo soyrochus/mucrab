@@ -63,3 +63,5 @@ mod viewer;
 pub use viewer::{
     Preview, PreviewContent, PreviewImage, TextDocument, ViewRequest, ViewerLease, decode_preview,
 };
+
+pub mod sftp;

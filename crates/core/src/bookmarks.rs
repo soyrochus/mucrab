@@ -77,6 +77,11 @@ fn validate(d: &Document) -> io::Result<()> {
             return Err(invalid("Invalid bookmark identity or label"));
         }
         match &e.location {
+            PaneLocation::Sftp(loc) => {
+                if crate::sftp::RemoteLocation::new(&loc.profile, &loc.path)? != *loc {
+                    return Err(invalid("Invalid remote bookmark"));
+                }
+            }
             PaneLocation::Local(p) => {
                 if !valid_path(p) {
                     return Err(invalid("Absolute local bookmark path required"));

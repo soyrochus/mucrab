@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "run": "artifacts/gui/W15-regression-W13-W14",
+  "scope": "Both-pane native local properties/metadata editing, hidden/link-safe folder totals, exact Unicode/newline text clipboard and find, image fit/100%/zoom/pan, dark/narrow layout, ZIP read-only properties and viewer-to-external retained handoff",
+  "observations": {
+    "left-before": {
+      "mode": 1440,
+      "atime_ns": 1792273936197362326,
+      "mtime_ns": 1792273936183795803,
+      "links": 1
+    },
+    "left-after": {
+      "mode": 1504,
+      "atime_ns": 1792273936197362326,
+      "mtime_ns": 1792326896123456789,
+      "links": 1
+    },
+    "right-after": {
+      "mode": 500,
+      "atime_ns": 1792273936183911682,
+      "mtime_ns": 1792273936184001381,
+      "links": 2
+    }
+  },
+  "source_hashes_unchanged": true,
+  "external_copy_survives_exit": true,
+  "viewer_leases_removed": true,
+  "binary_sha256": "25d40d9b1324cbe9c835adc40a339fc8903d113aaea719aa2b5b419a5d29e90a",
+  "trace_sha256": "38a7224b2e6485a2233a15d8069d4631fb22a03997a1c4d974accb111204cc82",
+  "trace_stage": "Recorded after implementation; includes initial unsuccessful dark-theme clicks followed by verified corrected captures",
+  "verified_dark_captures": [
+    "dark-application",
+    "actual-text-dark",
+    "actual-image-dark",
+    "image-dark-narrow"
+  ],
+  "screenshot_sha256": {
+    "dark-application.png": "5d3096b37c4b857075a3e7b51e484eb7518e460132ba1913a56d4b04b72b2a34",
+    "right-properties.png": "eed3d1dd3a433dc9efdb8e8133e6a5d0859c11a62ec10dedbf02cdc2534ec12e",
+    "image-actual-size.png": "c503ff6a46b389266f823cc36b3e719e905da903eec80c8dbe437d64b5392b0a",
+    "image-viewer.png": "ef7f72bf8bed62d199f8458f5fd9d83fe803f451aa5e8e9210973c69afddba2c",
+    "viewer-closed.png": "d462e594c54b4bc29e3ee374b33c0bdd9688b1ab769aeb4a121d558c71beec80",
+    "zip-properties.png": "319ce1cf5d1616294ec3b47c7a6f03c95dd9f20346295f50dda598a94155ae6b",
+    "viewer-narrow.png": "82b1dfd288c9425a9c82844374c872b0adc9c3b3e0500cb0005d957c45771aae",
+    "text-dark.png": "d074b74849d29e566aeecc105eed3f30f6cf24639034171c16de47775374c09c",
+    "right-metadata-review.png": "0105e11bfe9a216c64fc6c51ca326acdbacf7de70824c1e5f9d0c6aa5a6ff16d",
+    "actual-text-dark.png": "f40c216031ca0d26c05d26f7a353172c1394a0d203540b7f7cd5c07d507f19cf",
+    "text-copied.png": "702eaa869fe2409de10c978bcf8237edb46bd8955a9ff5f77650cd81db161c07",
+    "local-properties.png": "40e225174de12a9edbac67d5b597ebe8eba1b58269b6d2f63d61a348dfb1f139",
+    "metadata-applied.png": "f55514eea8330b3a7e9c05ed3e6ff372b4699f51650284efcbecaf3557b41d02",
+    "image-dark.png": "e3807aab01e4d788559dec08de8625efe03d90eeabbecf0643df230acc51d5e8",
+    "metadata-review.png": "d2fbbb1dd5cd41f418ab078cc31efa5d853517c5568d1d39ca0b356fabc434c5",
+    "initial.png": "6b7ff73fee86b13a8d2c319365444443966a6c4b4502fcb99cb83be53df42e4e",
+    "text-find.png": "23c3f9d5917f62d31e8851888f02ad427ac972de1b5e9ce7ffe3394961da2a7f",
+    "archive-external-open.png": "2ac3d6a385be34d7c662441e5da3b00fe4d2a01d14c4356b7d0b7b6a185e5e20",
+    "zip-viewer.png": "e0dd78b8df7f597553794ae3b6f7a0626d9975b31a0f503da2baa7c0e466fc3d",
+    "text-viewer.png": "255a840c624c43623616c38bea4650081d6d132f2a742a2164b3481dbe51748a",
+    "actual-image-dark.png": "75f15448745246c067e2bd6ab9937bf6faebfe44c5116250f7e4e33ee9866924",
+    "image-closed.png": "f70440b64fbac591c519e96c990df99251ea0c730def0ff944d58010d0ac7ebf",
+    "folder-total.png": "70a08384472c06d956d685e0e28b38291616df29d4801bfdcfcce3b3d6722da9",
+    "right-metadata-applied.png": "6122fed16443da9ec40bfea1b4c3865d3d977f5f1315b4715429f459e9f2f41f",
+    "image-pan.png": "c65f88ecfc6f0dc6dd4e98d4f2878c18d866a266d5cdfeac5ac9aedcf8e54161",
+    "image-dark-narrow.png": "265b5929d96bf02dacc61c343d859b3ee3783c416d22f59a38ba58c62c4796f3",
+    "image-fit.png": "c65f88ecfc6f0dc6dd4e98d4f2878c18d866a266d5cdfeac5ac9aedcf8e54161",
+    "folder-properties.png": "f8fc8659129f297d9045788a2ea88ce5a4b128192eccca3487638f546c2820a1",
+    "image-zoom.png": "b7b910da7fa9d28c977871a5192cf82fdb0f8f958e1d35238b03d8da365e543a"
+  },
+  "actions": 79,
+  "macos": "pending",
+  "font_limit": "Bundled Linux font lacks some CJK glyphs; decoded content and clipboard remain exact"
+}

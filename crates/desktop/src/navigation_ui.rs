@@ -328,6 +328,7 @@ impl MuCrabApp {
 
 fn location_label(location: &PaneLocation) -> String {
     match location {
+        PaneLocation::Sftp(r) => r.display(),
         PaneLocation::Local(p) => p.display().to_string(),
         PaneLocation::Zip(z) => z.display_path().display().to_string(),
     }

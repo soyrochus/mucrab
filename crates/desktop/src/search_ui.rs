@@ -171,6 +171,13 @@ impl Search {
 }
 impl MuCrabApp {
     pub(super) fn open_search(&mut self) {
+        if self.panes[usize::from(self.active == PaneSide::Right)]
+            .remote
+            .is_some()
+        {
+            self.remote.message = Some("Remote search is unsupported; choose a local pane.".into());
+            return;
+        }
         if !self.search.initialized {
             let i = usize::from(self.active == PaneSide::Right);
             if self.panes[i].archive.is_some() {

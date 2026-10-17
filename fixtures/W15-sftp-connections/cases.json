@@ -1,0 +1,258 @@
+[
+  {
+    "id": "15001-0",
+    "name": "00-café.txt",
+    "size": 131072,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-1",
+    "name": "01-data.bin",
+    "size": 1,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-2",
+    "name": "02-file.txt",
+    "size": 65537,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-3",
+    "name": "03-.hidden",
+    "size": 0,
+    "policy": "skip",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-4",
+    "name": "04-.hidden",
+    "size": 0,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-5",
+    "name": "05-café.txt",
+    "size": 131072,
+    "policy": "skip",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15001-6",
+    "name": "06-.hidden",
+    "size": 32768,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-7",
+    "name": "07-.hidden",
+    "size": 32768,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15001-8",
+    "name": "08-file.txt",
+    "size": 0,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-9",
+    "name": "09-.hidden",
+    "size": 1,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15001-10",
+    "name": "10-file.txt",
+    "size": 131072,
+    "policy": "skip",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-11",
+    "name": "11-café.txt",
+    "size": 32768,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-12",
+    "name": "12-file.txt",
+    "size": 131072,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15001-13",
+    "name": "13-data.bin",
+    "size": 131072,
+    "policy": "skip",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-14",
+    "name": "14-file.txt",
+    "size": 1,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-15",
+    "name": "15-data.bin",
+    "size": 32767,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-16",
+    "name": "16-file.txt",
+    "size": 1,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15001-17",
+    "name": "17-file.txt",
+    "size": 65537,
+    "policy": "skip",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15001-18",
+    "name": "18-data.bin",
+    "size": 32767,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-19",
+    "name": "19-café.txt",
+    "size": 0,
+    "policy": "skip",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-20",
+    "name": "20-.hidden",
+    "size": 65537,
+    "policy": "skip",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-21",
+    "name": "21-café.txt",
+    "size": 32767,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-22",
+    "name": "22-data.bin",
+    "size": 0,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-23",
+    "name": "23-data.bin",
+    "size": 0,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-24",
+    "name": "24-.hidden",
+    "size": 32768,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-25",
+    "name": "25-data.bin",
+    "size": 65537,
+    "policy": "skip",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-26",
+    "name": "26-file.txt",
+    "size": 65537,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-27",
+    "name": "27-file.txt",
+    "size": 65537,
+    "policy": "skip",
+    "existing": true,
+    "direction": "download"
+  },
+  {
+    "id": "15001-28",
+    "name": "28-data.bin",
+    "size": 65537,
+    "policy": "overwrite",
+    "existing": false,
+    "direction": "upload"
+  },
+  {
+    "id": "15001-29",
+    "name": "29-data.bin",
+    "size": 32767,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-30",
+    "name": "30-data.bin",
+    "size": 0,
+    "policy": "skip",
+    "existing": false,
+    "direction": "download"
+  },
+  {
+    "id": "15001-31",
+    "name": "31-café.txt",
+    "size": 32768,
+    "policy": "overwrite",
+    "existing": true,
+    "direction": "upload"
+  }
+]

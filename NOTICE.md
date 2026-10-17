@@ -167,3 +167,26 @@ for strict JPEG decoding, and crc32fast **1.5.2** (MIT OR Apache-2.0) for comple
 PNG CRC checks. [Preserved codec notices](third_party/viewer-codecs/README.md)
 include exact published license files and provenance hashes. No dependency version
 changed; release packaging retains all transitive notices and vendored sources.
+
+
+## SFTP connections and transfers (W15)
+
+The connection, SFTP provider, credential and temporary-copy boundaries were
+recovered from the pinned muCommander binaries. Upstream attribution/GPL notices
+above apply; [W15 evidence](evidence/workflows/W15-sftp-connections/README.md)
+distinguishes provider/stream comparisons from native trust/staging differences.
+
+SSH transport uses ssh2 **0.9.6** (MIT OR Apache-2.0) and libssh2-sys **0.3.3**,
+including libssh2's BSD notice. Bounded SFTP v3 framing is muCrab-authored.
+Native credentials use dbus-secret-service **4.1.0** on Linux and keyring **3.6.3**
+with Apple Keychain on macOS (MIT OR Apache-2.0). zeroize **1.9.0**, base64 **0.22.1**
+and percent-encoding **2.3.2** preserve their published licenses. macOS additionally
+builds OpenSSL **3.6.3** through locked openssl-src **300.6.1+3.6.3**; Linux uses
+system OpenSSL3/libdbus. [SFTP notices](third_party/sftp/README.md) preserve exact
+license files and checksums. Release source/notices collection includes all
+locked transitive dependencies and bundled OpenSSL notices.
+
+The disposable test server uses Paramiko **4.0.0** only in an external test virtual
+environment; it is not an application dependency or bundled runtime. Original
+Java/JSch binaries likewise remain test-only. No personal hosts/keys/credentials
+are required by the fixture suite.

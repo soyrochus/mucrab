@@ -1,0 +1,265 @@
+[
+  {
+    "op": "click",
+    "x": 118,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 180,
+    "y": 233
+  },
+  {
+    "op": "click",
+    "x": 65,
+    "y": 87
+  },
+  {
+    "op": "click",
+    "x": 270,
+    "y": 295
+  },
+  {
+    "op": "text",
+    "text": "w15-disposable-only"
+  },
+  {
+    "op": "click",
+    "x": 252,
+    "y": 386,
+    "wait": 1,
+    "capture": "trust-final"
+  },
+  {
+    "op": "click",
+    "x": 390,
+    "y": 406,
+    "wait": 1,
+    "capture": "connected-final"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 165
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "wait": 1
+  },
+  {
+    "op": "click",
+    "x": 327,
+    "y": 450,
+    "wait": 2,
+    "capture": "skip-final"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "wait": 1,
+    "capture": "overwrite-review-final"
+  },
+  {
+    "op": "click",
+    "x": 369,
+    "y": 345
+  },
+  {
+    "op": "click",
+    "x": 327,
+    "y": 450,
+    "wait": 2,
+    "capture": "overwrite-final"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 165,
+    "count": 2,
+    "wait": 1,
+    "capture": "folder-final"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Left"
+    ],
+    "wait": 1,
+    "capture": "history-final"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "b"
+    ],
+    "capture": "bookmark-remote-final"
+  },
+  {
+    "op": "click",
+    "x": 450,
+    "y": 374
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "Remote root"
+  },
+  {
+    "op": "click",
+    "x": 432,
+    "y": 399
+  },
+  {
+    "op": "click",
+    "x": 1104,
+    "y": 111,
+    "wait": 1
+  },
+  {
+    "op": "click",
+    "x": 650,
+    "y": 258
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "wait": 1,
+    "capture": "upload-review-final"
+  },
+  {
+    "op": "click",
+    "x": 327,
+    "y": 450,
+    "wait": 2,
+    "capture": "upload-result-final"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 211
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "wait": 1,
+    "capture": "remote-view-final"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "c"
+    ]
+  },
+  {
+    "op": "assert_clipboard",
+    "text": "SFTP document café\n"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ],
+    "wait": 1,
+    "capture": "remote-open-final"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "Shift_L",
+      "t"
+    ],
+    "capture": "remote-duplicate-final"
+  },
+  {
+    "op": "click",
+    "x": 118,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 180,
+    "y": 233
+  },
+  {
+    "op": "click",
+    "x": 330,
+    "y": 386,
+    "wait": 1,
+    "capture": "disconnected-final"
+  },
+  {
+    "op": "click",
+    "x": 265,
+    "y": 295
+  },
+  {
+    "op": "text",
+    "text": "w15-disposable-only"
+  },
+  {
+    "op": "click",
+    "x": 253,
+    "y": 386,
+    "wait": 1,
+    "capture": "reconnected-final"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "w"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 543,
+    "y": 111,
+    "wait": 1,
+    "capture": "original-tab-refreshed-final"
+  },
+  {
+    "op": "click",
+    "x": 20,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 62,
+    "y": 399
+  },
+  {
+    "op": "await_exit"
+  }
+]

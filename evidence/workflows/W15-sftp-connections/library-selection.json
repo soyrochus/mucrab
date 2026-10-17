@@ -1,0 +1,14 @@
+{
+  "ssh2": "0.9.6",
+  "keyring": "3.6.3",
+  "selection": "ssh2 verified handshake/auth/channel timeouts; bounded SFTP v3 framing over subsystem channels to require advertised posix-rename rather than generic advisory flags",
+  "probe": "Library probe source/result alongside this file; unprivileged disposable OpenSSH endpoint",
+  "result": "Host key before authentication; key-file auth; generic rename preserves old file but cannot overwrite; advertised posix rename replaces without client unlink; socket shutdown interrupts stalled read in100ms; default native credential store unavailable",
+  "documentation": [
+    "https://docs.rs/ssh2/0.9.6/ssh2/struct.Session.html",
+    "https://docs.rs/ssh2/0.9.6/ssh2/struct.Sftp.html",
+    "https://docs.rs/keyring/3.6.3/keyring/"
+  ],
+  "pending": "Encrypted keys/password/isolated credential service and full production failures require executable gates",
+  "followup": "Final Linux adapter uses the pinned dbus-secret-service4.1.0 directly: finite DBus call timeout and five-second prompt maximum, refusing locked collections/items. The keyring adapter remains macOS-only. Added macOS vendored OpenSSL3.6.3 to avoid a Homebrew runtime requirement; native Mac build/Keychain remain pending."
+}
