@@ -4,14 +4,14 @@
   "tool_manifest_sha256": "7ec4e0f884fa459fbbc8caa0710876d37e1b079332279f216cd862f04e14c0c7",
   "npm_lock_sha256": "d2b2482ce40b32ae748904c8e0c0466d9008283aad873205c13921b77cc41a8b",
   "host": {
-    "system": "Darwin",
-    "architecture": "arm64"
+    "system": "Linux",
+    "architecture": "x86_64"
   },
   "versions": {
-    "node": "v24.12.0",
-    "npm": "11.7.0",
-    "java": "openjdk version \"21.0.10\" 2026-01-20\nOpenJDK Runtime Environment Homebrew (build 21.0.10)\nOpenJDK 64-Bit Server VM Homebrew (build 21.0.10, mixed mode, sharing)",
-    "javap": "21.0.10",
+    "node": "v24.15.0",
+    "npm": "12.0.2",
+    "java": "openjdk version \"25.0.4.1\" 2026-08-18\nOpenJDK Runtime Environment (build 25.0.4.1+1-1-26.04.4-Ubuntu)\nOpenJDK 64-Bit Server VM (build 25.0.4.1+1-1-26.04.4-Ubuntu, mixed mode, sharing)",
+    "javap": "25.0.4.1",
     "rea": "6.5.0",
     "cfr": "CFR 0.152"
   },
@@ -25,7 +25,7 @@
       "stdout": {
         "path": "artifacts/analysis/toolchain/node-version.stdout",
         "size_bytes": 9,
-        "sha256": "e38e4d731392482b901fbedb7e5d7c97762d1769b314b0e333756b03be496bf1"
+        "sha256": "c642a0de246dcdc6c51318fe449646fc5067b981a8d09e9ccdb8141a5756339a"
       },
       "stderr": {
         "path": "artifacts/analysis/toolchain/node-version.stderr",
@@ -42,7 +42,7 @@
       "stdout": {
         "path": "artifacts/analysis/toolchain/npm-version.stdout",
         "size_bytes": 7,
-        "sha256": "d7c27e39e223d95b17ed257f80e9e4a27633549a13b62a189d3a17d05f9b1816"
+        "sha256": "2013b258fd4defb17ad242f1c447dd734dd9e1be76761494b4a9a3b6f2797241"
       },
       "stderr": {
         "path": "artifacts/analysis/toolchain/npm-version.stderr",
@@ -63,8 +63,8 @@
       },
       "stderr": {
         "path": "artifacts/analysis/toolchain/java-version.stderr",
-        "size_bytes": 161,
-        "sha256": "e1fed2662f196c786b9a0abe86ba4628287f56a0f76e9fec561a783e6aa40754"
+        "size_bytes": 184,
+        "sha256": "b8656f4afb66367614199886688652dc18193995395b8feefe3bd7dc3b32ffb6"
       }
     },
     "javap": {
@@ -75,8 +75,8 @@
       "exit_code": 0,
       "stdout": {
         "path": "artifacts/analysis/toolchain/javap-version.stdout",
-        "size_bytes": 8,
-        "sha256": "7dc9cb4ae9fdddb2654563d03e7339e07bfe46ea1e29255b27febae645be5007"
+        "size_bytes": 9,
+        "sha256": "a3ef4124b3daa971bb8db118527d6ff41871bb42908f5cb4b994f82a1bb9d862"
       },
       "stderr": {
         "path": "artifacts/analysis/toolchain/javap-version.stderr",
@@ -132,8 +132,8 @@
       "exit_code": 0,
       "stdout": {
         "path": "artifacts/analysis/toolchain/rea-jar-inventory.stdout",
-        "size_bytes": 1757228,
-        "sha256": "f055a4bb4dbf0f0603b878c2a00621eea28dac9683d0e38c448e6f209d5082da"
+        "size_bytes": 1757212,
+        "sha256": "601a3bae3af80c28c66de3a7ba29040d0efc79800997a32e9e7dc96b805ec5b1"
       },
       "stderr": {
         "path": "artifacts/analysis/toolchain/rea-jar-inventory.stderr",
@@ -152,8 +152,8 @@
       "exit_code": 1,
       "stdout": {
         "path": "artifacts/analysis/toolchain/rea-jar-android-boundary.stdout",
-        "size_bytes": 537,
-        "sha256": "3b4a9651dde6f4fd6a991a07a1c9b25de2fc381e9a17774e9d8f2b7ad75f36f4"
+        "size_bytes": 529,
+        "sha256": "f22c05539959f8102881b9c990334e7e78a689fdbc31f7fa98f6c9422e0783dd"
       },
       "stderr": {
         "path": "artifacts/analysis/toolchain/rea-jar-android-boundary.stderr",
@@ -174,8 +174,8 @@
       "exit_code": 0,
       "stdout": {
         "path": "artifacts/analysis/toolchain/javap-sorter.stdout",
-        "size_bytes": 18181,
-        "sha256": "4d85a566a765019793bd1a2006fff44459f727e2e87e9a7b53c9131bc486753a"
+        "size_bytes": 18911,
+        "sha256": "b1aea7f80dcba0e49a902d19038be0c75c80033ad63630f320916260e1c6cd39"
       },
       "stderr": {
         "path": "artifacts/analysis/toolchain/javap-sorter.stderr",
@@ -210,7 +210,7 @@
     }
   },
   "rea_jar_inventory": {
-    "evidence_id": "ev_8c5b9949d0ce9ba23dcee23e8e2c2b625d90f8dad9ba098f8c0efb0f7294afaa",
+    "evidence_id": "ev_0e5e66fb1a3884b9ae6f29ab829b27eb30b2080e56ace6ab8472acb5c14a95b8",
     "provider": {
       "id": "rea-artifact-graph",
       "name": "REA safe artifact graph provider",

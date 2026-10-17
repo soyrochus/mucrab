@@ -1,0 +1,367 @@
+{
+  "status": "passed",
+  "scope": "W04 final local development checks; scoped comparisons and GUI receipts separate",
+  "source_revision": "027078f6f1b408ae32f5d37a168e7771380f0e26",
+  "run": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa",
+  "commands": {
+    "format": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/format.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/format.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "clippy": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/clippy.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/clippy.stderr",
+        "sha256": "4f27ac380b22e1d975eee20ce727fa8cbc09061177f6253af0777fd4de7b7506"
+      }
+    },
+    "rust-tests": {
+      "argv": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/rust-tests.stdout",
+        "sha256": "edeed0a9679d517baa08cac4a8fe1c083d28dfbb7871e85340511c4ddd2d5502"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/rust-tests.stderr",
+        "sha256": "f17dd0cbb96050f13f50085206e912afab40cc888e2dbbc34da9189925c3f6a5"
+      }
+    },
+    "python-tests": {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/python-tests.stdout",
+        "sha256": "0706812ba01af4df65161c64bd077bc9fb917c8265560e7d6a4255c66710714a"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/python-tests.stderr",
+        "sha256": "fd5dcf99bd0dcb9ecbb7c0c18a0c3c02c788d1a9ffcbd29a46d61d2a942ffd8e"
+      }
+    },
+    "build": {
+      "argv": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/build.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/build.stderr",
+        "sha256": "a41051563a4cb5fc1b1bcdd9aa0ba28ca80f7736d629d90cc138218756e8e3a9"
+      }
+    },
+    "reference-integrity": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/acquire_mucommander.py",
+        "--verify-only"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/reference-integrity.stdout",
+        "sha256": "1e042a78c8261ea910b7d799478b97b604be93e5e338f8d7eae09d99d83651a8"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/reference-integrity.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "native-without-java": {
+      "argv": [
+        "env",
+        "PATH=/nonexistent",
+        "{repository}/target/debug/mucrab",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/native-without-java.stdout",
+        "sha256": "e6cbaadd6bd34dfbbc820f23c7db14e573f55dc6dc489fd81174c18151f71f9b"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/native-without-java.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "native-linkage": {
+      "argv": [
+        "ldd",
+        "target/debug/mucrab"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/native-linkage.stdout",
+        "sha256": "2ac3e4f143834cdb19a8d82ca0b33c6988d0a312b41c589e085225d5872ce8d4"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/native-linkage.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "java-version": {
+      "argv": [
+        "java",
+        "-version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/java-version.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/java-version.stderr",
+        "sha256": "b8656f4afb66367614199886688652dc18193995395b8feefe3bd7dc3b32ffb6"
+      }
+    },
+    "rust-version": {
+      "argv": [
+        "rustc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/rust-version.stdout",
+        "sha256": "8dc912acd5bfeafc70b01b1d2a2afb0844afa02f5dba2f1ae8d5c212d005afb6"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/rust-version.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "cargo-version": {
+      "argv": [
+        "cargo",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/cargo-version.stdout",
+        "sha256": "1f88eaf7fe1aaec83184752cf4c944cd22f00184136ff36a3e4c318cc60ef566"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-validation-20261016T195411Z-f3f110fa/cargo-version.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "rust_tests": 21,
+  "python_tests": 30,
+  "source_inputs": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "334ef83f41db18162f9079e59c5b3f2c8a62eaf5941daff0b294bbbeaa31a49d"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "d8d38b8ccd8e742e4f093f595cf729d8541c28bd5af6d6e213b0aebf6786e9d0"
+    },
+    {
+      "path": "NOTICE.md",
+      "sha256": "e8ccc18b2e4ee7fb6b61ddefde20b28548898f46e13c43cb819c0eab8e27f3a6"
+    },
+    {
+      "path": "crates/compare/src/main.rs",
+      "sha256": "8d00c867e3d2e2d78115afd805bd4ac73ac6f14a828ef3d5ad6b87d764623d10"
+    },
+    {
+      "path": "crates/compare/src/w02.rs",
+      "sha256": "a90d2b0fc5bb28ba3d36a7b597bab91fad2b7f00529f7a0e500eb7c4c34d04c3"
+    },
+    {
+      "path": "crates/compare/src/w02b.rs",
+      "sha256": "1e283d2dee8dee3d7f1f278a6eb7aa3b022611b82784a33217d928866ea8e00b"
+    },
+    {
+      "path": "crates/compare/src/w02c.rs",
+      "sha256": "c43f503bfd5f5d2d6891cc7fe74b3acc3f721e7bbce6807554a37accb909a95a"
+    },
+    {
+      "path": "crates/compare/src/w03.rs",
+      "sha256": "3d771d02c47d1f2ed08dc90f50ff27beb2e12cf307729183c43951686c592ab8"
+    },
+    {
+      "path": "crates/compare/src/w04.rs",
+      "sha256": "211affbceee2d793613329db73e8d4da92a66050d250228a5e28e9ee9ca80c3f"
+    },
+    {
+      "path": "crates/compare/tests/readiness.rs",
+      "sha256": "865d3bf51a809859f3944403111f469c36746ed16dd88fbc42eca45717c50d80"
+    },
+    {
+      "path": "crates/core/src/browsing.rs",
+      "sha256": "75fbd61b127512859a63c2d9cb950676e2f6738f8c93dbfd798e7a50bae7c6af"
+    },
+    {
+      "path": "crates/core/src/copying.rs",
+      "sha256": "c8b04cef92be23fb01de23baa08f202dce6c119caf5f8f8d939aadba0179f524"
+    },
+    {
+      "path": "crates/core/src/java_case_data.rs",
+      "sha256": "47bf627ab3cb7e29eebdf2728412a1276fff2fc87b535ed80623cfe7af2fb683"
+    },
+    {
+      "path": "crates/core/src/lib.rs",
+      "sha256": "56f1c02e53add0c4f1e404fd9d399a5ed49df15b893bb557be83d8690b7bd462"
+    },
+    {
+      "path": "crates/core/src/moving.rs",
+      "sha256": "2ad9f0213ebd922b3aad324e5e5b10b252684c4193730924d34ad11ef151fe5c"
+    },
+    {
+      "path": "crates/core/src/selection.rs",
+      "sha256": "2be6392fdf855365abf261d3c936b434ff8a778d2cd69b0a803c46a64050ae94"
+    },
+    {
+      "path": "crates/core/src/sorting.rs",
+      "sha256": "ae9abb2213e7da9d42a705998a2ca4358a13c0d952bd82cd737cc99db64c09b8"
+    },
+    {
+      "path": "crates/core/tests/copying.rs",
+      "sha256": "8a03d2a772c305544621b6e7170a772612acc1e751bfcabd7fa162d4827fae2e"
+    },
+    {
+      "path": "crates/core/tests/moving.rs",
+      "sha256": "81ab36921b7a09fbab43f8931d8a4da53ed1c27dfff9ce2e23dac18b756ca752"
+    },
+    {
+      "path": "crates/core/tests/navigation.rs",
+      "sha256": "80bcac62b57a0fc5d5ff24aeccb4555149fd774ba80add42ad408fd48792deae"
+    },
+    {
+      "path": "crates/desktop/src/app.rs",
+      "sha256": "80e58d86d922fabc133e83ebfa17b38769af2e67b615c970692c22bd5713a426"
+    },
+    {
+      "path": "crates/desktop/src/main.rs",
+      "sha256": "9b9993d0bae99d1b8641c81034c1466061f42402a8b80001790b8133f0d590fb"
+    },
+    {
+      "path": "crates/compare/Cargo.toml",
+      "sha256": "4b1888c089cead6f1d6994198bb9e695a23456c2879ab43f137c373ef17ec15f"
+    },
+    {
+      "path": "crates/core/Cargo.toml",
+      "sha256": "8e7d98cff18eb493b8d8af5559acaaf44c6b3a3a6c57d9ff4973690cb7c0643d"
+    },
+    {
+      "path": "crates/desktop/Cargo.toml",
+      "sha256": "cd77b8c08d9de43830b8ba13b0089f0f5da08d98b1dedb256e3ae229aa9b2cbb"
+    },
+    {
+      "path": "tools/w04_inspect.py",
+      "sha256": "3008b617818aeb0609f990b9d8092b6eb4d41aa099b5b0df053842507aea0a78"
+    },
+    {
+      "path": "tools/w04.py",
+      "sha256": "dcc0f708c37493b74efd6cc48f38230ed791580c2be29a0fdd9d866322ce942c"
+    },
+    {
+      "path": "tools/w04_gui.py",
+      "sha256": "1aadf18ae5ec881f79c3400391fa7257ad9879243ad98f98a079d88bd0e98b7a"
+    },
+    {
+      "path": "tools/test_w04.py",
+      "sha256": "85a5977d7e2dba90ea046e5e74a088a7c6ce17ccb72cbcecf4836415cda38b9a"
+    },
+    {
+      "path": "tools/w04_symlink_probe.py",
+      "sha256": "e5562b1a176b33416572c7e84aac60c73f4d5942718bd09de0a785b0e950f872"
+    },
+    {
+      "path": "tools/java/W04Oracle.java",
+      "sha256": "c3131d011fd5e608efa3d4c02eaa74d74959f5627fae4fcae7087d87c10ef481"
+    },
+    {
+      "path": "tools/java/W04GuiProbe.java",
+      "sha256": "1ccec758af09917421b684e0754e6ee9a4e7c82440221885f0c17f09483a9b5e"
+    },
+    {
+      "path": "tools/linux_gui.py",
+      "sha256": "22914dd769c229c6982c1e142b9fbd2da0470d214863161efd52cb2c0e0223b2"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    },
+    {
+      "path": "fixtures/W04-move-rename/cases.json",
+      "sha256": "28c137d51bc535192105c07080164d3712b06a19f11dc579ddf22af6a0ab1bc0"
+    },
+    {
+      "path": "fixtures/W04-move-rename/native-gui-actions.json",
+      "sha256": "307c9adc50fea8540f9797f6b2b0af66615e2ebab0f391d13919b08feb412ffe"
+    },
+    {
+      "path": "fixtures/W04-move-rename/symlink-fallback.json",
+      "sha256": "852996c19debcbe1d3441f1cabab699f5c6fbdae8caa1aae42da17fd360d778b"
+    },
+    {
+      "path": "fixtures/W04-move-rename/gui.json",
+      "sha256": "fb96385d9888518de09dad252a75ae7c3ed8cfe60b3e997253458689ea42ff73"
+    }
+  ],
+  "native_binary": {
+    "path": "target/debug/mucrab",
+    "sha256": "342ac9a741a07438ae494b3c411a69c825a52f0fd3033c6e97fd09e7011aeb50"
+  },
+  "native_runtime": "PATH=/nonexistent and no JVM linkage",
+  "cargo_lock_unchanged": true,
+  "reference_unchanged": true
+}

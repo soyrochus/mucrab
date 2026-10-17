@@ -1,0 +1,12 @@
+[{"stage":"original-initial","panes":[{"visible":["..","keep.txt","sample.zip"],"focused":"..","marked":[]},{"visible":["..","folder","return.zip","root.txt"],"focused":"..","marked":[]}]},
+{"stage":"original-zip-root","panes":[{"visible":["..","folder","root.txt"],"focused":"..","marked":[]},{"visible":["..","folder","return.zip","root.txt"],"focused":"..","marked":[]}]},
+{"stage":"original-zip-hidden","panes":[{"visible":["..","folder",".hidden","root.txt"],"focused":"..","marked":[]},{"visible":["..","folder",".hidden","return.zip","root.txt"],"focused":"..","marked":[]}]},
+{"stage":"original-zip-child","panes":[{"visible":["..","empty",".hidden-child","child.txt"],"focused":"..","marked":[]},{"visible":["..","folder",".hidden","return.zip","root.txt"],"focused":"..","marked":[]}]},
+{"stage":"original-selected-review","panes":[{"visible":["..","folder",".hidden","root.txt"],"focused":"root.txt","marked":["folder","root.txt"]},{"visible":["..","folder",".hidden","return.zip","root.txt"],"focused":"..","marked":[]}]},
+{"stage":"original-selected-complete","panes":[{"visible":["..","folder",".hidden","root.txt"],"focused":"root.txt","marked":[]},{"visible":["..","folder",".hidden","return.zip","root.txt"],"focused":"..","marked":[]}]},
+{"stage":"original-whole-review","panes":[{"visible":["..",".hidden","keep.txt","sample.zip"],"focused":"sample.zip","marked":["sample.zip"]},{"visible":["..","folder",".hidden","return.zip","root.txt"],"focused":"..","marked":[]}]},
+{"stage":"original-whole-complete","panes":[{"visible":["..",".hidden","keep.txt","sample.zip"],"focused":"sample.zip","marked":[]},{"visible":["..","folder",".hidden","return.zip","root.txt"],"focused":"..","marked":[]}]},
+{"stage":"original-right-zip","panes":[{"visible":["..",".hidden","keep.txt","sample.zip"],"focused":"sample.zip","marked":[]},{"visible":["..","reply.txt"],"focused":"..","marked":[]}]},
+{"stage":"original-reverse-review","panes":[{"visible":["..",".hidden","keep.txt","sample.zip"],"focused":"sample.zip","marked":[]},{"visible":["..","reply.txt"],"focused":"reply.txt","marked":["reply.txt"]}]},
+{"stage":"original-reverse-complete","panes":[{"visible":["..",".hidden","keep.txt","reply.txt","sample.zip"],"focused":"sample.zip","marked":[]},{"visible":["..","reply.txt"],"focused":"reply.txt","marked":[]}]},
+{"stage":"original-final","panes":[{"visible":["..",".hidden","keep.txt","reply.txt","sample.zip"],"focused":"sample.zip","marked":[]},{"visible":["..","folder",".hidden","return.zip","root.txt"],"focused":"return.zip","marked":[]}]}]

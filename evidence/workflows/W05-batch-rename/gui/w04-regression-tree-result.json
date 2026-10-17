@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "tree_checks": 2,
+  "entry_checks": 8,
+  "byte_hashes": true,
+  "metadata": true,
+  "hidden_children": true,
+  "links": true
+}

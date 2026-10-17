@@ -1,0 +1,28 @@
+[
+  {
+    "path": "tree",
+    "kind": "directory",
+    "mode": 493
+  },
+  {
+    "path": "tree/denied",
+    "kind": "directory",
+    "mode": 0
+  },
+  {
+    "path": "tree/denied/child",
+    "kind": "file",
+    "mode": 420,
+    "modified_ms": 1577836800123,
+    "size": 11,
+    "sha256": "ee35ffdc170612dd5bda0ee23e8ff58cb6551d321141a5c065c84bb8a9747ae1"
+  },
+  {
+    "path": "tree/locked",
+    "kind": "file",
+    "mode": 0,
+    "modified_ms": 1577836800123,
+    "size": 29,
+    "sha256": "9d8170ccbea7a071a703509a1d00f895fa6d59a08e7de99d9b3cf3572527f1a6"
+  }
+]

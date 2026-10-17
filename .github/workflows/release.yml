@@ -1,0 +1,189 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  RUST_TOOLCHAIN: '1.99.1'
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  validate:
+    name: Validate release tag
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      valid: ${{ steps.tag.outputs.valid }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Accept only vMAJOR.MINOR.PATCH
+        id: tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python tools/release.py validate-tag "$RELEASE_TAG"
+
+  source:
+    name: Prepare corresponding source
+    needs: validate
+    if: needs.validate.outputs.valid == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Install pinned Rust toolchain
+        run: rustup toolchain install "$RUST_TOOLCHAIN" --profile minimal --no-self-update
+      - name: Test release tooling
+        run: python -B -m unittest discover -s tools -p 'test_release.py' -v
+      - name: Export source, set release version and vendor locked dependencies
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          export RUSTUP_TOOLCHAIN="$RUST_TOOLCHAIN"
+          python tools/release.py source --tag "$RELEASE_TAG" --toolchain "$RUST_TOOLCHAIN" --output dist
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-source
+          path: dist/*.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  build:
+    name: Build ${{ matrix.platform }}
+    needs: source
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux-x86_64
+            runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - platform: macos-arm64
+            runner: macos-15
+            target: aarch64-apple-darwin
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+      BUILD_TARGET: ${{ matrix.target }}
+      MACOSX_DEPLOYMENT_TARGET: '13.0'
+    steps:
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: release-source
+          path: source-archive
+      - name: Extract the corresponding source used for every binary
+        run: |
+          mkdir source
+          tar -xzf "source-archive/mucrab-${RELEASE_TAG}-source.tar.gz" -C source --strip-components=1
+      - name: Install Linux build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y pkg-config libx11-dev libxi-dev libxcursor-dev libxrandr-dev libxkbcommon-dev libwayland-dev libgl1-mesa-dev
+      - name: Install pinned Rust toolchain
+        run: |
+          rustup toolchain install "$RUST_TOOLCHAIN" --profile minimal --component rustfmt --no-self-update
+          rustup target add --toolchain "$RUST_TOOLCHAIN" "$BUILD_TARGET"
+          echo "RUSTUP_TOOLCHAIN=$RUST_TOOLCHAIN" >> "$GITHUB_ENV"
+      - name: Check formatting
+        working-directory: source
+        run: cargo fmt --all -- --check
+      - name: Run Linux Rust and Python tests
+        if: runner.os == 'Linux'
+        working-directory: source
+        run: |
+          # Compile with the normal temporary directory; /dev/shm can be noexec.
+          cargo test --workspace --all-features --frozen --target "$BUILD_TARGET" --no-run
+          # W04 tests require a real second filesystem, rather than mocked EXDEV.
+          test_tmp=$(mktemp -d /dev/shm/mucrab-tests.XXXXXX)
+          trap 'rm -rf "$test_tmp"' EXIT
+          TMPDIR="$test_tmp" cargo test --workspace --all-features --frozen --target "$BUILD_TARGET"
+          python -B -m unittest discover -s tools -p 'test_*.py' -v
+      - name: Run macOS library tests
+        if: runner.os == 'macOS'
+        working-directory: source
+        run: cargo test --workspace --lib --frozen --target "$BUILD_TARGET"
+      - name: Build release executable offline
+        working-directory: source
+        run: cargo build --release --frozen -p mucrab-desktop --target "$BUILD_TARGET"
+      - name: Smoke test release executable
+        working-directory: source
+        run: |
+          binary="target/$BUILD_TARGET/release/mucrab"
+          test "$("$binary" --version)" = "muCrab ${RELEASE_TAG#v}"
+          "$binary" --help
+      - name: Bundle executable, notices and macOS app
+        run: |
+          python source/tools/release.py binary --source source --binary "source/target/$BUILD_TARGET/release/mucrab" --target "$BUILD_TARGET" --output dist
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-${{ matrix.platform }}
+          path: dist/*.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish GitHub Release
+    needs: [source, build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: release-*
+          merge-multiple: true
+          path: dist
+      - name: Require both binary archives and corresponding source, then generate checksums
+        run: |
+          python tools/release.py checksums --directory dist --tag "$RELEASE_TAG"
+          (cd dist && sha256sum --check SHA256SUMS)
+      - name: Publish complete release (or finish an existing draft)
+        run: |
+          if draft=$(gh release view "$RELEASE_TAG" --json isDraft --jq .isDraft 2>/dev/null); then
+            if [ "$draft" != true ]; then
+              echo "Release $RELEASE_TAG is already published; refusing to overwrite its assets."
+              exit 1
+            fi
+            gh release upload "$RELEASE_TAG" dist/* --clobber
+            gh release edit "$RELEASE_TAG" --draft=false
+          else
+            gh release create "$RELEASE_TAG" dist/* --verify-tag --title "muCrab $RELEASE_TAG" --generate-notes
+          fi

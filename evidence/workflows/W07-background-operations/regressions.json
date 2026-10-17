@@ -1,0 +1,223 @@
+{
+  "status": "passed",
+  "date": "2026-10-17",
+  "suite_executions": [
+    {
+      "suite": "w01",
+      "reserved": false,
+      "exit_code": 0,
+      "elapsed_seconds": 3.3
+    },
+    {
+      "suite": "w01",
+      "reserved": true,
+      "exit_code": 0,
+      "elapsed_seconds": 3.38
+    },
+    {
+      "suite": "w02",
+      "reserved": false,
+      "exit_code": 0,
+      "elapsed_seconds": 3.07
+    },
+    {
+      "suite": "w02",
+      "reserved": true,
+      "exit_code": 0,
+      "elapsed_seconds": 3.09
+    },
+    {
+      "suite": "w02b",
+      "reserved": false,
+      "exit_code": 0,
+      "elapsed_seconds": 4.84
+    },
+    {
+      "suite": "w02b",
+      "reserved": true,
+      "exit_code": 0,
+      "elapsed_seconds": 4.85
+    },
+    {
+      "suite": "w02c",
+      "reserved": false,
+      "exit_code": 0,
+      "elapsed_seconds": 3.73
+    },
+    {
+      "suite": "w02c",
+      "reserved": true,
+      "exit_code": 0,
+      "elapsed_seconds": 4.45
+    },
+    {
+      "suite": "w03",
+      "reserved": false,
+      "exit_code": 0,
+      "elapsed_seconds": 3.64
+    },
+    {
+      "suite": "w03",
+      "reserved": true,
+      "exit_code": 0,
+      "elapsed_seconds": 4.34
+    },
+    {
+      "suite": "w04",
+      "reserved": false,
+      "exit_code": 0,
+      "elapsed_seconds": 5.12
+    },
+    {
+      "suite": "w04",
+      "reserved": true,
+      "exit_code": 0,
+      "elapsed_seconds": 5.15
+    },
+    {
+      "suite": "w05",
+      "reserved": false,
+      "exit_code": 0,
+      "elapsed_seconds": 5.39
+    },
+    {
+      "suite": "w05",
+      "reserved": true,
+      "exit_code": 0,
+      "elapsed_seconds": 5.27
+    },
+    {
+      "suite": "w06",
+      "reserved": false,
+      "exit_code": 0,
+      "elapsed_seconds": 3.69
+    },
+    {
+      "suite": "w06",
+      "reserved": true,
+      "exit_code": 0,
+      "elapsed_seconds": 3.64
+    }
+  ],
+  "owning_reports": [
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/comparison-predefined.json",
+      "sha256": "7c437a96814a28f1dac0ff2af49610ab097b5466d8cc3930f99482a97a9789b0",
+      "status": "passed",
+      "cases_run": 187,
+      "raw_run": "artifacts/runs/W01-20261017T153505Z-ed62105c"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/comparison-reserved.json",
+      "sha256": "3fe2266efc07177ce4026eb424ea0ca47e02f174783db10ef5035e77684379d5",
+      "status": "passed",
+      "cases_run": 155,
+      "raw_run": "artifacts/runs/W01-20261017T153508Z-c01cb73d"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/comparison-predefined.json",
+      "sha256": "62c4f5800a9ddda9dd31de675d75f1dbb36a5791894c35f96821be3135866996",
+      "status": "passed",
+      "cases_run": null,
+      "raw_run": "artifacts/runs/W02-20261017T153512Z-7326ac89"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/comparison-reserved.json",
+      "sha256": "4d57a8c17d46a0e31a94047de7cd525dba70ea7f43f9b0c4c587719d563dc730",
+      "status": "passed",
+      "cases_run": null,
+      "raw_run": "artifacts/runs/W02-20261017T153515Z-f1d90142"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/comparison-predefined.json",
+      "sha256": "cf19cedaec2d1f7d3e60a2829ecd00dc89f41978f5a4f188cc7ccba27aaf702e",
+      "status": "passed",
+      "cases_run": null,
+      "raw_run": "artifacts/runs/W02b-20261017T153518Z-aa4684e1"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/comparison-reserved.json",
+      "sha256": "29726810a1483dfeee6ccfbba65d74d4cd39a44f0a35b16d61423b59e532889b",
+      "status": "passed",
+      "cases_run": null,
+      "raw_run": "artifacts/runs/W02b-20261017T153523Z-9a55ad36"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/comparison-predefined.json",
+      "sha256": "67be1c3a0f2317cb7598adaa8a91402be3c894397399bf7f753547e55a713797",
+      "status": "passed",
+      "cases_run": null,
+      "raw_run": "artifacts/runs/W02c-20261017T153528Z-40ed7a9e"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/comparison-reserved.json",
+      "sha256": "7dbb1724cd17b4045de27960c06fda99f9dc4c324c8bc30fef3fc8e53b50af86",
+      "status": "passed",
+      "cases_run": null,
+      "raw_run": "artifacts/runs/W02c-20261017T153531Z-a3a04dca"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/comparison-predefined.json",
+      "sha256": "c86019d2be9d7d11b88ea699eacba39ca358064e1b7f1597abef371d42c5c917",
+      "status": "passed",
+      "cases_run": 146,
+      "raw_run": "artifacts/runs/W03-20261017T153536Z-0b18d926"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/comparison-reserved.json",
+      "sha256": "dbc6c7aee4b7e7280a74ca477174e3c43f9f3c69ab212a6a77085566a4cba326",
+      "status": "passed",
+      "cases_run": 96,
+      "raw_run": "artifacts/runs/W03-20261017T153539Z-c2e4c7ab"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/comparison-predefined.json",
+      "sha256": "54ed60dc4ec4d63d705781be2916376416a986ad9fab3e56b6ca8726701f5242",
+      "status": "passed",
+      "cases_run": 319,
+      "raw_run": "artifacts/runs/W04-20261017T153544Z-aca648fe"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/comparison-reserved.json",
+      "sha256": "c2565976231f3ffeb39926f3c0cce6ed657ef7306ebd422ab65ea56425aab8a5",
+      "status": "passed",
+      "cases_run": 160,
+      "raw_run": "artifacts/runs/W04-20261017T153549Z-a127b039"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/comparison-predefined.json",
+      "sha256": "c5b17647eb19fb35f1bbc3deb943689113e83eadef85dca5af38a4d593387de9",
+      "status": "passed",
+      "cases_run": 54,
+      "raw_run": "artifacts/runs/W05-20261017T153554Z-b8ad46b5"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/comparison-reserved.json",
+      "sha256": "4f72209a7e3bc0ffc7cc12c5d66763bb2506db74a5dde8f18f10fd9be84e4d84",
+      "status": "passed",
+      "cases_run": 32,
+      "raw_run": "artifacts/runs/W05-20261017T153600Z-3ef2178e"
+    },
+    {
+      "path": "evidence/workflows/W06-zip-browsing-extraction/comparison-predefined.json",
+      "sha256": "f003fc7fbe602defe07b7021e12f1ba678e795db2c40a7b007cdfed3355618d2",
+      "status": "passed",
+      "cases_run": 163,
+      "raw_run": "artifacts/runs/W06-20261017T153605Z-45c3debb"
+    },
+    {
+      "path": "evidence/workflows/W06-zip-browsing-extraction/comparison-reserved.json",
+      "sha256": "96f3865bdcabc6a4656fa9d6ec83d5126affb6943cd1eab3be2808b9d74e7ff9",
+      "status": "passed",
+      "cases_run": 96,
+      "raw_run": "artifacts/runs/W06-20261017T153608Z-38c9a391"
+    }
+  ],
+  "w08_ui": {
+    "status": "passed",
+    "actions": 54,
+    "raw_run": "artifacts/gui/W08-desktop-ui",
+    "verifier": "python3 -B tools/w08_gui.py verify"
+  },
+  "note": "Earlier workflow semantic contracts are unchanged; refreshed owning reports record their actual command/binary provenance."
+}

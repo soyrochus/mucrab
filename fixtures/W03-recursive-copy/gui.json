@@ -1,0 +1,15 @@
+{
+  "left": [
+    {"path":"package","kind":"directory"},
+    {"path":"package/empty","kind":"directory"},
+    {"path":"package/binary.dat","kind":"file","size":65539},
+    {"path":"package/.hidden","kind":"file","size":7},
+    {"path":"package/link","kind":"symlink","target":"binary.dat"},
+    {"path":"send.txt","kind":"file","size":29},
+    {"path":"collision.txt","kind":"file","size":17,"pattern":19}
+  ],
+  "right": [
+    {"path":"reply.txt","kind":"file","size":41,"pattern":131},
+    {"path":"collision.txt","kind":"file","size":11,"pattern":200}
+  ]
+}

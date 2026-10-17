@@ -1,0 +1,207 @@
+{
+  "status": "passed",
+  "run": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9",
+  "commands": {
+    "w01-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w01"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w01-predefined.stdout",
+        "sha256": "7d539057afe925e6d41bcfbf05603b2f3f7495f55509d47feba181cf71eed205"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w01-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w01-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w01",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w01-reserved.stdout",
+        "sha256": "1013b91149f944a800e6954d01d78115a92bf339ca92944f9f50ed56c6ec31db"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w01-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02-predefined.stdout",
+        "sha256": "522ed795eae49a5e1bfc7fde6c0aad24c6a9b8bcae5c326b2ac5991af6d60174"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02-reserved.stdout",
+        "sha256": "c34715319a0f7a2eae8ade048d57335731c8689ee45e3b06b06809e5e3ee8844"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02b-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02b"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02b-predefined.stdout",
+        "sha256": "c32d0881c7214599d0a16146f2ea9cd8c84b6a7ce083ff77c74749f2c5fcd669"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02b-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02b-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02b",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02b-reserved.stdout",
+        "sha256": "303db65afafd73ab6fb8ffb7e869116488b501ef8b141c26913fff3c9c1d949d"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02b-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02c-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02c"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02c-predefined.stdout",
+        "sha256": "320f2a4c23764e56cb3d0cde0b52cef5b758944e2d6e18b4465020af77f463d6"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02c-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02c-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02c",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02c-reserved.stdout",
+        "sha256": "5fa7afbc8ce32b67daca9d1dabde64cf6f78565c174935bb1baed4a0b49c4d38"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w02c-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w03-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w03"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w03-predefined.stdout",
+        "sha256": "8e88ff875f6c5284615b08de6882954ef68f2fd964b97551efd4df65bcd77d8f"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w03-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w03-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w03",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w03-reserved.stdout",
+        "sha256": "e67ec823fc3ff77cf0d46987c83f2b7c35ebfae245ba85a1362e1f561630bd84"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w03-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w04-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w04"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w04-predefined.stdout",
+        "sha256": "1077f25a252225ae90d9bda53c090aed5f7c480c106ba13ce0f9fffe2a3100be"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w04-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w04-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w04",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w04-reserved.stdout",
+        "sha256": "aa389a9da369cda7e2f39da40932a72494c7dff1f85c2a3e32348eed59e97177"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W04-regressions-20261016T195240Z-0e1b95d9/w04-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "suites": 6,
+  "executions": 12,
+  "source_revision": "027078f6f1b408ae32f5d37a168e7771380f0e26"
+}

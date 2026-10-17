@@ -1,0 +1,681 @@
+{
+  "status": "passed",
+  "workflow": "W06-zip-browsing-extraction",
+  "recorded_at": "2026-10-17T10:02:03.491484+00:00",
+  "scope": "Bounded ZIP browsing/extraction on unprivileged Linux x86_64/ext4; component comparisons, isolated X11/Xvfb GUI, corresponding-source and Linux packaging checks",
+  "source_revision": "16640b02c61012b8d07602bd49745a1f4b5e30f3",
+  "source_revision_note": "Checks ran on the dirty W06 implementation over this baseline; exact tested code/input hashes identify the implementation committed at the next checkpoint. Documentation/evidence finalized after execution.",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "locale": "en-US",
+    "workflow_timezone": "UTC",
+    "user_timezone": "Europe/Madrid",
+    "umask": "022",
+    "effective_uid": 1000,
+    "versions": {
+      "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+      "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+      "java": "openjdk version \"25.0.4.1\" 2026-08-18\nOpenJDK Runtime Environment (build 25.0.4.1+1-1-26.04.4-Ubuntu)\nOpenJDK 64-Bit Server VM (build 25.0.4.1+1-1-26.04.4-Ubuntu, mixed mode, sharing)",
+      "python": "Python 3.14.4"
+    }
+  },
+  "tests": {
+    "rust": 34,
+    "python": 46,
+    "new_rust_zip_tests": 8,
+    "new_python_zip_protocol_tests": 3,
+    "suite_executions": 16,
+    "w06_cases": 259,
+    "differences": 0,
+    "omitted_cases": 0
+  },
+  "commands": {
+    "format": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/format.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "clippy": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/clippy.log",
+      "sha256": "37ed7dc54b8a0fa01472c22d853851ddda19f30f7f9d8b6e4f66792e312628f0"
+    },
+    "rust-tests": {
+      "argv": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/rust-tests.log",
+      "sha256": "63446783624b71f59c3ae09278ca0eb3f74b24854baef14f5729807c253f2abc"
+    },
+    "python-tests": {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/python-tests.log",
+      "sha256": "ebc063cbb0ff6b54cf8d134e25cbe237d9456e3ddf526806fb4afa4d4433956c"
+    },
+    "regressions": {
+      "argv": [
+        "python3",
+        "-B",
+        "/tmp/mucrab-w06-regressions-final.py"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/regressions.log",
+      "sha256": "c89f9e77997ee8a9afeebf4cde5be7808a17607e1189b7fee3ede08f9799de64"
+    },
+    "w06-predefined": {
+      "argv": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w06"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/w06-predefined.log",
+      "sha256": "e257d52c351946d4674b704b5e00f186325c7b095ddd7b59c90026fcd20cfe9b"
+    },
+    "w06-reserved": {
+      "argv": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w06",
+        "--reserved"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/w06-reserved.log",
+      "sha256": "a9233864a36f1a16e4e5072e2548165972c13b000a40c6b0bf25fe7acbb6ec1a"
+    },
+    "integrity": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/acquire_mucommander.py",
+        "--verify-only"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/integrity.log",
+      "sha256": "1e042a78c8261ea910b7d799478b97b604be93e5e338f8d7eae09d99d83651a8"
+    },
+    "native-version": {
+      "argv": [
+        "{repository}/target/debug/mucrab",
+        "--version"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/native-version.log",
+      "sha256": "e6cbaadd6bd34dfbbc820f23c7db14e573f55dc6dc489fd81174c18151f71f9b"
+    },
+    "native-help": {
+      "argv": [
+        "{repository}/target/debug/mucrab",
+        "--help"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/native-help.log",
+      "sha256": "53e3714b4d651733fea0b199ba7981dd940217105ae482786f17debbc58ab503"
+    },
+    "linkage": {
+      "argv": [
+        "ldd",
+        "{repository}/target/debug/mucrab"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-closure/linkage.log",
+      "sha256": "8891ed9437f7b7ebdeba17c6bbf7aa1c0d2de932e8a276c98894742b44cbc803"
+    },
+    "build": {
+      "argv": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "cwd": "{repository}",
+      "exit_code": 0,
+      "log": "artifacts/w06-guard-build.log",
+      "sha256": "a5aee66a966c639981da09a3719c618c3c41b4d8cced50426262866d24786b4f"
+    }
+  },
+  "comparisons": [
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/comparison-predefined.json",
+      "sha256": "624cad8abab6177a76f09cb949a813247eeabd8ddeb34f028644325ca9000f76"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/comparison-reserved.json",
+      "sha256": "7138f38f25aae5bcc79ce4772c56ca6584ff8139e4a5cde583b20593f0ea7007"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/comparison-predefined.json",
+      "sha256": "501a9d7b903e72d17878afbde758041b1109387f0440a6cccff7d1fc06227128"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/comparison-reserved.json",
+      "sha256": "924452bbb0746f17f534f34c7a40d193894a8d58061bbc36ff1afed7f87ca89d"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/comparison-predefined.json",
+      "sha256": "0a5d2a73b109f507597986987b9d15fa7c19b3a9ed29af04f5c50873afbcd8d5"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/comparison-reserved.json",
+      "sha256": "98048f73cc28aa03ba75061503d76fc598d51ea568a3961500c797f1521bda70"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/comparison-predefined.json",
+      "sha256": "a36cf535861e09432e4e3ed94627dcd5801d8c00c0586e92f8308dae2237983c"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/comparison-reserved.json",
+      "sha256": "6b05b9d941d17f7503620341acf5c3ca273491fbc6e7d9f7ef86c325029c9942"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/comparison-predefined.json",
+      "sha256": "0bc9a7adcf7faa054b208159589a97a4f61c8e1fd1cba4ef53d9ce6a89a3769b"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/comparison-reserved.json",
+      "sha256": "eead8e4fc285a22910af5a2d4398a6bad5043fbd649b1acab0ad0d9510c32598"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/comparison-predefined.json",
+      "sha256": "555a2f121dccee86cf8d609e10b2b1a502da07a2611c290063f19a7b9b4e2cb5"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/comparison-reserved.json",
+      "sha256": "eb33115c77446ec677722eecda69266ff8f499f2da6c8573d7e774be4f702ee4"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/comparison-predefined.json",
+      "sha256": "2a538603832946428b1351f44b60037e84d1f50e6aba39436e4b2058f99d8ee2"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/comparison-reserved.json",
+      "sha256": "60b824349d34165364008e30e54390c2bb5fe0333344dd473be846407b4070fa"
+    },
+    {
+      "path": "evidence/workflows/W06-zip-browsing-extraction/comparison-predefined.json",
+      "sha256": "276d12d2418318bb9d7c1808751a493027f8b753a9b806012e51bdfdb9aa9829"
+    },
+    {
+      "path": "evidence/workflows/W06-zip-browsing-extraction/comparison-reserved.json",
+      "sha256": "cb65ff673d508ed33fee1d880dd9e8258229bcc2bd501e4d0168b2243ad39d53"
+    }
+  ],
+  "regressions": {
+    "path": "evidence/workflows/W06-zip-browsing-extraction/regressions.json",
+    "sha256": "4478806ba92063a3330dfab6d0e988e693a58acf1245d52c0372092af05e1aa8"
+  },
+  "source_inputs": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "ec9e5f07a6620f0ccd0c8bc91997c12f30f3f628e8a12469a0c86318340f7961"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "334ef83f41db18162f9079e59c5b3f2c8a62eaf5941daff0b294bbbeaa31a49d"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    {
+      "path": "NOTICE.md",
+      "sha256": "98efc48ab4444c91bd4116f7bacfc156eb6fc1f4145ae3f4efe57b98b9f736e6"
+    },
+    {
+      "path": "crates/compare/Cargo.toml",
+      "sha256": "4b1888c089cead6f1d6994198bb9e695a23456c2879ab43f137c373ef17ec15f"
+    },
+    {
+      "path": "crates/compare/src/main.rs",
+      "sha256": "017bb6cda70fbe7bc5b9f8c83302439368e2b4a25d1cfbb3e690ca02771bc0ae"
+    },
+    {
+      "path": "crates/compare/src/w02.rs",
+      "sha256": "a90d2b0fc5bb28ba3d36a7b597bab91fad2b7f00529f7a0e500eb7c4c34d04c3"
+    },
+    {
+      "path": "crates/compare/src/w02b.rs",
+      "sha256": "1e283d2dee8dee3d7f1f278a6eb7aa3b022611b82784a33217d928866ea8e00b"
+    },
+    {
+      "path": "crates/compare/src/w02c.rs",
+      "sha256": "c43f503bfd5f5d2d6891cc7fe74b3acc3f721e7bbce6807554a37accb909a95a"
+    },
+    {
+      "path": "crates/compare/src/w03.rs",
+      "sha256": "3d771d02c47d1f2ed08dc90f50ff27beb2e12cf307729183c43951686c592ab8"
+    },
+    {
+      "path": "crates/compare/src/w04.rs",
+      "sha256": "211affbceee2d793613329db73e8d4da92a66050d250228a5e28e9ee9ca80c3f"
+    },
+    {
+      "path": "crates/compare/src/w05.rs",
+      "sha256": "115ef1ae2fc86b582d0b45391de186f29c94463cb2b0d51b3d21b5c84fdaf15d"
+    },
+    {
+      "path": "crates/compare/src/w06.rs",
+      "sha256": "2648a24015b7eef42a7c4368802ea5e9ad94699f2ff22d4cc0cc07c81c868b95"
+    },
+    {
+      "path": "crates/compare/tests/readiness.rs",
+      "sha256": "865d3bf51a809859f3944403111f469c36746ed16dd88fbc42eca45717c50d80"
+    },
+    {
+      "path": "crates/core/Cargo.toml",
+      "sha256": "2826c729548b27b460a1f963f38141736a2a1d36c3d9a8eb3dd27d42488006c0"
+    },
+    {
+      "path": "crates/core/src/archives.rs",
+      "sha256": "bae66a91ee3aab933a39693d17314089b3602393cad2aaececa0176a1a950426"
+    },
+    {
+      "path": "crates/core/src/batch_renaming.rs",
+      "sha256": "631c498d969b55a3212b968570a26318efcbf154e9c530b67db7522325388cfb"
+    },
+    {
+      "path": "crates/core/src/browsing.rs",
+      "sha256": "a4b0a81a25cc88a3dca593aefb79060123ff15829941fd79c44f275e2eea50a5"
+    },
+    {
+      "path": "crates/core/src/copying.rs",
+      "sha256": "c8b04cef92be23fb01de23baa08f202dce6c119caf5f8f8d939aadba0179f524"
+    },
+    {
+      "path": "crates/core/src/java_case_data.rs",
+      "sha256": "47bf627ab3cb7e29eebdf2728412a1276fff2fc87b535ed80623cfe7af2fb683"
+    },
+    {
+      "path": "crates/core/src/lib.rs",
+      "sha256": "c7aed74370971a110dc083241f2876f46832f87b88425989f92139616a7de8a1"
+    },
+    {
+      "path": "crates/core/src/moving.rs",
+      "sha256": "2ad9f0213ebd922b3aad324e5e5b10b252684c4193730924d34ad11ef151fe5c"
+    },
+    {
+      "path": "crates/core/src/selection.rs",
+      "sha256": "2be6392fdf855365abf261d3c936b434ff8a778d2cd69b0a803c46a64050ae94"
+    },
+    {
+      "path": "crates/core/src/sorting.rs",
+      "sha256": "ae9abb2213e7da9d42a705998a2ca4358a13c0d952bd82cd737cc99db64c09b8"
+    },
+    {
+      "path": "crates/core/tests/archives.rs",
+      "sha256": "00c0c328fb46c52342bc47c515c9b4489c2c59e02fc91561798cc0de641ee222"
+    },
+    {
+      "path": "crates/core/tests/batch_renaming.rs",
+      "sha256": "d1df543b4006c8f063881b9ab81f62b60ef7c51de15e141f526522410ecaf22b"
+    },
+    {
+      "path": "crates/core/tests/copying.rs",
+      "sha256": "8a03d2a772c305544621b6e7170a772612acc1e751bfcabd7fa162d4827fae2e"
+    },
+    {
+      "path": "crates/core/tests/moving.rs",
+      "sha256": "81ab36921b7a09fbab43f8931d8a4da53ed1c27dfff9ce2e23dac18b756ca752"
+    },
+    {
+      "path": "crates/core/tests/navigation.rs",
+      "sha256": "80bcac62b57a0fc5d5ff24aeccb4555149fd774ba80add42ad408fd48792deae"
+    },
+    {
+      "path": "crates/desktop/Cargo.toml",
+      "sha256": "cd77b8c08d9de43830b8ba13b0089f0f5da08d98b1dedb256e3ae229aa9b2cbb"
+    },
+    {
+      "path": "crates/desktop/src/app.rs",
+      "sha256": "10e874da0109bfb7c19948742490b4c48a863de52d47d926e07f0aa614a733f0"
+    },
+    {
+      "path": "crates/desktop/src/main.rs",
+      "sha256": "4413555762845d300083acf4a0c6efbabdce34ba3e24b7b96c4689591406a582"
+    },
+    {
+      "path": "evidence/workflows/W01-local-browse-sort/contract.md",
+      "sha256": "9fbc057adf1c8d1f85f4b693aeb155dab8d8c9b933b21bdf0b3d1c6c1dda4fe5"
+    },
+    {
+      "path": "evidence/workflows/W02-selection-marking/contract.md",
+      "sha256": "733c39f584402452012a6fae80089697a6fa0a1bf697d0544e5ad07a0ffc5ae3"
+    },
+    {
+      "path": "evidence/workflows/W02b-hidden-filtering/contract.md",
+      "sha256": "cf2c69329c7e7af6f5aed3d91c38bc21f01d5aa80daeac08552b3887c17fe016"
+    },
+    {
+      "path": "evidence/workflows/W02c-metadata-sorting/contract.md",
+      "sha256": "1eef5bf0d081f16009143ffe86dbeeb421aefac8842d02d52e48ab7a41ab942e"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/contract.md",
+      "sha256": "d8f6438ed5da157be5205a9575d7546a510ea1a803eb899b2e76bbc2eb5713a4"
+    },
+    {
+      "path": "evidence/workflows/W04-move-rename/contract.md",
+      "sha256": "c97ca02a8f4f4f79f897c0d9b13bde21d4132e1415e3038738f5a324a32f5a72"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/contract.md",
+      "sha256": "fa5effd3cc288d917cedaa400c9dabcb6a8b89da52e01c174af6668aa55a4417"
+    },
+    {
+      "path": "evidence/workflows/W06-zip-browsing-extraction/contract.md",
+      "sha256": "f08cecd778e8d709df0ce32ae3bb02cc34ba649c7fc61972499393595131fd3d"
+    },
+    {
+      "path": "fixtures/W01-local-browse-sort/cases.json",
+      "sha256": "f7ff06e7914d612e151de6b8386729a7c5676b3a2e41adfa21d4e564446d2f00"
+    },
+    {
+      "path": "fixtures/W02-selection-marking/cases.json",
+      "sha256": "4f49175517c2840d3ce28900ea45bf6946e5337c292b2d21505056587e7caa0a"
+    },
+    {
+      "path": "fixtures/W02b-hidden-filtering/cases.json",
+      "sha256": "4388590bfddf8a6850e4c2fcb128650ecb5f46ccecdbdbf18bfbf1b51815d531"
+    },
+    {
+      "path": "fixtures/W02c-metadata-sorting/cases.json",
+      "sha256": "3e9addff359f3b9569773b8e0320e012c9439907254a79f37c4f127478089fc4"
+    },
+    {
+      "path": "fixtures/W03-recursive-copy/cases.json",
+      "sha256": "3665625bc74891538a58b8ff2e8f3ee9cc8888a54831ab25f1e51c8abd85d1ce"
+    },
+    {
+      "path": "fixtures/W04-move-rename/cases.json",
+      "sha256": "28c137d51bc535192105c07080164d3712b06a19f11dc579ddf22af6a0ab1bc0"
+    },
+    {
+      "path": "fixtures/W05-batch-rename/cases.json",
+      "sha256": "d1ba868b999a0d1e943b07fe0d160c7da26092a713d70d19ef0908fa823aaca4"
+    },
+    {
+      "path": "fixtures/W06-zip-browsing-extraction/cases.json",
+      "sha256": "d90cfb73de6d9ff0a503d4f5c71d8ba006fff5e9f7d88469a41aafae008adb2b"
+    },
+    {
+      "path": "fixtures/W06-zip-browsing-extraction/gui.json",
+      "sha256": "01dd94acc1444b00a97ce2670d44d1d39fbbaba181734b62d6df5387616c71c4"
+    },
+    {
+      "path": "fixtures/W06-zip-browsing-extraction/native-gui-actions.json",
+      "sha256": "96c392b6656fd89eb86e895ff51c6ea7e26fed1ecdbbffcf21b43e2ec5b42a3b"
+    },
+    {
+      "path": "third_party/zip/LICENSE",
+      "sha256": "58545fed1565e42d687aecec6897d35c6d37ccb71479a137c0deb2203e125c79"
+    },
+    {
+      "path": "third_party/zip/README.md",
+      "sha256": "72bb9d06bd25ab2eabdea9eee0a5f5fe7b47dee42386f541b5582fa6abec202f"
+    },
+    {
+      "path": "tools/java/W01Oracle.java",
+      "sha256": "5fcacf10c324bb3e02698dce9374c2cf7937a7ba10c7c7d88d5b4b223784bb37"
+    },
+    {
+      "path": "tools/java/W02Oracle.java",
+      "sha256": "f95ce5a8577e564722fc45843600340edb1d9b8f8cd2b743ce3082b429e33a4b"
+    },
+    {
+      "path": "tools/java/W02bOracle.java",
+      "sha256": "e6a35a3c4e8adb88e87807709514a0a186247dd7408800235c70a28f5fb9a506"
+    },
+    {
+      "path": "tools/java/W02cOracle.java",
+      "sha256": "1181849342daac74b30ea67c0f92c65c5fc4048de280cea68d930a10b0b9851b"
+    },
+    {
+      "path": "tools/java/W03Oracle.java",
+      "sha256": "78b10da153030b669595e9aeb0da61c8cfbc9d1bfb140f577216df352ffb1d15"
+    },
+    {
+      "path": "tools/java/W04Oracle.java",
+      "sha256": "c3131d011fd5e608efa3d4c02eaa74d74959f5627fae4fcae7087d87c10ef481"
+    },
+    {
+      "path": "tools/java/W05Oracle.java",
+      "sha256": "63df734f2e414923665b347cd58179d66bb4c5c4e307d421d7a19b4bbfe7144d"
+    },
+    {
+      "path": "tools/java/W06GuiProbe.java",
+      "sha256": "4620012c023be76cf69474fe15d77ca54f09b1cba1b2028ee14e24085533efa0"
+    },
+    {
+      "path": "tools/java/W06Oracle.java",
+      "sha256": "5ee7d8a334c2b8df3f2ea2f5e589d9b2502d3900cb31a9e0c610d9ad0cd49236"
+    },
+    {
+      "path": "tools/manifests/java-case-data.json",
+      "sha256": "c3f4a356c5a16a12c6a431c340610610874019b154d1040e80b48b9a058a10ec"
+    },
+    {
+      "path": "tools/release.py",
+      "sha256": "46661a2306bd97877069a02e789671bd5d8bf642458ccaf5f2a93fcc8e9aa7c3"
+    },
+    {
+      "path": "tools/test_w06.py",
+      "sha256": "1c69cef5662c39c77f8f9dcd487d602a52ce2cdf83935a8fa17b1da7c0bf8c52"
+    },
+    {
+      "path": "tools/w01.py",
+      "sha256": "59ca6e84973ef0a5887387b38bfc919c5a8c9b8ab36bf549b4b716a37d427129"
+    },
+    {
+      "path": "tools/w02.py",
+      "sha256": "346e8eec3372b40354dcef02fc1dcc70133ad2be1044fded86fed125c7b221f0"
+    },
+    {
+      "path": "tools/w02b.py",
+      "sha256": "66ac2ed45eef450d0951dd359f2179e73bc8f253c1dc54b38f18c39d689ad8d8"
+    },
+    {
+      "path": "tools/w02c.py",
+      "sha256": "f2ad1a8766722aede239c4514da1814fdbe2ff778fd75e68e608779259a401d1"
+    },
+    {
+      "path": "tools/w03.py",
+      "sha256": "43dd7d7121a18d1526246e6627e5ca008e7be739e03386cd1c3e3381f22986f1"
+    },
+    {
+      "path": "tools/w04.py",
+      "sha256": "dcc0f708c37493b74efd6cc48f38230ed791580c2be29a0fdd9d866322ce942c"
+    },
+    {
+      "path": "tools/w05.py",
+      "sha256": "6a0a6e2af68c6860f1468018bc048932ac615874c76bd0153a6019583c7238da"
+    },
+    {
+      "path": "tools/w06.py",
+      "sha256": "fdacc556d7344e6e8e10c862140699bf6003d83984465b4808e3038c3d9bcfa3"
+    },
+    {
+      "path": "tools/w06_gui.py",
+      "sha256": "b62c29a0e5852e94bb4572960c4a1be14bd381d644129d7d796e6b3109a69ff2"
+    },
+    {
+      "path": "tools/w06_inspect.py",
+      "sha256": "dd95cdc0d294de63ac37ba0f9c4265ca8406418c896d6472071a3f5e600ace20"
+    }
+  ],
+  "native": {
+    "binary": {
+      "path": "target/debug/mucrab",
+      "sha256": "1dac397cd130323d799d6751035180673ab64e46c8ebf4406fd0fbf1c8058346"
+    },
+    "no_java_path": "/nonexistent",
+    "jvm_linked": false
+  },
+  "gui": {
+    "observations": {
+      "path": "evidence/workflows/W06-zip-browsing-extraction/gui-observations.json",
+      "sha256": "dfee0dd033f9daeaad7ce638045329bbaa8984bb7415ef064698a705986ebf97"
+    },
+    "retained_artifacts": 54,
+    "native_run": "artifacts/gui/W06-20261017T095834Z-de85f0e8",
+    "original_run": "artifacts/gui/W06-20261017T094547Z-9527943c",
+    "native_actions": 44,
+    "original_full_jobs": 3,
+    "w05_regression": {
+      "run": "artifacts/gui/W05-20261017T095909Z-6b8ca60c",
+      "result": {
+        "path": "artifacts/gui/W05-20261017T095909Z-6b8ca60c/native-fixture-result.json",
+        "sha256": "dc2f8f59604c5a2d6df5e35ab4007dde9378bd4d7713c5b196572a91ad65a996"
+      },
+      "partial_result": {
+        "path": "artifacts/gui/W05-20261017T095909Z-6b8ca60c/native-partial-result.json",
+        "sha256": "652b4bdb47b086bf7a516ff362b6cb5ba108226de176fe80c3a83144ccd25856"
+      },
+      "actions": {
+        "path": "artifacts/gui/W05-20261017T095909Z-6b8ca60c/native/actions.json",
+        "sha256": "7b59119f9823d8d195c357efaf60281c247f3f6cac44fbf779caa9eacfabc528"
+      },
+      "provenance": {
+        "path": "artifacts/gui/W05-20261017T095909Z-6b8ca60c/provenance.json",
+        "sha256": "69a438f3bf813feac58c8e7660eb783193885774437034f104099ff5b81ad643"
+      }
+    }
+  },
+  "packaging": {
+    "status": "passed",
+    "test_tag": "v0.9.0",
+    "test_tag_only": true,
+    "published": false,
+    "source_export_commit": "ccea1e06c109ee2940b1f74007ab3bd83b4dd398",
+    "export_note": "Local temporary Git snapshot, not a project tag. Exported workspace versions are 0.9.0; all Rust source files and external pins match the tested worktree. Later documentation/receipts can differ.",
+    "source_build": {
+      "argv": [
+        "cargo",
+        "build",
+        "--release",
+        "--frozen",
+        "-p",
+        "mucrab-desktop"
+      ],
+      "cwd": "artifacts/release-check/w06-source",
+      "cargo_home": "/tmp/mucrab-w06-empty-cargo",
+      "registry_sources": 0,
+      "registry_archives": 0,
+      "network_required": false,
+      "target_cache": "Reused from the prior full frozen source build; current workspace crates rebuilt.",
+      "log": {
+        "path": "artifacts/w06-release-build-closure.log",
+        "sha256": "ef4f223a84bbd4f8c006988af065a54d773782f465d11430ffb8e4cf2cc8af14"
+      },
+      "prior_full_build_log": {
+        "path": "artifacts/w06-release-build-final.log",
+        "sha256": "86cd07abd9c66a7836ae420969e4bfe4b32218da84866d9b68240051c9f3205c"
+      }
+    },
+    "external_crates": 387,
+    "all_previous_external_pins_unchanged": true,
+    "source_inventory": {
+      "path": "artifacts/release-check/w06-source/licenses/dependencies.json",
+      "sha256": "409caa614ec47ead49628e630df864c8d3b0e70652982910dd66dfd8a59770af"
+    },
+    "source_rust_files_match_current": true,
+    "binary_notices_match_source": true,
+    "binary_mode": "0755",
+    "packaged_binary": {
+      "path": "artifacts/release-check/w06-extracted/mucrab",
+      "sha256": "208afa2e2a9e4c4cbb6fc34e01dbc33990fe94432f35c23fb3fc8e9e4ae23367"
+    },
+    "assets": [
+      {
+        "path": "artifacts/release-check/w06-final-dist/mucrab-v0.9.0-source.tar.gz",
+        "sha256": "b8b04bdf6a3db8f6608356f4b6ca79049895e6bce9bb8410c9d4b80ac43da0a5"
+      },
+      {
+        "path": "artifacts/release-check/w06-final-dist/mucrab-v0.9.0-linux-x86_64.tar.gz",
+        "sha256": "63273df377e99685a61100d644e244fa0937a8a7e4f847de434507480bfda547"
+      }
+    ],
+    "checksums": {
+      "path": "artifacts/release-check/w06-final-dist/SHA256SUMS.local",
+      "sha256": "c6a1984574582649c06dbf089a8db88535d5146256c72fc484b1dd8f2989c9e4"
+    },
+    "checksum_log": {
+      "path": "artifacts/w06-package-checksums.log",
+      "sha256": "0aa4ac48dfe1baa4447eed3f1ebdabe04bb6f4b5fd08115d88b4a1d9d8022c43"
+    },
+    "logs": [
+      {
+        "path": "artifacts/w06-final-source-packaging.log",
+        "sha256": "cabda3787fca15a94c3502ed5fe06b9576ddeabd4174b2346a7740787a88eaa0"
+      },
+      {
+        "path": "artifacts/w06-final-linux-package.log",
+        "sha256": "2a760094f63a251b830dbdd861b0563832d8f53da8f0bedc17f6b85927281529"
+      },
+      {
+        "path": "artifacts/w06-packaged-version.log",
+        "sha256": "d1ae92d8ecb7d50e801a5d0981ffb02dceca9048e29ccaad30fd938e672c9ea4"
+      },
+      {
+        "path": "artifacts/w06-packaged-help.log",
+        "sha256": "53e3714b4d651733fea0b199ba7981dd940217105ae482786f17debbc58ab503"
+      }
+    ],
+    "unverified": [
+      "Hosted tag workflow/publication",
+      "macOS build/signing and current GUI",
+      "Wayland/physical desktop"
+    ]
+  },
+  "reference_unchanged": true,
+  "ignored_artifacts_note": "Raw logs, runs, reference copies, vendored exports and packages remain ignored under artifacts/. Use committed comparison commands and workflow README to regenerate; no reference implementation source is tracked."
+}

@@ -1,0 +1,240 @@
+{
+  "status": "passed",
+  "run": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c",
+  "commands": {
+    "w01-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w01"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w01-predefined.stdout",
+        "sha256": "b336d2e852a4a7df9cdb74d4f0bcecf4a13a4b66cda367a0db5cd8e7a184a76f"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w01-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w01-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w01",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w01-reserved.stdout",
+        "sha256": "e2bcb0e0c8770174aeea95f1eaf0dc5edfde96c8faf2568eafe3d7eb901a895a"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w01-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02-predefined.stdout",
+        "sha256": "2906139ea84e37d10136f63dcf8aea1986ef975af8f23ece88461f1c4c55def0"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02-reserved.stdout",
+        "sha256": "5e348eb222a3547c353269cda82c13a3113df7e15694dd689e34d50c5e4576ab"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02b-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02b"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02b-predefined.stdout",
+        "sha256": "97149fd96c3893a9e6ae1ab2f18838d059b1d4b7f44f73b4f22c953ad31831b4"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02b-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02b-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02b",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02b-reserved.stdout",
+        "sha256": "abcc0e75b429eb33157584c5f6937fc79a7b98da87db1d970e990c384fe3a5fa"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02b-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02c-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02c"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02c-predefined.stdout",
+        "sha256": "3a86d361fd15789d9d49ea42a019018ad58ab02a9acb1029046764af528c6243"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02c-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w02c-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w02c",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02c-reserved.stdout",
+        "sha256": "daf56ea0d4e65295e18f04db736caaac78b1318855a7dc25a85af30b392e4724"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w02c-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w03-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w03"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w03-predefined.stdout",
+        "sha256": "8ac3d5175b06e72c1fe55896a8f5c311296685be8909ca3d7e0960cd52cc98a1"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w03-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w03-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w03",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w03-reserved.stdout",
+        "sha256": "8af38c15c01cc60536a916d9f66c1b0390190cd44b2b8bfafb5e471ba3874e91"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w03-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w04-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w04"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w04-predefined.stdout",
+        "sha256": "b31ce28d3f24371023b825b3fd1899c1e52a4fdbd17876503cd6cc9a3ff607e9"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w04-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w04-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w04",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w04-reserved.stdout",
+        "sha256": "583eb842b51a674e3e011e95359e2dc272120f683e10ea2d8c26dc41dc077d2d"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w04-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w05-predefined": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w05"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w05-predefined.stdout",
+        "sha256": "f3c380eba0d917dba42ea14140f30777359c892090cd6e99587a0ecc8ba982f3"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w05-predefined.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "w05-reserved": {
+      "argv": [
+        "target/debug/mucrab-compare",
+        "--suite",
+        "w05",
+        "--reserved"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w05-reserved.stdout",
+        "sha256": "084fda23db66194276f83f225d4b499e3f3dadd5f6aea58c0b2e7095000cd1df"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-regressions-20261016T204951Z-9b9d242c/w05-reserved.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "suites": 7,
+  "executions": 14,
+  "source_revision": "cd25ffe"
+}

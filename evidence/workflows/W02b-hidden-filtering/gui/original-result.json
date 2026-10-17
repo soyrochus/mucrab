@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "stages": 5,
+  "pane_states": 10,
+  "capture": "Original Swing window printAll; raw X screen captures also retained",
+  "source_sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8",
+  "reference_unchanged": true
+}

@@ -1,0 +1,392 @@
+{
+  "status": "passed",
+  "scope": "W05 final local development checks; scoped comparisons and GUI receipts separate",
+  "source_revision": "cd25ffecd31f0aaea1de84fbaf34783e8799ee4c",
+  "run": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5",
+  "commands": {
+    "format": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/format.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/format.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "clippy": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/clippy.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/clippy.stderr",
+        "sha256": "bbabd38a701a1e6f5fddfbf2a2ee8170eea868211aed885a2f8379dff99caeb7"
+      }
+    },
+    "rust-tests": {
+      "argv": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/rust-tests.stdout",
+        "sha256": "6b63a4adcc8b3ff4efea5d03b96f786325a5dd5efe60fba49ea3a11c823871dd"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/rust-tests.stderr",
+        "sha256": "8639123d70afbdaabe354cfc2a5b457acb83861164bc296a204ded970d3d2ba2"
+      }
+    },
+    "python-tests": {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/python-tests.stdout",
+        "sha256": "0706812ba01af4df65161c64bd077bc9fb917c8265560e7d6a4255c66710714a"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/python-tests.stderr",
+        "sha256": "38bf99c4f5c820d90348612897662660517c03d135d7eb9a8a0ad94b9d9fd138"
+      }
+    },
+    "build": {
+      "argv": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/build.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/build.stderr",
+        "sha256": "a41051563a4cb5fc1b1bcdd9aa0ba28ca80f7736d629d90cc138218756e8e3a9"
+      }
+    },
+    "reference-integrity": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/acquire_mucommander.py",
+        "--verify-only"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/reference-integrity.stdout",
+        "sha256": "1e042a78c8261ea910b7d799478b97b604be93e5e338f8d7eae09d99d83651a8"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/reference-integrity.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "native-without-java": {
+      "argv": [
+        "env",
+        "PATH=/nonexistent",
+        "{repository}/target/debug/mucrab",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/native-without-java.stdout",
+        "sha256": "e6cbaadd6bd34dfbbc820f23c7db14e573f55dc6dc489fd81174c18151f71f9b"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/native-without-java.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "native-help": {
+      "argv": [
+        "env",
+        "PATH=/nonexistent",
+        "{repository}/target/debug/mucrab",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/native-help.stdout",
+        "sha256": "2381b5c9d149acb3fb5a81bb60b97e272bbef7aff15786ac0a796d285aecc93a"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/native-help.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "native-linkage": {
+      "argv": [
+        "ldd",
+        "target/debug/mucrab"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/native-linkage.stdout",
+        "sha256": "db2d2df6f7cee4ccc8d6b00099758e8bef5c19d564f85d344c8be02bd417944d"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/native-linkage.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "java-version": {
+      "argv": [
+        "java",
+        "-version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/java-version.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/java-version.stderr",
+        "sha256": "b8656f4afb66367614199886688652dc18193995395b8feefe3bd7dc3b32ffb6"
+      }
+    },
+    "rust-version": {
+      "argv": [
+        "rustc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/rust-version.stdout",
+        "sha256": "8dc912acd5bfeafc70b01b1d2a2afb0844afa02f5dba2f1ae8d5c212d005afb6"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/rust-version.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "cargo-version": {
+      "argv": [
+        "cargo",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/cargo-version.stdout",
+        "sha256": "1f88eaf7fe1aaec83184752cf4c944cd22f00184136ff36a3e4c318cc60ef566"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W05-validation-20261016T205111Z-a2e798d5/cargo-version.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "rust_tests": 26,
+  "python_tests": 33,
+  "source_inputs": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "334ef83f41db18162f9079e59c5b3f2c8a62eaf5941daff0b294bbbeaa31a49d"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "c6a1a116ae63e90da0def367d089a87359593bb27417b6fb2b059007b7bb9f8f"
+    },
+    {
+      "path": "NOTICE.md",
+      "sha256": "186b300b546d77dbcad0957bc3d5f093441afec276e5a6283d7e9dc44e7984be"
+    },
+    {
+      "path": "crates/compare/src/main.rs",
+      "sha256": "b975916bb05fea30d3254ec0890f6bbe4ea0cf67c029178b6df39ef532fc20ee"
+    },
+    {
+      "path": "crates/compare/src/w02.rs",
+      "sha256": "a90d2b0fc5bb28ba3d36a7b597bab91fad2b7f00529f7a0e500eb7c4c34d04c3"
+    },
+    {
+      "path": "crates/compare/src/w02b.rs",
+      "sha256": "1e283d2dee8dee3d7f1f278a6eb7aa3b022611b82784a33217d928866ea8e00b"
+    },
+    {
+      "path": "crates/compare/src/w02c.rs",
+      "sha256": "c43f503bfd5f5d2d6891cc7fe74b3acc3f721e7bbce6807554a37accb909a95a"
+    },
+    {
+      "path": "crates/compare/src/w03.rs",
+      "sha256": "3d771d02c47d1f2ed08dc90f50ff27beb2e12cf307729183c43951686c592ab8"
+    },
+    {
+      "path": "crates/compare/src/w04.rs",
+      "sha256": "211affbceee2d793613329db73e8d4da92a66050d250228a5e28e9ee9ca80c3f"
+    },
+    {
+      "path": "crates/compare/src/w05.rs",
+      "sha256": "115ef1ae2fc86b582d0b45391de186f29c94463cb2b0d51b3d21b5c84fdaf15d"
+    },
+    {
+      "path": "crates/compare/tests/readiness.rs",
+      "sha256": "865d3bf51a809859f3944403111f469c36746ed16dd88fbc42eca45717c50d80"
+    },
+    {
+      "path": "crates/core/src/batch_renaming.rs",
+      "sha256": "631c498d969b55a3212b968570a26318efcbf154e9c530b67db7522325388cfb"
+    },
+    {
+      "path": "crates/core/src/browsing.rs",
+      "sha256": "75fbd61b127512859a63c2d9cb950676e2f6738f8c93dbfd798e7a50bae7c6af"
+    },
+    {
+      "path": "crates/core/src/copying.rs",
+      "sha256": "c8b04cef92be23fb01de23baa08f202dce6c119caf5f8f8d939aadba0179f524"
+    },
+    {
+      "path": "crates/core/src/java_case_data.rs",
+      "sha256": "47bf627ab3cb7e29eebdf2728412a1276fff2fc87b535ed80623cfe7af2fb683"
+    },
+    {
+      "path": "crates/core/src/lib.rs",
+      "sha256": "143a5d464988e93594b87bc902d8f216a135284faa6474922faee2329acce1e1"
+    },
+    {
+      "path": "crates/core/src/moving.rs",
+      "sha256": "2ad9f0213ebd922b3aad324e5e5b10b252684c4193730924d34ad11ef151fe5c"
+    },
+    {
+      "path": "crates/core/src/selection.rs",
+      "sha256": "2be6392fdf855365abf261d3c936b434ff8a778d2cd69b0a803c46a64050ae94"
+    },
+    {
+      "path": "crates/core/src/sorting.rs",
+      "sha256": "ae9abb2213e7da9d42a705998a2ca4358a13c0d952bd82cd737cc99db64c09b8"
+    },
+    {
+      "path": "crates/core/tests/batch_renaming.rs",
+      "sha256": "d1df543b4006c8f063881b9ab81f62b60ef7c51de15e141f526522410ecaf22b"
+    },
+    {
+      "path": "crates/core/tests/copying.rs",
+      "sha256": "8a03d2a772c305544621b6e7170a772612acc1e751bfcabd7fa162d4827fae2e"
+    },
+    {
+      "path": "crates/core/tests/moving.rs",
+      "sha256": "81ab36921b7a09fbab43f8931d8a4da53ed1c27dfff9ce2e23dac18b756ca752"
+    },
+    {
+      "path": "crates/core/tests/navigation.rs",
+      "sha256": "80bcac62b57a0fc5d5ff24aeccb4555149fd774ba80add42ad408fd48792deae"
+    },
+    {
+      "path": "crates/desktop/src/app.rs",
+      "sha256": "b2a707321b0efa88d1be3d7fe76bdbac346d18f27e0a0d0bca48e87d9fee0cb1"
+    },
+    {
+      "path": "crates/desktop/src/main.rs",
+      "sha256": "73fc1ae164244c581f9fbad82a74fd737f6eef473be8b4ae10ff5b1becf01e2b"
+    },
+    {
+      "path": "crates/compare/Cargo.toml",
+      "sha256": "4b1888c089cead6f1d6994198bb9e695a23456c2879ab43f137c373ef17ec15f"
+    },
+    {
+      "path": "crates/core/Cargo.toml",
+      "sha256": "581bc4321c8c7606ab0e9e7d1343afe85f19d3bd8160c45568460ad086f00ae9"
+    },
+    {
+      "path": "crates/desktop/Cargo.toml",
+      "sha256": "cd77b8c08d9de43830b8ba13b0089f0f5da08d98b1dedb256e3ae229aa9b2cbb"
+    },
+    {
+      "path": "tools/w05.py",
+      "sha256": "6a0a6e2af68c6860f1468018bc048932ac615874c76bd0153a6019583c7238da"
+    },
+    {
+      "path": "tools/w05_inspect.py",
+      "sha256": "258e593b98ed648a60571210d36628d28c0be869880d98ef305613b05a38487e"
+    },
+    {
+      "path": "tools/test_w05.py",
+      "sha256": "041f96e0d278534ab872c8490185c83298f09e865e8c9eec393fd6b8527faaa2"
+    },
+    {
+      "path": "tools/w05_gui.py",
+      "sha256": "65cadcf597687326f19eca6ad8346f9a20bd5930554a22f16d01832ac6c43726"
+    },
+    {
+      "path": "tools/java/W05GuiProbe.java",
+      "sha256": "8b310e8e7af763bfb10cdb59056d681b21de127ee2cf210827089668797eec8a"
+    },
+    {
+      "path": "tools/java/W05Oracle.java",
+      "sha256": "63df734f2e414923665b347cd58179d66bb4c5c4e307d421d7a19b4bbfe7144d"
+    },
+    {
+      "path": "tools/linux_gui.py",
+      "sha256": "45bc5e13a522e046f5f1a88f3fa1f32ea16e4d72f120edc7013736e78f40151e"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    },
+    {
+      "path": "tools/java/W04GuiProbe.java",
+      "sha256": "1ccec758af09917421b684e0754e6ee9a4e7c82440221885f0c17f09483a9b5e"
+    },
+    {
+      "path": "fixtures/W05-batch-rename/cases.json",
+      "sha256": "d1ba868b999a0d1e943b07fe0d160c7da26092a713d70d19ef0908fa823aaca4"
+    },
+    {
+      "path": "fixtures/W05-batch-rename/native-gui-actions.json",
+      "sha256": "5ba89f7a07cba740f2d6614a24009e0e9020a0eba1852b74bd2be410a9f615d5"
+    },
+    {
+      "path": "fixtures/W05-batch-rename/gui.json",
+      "sha256": "e6ec6f567c9db3f36ede89bb1f1242eb118a3098effd89b691c043d361c5c19a"
+    }
+  ],
+  "native_binary": {
+    "path": "target/debug/mucrab",
+    "sha256": "90e8a650d59d7a99861c90a0c93ac5b1a3346b083fb740e1ae80231e4820fa27"
+  },
+  "native_runtime": "PATH=/nonexistent and no JVM linkage",
+  "dependency_change": "Existing pinned chrono 0.4.45 reused by core; Cargo.lock adds only the local core-to-chrono edge, no package versions changed",
+  "reference_unchanged": true
+}

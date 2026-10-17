@@ -1,0 +1,174 @@
+[
+  {
+    "op": "click",
+    "x": 80,
+    "y": 162,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 185,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 208,
+    "modifiers": [
+      "Control_L"
+    ],
+    "capture": "marked-roots"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "copy-review"
+  },
+  {
+    "op": "click",
+    "x": 794,
+    "y": 470,
+    "wait": 0.05
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 668,
+    "capture": "paused"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "second-job-disabled"
+  },
+  {
+    "op": "click",
+    "x": 260,
+    "y": 668,
+    "wait": 0.05,
+    "capture": "resumed"
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 668,
+    "capture": "paused-again"
+  },
+  {
+    "op": "click",
+    "x": 321,
+    "y": 668,
+    "wait": 0.8,
+    "capture": "cancelled"
+  },
+  {
+    "op": "click",
+    "x": 500,
+    "y": 668,
+    "capture": "cancelled-details"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "navigation-review"
+  },
+  {
+    "op": "click",
+    "x": 794,
+    "y": 461,
+    "wait": 0.05
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 668,
+    "capture": "navigation-paused"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 232,
+    "count": 2
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ],
+    "capture": "browsing-while-busy"
+  },
+  {
+    "op": "click",
+    "x": 321,
+    "y": 668,
+    "wait": 0.8,
+    "capture": "unrelated-marks-retained"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "close-review"
+  },
+  {
+    "op": "click",
+    "x": 794,
+    "y": 478,
+    "wait": 0.05
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 668,
+    "capture": "close-paused"
+  },
+  {
+    "op": "click",
+    "x": 20,
+    "y": 14,
+    "capture": "close-menu"
+  },
+  {
+    "op": "click",
+    "x": 62,
+    "y": 183,
+    "wait": 0.8,
+    "capture": "closed-after-cancel"
+  },
+  {
+    "op": "await_exit",
+    "exit_code": 0
+  }
+]

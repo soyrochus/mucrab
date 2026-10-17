@@ -1,0 +1,856 @@
+{
+  "schema_version": 1,
+  "generated_seed": 620613,
+  "reserved_seed": 991037,
+  "generated_sets": 8,
+  "reserved_sets": 16,
+  "size_values": [
+    -1,
+    0,
+    1,
+    2,
+    10,
+    9223372036854775807,
+    9223372036854775806
+  ],
+  "date_values": [
+    -1234,
+    -1,
+    0,
+    1,
+    946684800000,
+    1577836800123
+  ],
+  "extensions": [
+    null,
+    "",
+    "txt",
+    "TXT",
+    "İ",
+    "ı",
+    "i",
+    "ß",
+    "ẞ",
+    "Σ",
+    "ς",
+    "ᾀ",
+    "ᾈ",
+    "𐐀",
+    "𐐨",
+    "",
+    "𐀀"
+  ],
+  "sets": [
+    {
+      "id": "size-sentinels-overflow",
+      "parent": true,
+      "entries": [
+        {
+          "name": "file0",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": 999,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file1",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": -1,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file2",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file3",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 1,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file4",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 9223372036854775807,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file5",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": 9223372036854775806,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file6",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": -9223372036854775808,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file7",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": -2,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file8",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": -1,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file9",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 2,
+            "modified_ms": 0,
+            "extension": null
+          }
+        }
+      ],
+      "pairs_only": true
+    },
+    {
+      "id": "date-overflow-and-ties",
+      "parent": false,
+      "entries": [
+        {
+          "name": "file0",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": -9223372036854775808,
+            "extension": null
+          }
+        },
+        {
+          "name": "file1",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 9223372036854775807,
+            "extension": null
+          }
+        },
+        {
+          "name": "file2",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": -9223372036854775807,
+            "extension": null
+          }
+        },
+        {
+          "name": "file3",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": -1,
+            "extension": null
+          }
+        },
+        {
+          "name": "file4",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file5",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 1,
+            "extension": null
+          }
+        },
+        {
+          "name": "file6",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 2147483648,
+            "extension": null
+          }
+        },
+        {
+          "name": "file7",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": -2147483648,
+            "extension": null
+          }
+        },
+        {
+          "name": "file8",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file9",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 9223372036854775806,
+            "extension": null
+          }
+        }
+      ],
+      "pairs_only": true
+    },
+    {
+      "id": "null-empty-and-case-extensions",
+      "parent": true,
+      "entries": [
+        {
+          "name": "file0",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file1",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 1,
+            "modified_ms": 1,
+            "extension": ""
+          }
+        },
+        {
+          "name": "file2",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 2,
+            "modified_ms": 0,
+            "extension": "txt"
+          }
+        },
+        {
+          "name": "file3",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 1,
+            "extension": "TXT"
+          }
+        },
+        {
+          "name": "file4",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 1,
+            "modified_ms": 0,
+            "extension": "tar.gz"
+          }
+        },
+        {
+          "name": "file5",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": 2,
+            "modified_ms": 1,
+            "extension": "gz"
+          }
+        },
+        {
+          "name": "file6",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "."
+          }
+        },
+        {
+          "name": "file7",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 1,
+            "modified_ms": 1,
+            "extension": "I"
+          }
+        },
+        {
+          "name": "file8",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 2,
+            "modified_ms": 0,
+            "extension": "İ"
+          }
+        },
+        {
+          "name": "file9",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 1,
+            "extension": "ı"
+          }
+        },
+        {
+          "name": "file10",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": 1,
+            "modified_ms": 0,
+            "extension": "i"
+          }
+        },
+        {
+          "name": "file11",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 2,
+            "modified_ms": 1,
+            "extension": "ß"
+          }
+        },
+        {
+          "name": "file12",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "SS"
+          }
+        },
+        {
+          "name": "file13",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 1,
+            "modified_ms": 1,
+            "extension": "ẞ"
+          }
+        },
+        {
+          "name": "file14",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 2,
+            "modified_ms": 0,
+            "extension": "é"
+          }
+        },
+        {
+          "name": "file15",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 1,
+            "extension": "é"
+          }
+        }
+      ]
+    },
+    {
+      "id": "unicode-simple-case-and-supplementary",
+      "parent": false,
+      "entries": [
+        {
+          "name": "z0",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "Σ"
+          }
+        },
+        {
+          "name": "a1",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "ς"
+          }
+        },
+        {
+          "name": "z2",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "σ"
+          }
+        },
+        {
+          "name": "a3",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "ſ"
+          }
+        },
+        {
+          "name": "z4",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "S"
+          }
+        },
+        {
+          "name": "a5",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "K"
+          }
+        },
+        {
+          "name": "z6",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "K"
+          }
+        },
+        {
+          "name": "a7",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "Ω"
+          }
+        },
+        {
+          "name": "z8",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "ω"
+          }
+        },
+        {
+          "name": "a9",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "ᾀ"
+          }
+        },
+        {
+          "name": "z10",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "ᾈ"
+          }
+        },
+        {
+          "name": "a11",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "𐐀"
+          }
+        },
+        {
+          "name": "z12",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "𐐨"
+          }
+        },
+        {
+          "name": "a13",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": ""
+          }
+        },
+        {
+          "name": "z14",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "𐀀"
+          }
+        },
+        {
+          "name": "a15",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "😀"
+          }
+        },
+        {
+          "name": "z16",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "𞤀"
+          }
+        },
+        {
+          "name": "a17",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": "𞤢"
+          }
+        }
+      ]
+    },
+    {
+      "id": "name-collation-ties",
+      "parent": true,
+      "entries": [
+        {
+          "name": "é",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 4,
+            "modified_ms": 123,
+            "extension": "TXT"
+          }
+        },
+        {
+          "name": "é",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 4,
+            "modified_ms": 123,
+            "extension": "TXT"
+          }
+        },
+        {
+          "name": "file2",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 4,
+            "modified_ms": 123,
+            "extension": "TXT"
+          }
+        },
+        {
+          "name": "file10",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 4,
+            "modified_ms": 123,
+            "extension": "TXT"
+          }
+        },
+        {
+          "name": "File2",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 4,
+            "modified_ms": 123,
+            "extension": "TXT"
+          }
+        },
+        {
+          "name": "中",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 4,
+            "modified_ms": 123,
+            "extension": "TXT"
+          }
+        },
+        {
+          "name": "🦀",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 4,
+            "modified_ms": 123,
+            "extension": "TXT"
+          }
+        }
+      ]
+    },
+    {
+      "id": "directories-primary-vs-name",
+      "parent": false,
+      "entries": [
+        {
+          "name": "folder10.TXT",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": 999,
+            "modified_ms": 200,
+            "extension": "TXT"
+          }
+        },
+        {
+          "name": "folder2.a",
+          "is_directory": true,
+          "is_symlink": false,
+          "metadata": {
+            "size": -1,
+            "modified_ms": -100,
+            "extension": "a"
+          }
+        },
+        {
+          "name": "file0",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": 0,
+            "extension": null
+          }
+        },
+        {
+          "name": "file2.TXT",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": -100,
+            "extension": "TXT"
+          }
+        },
+        {
+          "name": "file10.txt",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": 0,
+            "modified_ms": -100,
+            "extension": "txt"
+          }
+        }
+      ]
+    },
+    {
+      "id": "empty",
+      "parent": false,
+      "entries": []
+    },
+    {
+      "id": "only-parent",
+      "parent": true,
+      "entries": []
+    },
+    {
+      "id": "singleton",
+      "parent": false,
+      "entries": [
+        {
+          "name": "one",
+          "is_directory": false,
+          "is_symlink": false,
+          "metadata": {
+            "size": -1,
+            "modified_ms": -1,
+            "extension": null
+          }
+        }
+      ]
+    }
+  ],
+  "real_entries": [
+    {
+      "name": "file2.txt",
+      "kind": "file",
+      "size": 2,
+      "modified_ms": 946684800000
+    },
+    {
+      "name": "file10.TXT",
+      "kind": "file",
+      "size": 10,
+      "modified_ms": 1577836800123
+    },
+    {
+      "name": "zero",
+      "kind": "file",
+      "size": 0,
+      "modified_ms": 0
+    },
+    {
+      "name": ".hidden",
+      "kind": "file",
+      "size": 4,
+      "modified_ms": -1234
+    },
+    {
+      "name": "archive.tar.gz",
+      "kind": "file",
+      "size": 7,
+      "modified_ms": 1577836800123
+    },
+    {
+      "name": "trailing.",
+      "kind": "file",
+      "size": 3,
+      "modified_ms": 946684800000
+    },
+    {
+      "name": "README",
+      "kind": "file",
+      "size": 2,
+      "modified_ms": 946684800000
+    },
+    {
+      "name": "é.İ",
+      "kind": "file",
+      "size": 1,
+      "modified_ms": 1234567890123
+    },
+    {
+      "name": "é.i",
+      "kind": "file",
+      "size": 1,
+      "modified_ms": 1234567890123
+    },
+    {
+      "name": ".config.toml",
+      "kind": "file",
+      "size": 5,
+      "modified_ms": -1
+    },
+    {
+      "name": "folder2.a",
+      "kind": "directory",
+      "modified_ms": 946684800000
+    },
+    {
+      "name": "folder10.TXT",
+      "kind": "directory",
+      "modified_ms": 1577836800123
+    },
+    {
+      "name": "link-to-file2.zz",
+      "kind": "symlink",
+      "target": "file2.txt"
+    },
+    {
+      "name": "link-to-folder.aa",
+      "kind": "symlink",
+      "target": "folder2.a"
+    },
+    {
+      "name": "broken.Z",
+      "kind": "symlink",
+      "target": "missing"
+    }
+  ]
+}

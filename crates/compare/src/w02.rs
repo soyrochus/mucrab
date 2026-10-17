@@ -40,10 +40,12 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
                     name: name.clone(),
                     is_directory: path.is_dir(),
                     is_symlink: metadata.is_symlink(),
+                    metadata: None,
                 })
             })
             .collect::<Result<Vec<_>, std::io::Error>>()?;
         let mut pane = BrowserPane {
+            show_hidden: true,
             order: (0..entries.len()).collect(),
             selection: FileSelection::new(entries.len(), request.parent),
             entries,

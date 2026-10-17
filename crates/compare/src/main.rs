@@ -3,6 +3,13 @@
 
 use mucrab_core::{FileEntry, NameSorter, SortOptions, list_directory};
 mod w02;
+mod w02b;
+mod w02c;
+mod w03;
+mod w04;
+mod w05;
+mod w06;
+mod w07;
 use serde::{Deserialize, Serialize};
 use std::{
     io::{self, BufRead},
@@ -87,6 +94,69 @@ fn adapter() -> Result<(), Box<dyn std::error::Error>> {
 
 fn main() -> ExitCode {
     let arguments: Vec<_> = std::env::args_os().skip(1).collect();
+    if arguments.as_slice() == ["--adapter-w07"] {
+        return match w07::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("W07 adapter unavailable: {error}");
+                ExitCode::from(2)
+            }
+        };
+    }
+    if arguments.as_slice() == ["--adapter-w06"] {
+        return match w06::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("W06 adapter unavailable: {error}");
+                ExitCode::from(2)
+            }
+        };
+    }
+    if arguments.as_slice() == ["--adapter-w05"] {
+        return match w05::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("W05 adapter unavailable: {error}");
+                ExitCode::from(2)
+            }
+        };
+    }
+    if arguments.as_slice() == ["--adapter-w04"] {
+        return match w04::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("W04 adapter unavailable: {error}");
+                ExitCode::from(2)
+            }
+        };
+    }
+    if arguments.as_slice() == ["--adapter-w03"] {
+        return match w03::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("W03 adapter unavailable: {error}");
+                ExitCode::from(2)
+            }
+        };
+    }
+    if arguments.as_slice() == ["--adapter-w02c"] {
+        return match w02c::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("W02c adapter unavailable: {error}");
+                ExitCode::from(2)
+            }
+        };
+    }
+    if arguments.as_slice() == ["--adapter-w02b"] {
+        return match w02b::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("W02b adapter unavailable: {error}");
+                ExitCode::from(2)
+            }
+        };
+    }
     if arguments.as_slice() == ["--adapter-w02"] {
         return match w02::adapter() {
             Ok(()) => ExitCode::SUCCESS,
@@ -111,20 +181,37 @@ fn main() -> ExitCode {
     }
     if arguments.as_slice() == ["--help"] || arguments.as_slice() == ["-h"] {
         println!(
-            "muCrab comparison harness\n\nUsage: mucrab-compare --suite w01|w02 [--reserved]\n       mucrab-compare --status\n\nRuns original Java binary behavior and the Rust adapter.\nRequires the acquired reference and a JDK. Status alone exits 2 with zero cases."
+            "muCrab comparison harness\n\nUsage: mucrab-compare --suite w01|w02|w02b|w02c|w03|w04|w05|w06|w07 [--reserved]\n       mucrab-compare --status\n\nRuns original Java binary behavior and the Rust adapter.\nRequires the acquired reference and a JDK. Status alone exits 2 with zero cases."
         );
         return ExitCode::SUCCESS;
     }
-    if (arguments.as_slice() == ["--suite", "w01"]
-        || arguments.as_slice() == ["--suite", "w01", "--reserved"])
-        || (arguments.as_slice() == ["--suite", "w02"]
-            || arguments.as_slice() == ["--suite", "w02", "--reserved"])
+    if (arguments.len() == 2 || (arguments.len() == 3 && arguments[2] == "--reserved"))
+        && arguments[0] == "--suite"
+        && [
+            "w01", "w02", "w02b", "w02c", "w03", "w04", "w05", "w06", "w07",
+        ]
+        .iter()
+        .any(|suite| arguments[1] == *suite)
     {
         let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
         let mut command = Command::new("python3");
         command
             .arg("-B")
-            .arg(root.join(if arguments[1] == "w02" {
+            .arg(root.join(if arguments[1] == "w07" {
+                "tools/w07.py"
+            } else if arguments[1] == "w06" {
+                "tools/w06.py"
+            } else if arguments[1] == "w05" {
+                "tools/w05.py"
+            } else if arguments[1] == "w04" {
+                "tools/w04.py"
+            } else if arguments[1] == "w03" {
+                "tools/w03.py"
+            } else if arguments[1] == "w02c" {
+                "tools/w02c.py"
+            } else if arguments[1] == "w02b" {
+                "tools/w02b.py"
+            } else if arguments[1] == "w02" {
                 "tools/w02.py"
             } else {
                 "tools/w01.py"
@@ -145,7 +232,7 @@ fn main() -> ExitCode {
     }
     if arguments.is_empty() || arguments.as_slice() == ["--status"] {
         println!(
-            r#"{{"status":"not_run","cases_run":0,"reason":"Run --suite w01 or --suite w02 for a fresh scoped comparison"}}"#
+            r#"{{"status":"not_run","cases_run":0,"reason":"Run --suite w01, w02, w02b, w02c, w03, w04, w05 or w06 for a fresh scoped comparison"}}"#
         );
     } else {
         eprintln!("Unsupported arguments. Use mucrab-compare --help.");

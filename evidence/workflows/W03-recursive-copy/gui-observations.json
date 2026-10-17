@@ -1,0 +1,183 @@
+{
+  "scope": "Representative native XTest replay, actual original CopyDialog controls/full copy jobs and measured destination trees; no exhaustive OS dispatch parity",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "filesystem": "ext4",
+    "backend": "X11/Xvfb",
+    "original_jdk": "25.0.4.1",
+    "umask": "022"
+  },
+  "raw_run": "artifacts/gui/W03-20261016T192317Z-ac3de560",
+  "inputs": [
+    {
+      "path": "tools/w03_gui.py",
+      "sha256": "c5b71ba5528a9c0613c9378cb207137936d10a9c6358c2726658a71e1ea903ec"
+    },
+    {
+      "path": "tools/java/W03GuiProbe.java",
+      "sha256": "0c77d865bd50f06ee2136218daa83c2dd806fe8e1531c6e623ef8133b8c5c5ec"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    },
+    {
+      "path": "tools/linux_gui.py",
+      "sha256": "22914dd769c229c6982c1e142b9fbd2da0470d214863161efd52cb2c0e0223b2"
+    },
+    {
+      "path": "fixtures/W03-recursive-copy/gui.json",
+      "sha256": "fb96385d9888518de09dad252a75ae7c3ed8cfe60b3e997253458689ea42ff73"
+    },
+    {
+      "path": "fixtures/W03-recursive-copy/native-gui-actions.json",
+      "sha256": "7680d042c92f9c9e7510185a33ae8f9bc384d2a3b51651ac34bf8f0a05c66a93"
+    }
+  ],
+  "native_binary": {
+    "path": "target/debug/mucrab",
+    "sha256": "a23f8eaff4703e5dbe952b55b1bd93c57c8ae615e2bd8b20f54e66f37c478de3"
+  },
+  "native_env": {
+    "PATH": "/nonexistent"
+  },
+  "native_checks": [
+    "40 saved input actions replayed on fresh independent trees",
+    "F5 and button review source/destination, exact selected names and collision policy",
+    "Cancel writes nothing and restores F5 listing focus after the modal layer clears",
+    "Forward SKIP copy merges recursively including hidden/binary/empty/link children; skipped mark and inactive marks survive",
+    "Reverse copy and explicit OVERWRITE succeed; successful top-level marks clear, both panes refresh",
+    "Details show collision skips and both permission errors from a partial directory copy",
+    "Complete final healthy trees and partial destination/source were independently verified against original component/GUI observations"
+  ],
+  "original_probe": {
+    "mechanism": "Startup observer calls real selection/active-table methods, constructs real CopyDialog and operates path/policy/skip-errors/Copy controls on EDT; original resolver, ProgressDialog and FileJob.run execute unchanged; no class transformation",
+    "jobs": 3,
+    "stages": 8,
+    "pane_states": 16,
+    "states": "gui/original-states.json",
+    "result": "gui/original-result.json",
+    "tree_result": "gui/original-tree-result.json"
+  },
+  "native_tree_result": "gui/native-tree-result.json",
+  "native_partial_result": "gui/native-partial-result.json",
+  "preparation": {
+    "path": "artifacts/gui/W03-20261016T192317Z-ac3de560/provenance.json",
+    "sha256": "fb34e451aa229ab822d5648f10c44ce303e9ca349cda49de5975c52e104ea068"
+  },
+  "review": "Retained captures inspected visually; filesystem snapshots verify bytes/metadata independently; no pixel-equivalence claim",
+  "limitations": [
+    "Native partial-error display compared to original component result, not a full-original-GUI error-dialog parity claim",
+    "Original optional OSGi/logging warnings remain; unrelated components are unverified",
+    "No original OS event/shortcut parity, cancellation, pause, job queue, physical desktop or Wayland claim",
+    "Earlier native cancel/F5 focus attempts are retained in artifacts/gui/W03-20261016T191400Z-80322705 and W03-20261016T191528Z-a5d9efcc; final replay passes"
+  ],
+  "retained": [
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-marked.png",
+      "sha256": "afbd1c0b7dd5c56aac51131dd47f8bde63bd2dbf1016f71a545f9357532c0bc0",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-forward-review.png",
+      "sha256": "022404f7e013a8de8897329b7969a31e7ffeba6667fc324fc6fffbc65b899f77",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-cancelled.png",
+      "sha256": "b681de47db4ceb1789c6aa1485a5fe8bad13e1e1d9c02c48832d4be75b0183e6",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-review-after-cancel.png",
+      "sha256": "4431373e6e58f83d4ffa05d0aa44580ec1e341bbfea184612b2c53d1aadff3b8",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-forward-skip.png",
+      "sha256": "4efafcc831535c83a5fd35eae93b7af921a8ce49bb36204bb6d261d4a7980c85",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-skip-details.png",
+      "sha256": "cea8dadd7e829b84ff67b37383926eaa7ce2b352b76df904d7640c7551af29b1",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-reverse-review.png",
+      "sha256": "e7773d939f114220d65b94a1766ef19096a53d1c3087a91826f4a01af3a072ce",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-reverse-complete.png",
+      "sha256": "9a19ef94d03ba4b08962efe89b296aaac72299ee8f0be571d6794e7662a6bb2f",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-overwrite-approved.png",
+      "sha256": "8196df1573de73453b0d8743de452e76bd8fbb3c0f14316b37bb61e0b5a395c5",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-overwrite-complete.png",
+      "sha256": "2249573028c99d0b020cb98d82b37602f6d3ea3359899f9bf7fb6b8434ac9768",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-partial-result.png",
+      "sha256": "a52903938b8a8c98308af6b20d4e4e06a58c94cddb8e76d3949252d59f470c0f",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/native-partial-details.png",
+      "sha256": "48348dc4f46773c5a81d8766b4bbb818445bbe1bd127103ef1419e62bf52daef",
+      "producer": "native X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/original-initial.png",
+      "sha256": "db0c87d18fcd74a518cc08b92212bd14b6b40aeead65e62602b55c1f226e88e9",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/original-marked.png",
+      "sha256": "ab93f2adcf5f256f91a3cf0bf31aec4edb7eafbc5d31e5e1365ed2635a667b8a",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/original-forward-skip.png",
+      "sha256": "f28adbd83897b4405ae51f9c60ca332eea49dfb827c9f2fd9e65b5b8715e85c4",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/original-reverse-complete.png",
+      "sha256": "da6d18a284f63bf9e3026b8faf8647807dc56c4590a6b797b55c7c66b5f648d7",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/original-overwrite-complete.png",
+      "sha256": "a05a91abfb6b01925b051ab1c8f87531a2fd6f72c88afe53428ad93685f62185",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/original-forward-review-dialog.png",
+      "sha256": "843fe4235a6a0693a3c173a705b83c1afd4e64f5d851f8b4a0f4963b157c6af5",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/original-reverse-review-dialog.png",
+      "sha256": "104bf8727ccf6913fb550b5bf5d5a40e29aa7cc6f0d56307bb13560c6b10e260",
+      "producer": "original Swing Window.printAll"
+    },
+    {
+      "path": "evidence/workflows/W03-recursive-copy/gui/original-overwrite-review-dialog.png",
+      "sha256": "ee9368e0cff5e4bbc8528834fd2dff53b50bf7ba6cd45e3af6394d80699804cb",
+      "producer": "original Swing Window.printAll"
+    }
+  ],
+  "preview": {
+    "path": "images/mucrab.png",
+    "sha256": "022404f7e013a8de8897329b7969a31e7ffeba6667fc324fc6fffbc65b899f77",
+    "operation": "Unmodified native 1120x720 X11 capture"
+  }
+}

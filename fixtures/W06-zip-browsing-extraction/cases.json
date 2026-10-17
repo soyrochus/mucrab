@@ -1,0 +1,611 @@
+{
+  "schema_version": 1,
+  "scope": "Ordinary local ZIP stored/deflate UTF-8/ASCII, original archive tree and UnpackJob; native safety guards separate",
+  "generated_seed": 766061,
+  "reserved_seed": 991086,
+  "generated_sets": 18,
+  "reserved_sets": 24,
+  "policies": [
+    "SKIP",
+    "OVERWRITE",
+    "OVERWRITE_IF_OLDER",
+    "OVERWRITE_IF_SIZE_DIFFERS"
+  ],
+  "zip_date": [
+    2020,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "default_directory_mode": 493,
+  "default_file_mode": 420,
+  "default_modified_ms": 1577836800000,
+  "cases": [
+    {
+      "id": "empty",
+      "entries": []
+    },
+    {
+      "id": "stored-binary",
+      "entries": [
+        {
+          "path": "zero",
+          "size": 0,
+          "method": "stored"
+        },
+        {
+          "path": "one",
+          "size": 1,
+          "method": "stored"
+        },
+        {
+          "path": "large.bin",
+          "size": 65539,
+          "method": "stored"
+        }
+      ]
+    },
+    {
+      "id": "deflated-binary",
+      "entries": [
+        {
+          "path": "data",
+          "size": 65539
+        },
+        {
+          "path": "zero",
+          "size": 0
+        }
+      ]
+    },
+    {
+      "id": "implicit-folders",
+      "entries": [
+        {
+          "path": "z/inside/n.txt",
+          "size": 11,
+          "date": [
+            2001,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "path": "a.txt",
+          "size": 3
+        },
+        {
+          "path": "z/second",
+          "size": 5
+        }
+      ]
+    },
+    {
+      "id": "explicit-late-directory",
+      "entries": [
+        {
+          "path": "tree/first.txt",
+          "size": 9
+        },
+        {
+          "path": "tree/",
+          "date": [
+            2002,
+            3,
+            4,
+            5,
+            6,
+            8
+          ],
+          "mode": 448
+        },
+        {
+          "path": "tree/empty/"
+        }
+      ]
+    },
+    {
+      "id": "unicode-spaces-hidden",
+      "entries": [
+        {
+          "path": "é 中/🙂.txt",
+          "text": "unicode body"
+        },
+        {
+          "path": "two words.txt",
+          "size": 1
+        },
+        {
+          "path": ".hidden/.child",
+          "size": 13
+        },
+        {
+          "path": ".dot",
+          "size": 0
+        }
+      ]
+    },
+    {
+      "id": "file-permissions",
+      "entries": [
+        {
+          "path": "read-only",
+          "size": 3,
+          "mode": 292
+        },
+        {
+          "path": "private",
+          "size": 7,
+          "mode": 384
+        },
+        {
+          "path": "executable",
+          "size": 9,
+          "mode": 489
+        }
+      ]
+    },
+    {
+      "id": "dos-dates",
+      "entries": [
+        {
+          "path": "old",
+          "size": 1,
+          "date": [
+            1980,
+            1,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "path": "new",
+          "size": 9,
+          "date": [
+            2107,
+            12,
+            31,
+            23,
+            59,
+            58
+          ]
+        }
+      ]
+    },
+    {
+      "id": "root-selection",
+      "entries": [
+        {
+          "path": "root.txt",
+          "text": "root contents",
+          "method": "stored"
+        },
+        {
+          "path": "folder/a.txt",
+          "text": "nested A"
+        },
+        {
+          "path": "folder/nested/b.bin",
+          "size": 65539
+        },
+        {
+          "path": "empty/"
+        },
+        {
+          "path": ".hidden",
+          "size": 0
+        }
+      ],
+      "selected": [
+        "root.txt",
+        "empty"
+      ]
+    },
+    {
+      "id": "folder-selection",
+      "entries": [
+        {
+          "path": "root.txt",
+          "text": "root contents",
+          "method": "stored"
+        },
+        {
+          "path": "folder/a.txt",
+          "text": "nested A"
+        },
+        {
+          "path": "folder/nested/b.bin",
+          "size": 65539
+        },
+        {
+          "path": "empty/"
+        },
+        {
+          "path": ".hidden",
+          "size": 0
+        }
+      ],
+      "selected": [
+        "folder"
+      ]
+    },
+    {
+      "id": "nested-all",
+      "entries": [
+        {
+          "path": "root.txt",
+          "text": "root contents",
+          "method": "stored"
+        },
+        {
+          "path": "folder/a.txt",
+          "text": "nested A"
+        },
+        {
+          "path": "folder/nested/b.bin",
+          "size": 65539
+        },
+        {
+          "path": "empty/"
+        },
+        {
+          "path": ".hidden",
+          "size": 0
+        }
+      ],
+      "prefix": "folder/"
+    },
+    {
+      "id": "nested-selection",
+      "entries": [
+        {
+          "path": "root.txt",
+          "text": "root contents",
+          "method": "stored"
+        },
+        {
+          "path": "folder/a.txt",
+          "text": "nested A"
+        },
+        {
+          "path": "folder/nested/b.bin",
+          "size": 65539
+        },
+        {
+          "path": "empty/"
+        },
+        {
+          "path": ".hidden",
+          "size": 0
+        }
+      ],
+      "prefix": "folder/",
+      "selected": [
+        "a.txt"
+      ]
+    },
+    {
+      "id": "nested-folder-selection",
+      "entries": [
+        {
+          "path": "root.txt",
+          "text": "root contents",
+          "method": "stored"
+        },
+        {
+          "path": "folder/a.txt",
+          "text": "nested A"
+        },
+        {
+          "path": "folder/nested/b.bin",
+          "size": 65539
+        },
+        {
+          "path": "empty/"
+        },
+        {
+          "path": ".hidden",
+          "size": 0
+        }
+      ],
+      "prefix": "folder/",
+      "selected": [
+        "nested"
+      ]
+    },
+    {
+      "id": "empty-selection",
+      "entries": [
+        {
+          "path": "root.txt",
+          "text": "root contents",
+          "method": "stored"
+        },
+        {
+          "path": "folder/a.txt",
+          "text": "nested A"
+        },
+        {
+          "path": "folder/nested/b.bin",
+          "size": 65539
+        },
+        {
+          "path": "empty/"
+        },
+        {
+          "path": ".hidden",
+          "size": 0
+        }
+      ],
+      "selected": []
+    },
+    {
+      "id": "skip-and-conditional",
+      "entries": [
+        {
+          "path": "same.bin",
+          "size": 17
+        },
+        {
+          "path": "different.bin",
+          "size": 37
+        },
+        {
+          "path": "new.txt",
+          "size": 7
+        }
+      ],
+      "destination": [
+        {
+          "path": "same.bin",
+          "kind": "file",
+          "size": 17,
+          "pattern": 201,
+          "modified_ms": 1577836800000
+        },
+        {
+          "path": "different.bin",
+          "kind": "file",
+          "size": 17,
+          "pattern": 201,
+          "modified_ms": 1893456000000
+        }
+      ]
+    },
+    {
+      "id": "merge-folder",
+      "entries": [
+        {
+          "path": "root.txt",
+          "text": "root contents",
+          "method": "stored"
+        },
+        {
+          "path": "folder/a.txt",
+          "text": "nested A"
+        },
+        {
+          "path": "folder/nested/b.bin",
+          "size": 65539
+        },
+        {
+          "path": "empty/"
+        },
+        {
+          "path": ".hidden",
+          "size": 0
+        }
+      ],
+      "destination": [
+        {
+          "path": "folder",
+          "kind": "directory"
+        },
+        {
+          "path": "folder/keep",
+          "kind": "file",
+          "size": 11
+        },
+        {
+          "path": "folder/a.txt",
+          "kind": "file",
+          "size": 13,
+          "pattern": 201
+        }
+      ]
+    },
+    {
+      "id": "file-over-folder",
+      "entries": [
+        {
+          "path": "conflict",
+          "size": 3
+        },
+        {
+          "path": "later",
+          "size": 7
+        }
+      ],
+      "destination": [
+        {
+          "path": "conflict",
+          "kind": "directory"
+        },
+        {
+          "path": "conflict/keep",
+          "kind": "file",
+          "size": 7
+        }
+      ]
+    },
+    {
+      "id": "folder-over-file",
+      "entries": [
+        {
+          "path": "conflict/"
+        },
+        {
+          "path": "conflict/child",
+          "size": 5
+        },
+        {
+          "path": "later",
+          "size": 7
+        }
+      ],
+      "destination": [
+        {
+          "path": "conflict",
+          "kind": "file",
+          "size": 3
+        }
+      ]
+    },
+    {
+      "id": "blocked-destination-root",
+      "entries": [
+        {
+          "path": "first",
+          "size": 7
+        },
+        {
+          "path": "second",
+          "size": 3
+        }
+      ],
+      "destination_mode": 365
+    },
+    {
+      "id": "partial-stops-after-error",
+      "entries": [
+        {
+          "path": "good",
+          "size": 9
+        },
+        {
+          "path": "locked/fail",
+          "size": 17
+        },
+        {
+          "path": "later",
+          "size": 3
+        }
+      ],
+      "destination": [
+        {
+          "path": "locked",
+          "kind": "directory",
+          "mode": 365
+        }
+      ]
+    },
+    {
+      "id": "read-only-existing",
+      "entries": [
+        {
+          "path": "locked",
+          "size": 17
+        },
+        {
+          "path": "later",
+          "size": 3
+        }
+      ],
+      "destination": [
+        {
+          "path": "locked",
+          "kind": "file",
+          "size": 11,
+          "mode": 292
+        }
+      ]
+    },
+    {
+      "id": "archive-comment",
+      "entries": [
+        {
+          "path": "root.txt",
+          "text": "root contents",
+          "method": "stored"
+        },
+        {
+          "path": "folder/a.txt",
+          "text": "nested A"
+        },
+        {
+          "path": "folder/nested/b.bin",
+          "size": 65539
+        },
+        {
+          "path": "empty/"
+        },
+        {
+          "path": ".hidden",
+          "size": 0
+        }
+      ],
+      "comment": "comment PK magic unicode é"
+    },
+    {
+      "id": "invalid-header",
+      "entries": [],
+      "corrupt": "header",
+      "policies": [
+        "SKIP"
+      ]
+    },
+    {
+      "id": "truncated-directory",
+      "entries": [
+        {
+          "path": "a",
+          "size": 17
+        }
+      ],
+      "corrupt": "truncated",
+      "policies": [
+        "SKIP"
+      ]
+    },
+    {
+      "id": "listing-errors",
+      "entries": [
+        {
+          "path": "root.txt",
+          "text": "root contents",
+          "method": "stored"
+        },
+        {
+          "path": "folder/a.txt",
+          "text": "nested A"
+        },
+        {
+          "path": "folder/nested/b.bin",
+          "size": 65539
+        },
+        {
+          "path": "empty/"
+        },
+        {
+          "path": ".hidden",
+          "size": 0
+        }
+      ],
+      "extra_list_paths": [
+        "missing/",
+        "root.txt"
+      ],
+      "extract": false,
+      "policies": [
+        "SKIP"
+      ]
+    }
+  ]
+}

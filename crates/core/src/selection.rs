@@ -4,7 +4,7 @@
 // Recovered from muCommander FileTable, FileTableModel and selection actions.
 // See NOTICE.md and evidence/workflows/W02-selection-marking/contract.md.
 
-use crate::{FileEntry, SortMode};
+use crate::{FileEntry, SortCriterion, SortMode};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize)]
@@ -32,6 +32,8 @@ pub enum PaneEvent {
     None,
     Invert,
     Sort {
+        #[serde(default)]
+        criterion: SortCriterion,
         ascending: bool,
         directories_first: bool,
         mode: SortMode,
@@ -60,6 +62,15 @@ pub struct SelectionSnapshot {
 }
 
 impl FileSelection {
+    /// Original reload preserves held-key guards and sets the range anchor to
+    /// the resulting focus before restoring surviving marks.
+    pub(crate) fn reload(&mut self, children: usize, has_parent: bool, focus: Option<usize>) {
+        self.marked = vec![false; children];
+        self.has_parent = has_parent;
+        self.focus_row = focus;
+        self.last_row = focus.unwrap_or(0);
+    }
+
     pub fn new(children: usize, has_parent: bool) -> Self {
         Self {
             focus_row: (children + usize::from(has_parent) > 0).then_some(0),

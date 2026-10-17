@@ -1,0 +1,304 @@
+{
+  "scope": "W02c final local development checks; component comparisons and GUI evidence separate",
+  "status": "passed",
+  "source_revision": "d32930fad9f5685008891b37123a3b997690602b",
+  "run": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6",
+  "commands": {
+    "format": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/format.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/format.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "clippy": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/clippy.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/clippy.stderr",
+        "sha256": "fecede7c2157efe2f16c8c8b9dce94b0fb4dd384dca8207046c8bf7636eb0ffe"
+      }
+    },
+    "rust-tests": {
+      "argv": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/rust-tests.stdout",
+        "sha256": "31a3971467e81b71b59dcff852dc3c0825b5169ff3eac09d82c552db6b626ff7"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/rust-tests.stderr",
+        "sha256": "177f4fc046350654ae8b48327c01ae1c9887ebadf7ad2574cdad92a926ac3f3a"
+      }
+    },
+    "python-tests": {
+      "argv": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/python-tests.stdout",
+        "sha256": "0706812ba01af4df65161c64bd077bc9fb917c8265560e7d6a4255c66710714a"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/python-tests.stderr",
+        "sha256": "7f5e05b8c3f3959732c5d23283bb58efa6b5cf5acd1a07d08b49a745bbb274fa"
+      }
+    },
+    "build": {
+      "argv": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/build.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/build.stderr",
+        "sha256": "fecede7c2157efe2f16c8c8b9dce94b0fb4dd384dca8207046c8bf7636eb0ffe"
+      }
+    },
+    "case-data": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/w02c_case_data.py",
+        "--verify-only"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/case-data.stdout",
+        "sha256": "74054adda3542ebb3039f7396b83ebfc1ed722b24ca2f07695634c0094df846d"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/case-data.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "reference": {
+      "argv": [
+        "python3",
+        "-B",
+        "tools/acquire_mucommander.py",
+        "--verify-only"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/reference.stdout",
+        "sha256": "1e042a78c8261ea910b7d799478b97b604be93e5e338f8d7eae09d99d83651a8"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/reference.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "native-no-java": {
+      "argv": [
+        "env",
+        "PATH=/nonexistent",
+        "{repository}/target/debug/mucrab",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/native-no-java.stdout",
+        "sha256": "e6cbaadd6bd34dfbbc820f23c7db14e573f55dc6dc489fd81174c18151f71f9b"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/native-no-java.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "native-libraries": {
+      "argv": [
+        "ldd",
+        "{repository}/target/debug/mucrab"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/native-libraries.stdout",
+        "sha256": "fd9c71f1d5cfa8bf53492e9603f4e8db702ee58743a2c09a7aa9e82032646ade"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W02c-validation-20261016T143201Z-eafc85b6/native-libraries.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "rust_tests": 12,
+  "python_tests": 23,
+  "sources": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "d8d38b8ccd8e742e4f093f595cf729d8541c28bd5af6d6e213b0aebf6786e9d0"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "334ef83f41db18162f9079e59c5b3f2c8a62eaf5941daff0b294bbbeaa31a49d"
+    },
+    {
+      "path": "NOTICE.md",
+      "sha256": "19aed2860c649f2a873c3b6f46d382a12f0a4ff6e32c8c66d605d11a3d78d3e8"
+    },
+    {
+      "path": "third_party/chrono/LICENSE.txt",
+      "sha256": "946c9835d8034d24404f8cfec5f4654cee5dad17e944afc3d06d742cf2882831"
+    },
+    {
+      "path": "third_party/chrono/README.md",
+      "sha256": "641e179eb076111dc183e0aff51a1ff6a0f480cc0efa25ea083341691b504167"
+    },
+    {
+      "path": "tools/manifests/java-case-data.json",
+      "sha256": "c3f4a356c5a16a12c6a431c340610610874019b154d1040e80b48b9a058a10ec"
+    },
+    {
+      "path": "crates/compare/src/main.rs",
+      "sha256": "62702a13d5c470a1b831f20edbe00f586df51350d268785c79338bb8178c4788"
+    },
+    {
+      "path": "crates/compare/src/w02.rs",
+      "sha256": "a90d2b0fc5bb28ba3d36a7b597bab91fad2b7f00529f7a0e500eb7c4c34d04c3"
+    },
+    {
+      "path": "crates/compare/src/w02b.rs",
+      "sha256": "1e283d2dee8dee3d7f1f278a6eb7aa3b022611b82784a33217d928866ea8e00b"
+    },
+    {
+      "path": "crates/compare/src/w02c.rs",
+      "sha256": "c43f503bfd5f5d2d6891cc7fe74b3acc3f721e7bbce6807554a37accb909a95a"
+    },
+    {
+      "path": "crates/compare/tests/readiness.rs",
+      "sha256": "865d3bf51a809859f3944403111f469c36746ed16dd88fbc42eca45717c50d80"
+    },
+    {
+      "path": "crates/core/src/browsing.rs",
+      "sha256": "0173aab4e71c68c22fea18a04a3698a0ac08c5e65a14ae2da7884cd37069e0bf"
+    },
+    {
+      "path": "crates/core/src/java_case_data.rs",
+      "sha256": "47bf627ab3cb7e29eebdf2728412a1276fff2fc87b535ed80623cfe7af2fb683"
+    },
+    {
+      "path": "crates/core/src/lib.rs",
+      "sha256": "c7a8762d8a6a1330eb6d9e91a3cd12cbb573c80d42959533c4d2c627539a27d6"
+    },
+    {
+      "path": "crates/core/src/selection.rs",
+      "sha256": "2be6392fdf855365abf261d3c936b434ff8a778d2cd69b0a803c46a64050ae94"
+    },
+    {
+      "path": "crates/core/src/sorting.rs",
+      "sha256": "ae9abb2213e7da9d42a705998a2ca4358a13c0d952bd82cd737cc99db64c09b8"
+    },
+    {
+      "path": "crates/core/tests/navigation.rs",
+      "sha256": "80bcac62b57a0fc5d5ff24aeccb4555149fd774ba80add42ad408fd48792deae"
+    },
+    {
+      "path": "crates/desktop/src/app.rs",
+      "sha256": "6f57d2645ed32920074c90f74885cefc97ac73fd34ccb9cb5f2acbbde6e38300"
+    },
+    {
+      "path": "crates/desktop/src/main.rs",
+      "sha256": "9b9993d0bae99d1b8641c81034c1466061f42402a8b80001790b8133f0d590fb"
+    },
+    {
+      "path": "crates/compare/Cargo.toml",
+      "sha256": "4b1888c089cead6f1d6994198bb9e695a23456c2879ab43f137c373ef17ec15f"
+    },
+    {
+      "path": "crates/core/Cargo.toml",
+      "sha256": "8e7d98cff18eb493b8d8af5559acaaf44c6b3a3a6c57d9ff4973690cb7c0643d"
+    },
+    {
+      "path": "crates/desktop/Cargo.toml",
+      "sha256": "cd77b8c08d9de43830b8ba13b0089f0f5da08d98b1dedb256e3ae229aa9b2cbb"
+    },
+    {
+      "path": "tools/w02c.py",
+      "sha256": "f2ad1a8766722aede239c4514da1814fdbe2ff778fd75e68e608779259a401d1"
+    },
+    {
+      "path": "tools/w02c_case_data.py",
+      "sha256": "fa9ad535308a28f572d8a64e1ec673a8d63c4256fe685d9bd0804d398707c4cd"
+    },
+    {
+      "path": "tools/w02c_gui.py",
+      "sha256": "f7a27c31586ee330b43e2cbb37d974e065c0348fb2c07249e89452a05f093df9"
+    },
+    {
+      "path": "tools/w02c_inspect.py",
+      "sha256": "2d684cac29b49c0965fec616885b0e393e17cd548e403ebb40d17fe559437e35"
+    },
+    {
+      "path": "tools/w02c_stall_probe.py",
+      "sha256": "2a0feae7586715d281edde8c8b88dbca53b4827f8b95a7f5a06e64671886f221"
+    },
+    {
+      "path": "tools/test_w02c.py",
+      "sha256": "a0a530265f81d0ed4ec7305e61ecbb4b9d6ba71e433bf64e287b3d54f67b1e71"
+    },
+    {
+      "path": "tools/java/W02cCaseData.java",
+      "sha256": "533ae870c0879fa529f11b22010c5900e9635fd3dc006b6b1b3ad2e129ad79ef"
+    },
+    {
+      "path": "tools/java/W02cGuiProbe.java",
+      "sha256": "8d661c5194b2461d5f72ca07c74ba2766226f49f9af0ed84b22c93103894881a"
+    },
+    {
+      "path": "tools/java/W02cOracle.java",
+      "sha256": "1181849342daac74b30ea67c0f92c65c5fc4048de280cea68d930a10b0b9851b"
+    }
+  ],
+  "regressions": "artifacts/runs/W02c-regressions-20261016T142912Z-1d3f676f/result.json"
+}

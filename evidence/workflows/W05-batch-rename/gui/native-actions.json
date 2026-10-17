@@ -1,0 +1,254 @@
+[
+  {
+    "op": "capture",
+    "name": "initial",
+    "wait": 2
+  },
+  {
+    "op": "capture",
+    "name": "initial",
+    "wait": 2
+  },
+  {
+    "op": "click",
+    "x": 650,
+    "y": 289,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 289,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 310,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 352,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 373,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 352
+  },
+  {
+    "op": "capture",
+    "name": "native-marked"
+  },
+  {
+    "op": "click",
+    "x": 475,
+    "y": 89,
+    "capture": "native-default-preview"
+  },
+  {
+    "op": "click",
+    "x": 480,
+    "y": 249
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "same",
+    "capture": "native-duplicate-preview"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ],
+    "capture": "native-cancelled"
+  },
+  {
+    "op": "click",
+    "x": 475,
+    "y": 89
+  },
+  {
+    "op": "click",
+    "x": 430,
+    "y": 271
+  },
+  {
+    "op": "text",
+    "text": "old-"
+  },
+  {
+    "op": "click",
+    "x": 430,
+    "y": 293
+  },
+  {
+    "op": "text",
+    "text": "new-",
+    "capture": "native-forward-preview"
+  },
+  {
+    "op": "click",
+    "x": 255,
+    "y": 522,
+    "wait": 1.5,
+    "capture": "native-forward-complete"
+  },
+  {
+    "op": "click",
+    "x": 304,
+    "y": 663,
+    "capture": "native-skip-details"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 650,
+    "y": 310,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 475,
+    "y": 89,
+    "capture": "native-reverse-default-preview"
+  },
+  {
+    "op": "click",
+    "x": 480,
+    "y": 270
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "item-[C1,1,3].[E]",
+    "capture": "native-reverse-preview"
+  },
+  {
+    "op": "click",
+    "x": 255,
+    "y": 501,
+    "wait": 1.5,
+    "capture": "native-reverse-complete"
+  },
+  {
+    "op": "click",
+    "x": 230,
+    "y": 174
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "/home/iwk/src/mucrab/artifacts/gui/W05-20261016T204917Z-c3334d15/partial-fixture"
+  },
+  {
+    "op": "click",
+    "x": 515,
+    "y": 174
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 310,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 475,
+    "y": 89
+  },
+  {
+    "op": "click",
+    "x": 480,
+    "y": 280
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "../outside",
+    "capture": "native-invalid-preview"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "new",
+    "capture": "native-partial-preview"
+  },
+  {
+    "op": "click",
+    "x": 255,
+    "y": 490,
+    "wait": 1.5,
+    "capture": "native-partial-result"
+  },
+  {
+    "op": "click",
+    "x": 304,
+    "y": 663,
+    "capture": "native-partial-details"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  }
+]

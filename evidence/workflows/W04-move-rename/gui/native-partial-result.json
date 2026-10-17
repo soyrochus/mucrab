@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "destination_tree_checks": 1,
+  "source_tree_checks": 1,
+  "real_cross_filesystem": true,
+  "reference_case": "partial-child-failure-cross-skip"
+}

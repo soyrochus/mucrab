@@ -1,0 +1,64 @@
+{
+  "left": [
+    {
+      "path": "reply.txt",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 41,
+      "sha256": "d866e10411316c90d6499dd4579b4d90993d61e0c22feb1c9a32825a061b4951"
+    }
+  ],
+  "right": [
+    {
+      "path": "collision.txt",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 17,
+      "sha256": "bc62d8863b9cb7f220709d43f45a3d3cb51dee2959ab820118dc1edfafa4504e"
+    },
+    {
+      "path": "package",
+      "kind": "directory",
+      "mode": 493,
+      "modified_ms": 1577836800123
+    },
+    {
+      "path": "package/.hidden",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 7,
+      "sha256": "e8a502dceeacb78493b9235280001ec99dcbbb12fde2ceaf9c5c9eac605d6ea3"
+    },
+    {
+      "path": "package/binary.dat",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 65539,
+      "sha256": "46c22be5e4d998f17b267d3aa10fb886d343c29b0b4aa2d8bde2859943cf1eba"
+    },
+    {
+      "path": "package/empty",
+      "kind": "directory",
+      "mode": 493,
+      "modified_ms": 1577836800123
+    },
+    {
+      "path": "package/link",
+      "kind": "symlink",
+      "mode": 511,
+      "target": "binary.dat"
+    },
+    {
+      "path": "sent.txt",
+      "kind": "file",
+      "mode": 420,
+      "modified_ms": 1577836800123,
+      "size": 29,
+      "sha256": "9d8170ccbea7a071a703509a1d00f895fa6d59a08e7de99d9b3cf3572527f1a6"
+    }
+  ]
+}

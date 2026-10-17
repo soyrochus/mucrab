@@ -1,0 +1,279 @@
+{
+  "status": "passed",
+  "scope": "Representative native batch replay, actual original batch preview/confirmation/collision controls and jobs; no exhaustive OS dispatch parity",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "filesystem": "ext4",
+    "backend": "X11/Xvfb",
+    "original_jdk": "25.0.4.1",
+    "component_locale": "en-US",
+    "component_date_timezone": "UTC",
+    "umask": "022"
+  },
+  "raw_run": "artifacts/gui/W05-20261016T204917Z-c3334d15",
+  "inputs": [
+    {
+      "path": "tools/w05_gui.py",
+      "sha256": "65cadcf597687326f19eca6ad8346f9a20bd5930554a22f16d01832ac6c43726"
+    },
+    {
+      "path": "tools/java/W05GuiProbe.java",
+      "sha256": "8b310e8e7af763bfb10cdb59056d681b21de127ee2cf210827089668797eec8a"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    },
+    {
+      "path": "tools/java/W04GuiProbe.java",
+      "sha256": "1ccec758af09917421b684e0754e6ee9a4e7c82440221885f0c17f09483a9b5e"
+    },
+    {
+      "path": "tools/linux_gui.py",
+      "sha256": "45bc5e13a522e046f5f1a88f3fa1f32ea16e4d72f120edc7013736e78f40151e"
+    },
+    {
+      "path": "fixtures/W05-batch-rename/gui.json",
+      "sha256": "e6ec6f567c9db3f36ede89bb1f1242eb118a3098effd89b691c043d361c5c19a"
+    },
+    {
+      "path": "fixtures/W05-batch-rename/native-gui-actions.json",
+      "sha256": "5ba89f7a07cba740f2d6614a24009e0e9020a0eba1852b74bd2be410a9f615d5"
+    }
+  ],
+  "native_binary": {
+    "path": "target/debug/mucrab",
+    "sha256": "90e8a650d59d7a99861c90a0c93ac5b1a3346b083fb740e1ae80231e4820fa27"
+  },
+  "native_env": {
+    "PATH": "/nonexistent"
+  },
+  "native_actions": 41,
+  "native_checks": [
+    "Live selected old/new preview, unchanged Apply disabled, duplicate detection and Cancel without renaming",
+    "Literal replacement applies only changed rows; existing-file Skip preserves both collision copies, unchanged/skipped/inactive marks remain, successful rows unmark",
+    "Counter mask applies in visible selection order in the other pane; both panes refresh",
+    "Invalid path mask disables application; partial folder merge retains skipped child/source mark and reports collision details",
+    "Both complete final trees and partial resulting tree independently match original component/GUI expectations"
+  ],
+  "original_probe": {
+    "mechanism": "Observer constructs real BatchRenameDialog, edits real controls, observes original RenameTableModel, clicks actual confirmation and collision Skip buttons; original BatchRenameJob/FileJob lifecycle unchanged; no overrides or class transformation",
+    "jobs": 2,
+    "stages": 10,
+    "pane_states": 20,
+    "preview_snapshots": 4,
+    "states": "gui/original-states.json",
+    "previews": "gui/original-previews.json",
+    "result": "gui/original-result.json",
+    "tree_result": "gui/original-tree-result.json"
+  },
+  "native_tree_result": "gui/native-tree-result.json",
+  "native_partial_result": "gui/native-partial-result.json",
+  "earlier_gui_regressions": [
+    {
+      "workflow": "W03",
+      "raw_run": "artifacts/gui/W03-20261016T204948Z-1305dd01",
+      "actions": 40,
+      "tree_result": "gui/w03-regression-tree-result.json",
+      "partial_result": "gui/w03-regression-partial-result.json"
+    },
+    {
+      "workflow": "W04",
+      "raw_run": "artifacts/gui/W04-20261016T204951Z-87ebb026",
+      "actions": 41,
+      "tree_result": "gui/w04-regression-tree-result.json",
+      "partial_result": "gui/w04-regression-partial-result.json"
+    }
+  ],
+  "preparation": {
+    "path": "artifacts/gui/W05-20261016T204917Z-c3334d15/provenance.json",
+    "sha256": "0a8798f9af1359805d51fbe7cd73887e6eece8fa450c180069bf6c6e5ee3f138"
+  },
+  "review": "Retained captures visually inspected; tree inspection verifies bytes/modes/dates/link text independently; no pixel-equivalence claim",
+  "limitations": [
+    "Native partial merge compared to original method result, not full-original error-dialog parity",
+    "Native disables wholly unchanged plans; original button remains enabled but starts no job",
+    "Manual row edits/block controls and exhaustive original shortcut parity are outside scope",
+    "Physical desktop/Wayland and full job scheduling/cancellation remain unverified",
+    "Original optional bundle/logging warnings remain",
+    "Exploratory run retained at artifacts/gui/W05-20261016T204537Z-d64357a5; final replay uses fresh trees and the final native binary"
+  ],
+  "retained": [
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-marked.png",
+      "sha256": "dfbc53457582695fa233b1a0cd9f7ab6f19d2e7640b182a12d03968048c33d8d",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-default-preview.png",
+      "sha256": "6c64fee870f00955db2ae041c117547dcf18d090b4b4f655c3a9c6c8206a3d39",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-duplicate-preview.png",
+      "sha256": "7fbbfdb609f4f0b0b53988e5aa988a806bac910bd00ffa5de9b65f609d05f0f3",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-cancelled.png",
+      "sha256": "78aaa7097f8bc04128a1bc0dd16ba1178619cfef25d1ddaed63abf13c5c5f35a",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-forward-preview.png",
+      "sha256": "b27ac83a1a3d1ad02935a8ccd86911b8e0d54dc4e4bf41d98b048a977248a22d",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-forward-complete.png",
+      "sha256": "234d00fb9507d479663dbf1823816e3d41e82073b1cd271224608f9b08217788",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-skip-details.png",
+      "sha256": "433d2922b41483df72c878f4e028c87c118e976aa7d9c855140839e1b2efffe8",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-reverse-preview.png",
+      "sha256": "f49ac479c96a461f83453a6835fe28f1491fc54ff9d45d5578ddd41dc7caf186",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-reverse-complete.png",
+      "sha256": "384636ba25b6f6f535e100f9ddb70d2668a0864b60faf6734732e24051d104dc",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-invalid-preview.png",
+      "sha256": "7e57d030cc43d8fae764ad11605c6cbde6ea11d2e78597946e8337e3d1fa8fed",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-partial-preview.png",
+      "sha256": "b5762631e7f58b1588cfb60cff5fcde9f77e843ca378ccb46948edb72fd8d29b",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-partial-result.png",
+      "sha256": "1451a76b5503366e1a9c5175a86779dcd4a323d25459173dd8e09cef46c80ccb",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-partial-details.png",
+      "sha256": "0c05c6bb219843abd34bd78a53f2a816ad12f5a98396cccc709d1cd7ab47c3ca",
+      "producer": "Native XTest/X11 screen capture"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-default-preview-dialog.png",
+      "sha256": "89fcf1d09d2914711313e850f74fdfdf4e7c00749734cf4eb8c58d4c6aff710e",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-duplicate-preview-dialog.png",
+      "sha256": "053b3e94d4215f9c5b4836e7bd38413af821793add3c6eaa4ae3566c52a1ffe1",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-forward-preview-dialog.png",
+      "sha256": "909db621974321ea94600d74350cbff8ae958621331e67e22106400e0e7c5bb3",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-forward-confirmation-dialog.png",
+      "sha256": "34ec8300e91c1517e4f9b68defee177b8f7dbf82f4614e301d7d18f8d392301b",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-collision-skip-dialog.png",
+      "sha256": "187319153ef8e8cfdae1a53b899deceb9a3d84f2120b3a25b599066c2a431ad3",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-forward-complete.png",
+      "sha256": "1b905a2d69d383200cf88fdfb4bf7bcb3b61008ef892016fb8a62a11861f68d1",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-reverse-preview-dialog.png",
+      "sha256": "b1af60fe4d6fe81921fa212470d3d061502308fc66d310ee35708cda6406b5d6",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-reverse-confirmation-dialog.png",
+      "sha256": "397007788d9a84cc81ed4328a2833e7f72652c202969e0e16838d7107d87e02b",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-reverse-complete.png",
+      "sha256": "59e0693c3714a762c823931c81c5644cc6cf059300690d73ca060e9a91a8b35d",
+      "producer": "Original Swing printAll render"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-states.json",
+      "sha256": "78cac9d87a953af59fcac0cfc3924505c64a4623fdd5d9d7597173465788ff9f",
+      "producer": "Original observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-previews.json",
+      "sha256": "e76623d5b92899e7a1760624351062e14dfc590b6a7220fab20a8152d0fb9c43",
+      "producer": "Original observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-result.json",
+      "sha256": "82823d087b43bc4d476c61eab59fcfc99e46d6fbfc43ba8852ca7ac0e3a4a200",
+      "producer": "Original observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/original-tree-result.json",
+      "sha256": "dc2f8f59604c5a2d6df5e35ab4007dde9378bd4d7713c5b196572a91ad65a996",
+      "producer": "Original observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-tree-result.json",
+      "sha256": "dc2f8f59604c5a2d6df5e35ab4007dde9378bd4d7713c5b196572a91ad65a996",
+      "producer": "Original observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-partial-result.json",
+      "sha256": "652b4bdb47b086bf7a516ff362b6cb5ba108226de176fe80c3a83144ccd25856",
+      "producer": "Original observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/expected-trees.json",
+      "sha256": "fdbeec009f2977105aed3b3f3626d2a09afc9185b2a25995c3c1bfc8a4c6ccaa",
+      "producer": "Original observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/expected-partial.json",
+      "sha256": "ea9681eea3496a3c5d46aeafa7021460685f4f62b5e5298db823bb20eeb4216b",
+      "producer": "Original observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/native-actions.json",
+      "sha256": "b5f7a8986cccdfe2ccfddaef916f39f9ceaceb13fec1312bff239c38abb3495b",
+      "producer": "Original observer or independent filesystem inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/w03-regression-tree-result.json",
+      "sha256": "f3a05a61359457aa136729b2ac12e1fd33d2f993d9231ed8c11ed5c4bb0fcf8f",
+      "producer": "Independent regression GUI tree inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/w03-regression-partial-result.json",
+      "sha256": "9a45d3f4ae54849a2db61b8503d54ab624e03dcd9d0c5c8b9b1e3580311e9434",
+      "producer": "Independent regression GUI tree inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/w04-regression-tree-result.json",
+      "sha256": "a2a6fa3d39f4d4dc393ed231560b63d02002c75b410520b090657ef4c3a4b996",
+      "producer": "Independent regression GUI tree inspection"
+    },
+    {
+      "path": "evidence/workflows/W05-batch-rename/gui/w04-regression-partial-result.json",
+      "sha256": "d572a2f254c91091a95472347658bfd5e76b9575eaae2c0f497dc5d10860e273",
+      "producer": "Independent regression GUI tree inspection"
+    }
+  ]
+}

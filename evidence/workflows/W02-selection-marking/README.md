@@ -4,6 +4,12 @@ Verified within the [bounded contract](contract.md), on macOS arm64 with the
 pinned muCommander 1.6.2-1 binaries and en-US sorting. Filtering and additional
 criteria are the next separate increments.
 
+The component suites were rerun successfully on Linux x86_64/ext4 with OpenJDK
+25.0.4.1 on 2026-10-16, including the ReflectionFactory isolation mechanism.
+Current comparison reports describe that host; GUI observations and validation
+records remain historical macOS arm64 evidence. Later Linux X11/Xvfb input
+checks are recorded separately in `../W02b-hidden-filtering/`.
+
 | Suite | Sequences | Full state snapshots | Differences / skips |
 | --- | ---: | ---: | ---: |
 | Predefined + generated seed 90241 | 28 | 1,430 | 0 / 0 |

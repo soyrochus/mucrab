@@ -1,0 +1,264 @@
+[
+  {
+    "op": "capture",
+    "name": "initial",
+    "wait": 2
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 310,
+    "count": 2,
+    "capture": "native-zip-root"
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 69,
+    "capture": "native-zip-hidden"
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 289,
+    "count": 2,
+    "capture": "native-zip-child"
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 268,
+    "count": 2,
+    "capture": "native-zip-parent"
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 289,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 331,
+    "modifiers": [
+      "Control_L"
+    ],
+    "capture": "native-selected"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "native-selected-review"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ],
+    "capture": "native-cancelled"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 305,
+    "y": 477,
+    "wait": 1.2,
+    "capture": "native-selected-complete"
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 268,
+    "count": 2,
+    "capture": "native-local-parent"
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 331
+  },
+  {
+    "op": "click",
+    "x": 585,
+    "y": 89,
+    "capture": "native-whole-review"
+  },
+  {
+    "op": "click",
+    "x": 450,
+    "y": 428,
+    "capture": "native-policy-menu"
+  },
+  {
+    "op": "click",
+    "x": 400,
+    "y": 474
+  },
+  {
+    "op": "click",
+    "x": 305,
+    "y": 486,
+    "wait": 1.2,
+    "capture": "native-whole-complete"
+  },
+  {
+    "op": "click",
+    "x": 810,
+    "y": 174
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "{run}/native-fixture/right/return.zip"
+  },
+  {
+    "op": "click",
+    "x": 1070,
+    "y": 174,
+    "capture": "native-right-zip"
+  },
+  {
+    "op": "click",
+    "x": 660,
+    "y": 289
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "native-reverse-review"
+  },
+  {
+    "op": "click",
+    "x": 305,
+    "y": 467,
+    "wait": 1.2,
+    "capture": "native-reverse-complete"
+  },
+  {
+    "op": "click",
+    "x": 600,
+    "y": 196,
+    "capture": "native-final"
+  },
+  {
+    "op": "click",
+    "x": 810,
+    "y": 174
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "{run}/partial-destination"
+  },
+  {
+    "op": "click",
+    "x": 1070,
+    "y": 174
+  },
+  {
+    "op": "click",
+    "x": 230,
+    "y": 174
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "{run}/partial.zip"
+  },
+  {
+    "op": "click",
+    "x": 515,
+    "y": 174
+  },
+  {
+    "op": "click",
+    "x": 32,
+    "y": 237
+  },
+  {
+    "op": "click",
+    "x": 110,
+    "y": 310
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "native-partial-review"
+  },
+  {
+    "op": "click",
+    "x": 305,
+    "y": 477,
+    "wait": 1.2,
+    "capture": "native-partial-result"
+  },
+  {
+    "op": "click",
+    "x": 350,
+    "y": 663,
+    "capture": "native-partial-details"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 230,
+    "y": 174
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "{run}/bad.zip"
+  },
+  {
+    "op": "click",
+    "x": 515,
+    "y": 174,
+    "capture": "native-invalid-zip"
+  },
+  {
+    "op": "quit"
+  }
+]

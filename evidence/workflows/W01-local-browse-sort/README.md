@@ -5,6 +5,12 @@ enumeration and sorting functions exercised by the comparison adapter. It is
 scoped to en-US on the observed macOS arm64 host. See `contract.md` for supported
 behavior and explicit exclusions.
 
+The component suites were rerun successfully on Linux x86_64/ext4 with OpenJDK
+25.0.4.1 on 2026-10-16. The current comparison reports describe that host; retained
+GUI observations and validation records remain historical macOS arm64 evidence.
+Later Linux X11/Xvfb input checks are recorded separately in
+`../W02b-hidden-filtering/`; this directory's GUI evidence is unchanged.
+
 ## Evidence
 
 | Record | Meaning |
