@@ -1284,3 +1284,20 @@ No tag was created or release published. Earlier journal entries describing Mac
 checks as pending are historical and are superseded by this acceptance section.
 Hosted CI, Developer ID/notarization, older macOS and broader Phase 6 acceptance
 remain separate gates.
+
+## W09 — native file opening and archive temporary copies (2026-10-17)
+
+Both requested parts are implemented. Enter, double-click and File → Open route
+folders/ZIPs to navigation and ordinary files to the OS default application.
+Local links resolve to targets. Archive members use guarded W06 extraction into
+unique private retained temporary directories, then native dispatch. No ZIP
+writeback occurs. Background preparation, cancellation, deferred close and
+asynchronous launcher failure reporting remain independent of W07 operations.
+
+The [W09 evidence](evidence/workflows/W09-open-files/README.md) records pinned
+original static recovery, the isolated Linux native association replay, five new
+Rust tests, 51 Linux Rust/51 Python passing tests and W07/W08 native regressions.
+[OpenSpec artifacts](openspec/changes/w09-open-files/proposal.md) define scope and
+lifetime/error rules. The existing W07 close-menu replay coordinate moved down
+one row for the new Open item. Native macOS dispatch is implemented but still
+requires a Mac verification run. No Java/Rust runtime parity suite is claimed.

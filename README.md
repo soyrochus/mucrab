@@ -1,6 +1,6 @@
 # muCrab
 
-[![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-blue)](Cargo.toml)
+[![Version 0.9.0](https://img.shields.io/badge/version-0.9.0-blue)](Cargo.toml)
 [![Rust 1.95 or newer](https://img.shields.io/badge/Rust-1.95%2B-orange?logo=rust)](#build-and-run-mucrab)
 [![License: GPL-3.0-only](https://img.shields.io/badge/license-GPL--3.0--only-blue)](LICENSE)
 [![Status: experimental](https://img.shields.io/badge/status-experimental-yellow)](docs/current-status.md)
@@ -78,14 +78,20 @@ on the target, host and configured providers. See REA's
 
 ## Current status
 
-**W07 — background operations and cancellation** is the latest verified functional
-milestone. File operations show progress and support Pause/Resume/Cancel while
+**W09 — Default-application file opening** now supports local files and archive
+members through Enter, double-click and File → Open. ZIP members open as private
+temporary copies without archive writeback. Linux native dispatch is verified;
+macOS dispatch is implemented and awaits native verification. See the
+[W09 evidence](evidence/workflows/W09-open-files/README.md).
+
+**W07 — background operations and cancellation** remains verified. File operations
+show progress and support Pause/Resume/Cancel while
 browsing remains available. **W08 — classic desktop UI** was delivered first, with
 compact menus, file tables and saved Light/Dark/System appearance.
 See the [current status report](docs/current-status.md) for workflow details,
 comparison results, verification dates, supported platforms and remaining limits.
 
-Fresh [macOS arm64 verification](evidence/platforms/macos-arm64/README.md) covers all
+The pre-W09 [macOS arm64 verification](evidence/platforms/macos-arm64/README.md) covers all
 nine comparison suites, full Rust/Python checks and native W07/W08 interaction.
 
 ## Migration screenshots
@@ -122,7 +128,7 @@ See [release instructions and platform requirements](docs/releases.md).
 
 ## Build and run muCrab
 
-Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. Rust/Cargo **1.99.0** was used on macOS arm64 and Linux x86_64. The native GUI was exercised on macOS and under Linux X11/Xvfb; Wayland remains unverified.
+Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. Linux file opening also requires `xdg-open` and configured file associations. Rust/Cargo **1.99.0** was used on macOS arm64 and Linux x86_64. The native GUI was exercised on macOS and under Linux X11/Xvfb; Wayland remains unverified.
 
 The [Cargo workspace](Cargo.toml) contains:
 
@@ -141,8 +147,15 @@ cargo run --locked -p mucrab-desktop
 cargo run --locked -p mucrab-desktop -- /path/to/left /path/to/right
 ```
 
-The application supports local/ZIP browsing, sorting, marking, filtering, recursive local copy/move, focused/batch rename and ZIP extraction. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder or local `.zip` to enter it; each pane has an editable location, Parent and Refresh icons, and sortable column headers.
-Press Enter to open a typed location. View contains sorting/filtering options and
+The application supports local/ZIP browsing, sorting, marking, filtering, recursive local copy/move, focused/batch rename, ZIP extraction and default-application file opening. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder or local `.zip` to enter it; each pane has an editable location, Parent and Refresh icons, and sortable column headers.
+With the listing focused, **Enter**, double-click or **File → Open** opens the
+focused/clicked file in its default application. Local symbolic links resolve
+to their targets. Archive members open from private temporary copies retained
+after muCrab exits; edits do not update the ZIP. Copies remain until OS temporary
+cleanup or explicit user cleanup. Opening runs independently of copy/move jobs,
+with cancellation during preparation and visible launcher errors.
+
+Press Enter in the location field to open a typed location. View contains sorting/filtering options and
 **Appearance → System / Light / Dark**; System follows the OS color preference
 and falls back to Light if unavailable. ZIP paths such as `/path/archive.zip/folder` also work as initial locations. Check the native command-line entry points without opening a window:
 
@@ -192,9 +205,9 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The Rust suite has forty-six cross-platform tests plus one macOS filename regression covering recovered rules, navigation/error state,
+The Rust suite has fifty-one cross-platform tests plus one macOS filename regression covering recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes and large-table UI interaction. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has fifty-one tests. The separate
+readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes, large-table UI interaction and W09 temporary-copy/cancellation/launcher checks. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has fifty-one tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 
@@ -241,10 +254,11 @@ EFRAME_SCREENSHOT_TO="$PWD/artifacts/workspace/mucrab-preview.png" \
 
 The optional `screenshot` feature is for development captures.
 [Workspace readiness evidence](evidence/workspace/readiness.json) is the historical
-phase 4 scaffold snapshot. [W06 evidence](evidence/workflows/W06-zip-browsing-extraction/README.md),
-[validation](evidence/workflows/W06-zip-browsing-extraction/validation.json) and
-[regression results](evidence/workflows/W06-zip-browsing-extraction/regressions.json) record
-the latest implementation checks. A screenshot supplements runtime comparisons.
+phase 4 scaffold snapshot. [W09 evidence](evidence/workflows/W09-open-files/README.md)
+records the latest file-opening checks and W07/W08 regressions. Earlier workflow
+evidence retains its original comparison results. W09 currently has static
+original-binary recovery and native Linux checks, rather than a Java/Rust runtime
+parity suite. A screenshot supplements runtime comparisons.
 
 ## Reference application
 
@@ -363,7 +377,7 @@ The [implementation plan and progress ledger](mucrab-implementation-plan.md) rec
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
-5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. W08 implements the classic desktop interface as a presentation increment. W07 adds bounded background operations, progress and cancellation with original full-job lifecycle comparisons. Permissions/owner/group sorting and additional filters remain deferred.
+5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. W08 implements the classic desktop interface as a presentation increment. W07 adds bounded background operations, progress and cancellation with original full-job lifecycle comparisons. W09 implements default-application opening for local files and retained archive copies, with Linux native verification and macOS verification pending. Permissions/owner/group sorting and additional filters remain deferred.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
 
 Upstream Java implementation source will be withheld during reconstruction; license and attribution material remains available. Decompiled representations, binary metadata, and observations of the original are permitted inputs. Findings from the earlier feasibility investigation must be identified as prior evidence if reused.
@@ -381,6 +395,8 @@ Current fixtures include numeric and Unicode names, existing destinations,
 symbolic links, unreadable files, and partial copy/move failures. File operations
 run inside disposable fixture directories. W07 adds cancellation, paused jobs,
 partial-prefix checks and real cross-device source-retention fixtures.
+W09 adds default-application dispatch, retained archive copies and an isolated
+Linux MIME-association replay; native macOS dispatch remains unverified.
 GUI demonstrations supplement the behavioral comparisons. Build success alone
 does not establish equivalence.
 
@@ -400,7 +416,10 @@ lockfiles, the native workspace, W01/W02a/W02b/W02c/W03/W04/W05/W06 Java/Rust ad
 and fixtures, scoped results, GUI evidence, and the maintained implementation
 plan. [W08 UI evidence](evidence/workflows/W08-desktop-ui/README.md) records the
 UI changes and scoped checks. [W07 evidence](evidence/workflows/W07-background-operations/README.md)
-records lifecycle recovery, comparisons and native progress/cancellation checks; W05 manual row overrides remain deferred.
+records lifecycle recovery, comparisons and native progress/cancellation checks.
+[W09 evidence](evidence/workflows/W09-open-files/README.md) records default-application
+opening, temporary-copy lifetime and native Linux verification; W05 manual row
+overrides remain deferred.
 
 ## Principles of Participation
 

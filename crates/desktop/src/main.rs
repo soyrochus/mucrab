@@ -6,6 +6,7 @@ use std::process::ExitCode;
 mod app;
 mod appearance;
 mod browser_ui;
+mod opening;
 
 fn main() -> ExitCode {
     let arguments: Vec<_> = std::env::args_os().skip(1).collect();
@@ -23,7 +24,7 @@ fn main() -> ExitCode {
                  Name ordering uses en-US; Show hidden files applies to both panes.\n\
                  F5 copies, F6 moves, F2 renames; Batch rename reviews masks and counters.\n\
                  Inside a ZIP, F5 extracts to the other pane. Extract ZIP also opens a review.\n\
-                 Opening symbolic links from the listing is deferred."
+                 Enter or double-click opens files with the default application."
             );
             return ExitCode::SUCCESS;
         }

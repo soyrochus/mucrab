@@ -1,0 +1,19 @@
+{
+  "scope": "Linux native Open via real xdg-open and isolated MIME registration",
+  "passed": true,
+  "requests": [
+    {
+      "path": "/home/iwk/src/mucrab/artifacts/gui/W09-open-files/left/- caf\u00e9 & report.txt",
+      "contents": "Local W09 document\n"
+    },
+    {
+      "path": "/tmp/mucrab-open-154878-1792259719475290365-0/- caf\u00e9 & report.txt",
+      "contents": "W09 archive document\n"
+    },
+    {
+      "path": "/home/iwk/src/mucrab/artifacts/gui/W09-open-files/left/- caf\u00e9 & report.txt",
+      "contents": "Local W09 document\n"
+    }
+  ],
+  "temporary_copy_survives_exit": true
+}

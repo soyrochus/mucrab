@@ -2,11 +2,17 @@
 
 [Back to the README](../README.md).
 
-The current verified functional milestone is **W07 — background operations,
+**W09 — default-application file opening** is implemented for local files and
+archive members, with native Linux verification of Enter, double-click and
+File → Open. Archive copies survive application exit and do not update ZIPs.
+The macOS dispatch path awaits native verification. See
+[W09 evidence](../evidence/workflows/W09-open-files/README.md) for scope and results.
+
+The preceding verified functional milestone is **W07 — background operations,
 progress and cancellation**, delivered after the prioritized **W08 classic UI**.
 Checks recorded on **2026-10-17** include W07's original full-job comparisons,
 all eight earlier component suites, Rust/Python checks and W07/W08 native replays.
-Fresh [Mac acceptance](../evidence/platforms/macos-arm64/README.md) also passes all
+The preceding [Mac acceptance](../evidence/platforms/macos-arm64/README.md) also passes all
 18 suite executions, 47 Rust tests, 51 Python tests and native W07/W08 workflows.
 See the [implementation ledger](../mucrab-implementation-plan.md).
 
@@ -120,20 +126,47 @@ component suite executions and the W08 replay also pass. There are **46 cross-pl
 **51 Python tests**. [W07 evidence](../evidence/workflows/W07-background-operations/README.md)
 records recovery, comparison reports, source fingerprints, native checks and limits.
 
+## W09 — Default-application file opening
+
+Enter and **File → Open** activate the focused item; double-click activates the
+clicked item in either pane. Ordinary local files open in the registered default
+application, including files reached through symbolic links. Folders and local
+ZIPs retain navigation. Broken or cyclic links and launcher failures report errors.
+
+Archive members are extracted with the existing guarded ZIP extractor before
+opening. Each copy retains its filename in a unique private temporary directory
+and remains available after muCrab exits, until OS temporary cleanup or explicit
+user cleanup. Edits affect the temporary copy and do not update the ZIP.
+Preparation runs in the background independently of W07 mutation jobs, supports
+cancellation and defers window close until cancellation is acknowledged. Already
+launched applications remain independent of muCrab.
+
+Linux uses `xdg-open`; macOS uses `/usr/bin/open`. Native Linux verification
+covers Enter, archive double-click and File → Open with an isolated real file
+association, exact filenames/contents and temporary-copy retention after exit.
+The W09 checkpoint passes **51 Linux Rust tests**, **51 Python tests**, formatting,
+denied-warning Clippy, and the W07/W08 native regressions. The earlier Mac
+checkpoint's 47 Rust tests predate W09; native macOS dispatch remains pending.
+[W09 evidence](../evidence/workflows/W09-open-files/README.md) records static
+original-binary recovery and native implementation checks. W09 does not yet have
+a Java/Rust runtime parity suite.
+
 ## Platform scope and limitations
 
-The latest recorded verification passes all eight earlier component suites plus W07 full-job comparisons on
+The recorded original-JAR/Rust verification passes all eight earlier component suites plus W07 full-job comparisons on
 **Linux x86_64/ext4**, OpenJDK **25.0.4.1**, with en-US ordering and a separate
 `/tmp` filesystem for cross-device moves. Native input checks run under X11/Xvfb; representative
 original menu-action checks retain live-table states and Swing renders.
-The current Mac run covers all nine suites on **macOS 26.6.2 / arm64 / APFS**,
+The pre-W09 Mac run covers all nine suites on **macOS 26.6.2 / arm64 / APFS**,
 OpenJDK **21.0.10**, with a real second APFS volume for cross-device moves.
 Native desktop input verifies the W08 operations and W07 controls, including
 closing a paused job. See the [Mac receipts](../evidence/platforms/macos-arm64/README.md)
 for Unicode path rules and source hashes. Live OS theme-notification delivery,
 restoration of the original preference and the signed Mac release bundle pass. Other macOS versions,
 Wayland, Windows hidden attributes and exhaustive OS shortcut parity remain
-unverified. Opening symbolic links, other filters, additional archive formats and other locales remain for later increments. Copy rejects overlapping source/
+unverified. W09 file opening is verified on Linux only; its macOS dispatch path
+awaits native verification. Other filters, additional archive formats and other
+locales remain for later increments. Copy rejects overlapping source/
 destination paths, outside link targets and destination aliases; race-free
 filesystem handling and full scheduler/parallel-job parity remain unverified. W07 cancellation is
 cooperative between entries and 64 KiB chunks; blocked OS calls/atomic renames

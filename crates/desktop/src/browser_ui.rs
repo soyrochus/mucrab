@@ -17,7 +17,8 @@ pub fn pane(
     active: &mut PaneSide,
     widths: &mut [f32; 3],
     enabled: bool,
-) {
+) -> Option<crate::opening::Target> {
+    let mut open = None;
     ui.push_id(listing_id(side), |ui| {
         let area = ui.max_rect();
         let is_active = *active == side;
@@ -121,7 +122,8 @@ pub fn pane(
                     {
                         go_parent = true;
                     }
-                    if ui.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::Enter)) {
+                    if ui.input(|i| i.events.iter().any(|event| matches!(event, egui::Event::Key { key: egui::Key::Enter, pressed: true, repeat: false, modifiers, .. } if modifiers.is_none())))
+                        && ui.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::Enter)) {
                         if pane.selection.has_parent && pane.selection.focus_row == Some(0) {
                             go_parent = true;
                         } else if let Some(row) = pane.selection.focus_row {
@@ -131,6 +133,8 @@ pub fn pane(
                                 let entry = &pane.entries[*index];
                                 if browsable(entry, pane) {
                                     navigate = pane.location.as_ref().map(|p| p.join(&entry.name));
+                                } else {
+                                    open = Some(crate::opening::target(pane, &entry.name));
                                 }
                             }
                         }
@@ -449,10 +453,13 @@ pub fn pane(
                                 if enabled && response.double_clicked() {
                                     if parent {
                                         go_parent = true;
-                                    } else if let Some(e) = entry
-                                        && browsable(e, pane)
-                                    {
-                                        navigate = pane.location.as_ref().map(|p| p.join(&e.name));
+                                    } else if let Some(e) = entry {
+                                        if browsable(e, pane) {
+                                            navigate =
+                                                pane.location.as_ref().map(|p| p.join(&e.name));
+                                        } else {
+                                            open = Some(crate::opening::target(pane, &e.name));
+                                        }
                                     }
                                 }
                                 response.on_hover_text(entry.map_or_else(
@@ -525,12 +532,23 @@ pub fn pane(
                 });
             });
     });
+    open
 }
 
-fn browsable(entry: &FileEntry, pane: &BrowserPane) -> bool {
-    !entry.is_symlink
-        && (entry.is_directory
-            || (pane.archive.is_none() && entry.name.to_ascii_lowercase().ends_with(".zip")))
+pub(crate) fn browsable(entry: &FileEntry, pane: &BrowserPane) -> bool {
+    if pane.archive.is_some() {
+        return entry.is_directory;
+    }
+    let resolved = pane.location.as_ref().map(|p| p.join(&entry.name));
+    entry.is_directory
+        || resolved.as_ref().is_some_and(|path| path.is_dir())
+        || resolved
+            .as_ref()
+            .and_then(|path| std::fs::canonicalize(path).ok())
+            .is_some_and(|path| {
+                path.extension()
+                    .is_some_and(|ext| ext.eq_ignore_ascii_case("zip"))
+            })
 }
 
 #[cfg(test)]

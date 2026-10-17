@@ -163,7 +163,7 @@
   {
     "op": "click",
     "x": 62,
-    "y": 183,
+    "y": 209,
     "wait": 0.8,
     "capture": "closed-after-cancel"
   },

@@ -51,6 +51,7 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 copy_confirmation: None,
                 batch_review: None,
                 zip_review: None,
+                opener: crate::opening::Opener::default(),
                 copy_job: None,
                 close_after_job: false,
                 copy_summary: None,
@@ -75,6 +76,7 @@ struct MuCrabApp {
     copy_confirmation: Option<CopyConfirmation>,
     batch_review: Option<BatchReview>,
     zip_review: Option<ZipReview>,
+    opener: crate::opening::Opener,
     copy_job: Option<PendingCopy>,
     close_after_job: bool,
     copy_summary: Option<String>,
@@ -538,7 +540,7 @@ impl MuCrabApp {
             self.panes[source_index].focus_name(&name);
         }
         self.restore_copy_focus = true;
-        if self.close_after_job {
+        if self.close_after_job && !self.opener.busy() {
             ctx.send_viewport_cmd(egui::ViewportCommand::Close);
         }
     }
@@ -667,6 +669,19 @@ impl eframe::App for MuCrabApp {
             job.control.cancel();
             self.close_after_job = true;
         }
+        if ui.input(|input| input.viewport().close_requested()) && self.opener.busy() {
+            ui.ctx()
+                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
+            self.opener.cancel();
+            self.close_after_job = true;
+        }
+        self.opener.poll();
+        if self.close_after_job && self.copy_job.is_none() && !self.opener.busy() {
+            ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
+        }
+        if self.opener.watching() {
+            ui.ctx().request_repaint_after(Duration::from_millis(100));
+        }
         self.poll_copy(ui.ctx());
         let idle = self.copy_job.is_none()
             && self.copy_confirmation.is_none()
@@ -727,6 +742,7 @@ impl eframe::App for MuCrabApp {
         egui::Panel::top("menus").show(ui, |ui| {
             egui::MenuBar::new().ui(ui, |ui| {
                 ui.menu_button("File", |ui| {
+                    menu_action(ui, "Open", "Enter", browsing, Command::Open, &mut command);
                     menu_action(
                         ui,
                         "Copy…",
@@ -935,6 +951,17 @@ impl eframe::App for MuCrabApp {
             });
         });
         egui::Panel::bottom("commands").show(ui, |ui| {
+            if let Some(message) = self.opener.message.clone() {
+                ui.horizontal(|ui| {
+                    ui.label(message);
+                    if self.opener.busy() && ui.button("Cancel Open").clicked() {
+                        self.opener.cancel();
+                    }
+                    if ui.small_button("Dismiss").clicked() {
+                        self.opener.message = None;
+                    }
+                });
+            }
             if let Some(error) = &self.preference_error {
                 ui.colored_label(ui.visuals().error_fg_color, error);
             }
@@ -1078,7 +1105,7 @@ impl eframe::App for MuCrabApp {
                             .max_rect(rect)
                             .layout(egui::Layout::top_down(egui::Align::Min)),
                         |ui| {
-                            pane(
+                            if let Some(target) = pane(
                                 ui,
                                 side,
                                 &mut self.panes[index],
@@ -1088,7 +1115,9 @@ impl eframe::App for MuCrabApp {
                                 browsing
                                     && self.copy_confirmation.is_none()
                                     && self.zip_review.is_none(),
-                            );
+                            ) {
+                                self.opener.start(target);
+                            }
                         },
                     );
                 }
@@ -1115,7 +1144,7 @@ impl eframe::App for MuCrabApp {
                     ui.heading("Keyboard shortcuts");
                     for text in [
                         "Tab / Shift+Tab — switch panes",
-                        "Enter — enter folder or ZIP",
+                        "Enter — open file, folder or ZIP",
                         "Backspace — parent folder",
                         "Arrow keys / Home / End — move focus",
                         "Space — mark and advance",
@@ -1222,6 +1251,7 @@ pub(crate) fn selection_key(event: &egui::Event) -> Option<PaneEvent> {
 }
 
 enum Command {
+    Open,
     Action(FileAction),
     Batch,
     Extract,
@@ -1253,6 +1283,25 @@ impl MuCrabApp {
     fn execute(&mut self, command: Command, ctx: &egui::Context) {
         let index = usize::from(self.active == PaneSide::Right);
         match command {
+            Command::Open => {
+                let pane = &mut self.panes[index];
+                if pane.selection.has_parent && pane.selection.focus_row == Some(0) {
+                    pane.parent(&self.sorter);
+                } else if let Some(row) = pane.selection.focus_row
+                    && let Some(&entry) = pane
+                        .order
+                        .get(row.saturating_sub(usize::from(pane.selection.has_parent)))
+                {
+                    let e = &pane.entries[entry];
+                    if crate::browser_ui::browsable(e, pane) {
+                        if let Some(path) = pane.location.as_ref().map(|p| p.join(&e.name)) {
+                            pane.open(&path, &self.sorter);
+                        }
+                    } else {
+                        self.opener.start(crate::opening::target(pane, &e.name));
+                    }
+                }
+            }
             Command::Action(FileAction::Copy) if self.panes[index].archive.is_some() => {
                 self.zip_review = self.prepare_extract();
             }
@@ -1375,6 +1424,7 @@ mod job_tests {
             copy_confirmation: None,
             batch_review: None,
             zip_review: None,
+            opener: crate::opening::Opener::default(),
             copy_job: None,
             close_after_job: false,
             copy_summary: None,
