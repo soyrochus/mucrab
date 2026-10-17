@@ -367,7 +367,18 @@ plan. [W08 UI evidence](evidence/workflows/W08-desktop-ui/README.md) records the
 UI changes and scoped checks. [W07 evidence](evidence/workflows/W07-background-operations/README.md)
 records lifecycle recovery, comparisons and native progress/cancellation checks; W05 manual row overrides remain deferred.
 
+## Principles of Participation
+
+Everyone is invited and welcome to contribute: open issues, propose pull requests, share ideas, or help improve documentation. Participation is open to all, regardless of background or viewpoint.
+
+This project follows the [FOSS Pluralism Manifesto](./FOSS_PLURALISM_MANIFESTO.md), which affirms respect for people, freedom to critique ideas, and space for diverse perspectives.
+
+Before submitting a change, complete its verification tasks and update the
+relevant OpenSpec artifacts when behavior or requirements change.
+
 ## License and attribution
+
+Copyright (c) 2026 Iwan van der Kleijn
 
 muCrab-authored material is licensed under the **GNU General Public License, version 3** (`GPL-3.0-only`); see [LICENSE](LICENSE). Upstream material retains its original copyright notices and applicable terms. See [NOTICE.md](NOTICE.md) and the [preserved muCommander license file](third_party/mucommander/license.txt).
 
