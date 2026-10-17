@@ -78,6 +78,8 @@ on the target, host and configured providers. See REA's
 
 ## Current status
 
+Latest implementation checkpoint: **2026-10-18**, commit `5b77e5a` (W15).
+
 **W15 — SFTP connections and transfers** is implemented. Go → SFTP connections
 manages saved profiles, verified host keys and session-only or optional native
 credentials. Browse remote folders, review local↔SFTP copies, and open/view files
@@ -94,7 +96,8 @@ macOS verification remains pending. See [W13 evidence](evidence/workflows/W13-pr
 and [W14 evidence](evidence/workflows/W14-built-in-viewer/README.md).
 
 **W11 — Tabs and bookmarks** and **W12 — File search** are implemented.
-Each pane has independent tabs; shared local/ZIP bookmarks persist across restarts.
+Each pane has independent tabs; shared local/ZIP bookmarks persist across restarts,
+with profile-backed SFTP bookmarks added in W15.
 Background local search supports wildcard names, extension/type/size/UTC date
 filters, cancellation, partial results and Open Containing Folder in either pane.
 Linux native checks pass; macOS verification remains pending. See
@@ -125,10 +128,12 @@ nine comparison suites, full Rust/Python checks and native W07/W08 interaction.
 
 ## Migration screenshots
 
-### muCrab — current Rust implementation
+### muCrab — W08 interface screenshot
 
-The W08 interface provides compact menus, an icon toolbar, resizable file tables,
-a bottom command bar, and Light/Dark/System appearance. It retains two independent
+This screenshot records the W08 interface, before the later tabs, search,
+properties, viewer and SFTP additions. It shows compact menus, an icon toolbar,
+resizable file tables, a bottom command bar, and Light/Dark/System appearance.
+It retains two independent
 file panes, local and ZIP folder browsing,
 name/metadata sorting, focus/marking, hidden-file filtering, and reviewed recursive
 copy, move, single-item rename, batch rename and reviewed ZIP extraction. The native Rust application runs independently
@@ -164,7 +169,7 @@ The [Cargo workspace](Cargo.toml) contains:
 | Package | Role | Current contents |
 | --- | --- | --- |
 | `mucrab-core` | Framework-independent behavior | Local/ZIP/SFTP providers, tabs/bookmarks/search, properties/view preparation, sorting/selection and reviewed file operations |
-| `mucrab-desktop` | Native `mucrab` executable | Local/ZIP two-pane browser using eframe/egui 0.36.2 with the OpenGL backend |
+| `mucrab-desktop` | Native `mucrab` executable | Local/ZIP/SFTP two-pane browser, tabs, search, properties and viewer using eframe/egui 0.36.2 with the OpenGL backend |
 | `mucrab-compare` | Java/Rust comparison harness | W01–W07 suites plus W10–W15 scoped original-binary probes/adapters and difference reports |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
@@ -176,7 +181,10 @@ cargo run --locked -p mucrab-desktop
 cargo run --locked -p mucrab-desktop -- /path/to/left /path/to/right
 ```
 
-The application supports local/ZIP browsing, sorting, marking, filtering, recursive local copy/move, focused/batch rename, ZIP extraction and default-application file opening. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder or local `.zip` to enter it; each pane has an editable location, Parent and Refresh icons, and sortable column headers.
+The application supports local/ZIP/SFTP browsing, tabs and bookmarks, local search,
+properties and a built-in viewer. File operations include recursive local copy/move,
+focused/batch rename, ZIP extraction, reviewed local↔SFTP copies and default-application
+file opening. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder or local `.zip` to enter it; each pane has an editable location, Parent and Refresh icons, and sortable column headers.
 With the listing focused, **Enter**, double-click or **File → Open** opens the
 focused/clicked file in its default application. Local symbolic links resolve
 to their targets. Archive members open from private temporary copies retained
@@ -234,10 +242,15 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The W15 Linux checkpoint passes 106 Rust tests (four service-dependent tests are ignored in this command; three W15 service tests are separately exercised). These cover recovered rules, navigation/error state,
-filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes, large-table UI interaction and W09 temporary-copy/cancellation/launcher checks, plus W10 mutations, clipboard URLs, quick-find and history. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has fifty-one tests. The separate
-Java/Rust comparison suites supply the behavioral evidence. Once dependencies
+The W15 Linux checkpoint passes **106 Rust tests** and **51 Python tests**, plus
+formatting, Clippy and the locked all-feature build. The ordinary workspace run
+ignores four service-dependent tests: one historical W10 test and three W15 tests.
+The W15 service checks are separately exercised against real disposable SFTP and
+isolated credential services. Coverage includes local/ZIP operations, navigation,
+tabs/bookmarks/search, properties/viewer, remote profiles/trust, staged transfers
+and temporary-copy opening. Separate Java/Rust comparisons and native GUI checks
+record their scope and source provenance in the
+[current status report](docs/current-status.md). Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 
 **F7** reviews creation of a folder in the active local pane. **F8/Delete**
@@ -247,15 +260,16 @@ With listing focus, **Ctrl/Cmd+C/V** exchanges native file selections and review
 Paste into the current local folder. Text fields retain normal clipboard editing.
 Type a prefix to find a visible name; Enter or Escape dismisses find before file
 activation. **Alt+Left/Right**, Go menu actions and toolbar arrows navigate each
-pane's independent session history, including ZIP locations. Clipboard Cut, Trash
-restore/emptying UI remain deferred. Linux X11 is verified;
+tab's independent session history, including ZIP and profile-backed SFTP locations.
+Clipboard Cut and Trash restore/emptying UI remain deferred. Linux X11 is verified;
 native macOS W10 verification and real IME input remain pending.
 
 **Ctrl/Cmd+T** opens a Home tab; **Ctrl/Cmd+Shift+T** duplicates the current tab;
 **Ctrl/Cmd+W** closes it, retaining at least one tab per pane. **Ctrl+Tab** and
 **Ctrl+Shift+Tab** switch tabs. Tabs retain their own history, marks, sorting and
 column widths and are session-only. **Ctrl/Cmd+B** bookmarks the location;
-Go → Bookmarks opens, renames, reorders or removes saved local/ZIP bookmarks.
+Go → Bookmarks opens, renames, reorders or removes saved local/ZIP/SFTP bookmarks.
+SFTP bookmarks reference a saved profile and remote path; they contain no credentials.
 
 **Ctrl/Cmd+F** or Go → Search files opens a separate search window. Choose a local
 root and a name pattern (`*`, `?`, or backslash to escape the next character),
@@ -357,8 +371,8 @@ EFRAME_SCREENSHOT_TO="$PWD/artifacts/workspace/mucrab-preview.png" \
 
 The optional `screenshot` feature is for development captures.
 [Workspace readiness evidence](evidence/workspace/readiness.json) is the historical
-phase 4 scaffold snapshot. [W10 evidence](evidence/workflows/W10-everyday-file-management/README.md)
-records the latest everyday-management checks and W07/W08/W09 regressions. Earlier workflow
+phase 4 scaffold snapshot. [W15 evidence](evidence/workflows/W15-sftp-connections/README.md)
+records the latest SFTP checks and W07–W14 regression provenance. Earlier workflow
 evidence retains its original comparison results. W09 currently has static
 original-binary recovery and native Linux checks, rather than a Java/Rust runtime
 parity suite. A screenshot supplements runtime comparisons.

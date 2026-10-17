@@ -2,6 +2,11 @@
 
 [Back to the README](../README.md).
 
+Updated **2026-10-18** for W15 commit `5b77e5a`. The latest Linux checkpoint
+passes **106 Rust tests** and **51 Python tests**, formatting, locked all-feature
+build and Clippy. Counts below for earlier workflows describe their historical
+checkpoints. Native macOS acceptance covers W01–W08; W09–W15 checks remain pending.
+
 **W15 — SFTP connections and transfers** is implemented and Linux-verified within
 its bounded contract. Saved non-secret profiles back typed remote tabs/history/
 bookmarks. Host keys are checked before authentication, first-use trust is
@@ -90,7 +95,9 @@ Linux-verified. Each pane supports 1–32 independent session tabs, including
 New Home/Duplicate/Close/switch commands and per-tab history, marks and column
 widths. Reviewed jobs retain their original tab identity and paths even when
 tabs switch or close. Shared local/ZIP bookmarks have ordered stable IDs,
-validated versioned storage, atomic saves and visible load/save failures.
+validated versioned storage, atomic saves and visible load/save failures. W15 adds
+profile-backed SFTP tabs, history and bookmarks without storing credentials in
+locations. Tabs remain session-only; profiles, trust and bookmarks persist.
 
 Search runs in a separate read-only worker alongside copy/move operations.
 Its filters cover Unicode filename wildcards, extension, file/folder/link type,
@@ -287,16 +294,18 @@ clipboard publication is not implemented; Xwayland bridging is unverified.
 Typing starts a case-insensitive filename-prefix find field without changing
 marks, order or hidden filtering. Previous/Next wraps through visible matches;
 Escape or Enter dismisses before normal listing activation. **Alt+Left/Right**,
-Go menu actions and toolbar arrows navigate each pane's independent, session-only
-100-location local/ZIP history. Failed navigation preserves its cursor/listing.
+Go menu actions and toolbar arrows navigate each tab's independent, session-only
+100-location history. W15 extends local/ZIP history to profile-backed SFTP
+locations. Failed navigation preserves its cursor/listing.
 
 [W10 evidence](../evidence/workflows/W10-everyday-file-management/README.md)
 records actual original jobs/history/matching comparisons, bidirectional original
 Java/native clipboard exchange, native Trash restoration and both-pane input.
 Prefix-only matching intentionally differs from original substring matching.
-Clipboard Cut, New File, Trash restoration/emptying UI and recursive search remain
-deferred. Native macOS adapters are implemented but unverified; real IME and
-exhaustive original window/shortcut parity remain open, as does full W10 closure.
+Clipboard Cut, New File and Trash restoration/emptying UI remain deferred.
+Recursive local search is implemented in W12. Native macOS adapters are implemented
+but unverified; real IME and exhaustive original window/shortcut parity remain open,
+as does full W10 closure.
 
 ## Platform scope and limitations
 
@@ -311,10 +320,19 @@ closing a paused job. See the [Mac receipts](../evidence/platforms/macos-arm64/R
 for Unicode path rules and source hashes. Live OS theme-notification delivery,
 restoration of the original preference and the signed Mac release bundle pass. Other macOS versions,
 Wayland, Windows hidden attributes and exhaustive OS shortcut parity remain
-unverified. W09 file opening is verified on Linux only; its macOS dispatch path
-awaits native verification. Other filters, additional archive formats and other
-locales remain for later increments. Copy rejects overlapping source/
+unverified. W09–W15 have bounded Linux verification; their native macOS acceptance
+remains pending, including default-application dispatch, clipboard/Trash,
+tabs/bookmarks/search, properties/viewer and SFTP build/Keychain/UI. The earlier
+signed Mac release bundle predates these additions and does not verify the W15
+vendored OpenSSL build. Linux SFTP builds require OpenSSL and DBus development
+packages; macOS enables locked vendored OpenSSL.
+
+Additional remote protocols, archive formats and other locales remain for later
+increments. Copy rejects overlapping source/
 destination paths, outside link targets and destination aliases; race-free
 filesystem handling and full scheduler/parallel-job parity remain unverified. W07 cancellation is
 cooperative between entries and 64 KiB chunks; blocked OS calls/atomic renames
 must return before acknowledgement, and cancellation does not roll back writes.
+W15 remote transfers use 32 KiB chunks and finite SSH timeouts; remote metadata
+checks have weaker identity guarantees than local files. Native active-transfer
+tab/app closure and broader disconnect races remain acceptance gates.
