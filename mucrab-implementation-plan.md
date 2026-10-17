@@ -12,7 +12,7 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-17 |
-| Last verified implementation commit | `3fb6b51` — Migrate verified local batch rename to muCrab |
+| Last verified implementation commit | `4cf1b3f` — Migrate verified ZIP browsing and extraction to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
 | Active workflow | W06 — bounded local ZIP browsing/extraction verified; next is W07 background operations/cancellation |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
@@ -1097,7 +1097,10 @@ Exact next executable action:
   evidence and the gate ledger are updated. Gates G1–G6 are verified only within
   the frozen Linux/X11 scope; ZIP64/encryption/other methods/encodings/timestamp
   extras/nested archives and macOS/Wayland GUI remain unverified. Implementation
-  and evidence checkpoint is recorded in the following handoff commit. Next is
+  and evidence checkpoint: `4cf1b3f`. Receipts identify tested base `16640b0`
+  plus exact source hashes matching that commit. No required W06 implementation
+  work remains uncommitted. No push, tag or release. Ignored raw runs regenerate
+  with the committed workflow helpers; mutating GUI replays require fresh trees. Next is
   W07 original job lifecycle/cancellation recovery before implementing controls.
 
 ## Final demonstration acceptance
