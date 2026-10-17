@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "scope": "Both-pane W10 native input, history, quick-find, clipboard Paste, Trash/permanent-delete reviews and exact filesystem outcomes",
+  "actions": 47,
+  "run": "artifacts/gui/W10-everyday"
+}

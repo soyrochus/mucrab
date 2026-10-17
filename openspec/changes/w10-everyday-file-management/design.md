@@ -116,3 +116,25 @@ not a passing mock.
 
 Broaden tests when implementation exposes a new dependency or semantic gap.
 Run existing workspace checks and W07/W08/W09 regressions before closure.
+
+
+## Implemented adapter choices and remaining host gates
+
+Linux X11 publishes file URLs, GNOME copied-files and UTF-8 text through a safe
+x11rb selection owner. The text offer is required for egui-winit to emit its Paste
+event. `xclip` imports native file URI lists; `gio trash` supplies actual Trash
+semantics without a permanent-delete fallback. Clipboard ownership lasts while
+the app owns the X11 selection; persistence after exit depends on the desktop
+clipboard manager. Pure Wayland Copy has no native selection owner in this
+increment; Xwayland bridging is unverified, and a wl-paste import fallback is
+present but unverified. Missing services fail visibly.
+
+macOS adapters use built-in JXA with Foundation/AppKit file URLs and Trash APIs,
+and explicitly offer text alongside file URLs. Their native host gate remains
+pending. URI parsing adds pinned url 2.5.8 and its licensed dependencies; x11rb
+0.13.2 was already in the lockfile and is now a direct Linux dependency.
+Linux clipboard payloads are bounded to 1 MiB, 10,000 entries and the X11 server's
+single-request limit; large INCR clipboard export is not implemented. Deletion
+refuses Linux mount-table roots (including same-device bind mounts), cross-device
+directory roots and protected pane ancestors. Native filesystem races remain
+outside the existing stable-tree contract.

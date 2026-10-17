@@ -104,6 +104,8 @@ pub enum Icon {
     File,
     Archive,
     Parent,
+    Back,
+    Forward,
     Refresh,
     Copy,
     Move,
@@ -163,6 +165,12 @@ pub fn paint_icon(p: &egui::Painter, center: Pos2, icon: Icon, ink: Color32) {
                     p.line_segment([at(5.0, y), at(11.0, y)], Stroke::new(0.7, ink));
                 }
             }
+        }
+        Icon::Back => {
+            p.arrow(at(14.0, 8.0), Vec2::new(-12.0, 0.0), line);
+        }
+        Icon::Forward => {
+            p.arrow(at(2.0, 8.0), Vec2::new(12.0, 0.0), line);
         }
         Icon::Parent => {
             p.arrow(at(8.0, 14.0), Vec2::new(0.0, -12.0), line);

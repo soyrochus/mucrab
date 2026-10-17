@@ -123,3 +123,18 @@ REA-authored code uses the MIT license. [third_party/rea/LICENSE](third_party/re
 CFR uses the MIT license. [third_party/cfr/LICENSE](third_party/cfr/LICENSE) is copied verbatim from [the upstream `0.152` tag](https://raw.githubusercontent.com/leibnitz27/cfr/0.152/LICENSE), copyright (c) 2011-2019 Lee Benfield. The decompiler JAR comes from [the author's official download](https://www.benf.org/other/cfr/cfr-0.152.jar). Its recorded SHA-256 is a locally computed reproducibility pin; its MD5 matches the value published by the author. The license-file digest is also recorded in the tool manifest.
 
 OpenJDK's installed `javap` supplies the bytecode listing. The installed JDK is not redistributed by this repository. Decompiled muCommander output remains derived upstream material under its original applicable terms and is kept in ignored local storage at this stage.
+
+## Everyday file management (W10)
+
+Folder/deletion, clipboard, history and type-to-find behavior was investigated
+through the pinned Mkdir/Delete/Copy jobs, clipboard support, LocalLocationHistory
+and QuickSearch binaries. The original attribution and GPL notices above apply;
+[W10 evidence](evidence/workflows/W10-everyday-file-management/README.md) records
+runtime boundaries and intentional differences.
+
+Native clipboard URL parsing adds `url` **2.5.8** and its locked IDNA/form-encoding
+dependencies, offered under MIT or Apache-2.0. Their
+[preserved notices and provenance](third_party/url/README.md) are included here.
+Linux selection ownership directly uses the existing locked **x11rb 0.13.2**
+(MIT); release packaging collects its dependency notices. `gio`, `xclip` and
+macOS `osascript` are system services invoked at runtime and are not bundled.

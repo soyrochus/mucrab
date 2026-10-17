@@ -2,6 +2,16 @@
 
 [Back to the README](../README.md).
 
+**W10 — Everyday file management** now implements New Folder, reviewed
+Delete/Trash, system clipboard Copy/Paste, type-to-find and independent Back/Forward
+history. Linux X11 checks pass: 66 Rust tests, the separately invoked native
+clipboard/Trash restoration check, 51 Python tests, both-pane W10 input and
+W07/W08/W09 native regressions. Two bounded 80-case original/native runs have
+zero unexpected differences and one declared matching difference each.
+Native macOS verification and remaining original UI/IME checks are pending;
+W10 is not yet closed across all hosts. See
+[W10 evidence](../evidence/workflows/W10-everyday-file-management/README.md).
+
 **W09 — default-application file opening** is implemented for local files and
 archive members, with native Linux verification of Enter, double-click and
 File → Open. Archive copies survive application exit and do not update ZIPs.
@@ -122,7 +132,7 @@ lifecycle, mark and filesystem outcomes. Streaming prefixes are independently
 validated rather than requiring identical scheduler-dependent lengths. The native
 27-action replay checks real Pause/Resume/Cancel, navigation/marks while busy and
 normal exit after cancelling a paused copy of 20,000 source files. All 16 earlier
-component suite executions and the W08 replay also pass. There are **46 cross-platform Rust tests**, one additional Mac filename test, and
+component suite executions and the W08 replay also pass. The W07 checkpoint had **46 cross-platform Rust tests**, one additional Mac filename test, and
 **51 Python tests**. [W07 evidence](../evidence/workflows/W07-background-operations/README.md)
 records recovery, comparison reports, source fingerprints, native checks and limits.
 
@@ -150,6 +160,35 @@ checkpoint's 47 Rust tests predate W09; native macOS dispatch remains pending.
 [W09 evidence](../evidence/workflows/W09-open-files/README.md) records static
 original-binary recovery and native implementation checks. W09 does not yet have
 a Java/Rust runtime parity suite.
+
+## W10 — Everyday file management
+
+**F7** creates a named folder in the active local pane. **F8/Delete** reviews a
+move to the real OS Trash; **Shift+F8/Shift+Delete** separately reviews permanent
+deletion. Trash failure never triggers permanent deletion. Links are removed as
+links, hidden descendants are included, and partial results remain visible.
+Creation/deletion use the existing single mutation worker and cancellation rules.
+
+With listing focus, **Ctrl/Cmd+C/V** copies a system file selection and reviews
+Paste into the active local pane, including sources from multiple directories.
+Text fields retain text clipboard editing. Paste reuses copy collision/overlap
+and link guards and preserves unrelated marks. Linux uses an X11 file/text
+selection owner and requires `xclip` for import and `gio` for Trash. Pure Wayland
+clipboard publication is not implemented; Xwayland bridging is unverified.
+
+Typing starts a case-insensitive filename-prefix find field without changing
+marks, order or hidden filtering. Previous/Next wraps through visible matches;
+Escape or Enter dismisses before normal listing activation. **Alt+Left/Right**,
+Go menu actions and toolbar arrows navigate each pane's independent, session-only
+100-location local/ZIP history. Failed navigation preserves its cursor/listing.
+
+[W10 evidence](../evidence/workflows/W10-everyday-file-management/README.md)
+records actual original jobs/history/matching comparisons, bidirectional original
+Java/native clipboard exchange, native Trash restoration and both-pane input.
+Prefix-only matching intentionally differs from original substring matching.
+Clipboard Cut, New File, Trash restoration/emptying UI and recursive search remain
+deferred. Native macOS adapters are implemented but unverified; real IME and
+exhaustive original window/shortcut parity remain open, as does full W10 closure.
 
 ## Platform scope and limitations
 

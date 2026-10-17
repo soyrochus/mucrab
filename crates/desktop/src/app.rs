@@ -15,6 +15,10 @@ use mucrab_core::{
 };
 use std::{path::PathBuf, sync::mpsc, time::Duration};
 
+#[path = "everyday_ui.rs"]
+mod everyday_ui;
+use everyday_ui::Action as EverydayAction;
+
 pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
@@ -51,6 +55,7 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 copy_confirmation: None,
                 batch_review: None,
                 zip_review: None,
+                everyday: everyday_ui::Everyday::default(),
                 opener: crate::opening::Opener::default(),
                 copy_job: None,
                 close_after_job: false,
@@ -76,6 +81,7 @@ struct MuCrabApp {
     copy_confirmation: Option<CopyConfirmation>,
     batch_review: Option<BatchReview>,
     zip_review: Option<ZipReview>,
+    everyday: everyday_ui::Everyday,
     opener: crate::opening::Opener,
     copy_job: Option<PendingCopy>,
     close_after_job: bool,
@@ -100,6 +106,10 @@ struct PendingCopy {
 }
 #[derive(Clone, Copy, PartialEq)]
 enum FileAction {
+    NewFolder,
+    Trash,
+    Delete,
+    Paste,
     Copy,
     Move,
     Rename,
@@ -109,6 +119,10 @@ enum FileAction {
 impl FileAction {
     fn label(self) -> &'static str {
         match self {
+            Self::NewFolder => "New folder",
+            Self::Trash => "Move to Trash",
+            Self::Delete => "Permanent delete",
+            Self::Paste => "Paste",
             Self::Copy => "Copy",
             Self::Move => "Move",
             Self::Rename => "Rename",
@@ -476,7 +490,7 @@ impl MuCrabApp {
         let mut rename_succeeded = false;
         match result {
             Ok(report) => {
-                rename_succeeded = job.action == FileAction::Rename
+                rename_succeeded = matches!(job.action, FileAction::Rename | FileAction::NewFolder)
                     && report
                         .outcomes
                         .first()
@@ -486,7 +500,9 @@ impl MuCrabApp {
                 } else {
                     1
                 };
-                if self.panes[source_index].location.as_ref() == Some(&job.source_directory) {
+                if job.action != FileAction::Paste
+                    && self.panes[source_index].location.as_ref() == Some(&job.source_directory)
+                {
                     self.panes[source_index].unmark_copy_outcomes(&report.outcomes);
                 }
                 let skipped = report
@@ -675,6 +691,7 @@ impl eframe::App for MuCrabApp {
             self.opener.cancel();
             self.close_after_job = true;
         }
+        self.poll_everyday(ui.ctx());
         self.opener.poll();
         if self.close_after_job && self.copy_job.is_none() && !self.opener.busy() {
             ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
@@ -683,13 +700,16 @@ impl eframe::App for MuCrabApp {
             ui.ctx().request_repaint_after(Duration::from_millis(100));
         }
         self.poll_copy(ui.ctx());
-        let idle = self.copy_job.is_none()
+        let idle = self.everyday.review.is_none()
+            && !self.everyday.busy()
+            && self.copy_job.is_none()
             && self.copy_confirmation.is_none()
             && self.batch_review.is_none()
             && self.zip_review.is_none()
             && !self.show_copy_details
             && self.help.is_none();
-        let browsing = self.copy_confirmation.is_none()
+        let browsing = self.everyday.review.is_none()
+            && self.copy_confirmation.is_none()
             && self.batch_review.is_none()
             && self.zip_review.is_none()
             && !self.show_copy_details
@@ -710,6 +730,47 @@ impl eframe::App for MuCrabApp {
         let can_move = can_copy;
         let archive_active = self.panes[active_index].archive.is_some();
         let can_copy = can_copy || (archive_active && can_extract);
+        let old_active = self.active;
+        if browsing && ui.memory(|m| m.has_focus(listing_id(self.active))) {
+            let next = ui.input_mut(|input| {
+                let copy = input.events.iter().any(|e| matches!(e, egui::Event::Copy));
+                let paste = input
+                    .events
+                    .iter()
+                    .any(|e| matches!(e, egui::Event::Paste(_)));
+                input
+                    .events
+                    .retain(|e| !matches!(e, egui::Event::Copy | egui::Event::Paste(_)));
+                if idle && (copy || input.consume_key(egui::Modifiers::COMMAND, egui::Key::C)) {
+                    Some(EverydayAction::CopyClipboard)
+                } else if idle
+                    && (paste || input.consume_key(egui::Modifiers::COMMAND, egui::Key::V))
+                {
+                    Some(EverydayAction::Paste)
+                } else if idle && input.consume_key(egui::Modifiers::NONE, egui::Key::F7) {
+                    Some(EverydayAction::NewFolder)
+                } else if idle
+                    && (input.consume_key(egui::Modifiers::SHIFT, egui::Key::F8)
+                        || input.consume_key(egui::Modifiers::SHIFT, egui::Key::Delete))
+                {
+                    Some(EverydayAction::Delete)
+                } else if idle
+                    && (input.consume_key(egui::Modifiers::NONE, egui::Key::F8)
+                        || input.consume_key(egui::Modifiers::NONE, egui::Key::Delete))
+                {
+                    Some(EverydayAction::Trash)
+                } else if input.consume_key(egui::Modifiers::ALT, egui::Key::ArrowLeft) {
+                    Some(EverydayAction::Back)
+                } else if input.consume_key(egui::Modifiers::ALT, egui::Key::ArrowRight) {
+                    Some(EverydayAction::Forward)
+                } else {
+                    None
+                }
+            });
+            if let Some(action) = next {
+                self.everyday_action(action, ui.ctx());
+            }
+        }
         if idle && ui.memory(|memory| memory.has_focus(listing_id(self.active))) {
             for (key, action) in [
                 (egui::Key::F5, FileAction::Copy),
@@ -736,7 +797,10 @@ impl eframe::App for MuCrabApp {
             };
             ui.memory_mut(|memory| memory.request_focus(listing_id(self.active)));
         }
-        let browsing = browsing && self.copy_confirmation.is_none() && self.zip_review.is_none();
+        let browsing = browsing
+            && self.copy_confirmation.is_none()
+            && self.zip_review.is_none()
+            && self.everyday.review.is_none();
         let mut command = None;
         let old_appearance = self.appearance;
         egui::Panel::top("menus").show(ui, |ui| {
@@ -783,6 +847,49 @@ impl eframe::App for MuCrabApp {
                         Command::Extract,
                         &mut command,
                     );
+                    ui.separator();
+                    let local = !archive_active && self.panes[active_index].location.is_some();
+                    for (label, shortcut, action, enabled) in [
+                        (
+                            "New Folder…",
+                            "F7",
+                            EverydayAction::NewFolder,
+                            idle && local,
+                        ),
+                        (
+                            "Move to Trash…",
+                            "F8 / Delete",
+                            EverydayAction::Trash,
+                            can_batch,
+                        ),
+                        (
+                            "Permanently delete…",
+                            "Shift+F8",
+                            EverydayAction::Delete,
+                            can_batch,
+                        ),
+                        (
+                            "Copy files to clipboard",
+                            "Ctrl/Cmd+C",
+                            EverydayAction::CopyClipboard,
+                            idle && local && can_batch,
+                        ),
+                        (
+                            "Paste files…",
+                            "Ctrl/Cmd+V",
+                            EverydayAction::Paste,
+                            idle && local,
+                        ),
+                    ] {
+                        menu_action(
+                            ui,
+                            label,
+                            shortcut,
+                            enabled,
+                            Command::Everyday(action),
+                            &mut command,
+                        );
+                    }
                     ui.separator();
                     if ui.button("Close window").clicked() {
                         ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
@@ -842,8 +949,32 @@ impl eframe::App for MuCrabApp {
                         ui.radio_value(&mut self.appearance, Appearance::Light, "Light");
                         ui.radio_value(&mut self.appearance, Appearance::Dark, "Dark");
                     });
+                    menu_action(
+                        ui,
+                        "Find by name…",
+                        "Type a prefix",
+                        browsing,
+                        Command::Everyday(EverydayAction::Find),
+                        &mut command,
+                    );
                 });
                 ui.menu_button("Go", |ui| {
+                    menu_action(
+                        ui,
+                        "Back",
+                        "Alt+Left",
+                        browsing && self.panes[active_index].can_back(),
+                        Command::Everyday(EverydayAction::Back),
+                        &mut command,
+                    );
+                    menu_action(
+                        ui,
+                        "Forward",
+                        "Alt+Right",
+                        browsing && self.panes[active_index].can_forward(),
+                        Command::Everyday(EverydayAction::Forward),
+                        &mut command,
+                    );
                     menu_action(
                         ui,
                         "Parent folder",
@@ -926,6 +1057,26 @@ impl eframe::App for MuCrabApp {
                     }
                 }
                 ui.separator();
+                if icon_button(
+                    ui,
+                    Icon::Back,
+                    "Back (Alt+Left)",
+                    browsing && self.panes[active_index].can_back(),
+                )
+                .clicked()
+                {
+                    command = Some(Command::Everyday(EverydayAction::Back));
+                }
+                if icon_button(
+                    ui,
+                    Icon::Forward,
+                    "Forward (Alt+Right)",
+                    browsing && self.panes[active_index].can_forward(),
+                )
+                .clicked()
+                {
+                    command = Some(Command::Everyday(EverydayAction::Forward));
+                }
                 ui.weak(if self.active == PaneSide::Left {
                     "Left > Right"
                 } else {
@@ -951,6 +1102,14 @@ impl eframe::App for MuCrabApp {
             });
         });
         egui::Panel::bottom("commands").show(ui, |ui| {
+            if let Some(message) = self.everyday.message.clone() {
+                ui.horizontal(|ui| {
+                    ui.label(message);
+                    if ui.small_button("Dismiss").clicked() {
+                        self.everyday.message = None;
+                    }
+                });
+            }
             if let Some(message) = self.opener.message.clone() {
                 ui.horizontal(|ui| {
                     ui.label(message);
@@ -1145,6 +1304,9 @@ impl eframe::App for MuCrabApp {
                     for text in [
                         "Tab / Shift+Tab — switch panes",
                         "Enter — open file, folder or ZIP",
+                        "F7 — New Folder · F8 / Delete — Trash · Shift+F8 — permanent delete",
+                        "Ctrl/Cmd+C / V — copy/paste files with listing focus",
+                        "Type a prefix — find a name · Alt+Left / Right — history",
                         "Backspace — parent folder",
                         "Arrow keys / Home / End — move focus",
                         "Space — mark and advance",
@@ -1167,6 +1329,12 @@ impl eframe::App for MuCrabApp {
                 self.restore_copy_focus = true;
             }
         }
+        if old_active != self.active {
+            for pane in &mut self.panes {
+                pane.quick_find = None;
+            }
+        }
+        self.everyday_dialog(ui.ctx());
         self.copy_dialogs(ui.ctx());
         self.batch_dialog(ui.ctx());
         self.zip_dialog(ui.ctx());
@@ -1251,6 +1419,7 @@ pub(crate) fn selection_key(event: &egui::Event) -> Option<PaneEvent> {
 }
 
 enum Command {
+    Everyday(EverydayAction),
     Open,
     Action(FileAction),
     Batch,
@@ -1283,6 +1452,7 @@ impl MuCrabApp {
     fn execute(&mut self, command: Command, ctx: &egui::Context) {
         let index = usize::from(self.active == PaneSide::Right);
         match command {
+            Command::Everyday(action) => self.everyday_action(action, ctx),
             Command::Open => {
                 let pane = &mut self.panes[index];
                 if pane.selection.has_parent && pane.selection.focus_row == Some(0) {
@@ -1424,6 +1594,7 @@ mod job_tests {
             copy_confirmation: None,
             batch_review: None,
             zip_review: None,
+            everyday: everyday_ui::Everyday::default(),
             opener: crate::opening::Opener::default(),
             copy_job: None,
             close_after_job: false,
@@ -1554,6 +1725,26 @@ mod job_tests {
         await_job(&mut app, &ctx);
         assert_eq!(app.panes[0].selection.marked_count(), 1);
         assert_eq!(std::fs::read(path.join("same-name")).unwrap(), b"unrelated");
+        app.start_job(
+            FileAction::Paste,
+            PaneSide::Left,
+            path.clone(),
+            None,
+            move |_| {
+                let mut result = report();
+                result.outcomes.push(CopyOutcome {
+                    name: "same-name".into(),
+                    success: true,
+                });
+                Ok(result)
+            },
+        );
+        await_job(&mut app, &ctx);
+        assert_eq!(
+            app.panes[0].selection.marked_count(),
+            1,
+            "Paste must not unmark destination selections"
+        );
         std::fs::remove_dir_all(path).unwrap();
     }
 }

@@ -1,6 +1,6 @@
 # muCrab
 
-[![Version 0.9.0](https://img.shields.io/badge/version-0.9.0-blue)](Cargo.toml)
+[![Version 0.10.0](https://img.shields.io/badge/version-0.10.0-blue)](Cargo.toml)
 [![Rust 1.95 or newer](https://img.shields.io/badge/Rust-1.95%2B-orange?logo=rust)](#build-and-run-mucrab)
 [![License: GPL-3.0-only](https://img.shields.io/badge/license-GPL--3.0--only-blue)](LICENSE)
 [![Status: experimental](https://img.shields.io/badge/status-experimental-yellow)](docs/current-status.md)
@@ -78,6 +78,11 @@ on the target, host and configured providers. See REA's
 
 ## Current status
 
+**W10 — Everyday file management** adds New Folder, reviewed Delete/Trash,
+system clipboard Copy/Paste, type-to-find and per-pane Back/Forward history.
+Linux X11 native checks and W07/W08/W09 regressions pass; native macOS W10 checks
+remain pending. See [W10 evidence](evidence/workflows/W10-everyday-file-management/README.md).
+
 **W09 — Default-application file opening** now supports local files and archive
 members through Enter, double-click and File → Open. ZIP members open as private
 temporary copies without archive writeback. Linux native dispatch is verified;
@@ -128,7 +133,7 @@ See [release instructions and platform requirements](docs/releases.md).
 
 ## Build and run muCrab
 
-Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. Linux file opening also requires `xdg-open` and configured file associations. Rust/Cargo **1.99.0** was used on macOS arm64 and Linux x86_64. The native GUI was exercised on macOS and under Linux X11/Xvfb; Wayland remains unverified.
+Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for the GUI. Linux file opening also requires `xdg-open` and configured file associations. W10 uses `gio` for Trash and `xclip` for importing native file selections under X11; pure Wayland clipboard publication is not implemented. Rust/Cargo **1.99.0** was used on macOS arm64 and Linux x86_64. The native GUI was exercised on macOS and under Linux X11/Xvfb; Wayland remains unverified.
 
 The [Cargo workspace](Cargo.toml) contains:
 
@@ -205,11 +210,22 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The Rust suite has fifty-one cross-platform tests plus one macOS filename regression covering recovered rules, navigation/error state,
+The W10 Linux checkpoint passes 66 Rust tests plus a separately invoked native clipboard/Trash integration test. These cover recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes, large-table UI interaction and W09 temporary-copy/cancellation/launcher checks. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has fifty-one tests. The separate
+readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes, large-table UI interaction and W09 temporary-copy/cancellation/launcher checks, plus W10 mutations, clipboard URLs, quick-find and history. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has fifty-one tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
+
+**F7** reviews creation of a folder in the active local pane. **F8/Delete**
+reviews moving selected entries to the OS Trash; **Shift+F8/Shift+Delete** separately
+reviews permanent deletion. Failure to trash never falls back to permanent deletion.
+With listing focus, **Ctrl/Cmd+C/V** exchanges native file selections and reviews
+Paste into the current local folder. Text fields retain normal clipboard editing.
+Type a prefix to find a visible name; Enter or Escape dismisses find before file
+activation. **Alt+Left/Right**, Go menu actions and toolbar arrows navigate each
+pane's independent session history, including ZIP locations. Clipboard Cut, Trash
+restore/emptying UI and recursive search remain deferred. Linux X11 is verified;
+native macOS W10 verification and real IME input remain pending.
 
 Click a row to give its listing keyboard focus. Ctrl-click toggles a mark and
 Shift-click toggles a range; Space toggles and advances. Up/Down, Home/End, and
@@ -254,8 +270,8 @@ EFRAME_SCREENSHOT_TO="$PWD/artifacts/workspace/mucrab-preview.png" \
 
 The optional `screenshot` feature is for development captures.
 [Workspace readiness evidence](evidence/workspace/readiness.json) is the historical
-phase 4 scaffold snapshot. [W09 evidence](evidence/workflows/W09-open-files/README.md)
-records the latest file-opening checks and W07/W08 regressions. Earlier workflow
+phase 4 scaffold snapshot. [W10 evidence](evidence/workflows/W10-everyday-file-management/README.md)
+records the latest everyday-management checks and W07/W08/W09 regressions. Earlier workflow
 evidence retains its original comparison results. W09 currently has static
 original-binary recovery and native Linux checks, rather than a Java/Rust runtime
 parity suite. A screenshot supplements runtime comparisons.
@@ -377,7 +393,7 @@ The [implementation plan and progress ledger](mucrab-implementation-plan.md) rec
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
-5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. W08 implements the classic desktop interface as a presentation increment. W07 adds bounded background operations, progress and cancellation with original full-job lifecycle comparisons. W09 implements default-application opening for local files and retained archive copies, with Linux native verification and macOS verification pending. Permissions/owner/group sorting and additional filters remain deferred.
+5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. W08 implements the classic desktop interface as a presentation increment. W07 adds bounded background operations, progress and cancellation with original full-job lifecycle comparisons. W09 implements default-application opening for local files and retained archive copies, with Linux native verification and macOS verification pending. W10 implements New Folder, Delete/Trash, clipboard Copy/Paste, quick-find and history, with Linux checks passing and Mac verification pending. Permissions/owner/group sorting and additional filters remain deferred.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
 
 Upstream Java implementation source will be withheld during reconstruction; license and attribution material remains available. Decompiled representations, binary metadata, and observations of the original are permitted inputs. Findings from the earlier feasibility investigation must be identified as prior evidence if reused.

@@ -14,10 +14,10 @@ session can continue without the original conversation.
 | Last updated | 2026-10-17 |
 | Last verified implementation commit | `5a60e92` — macOS portability fixes and acceptance; exact tested source/binary hashes in the Mac receipts |
 | Current phase | Phase 6 in progress: bounded macOS acceptance completed; broader platform/product acceptance remains |
-| Active workflow | macOS acceptance complete within current contracts: all nine suites, W07/W08 native input, live OS themes and local release packaging pass |
+| Active workflow | W10 everyday management implemented and Linux-verified; native Mac/IME and remaining original UI gates pending. W09 local/archive file opening is also implemented; see their evidence indexes |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | Phase 6 broader end-to-end/platform acceptance; inspect W07 limits and preserve all nine suites plus W08 UI replay before expanding scope |
-| Ported workflows | W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
+| Next executable task | Verify W09/W10 on macOS, including native clipboard/Trash and both-pane input; preserve declared W10 differences and fixture sequencing limits before closing its host gates |
+| Ported workflows | W10 — New Folder, reviewed Delete/Trash, native clipboard Copy/Paste, prefix-find, per-pane history; W09 — default-application local/archive opening; W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
 | Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. W07: 30 full-job lifecycle/marks/tree comparisons (18 predefined + 12 reserved). Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
 | Verification platform | Linux x86_64/ext4/JDK 25.0.4.1 and macOS 26.6.2 arm64/APFS/JDK 21.0.10; all nine suites. Real second filesystem for W04/W07. Native input: X11/Xvfb and Mac cua_repl; Wayland unverified |
@@ -1301,3 +1301,29 @@ Rust tests, 51 Linux Rust/51 Python passing tests and W07/W08 native regressions
 lifetime/error rules. The existing W07 close-menu replay coordinate moved down
 one row for the new Open item. Native macOS dispatch is implemented but still
 requires a Mac verification run. No Java/Rust runtime parity suite is claimed.
+
+
+## W10 — Everyday file management (2026-10-17)
+
+All five implementation stages are delivered: reviewed local folder creation,
+Trash/permanent deletion, system clipboard Copy/Paste, prefix-find and structured
+per-pane history. Mutations reuse W07 worker control; reviewed pins reject stale
+sources/destinations. Deletion unlinks links, protects open ancestors and Linux
+mount-table roots, preserves partial outcomes and never changes Trash failures
+into permanent deletion. Clipboard Paste reuses W03 policies without unmarking
+unrelated destination entries. History is session-only and bounded to100.
+
+[W10 evidence](evidence/workflows/W10-everyday-file-management/README.md) records
+19 recovered classes, two 80-case original/native runs (zero unexpected differences,
+one declared prefix/substring difference per run), original ClipboardSupport/AWT
+interoperability in both directions, GIO Trash/native restoration, both-pane input
+and W07/W08/W09 native regressions. Linux workspace:66 Rust tests, separately
+invoked native-service test,51 Python tests, locked/offline build, format/Clippy.
+
+OpenSpec tasks stay open for Mac native/real IME/original full-window coverage.
+The contract/categories/seeds preceded Rust code, but generator/GUI trace did not;
+no blind fixture claim is made. Native Mac adapters exist but cannot be verified
+on this host. Pure Wayland clipboard publication is not implemented. New File,
+clipboard Cut, Trash restore UI, remote filesystems and recursive search remain
+outside this increment. W10 is implemented and Linux-verified, not fully closed
+across required hosts. See its task checklist before resuming acceptance work.

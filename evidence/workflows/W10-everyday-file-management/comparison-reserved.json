@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "scope": "MkdirJob/DeleteJob/CopyJob.processFile, LocalLocationHistory additions/branching/capacity and QuickSearch.matches; no UI or Trash parity claim",
+  "reserved": true,
+  "cases": 80,
+  "unexpected_differences": [],
+  "intentional_differences": [
+    {
+      "id": "quick1",
+      "reason": "Declared prefix-only vs original substring matching",
+      "original": {
+        "id": "quick1",
+        "matches": true
+      },
+      "native": {
+        "id": "quick1",
+        "matches": false
+      }
+    }
+  ],
+  "filesystem_equal": true,
+  "seed": 79191017,
+  "run": "artifacts/runs/W10-20261017T195054Z-f2e4a3ea",
+  "source_sha256": {
+    "tools/java/W10Oracle.java": "84c4084fe046cb040f901c3df43cf8adb5ff780b986b54f25e72fededb883a8b",
+    "crates/compare/src/w10.rs": "3bf9fff421d1c4b16adf392159351029c9aeaa49d1862e4b3a32a6b5dc72317b",
+    "crates/core/src/everyday.rs": "4494afe3375a0d94e74fa6e01c1a9913ff756b4c4c483ed25afde755dd95c9a6",
+    "crates/core/src/history.rs": "2a97b2dcbdd89a438eb85287d13ab42ff6db4ef5fa222bafefa453ce0122a8a3"
+  },
+  "reference_unchanged": true
+}

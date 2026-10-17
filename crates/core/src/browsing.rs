@@ -111,10 +111,20 @@ pub struct BrowserPane {
     pub selection: FileSelection,
     /// Shared by the desktop application's panes; Unix dotfiles are hidden by default.
     pub show_hidden: bool,
+    pub quick_find: Option<String>,
+    pub history: crate::NavigationHistory,
 }
 
 impl BrowserPane {
     pub fn open(&mut self, path: &Path, sorter: &NameSorter) -> bool {
+        if !self.open_unrecorded(path, sorter) {
+            return false;
+        }
+        self.quick_find = None;
+        self.record_location();
+        true
+    }
+    pub(crate) fn open_unrecorded(&mut self, path: &Path, sorter: &NameSorter) -> bool {
         let result = (|| {
             if let Some(location) = ZipLocation::resolve(path)? {
                 let entries = ZipCatalog::open(&location.archive)?.list(&location.prefix)?;
@@ -273,6 +283,10 @@ impl BrowserPane {
 
     /// Focus a visible identity after a successful single-item rename.
     pub fn focus_name(&mut self, name: &str) -> bool {
+        #[cfg(target_os = "macos")]
+        let normalized = icu_normalizer::ComposingNormalizerBorrowed::new_nfc().normalize(name);
+        #[cfg(target_os = "macos")]
+        let name = normalized.as_ref();
         if let Some(position) = self
             .order
             .iter()
@@ -308,7 +322,10 @@ impl BrowserPane {
 
     pub fn refresh(&mut self, sorter: &NameSorter) {
         if let Some(path) = self.location.clone() {
-            self.open(&path, sorter);
+            self.open_unrecorded(&path, sorter);
+            if let Some(query) = self.quick_find.clone() {
+                self.find_prefix(&query, None);
+            }
         }
     }
 }

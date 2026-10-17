@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "scope": "Linux X11 file clipboard through original ClipboardSupport/AWT in both directions; GIO Trash metadata and native restore",
+  "run": "artifacts/gui/W10-native-30b5f957",
+  "date": "2026-10-17T19:50:59.577573+00:00",
+  "original_clipboard_probe_sha256": "cfcf811f4755fe06813eaa64f6fbc48f7e8292ea1c3c913414afa4d76bb3aed0"
+}

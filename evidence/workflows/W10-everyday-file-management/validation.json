@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "date": "2026-10-17",
+  "platform": "Linux x86_64 / X11 / Xvfb",
+  "rust_tests": 66,
+  "python_tests": 51,
+  "isolated_native_service_tests": 1,
+  "checks": [
+    "locked offline workspace build",
+    "Rust workspace all features",
+    "Python helper/release tests",
+    "formatting",
+    "denied-warning Clippy",
+    "strict OpenSpec validation",
+    "two 80-case W10 comparisons with one declared difference each",
+    "both-pane W10 replay",
+    "original clipboard interoperability both directions",
+    "native GIO Trash/restore",
+    "W07/W08/W09 native regressions",
+    "documentation links and whitespace"
+  ],
+  "pending": [
+    "native macOS W09/W10 checks",
+    "pure Wayland clipboard publication/bridge verification",
+    "real IME composition",
+    "exhaustive original window/shortcut parity"
+  ],
+  "source_sha256": {
+    "crates/core/src/everyday.rs": "4494afe3375a0d94e74fa6e01c1a9913ff756b4c4c483ed25afde755dd95c9a6",
+    "crates/core/src/history.rs": "2a97b2dcbdd89a438eb85287d13ab42ff6db4ef5fa222bafefa453ce0122a8a3",
+    "crates/core/src/browsing.rs": "22e8957c2daf733c0e416ba622280f41e993d7522cf4b7ecac0516b062fd55ab",
+    "crates/core/src/copying.rs": "29506cb33294aab4df9a51b67acb98ccd13d3a9ebcaab67df2502283bbf24d6a",
+    "crates/desktop/src/everyday_ui.rs": "533c75e4a53aff56457effbe8b5710f141cbfb4a613c9490d54a77c5612ae221",
+    "crates/desktop/src/native_files.rs": "d2066346e69cb2d3def8c540972a4b59692c587c1d38ac20b7ae58dd27d44adf",
+    "crates/desktop/src/x11_clipboard.rs": "653e8e30efd1d88b817fd365a589f16dc97bf19418bf51ca72548048b16dd854",
+    "crates/desktop/src/browser_ui.rs": "d31eb303b4f1dc0eac83ba3790bd4f41dbf7040eed44229132de9f3175cfc5a5",
+    "crates/desktop/src/app.rs": "3fcb8b49afdc7a8a80f401d1b03723abf0085ac17a23c42fb32ea4f65ace7428",
+    "crates/core/tests/everyday.rs": "5abf8a6fb572f8a5a3159512b71152e2499236783d87c7154667e839fc17e0e8",
+    "Cargo.lock": "b6702a9dab47b122c045656f8c109e106299f3be491a3554ecfe2a7b69d371cf"
+  },
+  "desktop_sha256": "dad91970ba020955ce5ee65186111beecf867712344c6d7e9b30a01387cba902"
+}

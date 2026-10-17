@@ -1,0 +1,37 @@
+{
+  "source": "checksum-verified local Cargo registry packages pinned in Cargo.lock",
+  "packages": [
+    {
+      "package": "url-2.5.8",
+      "license": "MIT OR Apache-2.0",
+      "notices": {
+        "LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+        "LICENSE-MIT": "b38f11f6096706e6de553dabe2a7ed142d59b6fa8c97e290c67496154745cdd5"
+      }
+    },
+    {
+      "package": "idna-1.1.0",
+      "license": "MIT OR Apache-2.0",
+      "notices": {
+        "LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+        "LICENSE-MIT": "b38f11f6096706e6de553dabe2a7ed142d59b6fa8c97e290c67496154745cdd5"
+      }
+    },
+    {
+      "package": "idna_adapter-1.2.2",
+      "license": "Apache-2.0 OR MIT",
+      "notices": {
+        "LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+        "LICENSE-MIT": "8b43ce8accd61e9d370b5ca9e9c4f953279b5c239926c62315b40e24df51b726"
+      }
+    },
+    {
+      "package": "form_urlencoded-1.2.2",
+      "license": "MIT OR Apache-2.0",
+      "notices": {
+        "LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+        "LICENSE-MIT": "20c7855c364d57ea4c97889a5e8d98470a9952dade37bd9248b9a54431670e5e"
+      }
+    }
+  ]
+}

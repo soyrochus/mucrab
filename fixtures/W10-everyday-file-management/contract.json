@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "predefined_seed": 101017,
+  "reserved_seed": 79191017,
+  "reserved_cases": 24,
+  "folder_names": ["New folder", "café 中", ".hidden", "- leading", "", ".", "..", "nested/name", "already-exists"],
+  "deletion_cases": ["marked-selection", "focused-fallback", "hidden-descendants", "broken-link", "external-link", "protected-ancestor", "stale-source", "cancel-before", "cancel-mid-tree", "permission-error", "trash-failure-no-fallback"],
+  "clipboard_cases": ["multiple-parents", "space-unicode-percent-hash", "duplicate-url", "remote-url", "mixed-invalid", "encoded-NUL", "query-fragment", "missing-source", "same-directory", "overlap", "destination-replaced", "source-replaced", "collision-policy", "cancel"],
+  "quick_find": {"mode": "case-insensitive Unicode lowercase prefix", "canonical_equivalence": false, "examples": [["Alpha.txt", "al", true], ["xAlpha.txt", "al", false], ["École", "é", true], ["中 文", "中 ", true], ["é", "é", false]]},
+  "history_cases": ["initial", "back-forward", "duplicate", "branch", "100-bound", "failed-open", "refresh-sort-filter", "independent-panes", "zip-subfolder", "missing-zip"],
+  "intentional_differences": ["Prefix-only quick-find; original QuickSearch also supports substring matches and case-ranked best matches", "Success-only history cursor; original LocalLocationHistory changes cursor before navigation", "Clipboard Paste is reviewed and defaults to Skip rather than immediate ASK-mode copy", "No nested-path New Folder creation", "No automatic permanent deletion when Trash is unsupported"]
+}

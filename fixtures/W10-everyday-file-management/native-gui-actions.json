@@ -1,0 +1,294 @@
+[
+  {
+    "op": "click",
+    "x": 80,
+    "y": 162
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F7"
+    ],
+    "capture": "new-folder-review"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "Created"
+  },
+  {
+    "op": "click",
+    "x": 400,
+    "y": 403,
+    "wait": 0.8,
+    "capture": "folder-created"
+  },
+  {
+    "op": "text",
+    "text": "Created",
+    "capture": "find-folder"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ],
+    "capture": "entered-created"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Left"
+    ],
+    "capture": "history-back"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Right"
+    ],
+    "capture": "history-forward"
+  },
+  {
+    "op": "text",
+    "text": "alpha",
+    "capture": "quick-find-alpha"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "c"
+    ],
+    "wait": 1,
+    "capture": "clipboard-published"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Tab"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "v"
+    ],
+    "wait": 1,
+    "capture": "paste-review"
+  },
+  {
+    "op": "click",
+    "x": 392,
+    "y": 427,
+    "wait": 1,
+    "capture": "pasted"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Tab"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "to-trash"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F8"
+    ],
+    "capture": "trash-review"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ],
+    "capture": "trash-cancelled"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F8"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 408,
+    "y": 402,
+    "wait": 1,
+    "capture": "trashed"
+  },
+  {
+    "op": "text",
+    "text": "to-delete"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Shift_L",
+      "F8"
+    ],
+    "capture": "permanent-review"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ],
+    "capture": "permanent-cancelled"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Shift_L",
+      "F8"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 420,
+    "y": 408,
+    "wait": 1,
+    "capture": "permanently-deleted"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Tab"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F7"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "RightCreated"
+  },
+  {
+    "op": "click",
+    "x": 400,
+    "y": 403,
+    "wait": 1,
+    "capture": "right-folder-created"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F7"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ],
+    "capture": "new-folder-cancelled"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ],
+    "capture": "right-entered"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Left"
+    ],
+    "capture": "right-back"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Right"
+    ],
+    "capture": "right-forward"
+  },
+  {
+    "op": "text",
+    "text": "zzmissing",
+    "capture": "no-match"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ],
+    "capture": "find-dismissed"
+  },
+  {
+    "op": "click",
+    "x": 20,
+    "y": 12
+  },
+  {
+    "op": "click",
+    "x": 65,
+    "y": 347
+  },
+  {
+    "op": "await_exit",
+    "exit_code": 0
+  }
+]

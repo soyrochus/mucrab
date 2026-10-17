@@ -6,7 +6,10 @@ use std::process::ExitCode;
 mod app;
 mod appearance;
 mod browser_ui;
+mod native_files;
 mod opening;
+#[cfg(target_os = "linux")]
+mod x11_clipboard;
 
 fn main() -> ExitCode {
     let arguments: Vec<_> = std::env::args_os().skip(1).collect();
@@ -23,6 +26,9 @@ fn main() -> ExitCode {
                  Opens local folders or ZIP paths in the native two-pane browser.\n\
                  Name ordering uses en-US; Show hidden files applies to both panes.\n\
                  F5 copies, F6 moves, F2 renames; Batch rename reviews masks and counters.\n\
+                 F7 creates a folder; F8 trashes and Shift+F8 permanently deletes after review.\n\
+                 Ctrl/Cmd+C/V copies and pastes files with listing focus. Type a prefix to find.\n\
+                 Alt+Left/Right navigates each pane’s location history.\n\
                  Inside a ZIP, F5 extracts to the other pane. Extract ZIP also opens a review.\n\
                  Enter or double-click opens files with the default application."
             );

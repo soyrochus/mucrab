@@ -30,7 +30,7 @@ with open(os.environ['W09_LOG'], 'a') as f:
     (RUN / 'config/mimeapps.list').write_text('[Default Applications]\ntext/plain=w09.desktop\n')
     spec = dict(argv=[str(ROOT / 'target/debug/mucrab'), str(left), str(ROOT / 'fixtures/W09/open.zip/nested')], cwd=str(ROOT), title='muCrab', output=str(RUN / 'native'), env=dict(XDG_CONFIG_HOME=str(RUN / 'config'), XDG_DATA_HOME=str(RUN / 'data'), XDG_CURRENT_DESKTOP='X-Generic', W09_LOG=str(RUN / 'opened.jsonl')))
     (RUN / 'launch.json').write_text(json.dumps(spec, indent=2))
-    actions = [dict(op='click',x=80,y=162),dict(op='key',keys=['Return'],wait=1,capture='local-enter'),dict(op='click',x=650,y=162,count=2,wait=1,capture='archive-double-click'),dict(op='click',x=80,y=162),dict(op='click',x=16,y=12),dict(op='click',x=44,y=36,wait=1,capture='menu-open'),dict(op='click',x=16,y=12),dict(op='click',x=66,y=209),dict(op='await_exit')]
+    actions = [dict(op='click',x=80,y=162),dict(op='key',keys=['Return'],wait=1,capture='local-enter'),dict(op='click',x=650,y=162,count=2,wait=1,capture='archive-double-click'),dict(op='click',x=80,y=162),dict(op='click',x=16,y=12),dict(op='click',x=44,y=36,wait=1,capture='menu-open'),dict(op='click',x=16,y=12),dict(op='click',x=66,y=347),dict(op='await_exit')]
     (RUN / 'actions.json').write_text(json.dumps(actions, indent=2))
     print(RUN / 'launch.json')
 

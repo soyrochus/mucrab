@@ -97,8 +97,45 @@ pub fn pane(
                     );
                     ui.small("The last successfully opened folder is retained.");
                 }
+                let find_id=ui.id().with("quick-find");
+                let mut find_scroll=false;
+                let listing_focused=ui.memory(|m|m.has_focus(listing_id(side)));
+                let mut started=false;
+                if enabled && listing_focused && pane.quick_find.is_none() {
+                    let text=ui.input_mut(|input| {
+                        let mut text=String::new();
+                        if !input.modifiers.command && !input.modifiers.ctrl && !input.modifiers.alt {
+                            input.events.retain(|event|match event {
+                                egui::Event::Text(value) if value.chars().any(|c|!c.is_control() && c!=' ')=>{text.push_str(value);false},
+                                egui::Event::Ime(egui::ImeEvent::Commit(value))=>{text.push_str(value);false},
+                                _=>true
+                            });
+                        }
+                        text
+                    });
+                    if !text.is_empty(){pane.quick_find=Some(text);started=true;}
+                }
+                if enabled && let Some(mut query)=pane.quick_find.clone() {
+                    let before=query.clone();
+                    let mut close=ui.memory(|m|m.has_focus(find_id)) && ui.input_mut(|i|i.consume_key(egui::Modifiers::NONE,egui::Key::Escape) || i.consume_key(egui::Modifiers::NONE,egui::Key::Enter));let mut direction=None;
+                    ui.horizontal(|ui| {
+                        ui.label("Find:");
+                        let edit=ui.add(egui::TextEdit::singleline(&mut query).id(find_id).desired_width((ui.available_width()-125.0).max(30.0)));
+                        if started || (!ui.memory(|m|m.has_focus(find_id)) && query.is_empty()) {edit.request_focus();}
+                        if ui.small_button("Previous").clicked(){direction=Some(false);}
+                        if ui.small_button("Next").clicked(){direction=Some(true);}
+                        close |= ui.small_button("×").clicked();
+                    });
+                    if started || before!=query || direction.is_some(){
+                        find_scroll=pane.find_prefix(&query,direction);
+                    }
+                    let matches=query.is_empty() || pane.order.iter().any(|i|pane.entries[*i].name.to_lowercase().starts_with(&query.to_lowercase()));
+                    if !matches {ui.colored_label(ui.visuals().error_fg_color,"No matching filename");}
+                    if close{pane.quick_find=None;ui.memory_mut(|m|m.request_focus(listing_id(side)));}
+                    else {pane.quick_find=Some(query);}
+                }
                 let keyboard_focus = ui.memory(|m| m.has_focus(listing_id(side)));
-                let mut scroll_focus = false;
+                let mut scroll_focus = find_scroll;
                 let mut navigate = None;
                 let mut go_parent = false;
                 if keyboard_focus && enabled {
@@ -114,7 +151,7 @@ pub fn pane(
                         });
                         commands
                     });
-                    scroll_focus = !events.is_empty();
+                    scroll_focus |= !events.is_empty();
                     for event in events {
                         let _ = pane.apply_event(&event, sorter);
                     }
@@ -680,5 +717,71 @@ mod tests {
         assert_eq!(state.selection.focus_row, Some(1));
         frame(&ctx, &mut state, &sorter, vec![key(egui::Key::Home)]);
         assert_eq!(state.selection.focus_row, Some(0));
+    }
+    #[test]
+    fn quick_find_enter_returns_to_listing_before_activation() {
+        let ctx = egui::Context::default();
+        let sorter = NameSorter::en_us().unwrap();
+        let mut state = BrowserPane::default();
+        state.load_listing(
+            PathBuf::from("/synthetic-ui-fixture"),
+            vec![FileEntry {
+                name: "Alpha.txt".into(),
+                ..Default::default()
+            }],
+            true,
+            &sorter,
+        );
+        frame(&ctx, &mut state, &sorter, vec![]);
+        click(&ctx, &mut state, &sorter, egui::pos2(100.0, 90.0));
+        frame(
+            &ctx,
+            &mut state,
+            &sorter,
+            vec![egui::Event::Text("al".into())],
+        );
+        assert_eq!(state.quick_find.as_deref(), Some("al"));
+        frame(&ctx, &mut state, &sorter, vec![key(egui::Key::Enter)]);
+        assert!(state.quick_find.is_none());
+        assert!(ctx.memory(|m| m.has_focus(listing_id(PaneSide::Left))));
+        assert_eq!(
+            state.location.as_deref(),
+            Some(std::path::Path::new("/synthetic-ui-fixture"))
+        );
+        let mut release = key(egui::Key::Enter);
+        if let egui::Event::Key { pressed, .. } = &mut release {
+            *pressed = false;
+        }
+        frame(&ctx, &mut state, &sorter, vec![release]);
+        let mut requested = None;
+        let mut active = PaneSide::Left;
+        let mut widths = [65.0, 84.0, 145.0];
+        let output = ctx.run_ui(
+            egui::RawInput {
+                screen_rect: Some(Rect::from_min_size(
+                    egui::Pos2::ZERO,
+                    Vec2::new(800.0, 600.0),
+                )),
+                events: vec![key(egui::Key::Enter)],
+                ..Default::default()
+            },
+            |ui| {
+                if let Some(target) = pane(
+                    ui,
+                    PaneSide::Left,
+                    &mut state,
+                    &sorter,
+                    &mut active,
+                    &mut widths,
+                    true,
+                ) {
+                    requested = Some(target);
+                }
+            },
+        );
+        output.drop_without_applying_deltas();
+        assert!(
+            matches!(requested,Some(crate::opening::Target::Local(path)) if path.ends_with("Alpha.txt"))
+        );
     }
 }

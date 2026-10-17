@@ -337,6 +337,13 @@ pub fn copy_entries_with_control(
     control: &JobControl,
 ) -> io::Result<CopyReport> {
     control.total(request.names.len());
+    copy_entries_in_job(request, control)
+}
+
+pub(crate) fn copy_entries_in_job(
+    request: &CopyRequest,
+    control: &JobControl,
+) -> io::Result<CopyReport> {
     if !control.checkpoint() {
         return Ok(CopyReport {
             cancelled: true,

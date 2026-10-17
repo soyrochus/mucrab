@@ -10,6 +10,7 @@ mod w04;
 mod w05;
 mod w06;
 mod w07;
+mod w10;
 use serde::{Deserialize, Serialize};
 use std::{
     io::{self, BufRead},
@@ -94,6 +95,15 @@ fn adapter() -> Result<(), Box<dyn std::error::Error>> {
 
 fn main() -> ExitCode {
     let arguments: Vec<_> = std::env::args_os().skip(1).collect();
+    if arguments.as_slice() == ["--adapter-w10"] {
+        return match w10::adapter() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(e) => {
+                eprintln!("W10 adapter unavailable: {e}");
+                ExitCode::from(2)
+            }
+        };
+    }
     if arguments.as_slice() == ["--adapter-w07"] {
         return match w07::adapter() {
             Ok(()) => ExitCode::SUCCESS,
