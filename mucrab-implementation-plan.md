@@ -28,6 +28,10 @@ this plan. On resumption, inspect the actual checkout and reconcile this table
 with code and evidence before continuing. Historical checks are not evidence
 that the new machine has passed them.
 
+The [current status report](docs/current-status.md) collects the workflow results
+and platform limits formerly listed in the README. The README introduces the
+reference application, discovery approach and migration process.
+
 ## Objective and experiment rules
 
 Produce a convincing native Rust file manager demo from recovered binary
@@ -1102,6 +1106,15 @@ Exact next executable action:
   work remains uncommitted. No push, tag or release. Ignored raw runs regenerate
   with the committed workflow helpers; mutating GUI replays require fresh trees. Next is
   W07 original job lifecycle/cancellation recovery before implementing controls.
+
+- **2026-10-17 — README and status documentation:** moved the detailed W01–W06
+  status section to `docs/current-status.md`, preserving its results and limits
+  and fixing relative links. The README retains a short linked milestone summary
+  and expands the muCommander, REA discovery and migration introduction. Status
+  badges link to the report; latest evidence links now point to W06. Checked
+  moved-content preservation, local Markdown links/anchors and whitespace.
+  This documentation change leaves `4cf1b3f` as the verified implementation
+  checkpoint; W07 remains next.
 
 ## Final demonstration acceptance
 
