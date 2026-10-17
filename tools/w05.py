@@ -12,16 +12,17 @@ import random
 import subprocess
 import sys
 import uuid
+import unicodedata
 
 import acquire_mucommander as acquisition
-from w01 import ROOT, REFERENCE, capture, digest
+from w01 import ROOT, REFERENCE, capture, digest, evidence_directory
 from w02c import java_capture
-from w03 import materialize_tree, snapshot
+from w03 import materialize_tree, snapshot, comparable_tree
 from w04 import identity, source_date_mask, assert_selected_content_preserved
 
 SPEC=ROOT/'fixtures/W05-batch-rename/cases.json'
 SOURCE=ROOT/'tools/java/W05Oracle.java'
-EVIDENCE=ROOT/'evidence/workflows/W05-batch-rename'
+EVIDENCE = evidence_directory('W05-batch-rename')
 
 
 def generated(spec,reserved):
@@ -38,8 +39,9 @@ def prepare(run,side,items,spec):
     requests=[];before=[]
     for item in items:
         folder=run/side/item['id']/'source';materialize_tree(folder,item['source'],spec);os.chmod(folder,item.get('root_mode',0o755))
-        request=dict(id=item['id'],directory=str(folder),names=item['names'],options=item['options'],apply=item['apply']);requests.append(request)
-        before.append(dict(id=item['id'],tree=snapshot(folder),root_mode=folder.stat().st_mode&0o777,identities={name:identity(folder/name) for name in item['names']}))
+        names=[unicodedata.normalize('NFD', name) for name in item['names']] if platform.system() == 'Darwin' else item['names']
+        request=dict(id=item['id'],directory=str(folder),names=names,options=item['options'],apply=item['apply']);requests.append(request)
+        before.append(dict(id=item['id'],tree=snapshot(folder),root_mode=folder.stat().st_mode&0o777,identities={name:identity(folder/name) for name in names}))
         if item.get('root_mode')==0o555 and os.access(folder,os.W_OK):raise ValueError('Permission fixture writable by executing uid')
     return requests,before
 
@@ -92,11 +94,11 @@ def observe(requests,items,before,results):
 
 
 def comparable(states):
-    return [dict(s,identities=[{k:v for k,v in row.items() if k!='destination_identity'} for row in s['identities']]) for s in states]
+    return [dict(s,tree=comparable_tree(s['tree']),identities=[{k:v for k,v in row.items() if k!='destination_identity'} for row in s['identities']]) for s in states]
 
 
 def run_suite(compare,reserved,rust_adapter):
-    if platform.system()!='Linux' or os.geteuid()==0:raise ValueError('W05 requires unprivileged Linux')
+    if platform.system() not in ('Linux', 'Darwin') or os.geteuid()==0:raise ValueError('W05 requires an unprivileged Linux or macOS user')
     acquisition.run(verify_only=True)
     run_id=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')+'-'+uuid.uuid4().hex[:8];run=ROOT/'artifacts/runs'/('W05-'+run_id);run.mkdir(parents=True)
     spec=json.loads(SPEC.read_text());items=list(generated(spec,reserved)) if reserved else spec['cases']+list(generated(spec,False))
@@ -120,10 +122,10 @@ def run_suite(compare,reserved,rust_adapter):
             if left!=right:differences.append(dict(id=left['id'],component='filesystem',expected=left,actual=right))
     acquisition.run(verify_only=True)
     files=[SPEC,SOURCE,ROOT/'tools/w05.py',ROOT/'tools/w04.py',ROOT/'tools/w03.py',ROOT/'tools/w02c.py',ROOT/'tools/w01.py',ROOT/'Cargo.toml',ROOT/'Cargo.lock']
-    if (EVIDENCE/'contract.md').exists():files.append(EVIDENCE/'contract.md')
+    if (ROOT / "evidence/workflows/W05-batch-rename/contract.md").exists():files.append(ROOT / "evidence/workflows/W05-batch-rename/contract.md")
     files+=sorted((ROOT/'crates').rglob('*.rs'))+sorted((ROOT/'crates').rglob('Cargo.toml'))
     report=dict(schema_version=1,workflow='W05-batch-rename',run_id=run_id,suite='reserved' if reserved else 'predefined',status=('differences' if differences else 'passed') if compare else 'oracle_ready',
-        scope='Original batch pattern/preview methods and BatchRenameJob with fixed original SKIP choice; headless field-only UI wiring; full GUI/lifecycle separate',
+        filesystem_normalization='macOS filesystem paths compared in NFC and selected input names supplied in JDK NFD form; raw paths retained',scope='Original batch pattern/preview methods and BatchRenameJob with fixed original SKIP choice; headless field-only UI wiring; full GUI/lifecycle separate',
         source_revision=subprocess.check_output(['git','rev-parse','HEAD'],text=True,cwd=ROOT).strip(),source_status=subprocess.check_output(['git','status','--porcelain'],text=True,cwd=ROOT).splitlines(),
         source_inputs=[dict(path=str(p.relative_to(ROOT)),sha256=digest(p)) for p in files],classpath=[dict(path=str(p.relative_to(ROOT)),sha256=digest(p)) for p in jars],
         java_adapter_classes=[dict(path=str(p.relative_to(ROOT)),sha256=digest(p)) for p in sorted(classes.glob('*.class'))],commands=commands,

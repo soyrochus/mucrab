@@ -14,13 +14,14 @@ import stat
 import subprocess
 import sys
 import uuid
+import unicodedata
 
 import acquire_mucommander as acquisition
-from w01 import ROOT, REFERENCE, capture, digest
+from w01 import ROOT, REFERENCE, capture, digest, evidence_directory
 from w02c import java_capture
 
 SPEC = ROOT / 'fixtures/W03-recursive-copy/cases.json'
-EVIDENCE = ROOT / 'evidence/workflows/W03-recursive-copy'
+EVIDENCE = evidence_directory('W03-recursive-copy')
 SOURCE = ROOT / 'tools/java/W03Oracle.java'
 
 
@@ -95,6 +96,19 @@ def snapshot(folder, ignored_dates=()):
     return sorted(result, key=lambda e: e['path'])
 
 
+def filesystem_name(name):
+    # java.io uses decomposed filenames on macOS; APFS resolves canonically
+    # equivalent spellings to the same entry. Keep raw snapshots in receipts.
+    return unicodedata.normalize('NFC', name) if platform.system() == 'Darwin' else name
+
+
+def comparable_tree(rows):
+    result = [dict(row, path=filesystem_name(row['path'])) for row in rows]
+    if len({row['path'] for row in result}) != len(result):
+        raise ValueError('Canonical filename collision in filesystem observation')
+    return sorted(result, key=lambda row: row['path'])
+
+
 def prepare(run, side, items, spec):
     requests, observations = [], []
     for item in items:
@@ -132,7 +146,7 @@ def observe(requests, items):
 
 
 def run_suite(compare, reserved, rust_adapter):
-    if platform.system() != 'Linux' or os.geteuid() == 0: raise ValueError('W03 first verification requires unprivileged Linux')
+    if platform.system() not in ('Linux', 'Darwin') or os.geteuid() == 0: raise ValueError('W03 requires an unprivileged Linux or macOS user')
     acquisition.run(verify_only=True)
     run_id = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + '-' + uuid.uuid4().hex[:8]
     run = ROOT / 'artifacts/runs' / ('W03-' + run_id); run.mkdir(parents=True)
@@ -161,14 +175,15 @@ def run_suite(compare, reserved, rust_adapter):
         for expected, actual, old, reference, observed in zip(original, native, native_before, after, native_after):
             if expected != actual: differences.append(dict(id=expected['id'], component='outcomes', expected=expected, actual=actual))
             if old['source'] != observed['source']: differences.append(dict(id=expected['id'], component='source_changed'))
-            if reference['destination'] != observed['destination']:
+            if comparable_tree(reference['destination']) != comparable_tree(observed['destination']):
                 differences.append(dict(id=expected['id'], component='destination_tree', expected=reference['destination'], actual=observed['destination']))
     acquisition.run(verify_only=True)
     files = [SPEC, SOURCE, ROOT / 'tools/w03.py', ROOT / 'tools/w02c.py', ROOT / 'tools/w01.py', ROOT / 'Cargo.lock', ROOT / 'Cargo.toml']
-    if (EVIDENCE / 'contract.md').exists(): files.append(EVIDENCE / 'contract.md')
+    if (ROOT / "evidence/workflows/W03-recursive-copy/contract.md").exists(): files.append(ROOT / "evidence/workflows/W03-recursive-copy/contract.md")
     files += sorted((ROOT / 'crates').rglob('*.rs')) + sorted((ROOT / 'crates').rglob('Cargo.toml'))
     report = dict(schema_version=1,workflow='W03-recursive-copy',run_id=run_id,suite='reserved' if reserved else 'predefined',
         status=('differences' if differences else 'passed') if compare else 'oracle_ready',
+        filesystem_normalization='macOS filesystem paths compared in NFC; raw paths retained; all other fields exact',
         scope='Original CopyJob.processFile recursion/collision/transfer/getters; auto-skip errors; filesystem snapshots; lifecycle/UI excluded',
         source_revision=subprocess.check_output(['git','rev-parse','HEAD'],text=True,cwd=ROOT).strip(),
         source_status=subprocess.check_output(['git','status','--porcelain'],text=True,cwd=ROOT).splitlines(),

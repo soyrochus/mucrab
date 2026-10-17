@@ -12,15 +12,15 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-17 |
-| Last verified implementation commit | `4ca2195` — W08 baseline; W07 changes currently uncommitted |
+| Last verified implementation commit | `38af0ee` plus macOS portability changes; tested source hashes in `evidence/platforms/macos-arm64/validation.json` |
 | Current phase | Phase 5 bounded workflow closure: W07 implemented and scoped checks passed; broader Phase 6 acceptance remains |
-| Active workflow | W07 — background operations/progress/Pause/Resume/Cancel verified within bounded Linux lifecycle scope; W08 UI preserved |
+| Active workflow | macOS acceptance — all nine suites and W07/W08 native input pass; live OS theme notification awaits approval |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
 | Next executable task | Phase 6 broader end-to-end/platform acceptance; inspect W07 limits and preserve all nine suites plus W08 UI replay before expanding scope |
 | Ported workflows | W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
 | Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. W07: 30 full-job lifecycle/marks/tree comparisons (18 predefined + 12 reserved). Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
-| Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4 plus distinct /tmp for W04, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
+| Verification platform | Linux x86_64/ext4/JDK 25.0.4.1 and macOS 26.6.2 arm64/APFS/JDK 21.0.10; all nine suites. Real second filesystem for W04/W07. Native input: X11/Xvfb and Mac cua_repl; Wayland unverified |
 | Release automation | Stable version tag workflow added for Linux x86_64 and macOS arm64; source/notices/checksums bundled. Local Linux packaging verified; first hosted build/publication pending |
 
 The commit above identifies the implementation baseline, not the commit adding
@@ -150,7 +150,7 @@ configure a writable remote separately if needed. No push is required to resume.
 
 ### Host prerequisites
 
-- Git, Python 3.9 or newer, and `curl`.
+- Git, Python 3.12 or newer for the full helper/release test suite, and `curl`. Acquisition alone still supports Python 3.9.
 - Rust 1.95 or newer with Cargo, rustfmt, and Clippy. The verified compiler was
   Rust/Cargo 1.99.0; the workspace has no exact toolchain pin. Record the compiler
   used on the destination.
@@ -1230,3 +1230,44 @@ entries that still describe W07 as the then-next workflow.
 | G4: Rust and comparison | `verified` within scope | 30 cases, zero differences; all 16 earlier predefined/reserved suite runs pass; native lifecycle guards tested separately |
 | G5: native workflow | `verified` within X11/Xvfb scope | 27-action real-file replay: pause/resume/cancel, disabled second mutation, browsing/marks while paused, details, close-and-cancel with normal exit before driver cleanup; 20,000 source files conserved |
 | G6: reproducible closure | `verified` for local development | 46 Rust/49 Python tests, locked build/format/Clippy, native W08 regression, source/input/binary hashes and retained screenshots/replays; uncommitted checkpoint, release/platform work remains |
+
+
+## 2026-10-17 — macOS platform acceptance
+
+Fresh Mac verification follows the Linux W07/W08 checkpoint imported in `38af0ee`.
+The [Mac evidence index](evidence/platforms/macos-arm64/README.md),
+[automated receipt](evidence/platforms/macos-arm64/validation.json) and
+[native receipt](evidence/platforms/macos-arm64/native.json) own the new results;
+Linux receipts remain unchanged.
+
+- All 18 predefined/reserved executions of W01, W02a, W02b, W02c, W03, W04,
+  W05, W06 and W07 pass with zero differences. W04 includes all 216 real
+  cross-device cases using a disposable mounted APFS image. W07 executes 30
+  original full-job lifecycle cases in an isolated Mac reference profile.
+- macOS 26.6.2 arm64/APFS, OpenJDK 21.0.10, Rust/Cargo 1.99.0 and Python 3.14.5:
+  locked/offline workspace build, formatting, denied-warning Clippy, 47 Rust
+  tests, 51 Python tests, CLI/readiness, reference integrity and static tools pass.
+- Native W08 input exercises folder navigation, copy, focused rename, reverse
+  move, batch preview/apply, ZIP browsing/extraction, hidden files, marking,
+  metadata sorting, resizing/minimum geometry, Help and saved themes. Final trees,
+  bytes, symlink identity and ZIP integrity pass the shared filesystem validator.
+- Native W07 input verifies stable pause, resume, cancel, disabled second jobs,
+  browsing/marking while busy, retained unrelated marks and window-close during
+  pause. All 20,000 source files remain; 9,387 destination children (one partial)
+  are retained, earlier completed work survives, and later roots are untouched.
+- Verification exposed and fixed case-only APFS rename, NFC Mac listing names,
+  duplicate time-only parallel test fixture names, and release notice ordering.
+  The direct Mac ICU normalizer edge reuses locked 2.2.0; no external pins changed.
+  Canonically equivalent filesystem paths compare in NFC with raw observations
+  retained; archive entry names and synthetic comparator strings stay exact.
+- `tools/verify_macos.py` repeats the full run and rejects a missing second
+  filesystem. Mac release CI now runs the full Rust/Python suite using an APFS
+  image; actual hosted CI execution remains pending.
+
+Live delivery of physical OS theme changes awaits explicit permission for a
+temporary macOS Appearance change. Current System rendering and injected theme
+changes pass. Native macOS menu integration is not implemented; menus remain
+in-window. Other OS versions, Wayland/Windows, locales, ACLs/xattrs/resource forks,
+race-free filesystem handling and broader scheduler/parallel-job parity retain
+their existing limits. These results close the current bounded Mac functional
+verification, not all Phase 6 product acceptance or hosted release publication.

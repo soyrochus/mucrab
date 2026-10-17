@@ -117,7 +117,7 @@ def collect_licenses(root):
                 raise ValueError(f"Invalid license-file in {directory}")
             files.add(path)
         copied = []
-        for path in sorted(files):
+        for path in sorted(files, key=lambda path: path.resolve().relative_to(crate.resolve()).as_posix()):
             relative = path.resolve().relative_to(crate.resolve())
             target = destination / directory / relative
             target.parent.mkdir(parents=True, exist_ok=True)

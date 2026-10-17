@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 #![cfg(unix)]
+mod support;
+
 use mucrab_core::{
     BrowserPane, CopyPolicy, NameSorter, PaneEvent, ZipCatalog, ZipExtractPlan, extract_zip,
 };
@@ -9,7 +11,6 @@ use std::{
     io::Write,
     os::unix::fs::{PermissionsExt, symlink},
     path::{Path, PathBuf},
-    time::{SystemTime, UNIX_EPOCH},
 };
 use zip::{CompressionMethod, DateTime, ZipWriter, write::SimpleFileOptions};
 
@@ -19,10 +20,7 @@ impl Fixture {
         let root = std::env::temp_dir().join(format!(
             "mucrab-w06-{}-{}",
             std::process::id(),
-            SystemTime::now()
-                .duration_since(UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
+            support::nonce()
         ));
         fs::create_dir_all(root.join("destination")).unwrap();
         Self(root)

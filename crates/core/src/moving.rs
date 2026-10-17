@@ -70,6 +70,37 @@ impl Mover<'_> {
         }
         let metadata = fs::metadata(source).ok();
         let dest_metadata = fs::metadata(destination).ok();
+        // A case-insensitive filesystem resolves a case-only target to the
+        // source inode. Allow its atomic spelling change, while still rejecting
+        // a distinct hard-link entry that aliases the source.
+        #[cfg(unix)]
+        if source != destination
+            && source.parent() == destination.parent()
+            && fs::symlink_metadata(destination)
+                .is_ok_and(|dest| entry.dev() == dest.dev() && entry.ino() == dest.ino())
+            && source.parent().is_some_and(|parent| {
+                fs::read_dir(parent).is_ok_and(|mut entries| {
+                    !entries.any(|entry| {
+                        entry.is_err()
+                            || entry.is_ok_and(|entry| {
+                                Some(entry.file_name().as_os_str()) == destination.file_name()
+                            })
+                    })
+                })
+            })
+        {
+            if !self.control.checkpoint() {
+                return false;
+            }
+            return match fs::rename(source, destination) {
+                Ok(()) => {
+                    self.report.renamed_entries += 1;
+                    self.report.sources_removed += 1;
+                    true
+                }
+                Err(error) => self.issue(destination, CopyIssueKind::Failed, error),
+            };
+        }
         let src_path = match resolved(source) {
             Ok(path) => path,
             Err(error) => return self.issue(source, CopyIssueKind::Failed, error),

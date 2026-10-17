@@ -13,13 +13,14 @@ import random
 import subprocess
 import sys
 import uuid
+import unicodedata
 
 import acquire_mucommander as acquisition
-from w01 import ROOT, REFERENCE, capture, digest
+from w01 import ROOT, REFERENCE, capture, digest, evidence_directory
 
 SPEC = ROOT / "fixtures/W02c-metadata-sorting/cases.json"
 SOURCE = ROOT / "tools/java/W02cOracle.java"
-EVIDENCE = ROOT / "evidence/workflows/W02c-metadata-sorting"
+EVIDENCE = evidence_directory('W02c-metadata-sorting')
 CRITERIA = ("NAME", "SIZE", "DATE", "EXTENSION")
 
 
@@ -95,7 +96,7 @@ def materialize(run, spec, reserved):
     for mode in ("NATURAL", "LEXICOGRAPHIC"):
         for parent in (True, False):
             yield dict(id="real-" + mode.lower() + "-" + str(parent), kind="directory", path=str(folder), mode=mode,
-                parent=parent, names=[entry["name"] for entry in spec["real_entries"]], events=events(len(spec["real_entries"]), parent))
+                parent=parent, names=[unicodedata.normalize("NFC", entry["name"]) if platform.system() == "Darwin" else entry["name"] for entry in spec["real_entries"]], events=events(len(spec["real_entries"]), parent))
 
 
 def decode(text, requests):
@@ -151,8 +152,8 @@ def decode(text, requests):
 
 
 def run_suite(compare, reserved, rust_adapter):
-    if platform.system() != "Linux":
-        raise ValueError("W02c first verification is Linux; establish other hosts separately")
+    if platform.system() not in ("Linux", "Darwin"):
+        raise ValueError("W02c requires Linux or macOS")
     acquisition.run(verify_only=True)
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
     run = ROOT / "artifacts/runs" / ("W02c-" + run_id); run.mkdir(parents=True)
@@ -183,7 +184,7 @@ def run_suite(compare, reserved, rust_adapter):
     for name, argv in (("java-version", ["java", "-version"]), ("javac-version", ["javac", "-version"]), ("rustc-version", ["rustc", "-vV"])):
         _, commands[name] = capture(run, name, argv)
     acquisition.run(verify_only=True)
-    files = [SPEC, SOURCE, ROOT / "tools/java/W02Oracle.java", ROOT / "tools/w02c.py", ROOT / "tools/w01.py", ROOT / "Cargo.lock", ROOT / "Cargo.toml", EVIDENCE / "contract.md"]
+    files = [SPEC, SOURCE, ROOT / "tools/java/W02Oracle.java", ROOT / "tools/w02c.py", ROOT / "tools/w01.py", ROOT / "Cargo.lock", ROOT / "Cargo.toml", ROOT / "evidence/workflows/W02c-metadata-sorting/contract.md"]
     if (ROOT / "tools/manifests/java-case-data.json").exists(): files.append(ROOT / "tools/manifests/java-case-data.json")
     files += sorted((ROOT / "crates").rglob("*.rs")) + sorted((ROOT / "crates").rglob("Cargo.toml"))
     states = sum(len(out["states"]) for out in original)

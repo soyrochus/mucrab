@@ -252,6 +252,8 @@ def probe(manifest):
         ],
     }
     receipt_path = ROOT / "evidence/toolchain/readiness.json"
+    if platform.system() == "Darwin":
+        receipt_path = ROOT / "evidence/platforms" / ("macos-" + platform.machine()) / "toolchain/readiness.json"
     acquisition.write_json(receipt_path, receipt)
     print("Static tool readiness verified: REA inventory, explicit APK-only rejection, CFR and javap.")
     print("Evidence: {}".format(receipt_path.relative_to(ROOT)))

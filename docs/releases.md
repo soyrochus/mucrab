@@ -60,8 +60,8 @@ command. Rust and system build tools must already be installed for an offline
 build. `BUILDING.md` in the source archive records its version and tagged commit.
 
 Linux release jobs run the Rust workspace tests and Python tool tests. The real
-cross-device move tests use `/dev/shm` as a separate filesystem. macOS runs the
-library tests. Both targets check formatting, build release mode and smoke-test
+cross-device move tests use `/dev/shm` as a separate filesystem. macOS runs the full Rust workspace and Python tests, using a disposable
+mounted APFS image for real cross-device moves. Both targets check formatting, build release mode and smoke-test
 `--version` and `--help`; release CI does not run the original Java behavioral
 comparisons or GUI replays. Their recorded scope remains in the implementation
 ledger. The first hosted execution of this workflow is still pending.

@@ -1735,6 +1735,7 @@ dependencies = [
  "flate2",
  "icu_collator",
  "icu_locale_core",
+ "icu_normalizer",
  "serde",
  "zip",
 ]

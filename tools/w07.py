@@ -3,13 +3,15 @@
 # Copyright (C) 2026 muCrab contributors
 """Compare real original full-job lifecycle with Rust controlled operations.
 
-Run on an isolated Xvfb display. All mutations use separate disposable fixtures;
-original code is loaded from an intact runtime copy, never the reference tree.
+Run on isolated Xvfb or explicitly allow a disposable macOS reference window.
+All mutations use separate disposable fixtures; original code is loaded from
+an intact runtime copy, never the reference tree.
 """
 import argparse
 from datetime import datetime, timezone
 import json
 import os
+import platform
 from pathlib import Path
 import random
 import re
@@ -21,11 +23,11 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 import acquire_mucommander as acquisition
-from w01 import ROOT, REFERENCE, capture, digest
+from w01 import ROOT, REFERENCE, capture, digest, evidence_directory
 from w03 import snapshot
 
 SPEC = ROOT / 'fixtures/W07-background-operations/cases.json'
-EVIDENCE = ROOT / 'evidence/workflows/W07-background-operations'
+EVIDENCE = evidence_directory('W07-background-operations')
 
 
 def cases(spec, reserved):
@@ -111,7 +113,10 @@ def comparable(request, state):
 
 def run_suite(adapter, reserved):
     if os.geteuid() == 0: raise ValueError('Run unprivileged; permission errors must be real')
-    if not re.fullmatch(r':[1-9]\d+(?:\.0)?', os.environ.get('DISPLAY', '')):
+    if platform.system() == 'Darwin':
+        if os.environ.get('MUCRAB_MACOS_REFERENCE_GUI') != '1':
+            raise ValueError('Set MUCRAB_MACOS_REFERENCE_GUI=1 to allow the isolated macOS reference window')
+    elif not re.fullmatch(r':[1-9]\d+(?:\.0)?', os.environ.get('DISPLAY', '')):
         raise ValueError('Use xvfb-run -a for an isolated original application; never the live desktop')
     acquisition.run(verify_only=True)
     spec = json.loads(SPEC.read_text()); items = cases(spec, reserved)
@@ -140,6 +145,8 @@ def run_suite(adapter, reserved):
         _, jar = capture(run, 'jar', ['jar', '--create', '--file', str(agent), '--manifest', str(manifest), '-C', str(classes), '.'])
         (run / 'original-probe').mkdir()
         command = ['java', '-javaagent:' + str(agent) + '=' + str(run / 'original-probe'), '-Duser.timezone=UTC', '-Duser.home=' + str(run / 'home'), '--add-opens=java.base/java.net=ALL-UNNAMED', '--add-opens=java.base/java.io=ALL-UNNAMED', '--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED', '-cp', str(runtime / 'mucommander-1.6.2.jar'), 'com.mucommander.main.muCommander', '--preferences', str(profile), original_requests[0]['source_directory'], original_requests[0]['destination_directory']]
+        if platform.system() == 'Darwin':
+            command[1:1] = ['--add-exports=java.desktop/com.apple.eawt=ALL-UNNAMED', '--add-exports=java.desktop/com.apple.laf=ALL-UNNAMED', '--add-exports=java.desktop/com.apple.eio=ALL-UNNAMED']
         _, java = capture(run, 'java', command)
         original = [json.loads((run / 'original-probe' / (r['id'] + '.json')).read_text()) for r in original_requests]
         original_after = observe(original_requests)
@@ -168,7 +175,7 @@ def run_suite(adapter, reserved):
         acquisition.write_json(run / 'rust-results.json', native)
         acquisition.write_json(run / 'differences.json', differences)
     acquisition.run(verify_only=True)
-    report = dict(workflow='W07', status='passed' if not differences else 'differences', scope='Real original start/run/interrupt/pause, full-job trees/marks, cooperative native control', cases_run=len(items), reserved=reserved, difference_count=len(differences), raw_run=run.relative_to(ROOT).as_posix(), fixture_sha256=digest(SPEC), sources=[dict(path=p.relative_to(ROOT).as_posix(), sha256=digest(p)) for p in sources], rust_adapter_sha256=digest(adapter), reference_unchanged=True, commands=dict(javac=compiler, jar=jar, java=java, rust=rust), normalization='Runtime clocks omitted; partial lengths/hashes compared as valid nonempty proper source prefixes, not equal byte counts', excluded='Original scheduler concurrency/remote jobs and exact timing; native panic/close guarantees tested separately')
+    report = dict(host=dict(system=platform.system(), architecture=platform.machine(), platform=platform.platform()), workflow='W07', status='passed' if not differences else 'differences', scope='Real original start/run/interrupt/pause, full-job trees/marks, cooperative native control', cases_run=len(items), reserved=reserved, difference_count=len(differences), raw_run=run.relative_to(ROOT).as_posix(), fixture_sha256=digest(SPEC), sources=[dict(path=p.relative_to(ROOT).as_posix(), sha256=digest(p)) for p in sources], rust_adapter_sha256=digest(adapter), reference_unchanged=True, commands=dict(javac=compiler, jar=jar, java=java, rust=rust), normalization='Runtime clocks omitted; partial lengths/hashes compared as valid nonempty proper source prefixes, not equal byte counts', excluded='Original scheduler concurrency/remote jobs and exact timing; native panic/close guarantees tested separately')
     acquisition.write_json(run / 'report.json', report)
     acquisition.write_json(EVIDENCE / ('comparison-reserved.json' if reserved else 'comparison-predefined.json'), report)
     print(json.dumps({key: report[key] for key in ('status', 'cases_run', 'reserved', 'difference_count', 'raw_run')}))

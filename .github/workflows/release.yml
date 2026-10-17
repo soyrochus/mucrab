@@ -125,10 +125,21 @@ jobs:
           trap 'rm -rf "$test_tmp"' EXIT
           TMPDIR="$test_tmp" cargo test --workspace --all-features --frozen --target "$BUILD_TARGET"
           python -B -m unittest discover -s tools -p 'test_*.py' -v
-      - name: Run macOS library tests
+      - name: Run macOS Rust and Python tests
         if: runner.os == 'macOS'
         working-directory: source
-        run: cargo test --workspace --lib --frozen --target "$BUILD_TARGET"
+        run: |
+          cargo test --workspace --all-features --frozen --target "$BUILD_TARGET" --no-run
+          # macOS /tmp normally shares the checkout filesystem. Exercise real
+          # cross-device moves using a disposable mounted APFS disk image.
+          test_root=$(mktemp -d "$RUNNER_TEMP/mucrab-tests.XXXXXX")
+          cross_mount="$test_root/cross"
+          mkdir "$cross_mount"
+          trap 'hdiutil detach "$cross_mount"; rm -rf "$test_root"' EXIT
+          hdiutil create -size 768m -fs APFS -volname muCrabTests -type SPARSE -o "$test_root/cross.sparseimage"
+          hdiutil attach "$test_root/cross.sparseimage" -nobrowse -mountpoint "$cross_mount"
+          TMPDIR="$cross_mount" cargo test --workspace --all-features --frozen --target "$BUILD_TARGET"
+          python -B -m unittest discover -s tools -p 'test_*.py' -v
       - name: Build release executable offline
         working-directory: source
         run: cargo build --release --frozen -p mucrab-desktop --target "$BUILD_TARGET"

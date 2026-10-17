@@ -82,6 +82,13 @@ pub fn list_directory(path: &Path) -> io::Result<Vec<FileEntry>> {
                     "W01 does not support non-Unicode file names",
                 )
             })?;
+            // The original macOS directory listing exposes NFC names even when
+            // the filesystem preserves a decomposed spelling. APFS resolves
+            // either spelling; normalize before extension and ordering rules.
+            #[cfg(target_os = "macos")]
+            let name = icu_normalizer::ComposingNormalizerBorrowed::new_nfc()
+                .normalize(&name)
+                .into_owned();
             Ok(FileEntry {
                 metadata: Some(local_metadata(&item.path(), &name)?),
                 name,

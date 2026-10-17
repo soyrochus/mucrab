@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 #![cfg(unix)]
+mod support;
+
 use mucrab_core::{BatchRenameOptions, BatchRenamePlan, apply_batch_rename};
 use std::{
     fs,
     os::unix::fs::{MetadataExt, PermissionsExt, symlink},
     path::{Path, PathBuf},
-    time::{Duration, SystemTime, UNIX_EPOCH},
+    time::{Duration, UNIX_EPOCH},
 };
 struct Fixture(PathBuf);
 impl Fixture {
@@ -15,10 +17,7 @@ impl Fixture {
             .join(format!(
                 "mucrab-w05-{}-{}",
                 std::process::id(),
-                SystemTime::now()
-                    .duration_since(UNIX_EPOCH)
-                    .unwrap()
-                    .as_nanos()
+                support::nonce()
             ))
             .join("source");
         fs::create_dir_all(&root).unwrap();

@@ -5,9 +5,25 @@ from pathlib import Path
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
 import w03
 
 class CopyProtocolTests(unittest.TestCase):
+    def test_macos_filesystem_comparison_keeps_contents_exact_and_raw_names(self):
+        original = [dict(path='e\u0301.txt', kind='file', sha256='original')]
+        native = [dict(path='é.txt', kind='file', sha256='original')]
+        with patch.object(w03.platform, 'system', return_value='Darwin'):
+            self.assertEqual(w03.comparable_tree(original), w03.comparable_tree(native))
+            self.assertEqual(original[0]['path'], 'e\u0301.txt')
+            native[0]['sha256'] = 'changed'
+            self.assertNotEqual(w03.comparable_tree(original), w03.comparable_tree(native))
+            with self.assertRaises(ValueError):
+                w03.comparable_tree(original + native)
+
+    def test_linux_filesystem_comparison_retains_distinct_unicode_spellings(self):
+        with patch.object(w03.platform, 'system', return_value='Linux'):
+            self.assertNotEqual(w03.filesystem_name('e\u0301'), w03.filesystem_name('é'))
+
     def setUp(self):
         self.request=dict(id='copy',names=['a','b'])
         self.result=dict(id='copy',status='ok',state='RUNNING',outcomes=[dict(name='a',success=True),dict(name='b',success=False)])

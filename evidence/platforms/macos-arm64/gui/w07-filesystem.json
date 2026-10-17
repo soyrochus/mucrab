@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "destination_children": 9387,
+  "partial_children": 1,
+  "source_files": 20000,
+  "checks": [
+    "actual Pause/Resume/Cancel controls",
+    "copy roots and marks",
+    "second job disabled",
+    "browse and mark unrelated location while paused",
+    "unrelated marks retained on acknowledgement",
+    "window close wakes paused worker and exits normally before driver cleanup",
+    "earlier destination preserved, interrupted folder partial, later roots untouched",
+    "all source and completed-child bytes"
+  ]
+}

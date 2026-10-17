@@ -16,11 +16,11 @@ import uuid
 import zipfile
 
 import acquire_mucommander as acquisition
-from w01 import ROOT, REFERENCE, capture, digest
+from w01 import ROOT, REFERENCE, capture, digest, evidence_directory
 
 SPEC = ROOT / "fixtures/W02b-hidden-filtering/cases.json"
 SOURCE = ROOT / "tools/java/W02bOracle.java"
-EVIDENCE = ROOT / "evidence/workflows/W02b-hidden-filtering"
+EVIDENCE = evidence_directory('W02b-hidden-filtering')
 
 
 def generated(spec, reserved):
@@ -147,7 +147,7 @@ def run_suite(compare, reserved, rust_adapter):
         _, commands[name] = capture(run, name, argv)
     acquisition.run(verify_only=True)
     files = [SPEC, SOURCE, ROOT / "tools/java/W02Oracle.java", ROOT / "tools/w02b.py", ROOT / "tools/w01.py",
-        ROOT / "Cargo.lock", ROOT / "Cargo.toml", EVIDENCE / "contract.md"]
+        ROOT / "Cargo.lock", ROOT / "Cargo.toml", ROOT / "evidence/workflows/W02b-hidden-filtering/contract.md"]
     files += sorted((ROOT / "crates").rglob("*.rs")) + sorted((ROOT / "crates").rglob("Cargo.toml"))
     reference_classes = []
     for jar_name, entries in (("app/mucommander-core-1.6.2.jar", ["com/mucommander/ui/main/ConfigurableFolderFilter",

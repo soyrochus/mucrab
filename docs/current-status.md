@@ -6,6 +6,8 @@ The current verified functional milestone is **W07 — background operations,
 progress and cancellation**, delivered after the prioritized **W08 classic UI**.
 Checks recorded on **2026-10-17** include W07's original full-job comparisons,
 all eight earlier component suites, Rust/Python checks and W07/W08 native replays.
+Fresh [Mac acceptance](../evidence/platforms/macos-arm64/README.md) also passes all
+18 suite executions, 47 Rust tests, 51 Python tests and native W07/W08 workflows.
 See the [implementation ledger](../mucrab-implementation-plan.md).
 
 ## Verified workflows
@@ -113,8 +115,8 @@ lifecycle, mark and filesystem outcomes. Streaming prefixes are independently
 validated rather than requiring identical scheduler-dependent lengths. The native
 27-action replay checks real Pause/Resume/Cancel, navigation/marks while busy and
 normal exit after cancelling a paused copy of 20,000 source files. All 16 earlier
-component suite executions and the W08 replay also pass. There are **46 Rust and
-49 Python tests**. [W07 evidence](../evidence/workflows/W07-background-operations/README.md)
+component suite executions and the W08 replay also pass. There are **46 cross-platform Rust tests**, one additional Mac filename test, and
+**51 Python tests**. [W07 evidence](../evidence/workflows/W07-background-operations/README.md)
 records recovery, comparison reports, source fingerprints, native checks and limits.
 
 ## Platform scope and limitations
@@ -123,9 +125,13 @@ The latest recorded verification passes all eight earlier component suites plus 
 **Linux x86_64/ext4**, OpenJDK **25.0.4.1**, with en-US ordering and a separate
 `/tmp` filesystem for cross-device moves. Native input checks run under X11/Xvfb; representative
 original menu-action checks retain live-table states and Swing renders.
-The macOS badge refers to earlier W01/W02a checks on macOS arm64; W03/W04/W05/W06
-validation covers Linux. Wayland/physical-desktop
-behavior, Windows hidden attributes and exhaustive OS shortcut parity remain
+The current Mac run covers all nine suites on **macOS 26.6.2 / arm64 / APFS**,
+OpenJDK **21.0.10**, with a real second APFS volume for cross-device moves.
+Native desktop input verifies the W08 operations and W07 controls, including
+closing a paused job. See the [Mac receipts](../evidence/platforms/macos-arm64/README.md)
+for Unicode path rules and source hashes. Live OS theme-notification delivery
+awaits approval to change the system preference temporarily. Other macOS versions,
+Wayland, Windows hidden attributes and exhaustive OS shortcut parity remain
 unverified. Opening symbolic links, other filters, additional archive formats and other locales remain for later increments. Copy rejects overlapping source/
 destination paths, outside link targets and destination aliases; race-free
 filesystem handling and full scheduler/parallel-job parity remain unverified. W07 cancellation is

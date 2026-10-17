@@ -47,7 +47,7 @@ def prepare():
     print(RUN / "launch.json")
 
 
-def verify():
+def verify_filesystem():
     left, right = RUN / "left", RUN / "right"
     expected_left = {"Documents", "a-very-long-file-name-to-check-column-clipping-and-hover.txt",
                      ".hidden", "link", "batch_notes.txt", "renamed.txt", "sample.zip"}
@@ -71,6 +71,10 @@ def verify():
         raise ValueError("Source archive changed")
     if (RUN / "config/mucrab/appearance").read_text().strip() != "system":
         raise ValueError("Appearance changes were not persisted")
+
+
+def verify():
+    verify_filesystem()
     expected_actions = json.loads((ROOT / "fixtures/W08-desktop-ui/native-gui-actions.json").read_text())
     expected_actions.insert(0, dict(op="capture", name="initial", wait=2))
     actual_actions = json.loads((RUN / "native/actions.json").read_text())

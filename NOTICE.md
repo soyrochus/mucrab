@@ -47,6 +47,9 @@ records the Unix dotfile scope and original runtime/GUI boundaries.
 
 The native collator uses ICU4X `icu_collator` **2.2.1**, with compiled collation data **2.2.0**. [The preserved ICU4X license](third_party/icu4x/LICENSE) includes Unicode License V3 and ICU adaptation attribution. [The provenance note](third_party/icu4x/README.md) explains the dependency and scope. muCrab remains `GPL-3.0-only`; dependency versions and checksums are recorded in `Cargo.lock`.
 
+macOS directory listings also use the already pinned ICU4X `icu_normalizer`
+**2.2.0** to expose NFC filenames as observed from the original Java application.
+
 ## Metadata sorting and date display
 
 Size, modified-time and extension comparison were recovered from the same pinned

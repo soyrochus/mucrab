@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 #![cfg(unix)]
+mod support;
+
 use mucrab_core::{
     BrowserPane, CopyIssueKind, CopyPolicy, CopyRequest, NameSorter, SortCriterion, copy_entries,
 };
@@ -8,16 +10,13 @@ use std::{
     fs,
     os::unix::fs::{PermissionsExt, symlink},
     path::PathBuf,
-    time::{Duration, SystemTime, UNIX_EPOCH},
+    time::{Duration, UNIX_EPOCH},
 };
 
 struct Fixture(PathBuf);
 impl Fixture {
     fn new() -> Self {
-        let nonce = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_nanos();
+        let nonce = support::nonce();
         let root = std::env::temp_dir().join(format!("mucrab-copy-{}-{nonce}", std::process::id()));
         fs::create_dir_all(root.join("source")).unwrap();
         fs::create_dir(root.join("dest")).unwrap();

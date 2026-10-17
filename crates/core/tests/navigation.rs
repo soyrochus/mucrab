@@ -1,20 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
+mod support;
+
 use mucrab_core::{BrowserPane, NameSorter, PaneEvent, SortMode, list_directory};
-use std::{
-    fs,
-    path::PathBuf,
-    time::{SystemTime, UNIX_EPOCH},
-};
+use std::{fs, path::PathBuf};
 
 struct Fixture(PathBuf);
 impl Fixture {
     fn new() -> Self {
-        let nonce = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_nanos();
+        let nonce = support::nonce();
         let path =
             std::env::temp_dir().join(format!("mucrab-navigation-{}-{nonce}", std::process::id()));
         fs::create_dir_all(path.join("child")).unwrap();
@@ -332,4 +327,24 @@ fn metadata_sort_refresh_retains_criterion_focus_marks_and_pane_independence() {
     left.set_show_hidden(true, &sorter);
     assert_eq!(left.options.criterion, SortCriterion::Size);
     assert_eq!(right.options.criterion, SortCriterion::Name);
+}
+
+#[cfg(target_os = "macos")]
+#[test]
+fn macos_listing_composes_names_before_extension_sorting_and_selection() {
+    let f = Fixture::new();
+    fs::write(f.0.join("e\u{301}.I\u{307}"), b"unicode name").unwrap();
+    let sorter = NameSorter::en_us().unwrap();
+    let mut pane = BrowserPane::default();
+    assert!(pane.open(&f.0, &sorter));
+    let entry = pane
+        .entries
+        .iter()
+        .find(|entry| entry.name == "é.İ")
+        .unwrap();
+    assert_eq!(
+        entry.metadata.as_ref().unwrap().extension.as_deref(),
+        Some("İ")
+    );
+    assert_eq!(fs::read(f.0.join(&entry.name)).unwrap(), b"unicode name");
 }

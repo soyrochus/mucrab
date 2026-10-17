@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 #![cfg(unix)]
+mod support;
+
 use mucrab_core::{
     BrowserPane, CopyIssueKind, CopyPolicy, CopyRequest, MoveRequest, NameSorter, SortCriterion,
     move_entries,
@@ -9,7 +11,7 @@ use std::{
     fs,
     os::unix::fs::{MetadataExt, PermissionsExt, symlink},
     path::{Path, PathBuf},
-    time::{Duration, SystemTime, UNIX_EPOCH},
+    time::{Duration, UNIX_EPOCH},
 };
 struct Fixture {
     root: PathBuf,
@@ -30,14 +32,7 @@ fn relax(path: &Path) {
 }
 impl Fixture {
     fn new() -> Self {
-        let tag = format!(
-            "{}-{}",
-            std::process::id(),
-            SystemTime::now()
-                .duration_since(UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        );
+        let tag = format!("{}-{}", std::process::id(), support::nonce());
         let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../artifacts/tests")
             .join("w04-".to_owned() + &tag);
@@ -48,7 +43,7 @@ impl Fixture {
         assert_ne!(
             fs::metadata(&root).unwrap().dev(),
             fs::metadata(&cross).unwrap().dev(),
-            "W04 requires a genuinely different /tmp filesystem"
+            "W04 requires the temporary directory on a genuinely different filesystem"
         );
         Self {
             root: fs::canonicalize(root).unwrap(),
@@ -113,7 +108,14 @@ fn local_rename_preserves_inode_metadata_and_replaces_readonly_files() {
     request.transfer.destination_directory = source.clone();
     request.transfer.new_name = Some("file.txt".into());
     assert!(move_entries(&request).unwrap().outcomes[0].success);
-    assert!(!source.join("File.txt").exists());
+    // On case-insensitive APFS the old spelling still resolves, so inspect the
+    // actual directory entry to verify that the rename changed its spelling.
+    let names: Vec<_> = fs::read_dir(&source)
+        .unwrap()
+        .map(|entry| entry.unwrap().file_name())
+        .collect();
+    assert!(!names.iter().any(|name| name == "File.txt"));
+    assert!(names.iter().any(|name| name == "file.txt"));
     assert_eq!(fs::read(source.join("file.txt")).unwrap(), b"case");
 }
 

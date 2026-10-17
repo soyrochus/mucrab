@@ -37,17 +37,13 @@ def prepare():
     print(RUN / 'launch.json')
 
 
-def verify():
+def verify_filesystem():
     source, target = RUN / 'source', RUN / 'target'
     provenance = json.loads((RUN / 'provenance.json').read_text())
     if digest(ROOT / 'target/debug/mucrab') != provenance['native_binary_sha256']:
         raise ValueError('Executable changed since replay preparation')
     if digest(FIXTURE) != provenance['replay_sha256']:
         raise ValueError('Replay changed since preparation')
-    expected = [dict(op='capture', name='initial', wait=2)] + json.loads(FIXTURE.read_text())
-    actual = json.loads((RUN / 'native/actions.json').read_text())
-    if actual != expected or actual[-1] != dict(op='await_exit', exit_code=0):
-        raise ValueError('Replay incomplete; normal exit before driver cleanup must be acknowledged')
     files = list((target / '10-work').iterdir())
     if not 0 < len(files) < COUNT:
         raise ValueError('No genuine partial folder copy retained')
@@ -68,11 +64,21 @@ def verify():
         raise ValueError('Source file changed or removed')
     if (source / '99-later/untouched.txt').read_bytes() != b'later source\n' or (source / 'browse/unrelated.txt').read_bytes() != b'unrelated location\n':
         raise ValueError('Later or unrelated source changed')
-    result = dict(status='passed', actions=len(actual), destination_children=len(files), partial_children=partial_children, source_files=COUNT,
+    result = dict(status='passed', destination_children=len(files), partial_children=partial_children, source_files=COUNT,
                   checks=['actual Pause/Resume/Cancel controls', 'copy roots and marks', 'second job disabled',
                           'browse and mark unrelated location while paused', 'unrelated marks retained on acknowledgement',
                           'window close wakes paused worker and exits normally before driver cleanup',
                           'earlier destination preserved, interrupted folder partial, later roots untouched', 'all source and completed-child bytes'])
+    return result
+
+
+def verify():
+    result = verify_filesystem()
+    expected = [dict(op='capture', name='initial', wait=2)] + json.loads(FIXTURE.read_text())
+    actual = json.loads((RUN / 'native/actions.json').read_text())
+    if actual != expected or actual[-1] != dict(op='await_exit', exit_code=0):
+        raise ValueError('Replay incomplete; normal exit before driver cleanup must be acknowledged')
+    result['actions'] = len(actual)
     (RUN / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps(result))
 

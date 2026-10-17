@@ -1,0 +1,117 @@
+{
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O"
+  },
+  "workflow": "W07",
+  "status": "passed",
+  "scope": "Real original start/run/interrupt/pause, full-job trees/marks, cooperative native control",
+  "cases_run": 12,
+  "reserved": true,
+  "difference_count": 0,
+  "raw_run": "artifacts/runs/W07-20261017T163759Z-a8fd2c4a",
+  "fixture_sha256": "152b2884c4f36056207f910db663a87a213e0ebcef50715c306e839a72d36136",
+  "sources": [
+    {
+      "path": "tools/java/W07GuiProbe.java",
+      "sha256": "1c3e1b60e0b379349586452b7e0adf1c89f9e55dd51449a1f426059a9077ca50"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    }
+  ],
+  "rust_adapter_sha256": "1fd2df0792c9d1057e091e8b29eaf2452b5778e3ec45c424f260550e2a6eaf58",
+  "reference_unchanged": true,
+  "commands": {
+    "javac": {
+      "argv": [
+        "javac",
+        "-proc:none",
+        "-d",
+        "{repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/classes",
+        "{repository}/tools/java/W07GuiProbe.java",
+        "{repository}/tools/java/W02bGuiProbe.java"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W07-20261017T163759Z-a8fd2c4a/javac.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W07-20261017T163759Z-a8fd2c4a/javac.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "jar": {
+      "argv": [
+        "jar",
+        "--create",
+        "--file",
+        "{repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/agent.jar",
+        "--manifest",
+        "{repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/agent.mf",
+        "-C",
+        "{repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/classes",
+        "."
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W07-20261017T163759Z-a8fd2c4a/jar.stdout",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W07-20261017T163759Z-a8fd2c4a/jar.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "java": {
+      "argv": [
+        "java",
+        "--add-exports=java.desktop/com.apple.eawt=ALL-UNNAMED",
+        "--add-exports=java.desktop/com.apple.laf=ALL-UNNAMED",
+        "--add-exports=java.desktop/com.apple.eio=ALL-UNNAMED",
+        "-javaagent:{repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/agent.jar={repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/original-probe",
+        "-Duser.timezone=UTC",
+        "-Duser.home={repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/home",
+        "--add-opens=java.base/java.net=ALL-UNNAMED",
+        "--add-opens=java.base/java.io=ALL-UNNAMED",
+        "--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
+        "-cp",
+        "{repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/reference/mucommander-1.6.2.jar",
+        "com.mucommander.main.muCommander",
+        "--preferences",
+        "{repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/profile",
+        "{repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/original/reserved-0/source",
+        "{repository}/artifacts/runs/W07-20261017T163759Z-a8fd2c4a/original/reserved-0/destination"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W07-20261017T163759Z-a8fd2c4a/java.stdout",
+        "sha256": "b064a1f25fd0c4d66c29766ab02d73d4e4defe82c9e15f4c5775d05525c84ffa"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W07-20261017T163759Z-a8fd2c4a/java.stderr",
+        "sha256": "e4c6072721c2720321f0e51f20e60913752fc27332802cd7bcc12dc0afc4b90b"
+      }
+    },
+    "rust": {
+      "argv": [
+        "{repository}/target/debug/mucrab-compare",
+        "--adapter-w07"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "artifacts/runs/W07-20261017T163759Z-a8fd2c4a/rust.stdout",
+        "sha256": "7b71eece09f4b8ac4e4ab17924d2c2cb960691c5fbb301d6d8d80558e4aa3d47"
+      },
+      "stderr": {
+        "path": "artifacts/runs/W07-20261017T163759Z-a8fd2c4a/rust.stderr",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "normalization": "Runtime clocks omitted; partial lengths/hashes compared as valid nonempty proper source prefixes, not equal byte counts",
+  "excluded": "Original scheduler concurrency/remote jobs and exact timing; native panic/close guarantees tested separately"
+}

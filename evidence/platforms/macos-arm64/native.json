@@ -1,0 +1,270 @@
+{
+  "status": "passed",
+  "date": "2026-10-17",
+  "host": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O"
+  },
+  "input_driver": "cua_repl native macOS app input and accessibility inspection",
+  "scope": "Current bounded W08 interface and representative W01-W07 native workflows; not exhaustive original GUI or shortcut parity",
+  "tested_build": {
+    "binary_sha256": "271fe4466317857ea72796b28fa66972cfbddb7d7d486aed0d6011a0548cbf49",
+    "original_binary_sha256": "b2386d36c3a153812bd7b97046b3f8f66a0626c97065e01706c7ea1818fe1948",
+    "automated_baseline": "artifacts/macos-verification/20261017T161908Z-f7420517/report.json",
+    "source_inputs": [
+      {
+        "path": "Cargo.lock",
+        "sha256": "b3dae25fa32e08ec15451c9af6c5fef8e33b341c1f3809b1516f86437add8c77"
+      },
+      {
+        "path": "Cargo.toml",
+        "sha256": "b1d9bf02ce969fd54bc2cedeb83724bd5d9ccaeef35edf50cc8a421c5194e774"
+      },
+      {
+        "path": "crates/compare/Cargo.toml",
+        "sha256": "4b1888c089cead6f1d6994198bb9e695a23456c2879ab43f137c373ef17ec15f"
+      },
+      {
+        "path": "crates/compare/src/main.rs",
+        "sha256": "0a63fa9d06882954ecc3289483f0519f004087f60bd337abbe048da061537ddd"
+      },
+      {
+        "path": "crates/compare/src/w02.rs",
+        "sha256": "a90d2b0fc5bb28ba3d36a7b597bab91fad2b7f00529f7a0e500eb7c4c34d04c3"
+      },
+      {
+        "path": "crates/compare/src/w02b.rs",
+        "sha256": "1e283d2dee8dee3d7f1f278a6eb7aa3b022611b82784a33217d928866ea8e00b"
+      },
+      {
+        "path": "crates/compare/src/w02c.rs",
+        "sha256": "c43f503bfd5f5d2d6891cc7fe74b3acc3f721e7bbce6807554a37accb909a95a"
+      },
+      {
+        "path": "crates/compare/src/w03.rs",
+        "sha256": "3d771d02c47d1f2ed08dc90f50ff27beb2e12cf307729183c43951686c592ab8"
+      },
+      {
+        "path": "crates/compare/src/w04.rs",
+        "sha256": "211affbceee2d793613329db73e8d4da92a66050d250228a5e28e9ee9ca80c3f"
+      },
+      {
+        "path": "crates/compare/src/w05.rs",
+        "sha256": "115ef1ae2fc86b582d0b45391de186f29c94463cb2b0d51b3d21b5c84fdaf15d"
+      },
+      {
+        "path": "crates/compare/src/w06.rs",
+        "sha256": "2648a24015b7eef42a7c4368802ea5e9ad94699f2ff22d4cc0cc07c81c868b95"
+      },
+      {
+        "path": "crates/compare/src/w07.rs",
+        "sha256": "d70148177df51fda566dd2a0ce778b80c1dea0720825103e2dd278c0deeabebb"
+      },
+      {
+        "path": "crates/compare/tests/readiness.rs",
+        "sha256": "865d3bf51a809859f3944403111f469c36746ed16dd88fbc42eca45717c50d80"
+      },
+      {
+        "path": "crates/core/Cargo.toml",
+        "sha256": "233888a9b6fdab83b3af5c9bb48972b979c130fe57ce1ee2e4d3f2c202f1d076"
+      },
+      {
+        "path": "crates/core/src/archives.rs",
+        "sha256": "c03aa928724d51dfe9341f56df8b415db6de5ba25736dbc788ec05af34c6d751"
+      },
+      {
+        "path": "crates/core/src/batch_renaming.rs",
+        "sha256": "8406f8d74136011c345edc2850924f23d2cd90785d11b85282a4268ec950a400"
+      },
+      {
+        "path": "crates/core/src/browsing.rs",
+        "sha256": "eb11cec1c43d09aed86233a3bfec8bf025742f525c915e828c36dff0f231eeda"
+      },
+      {
+        "path": "crates/core/src/copying.rs",
+        "sha256": "76ad778a8ff937495c9b2ff7eca34cbcffad5e5e577f46c5c7ac7139de954f08"
+      },
+      {
+        "path": "crates/core/src/java_case_data.rs",
+        "sha256": "47bf627ab3cb7e29eebdf2728412a1276fff2fc87b535ed80623cfe7af2fb683"
+      },
+      {
+        "path": "crates/core/src/jobs.rs",
+        "sha256": "9867949df8e4ed1b226608794188a7ecc84a30a94014e37e0c33cbe8cfae7b62"
+      },
+      {
+        "path": "crates/core/src/lib.rs",
+        "sha256": "1d3d7f162690f846c587ac36e18fed32f5d9be705c67e7d91d61b6175b0eab9e"
+      },
+      {
+        "path": "crates/core/src/moving.rs",
+        "sha256": "e40a5a3e6bde2601c4c21b9c21e7d45d3930ae68ec2d630c54c14bc32ce67071"
+      },
+      {
+        "path": "crates/core/src/selection.rs",
+        "sha256": "2be6392fdf855365abf261d3c936b434ff8a778d2cd69b0a803c46a64050ae94"
+      },
+      {
+        "path": "crates/core/src/sorting.rs",
+        "sha256": "ae9abb2213e7da9d42a705998a2ca4358a13c0d952bd82cd737cc99db64c09b8"
+      },
+      {
+        "path": "crates/core/tests/archives.rs",
+        "sha256": "880a4d6c69b23634c8e8453f30fb7a8d4afed1dd8a49c84b294da275a9b1d19a"
+      },
+      {
+        "path": "crates/core/tests/batch_renaming.rs",
+        "sha256": "ba86d43de84bd17f4bf12d3bf9711c24dc8db2b3795d9467c11d0c852d761bc2"
+      },
+      {
+        "path": "crates/core/tests/copying.rs",
+        "sha256": "983489f7a9d0937c3211d41b7f21fa9d36b0413707b8d01818b9ec1193b1cd54"
+      },
+      {
+        "path": "crates/core/tests/jobs.rs",
+        "sha256": "648cf89ce5e78beaeec70a12fdcd0aa74d26071d9d81c0928e0e4fdec432a47b"
+      },
+      {
+        "path": "crates/core/tests/moving.rs",
+        "sha256": "0ff1688b61098574022079c84fe7bac63dc12a821ab9a1ef72a5b42577f7e43a"
+      },
+      {
+        "path": "crates/core/tests/navigation.rs",
+        "sha256": "81daa142c59b3b213d750405100adf55be178545af600c00560eb8864d54d14d"
+      },
+      {
+        "path": "crates/core/tests/support/mod.rs",
+        "sha256": "80bf48fecda8cd4b948038dd8e7419cdec8851f6798ee3c0cd0d0f4e7aff0200"
+      },
+      {
+        "path": "crates/desktop/Cargo.toml",
+        "sha256": "cd77b8c08d9de43830b8ba13b0089f0f5da08d98b1dedb256e3ae229aa9b2cbb"
+      },
+      {
+        "path": "crates/desktop/src/app.rs",
+        "sha256": "73e05de9ea08ced70e859764f7e1459bd2e9826ac2d0f0a2208344fd29aa9526"
+      },
+      {
+        "path": "crates/desktop/src/appearance.rs",
+        "sha256": "8db9aeb848e01389b893228ccba6b3ad61429fc426c01020ae9158d9b66ff03f"
+      },
+      {
+        "path": "crates/desktop/src/browser_ui.rs",
+        "sha256": "c074de88405d1994c9f4ff6a4e3f703e2f5269b1d6c1691f924a4677f0b97603"
+      },
+      {
+        "path": "crates/desktop/src/main.rs",
+        "sha256": "ccdfe0ff71fbc4101451c02f9d1143e6b47970778a8aba89dec7d997ff078268"
+      }
+    ]
+  },
+  "w08": {
+    "status": "passed",
+    "filesystem_fixture": "artifacts/gui/W08-desktop-ui",
+    "checks": [
+      "folder Enter/Backspace navigation",
+      "reviewed copy from left to right",
+      "focused F2 rename on right pane",
+      "F6 move back to left pane",
+      "live batch preview and apply",
+      "ZIP browsing and selected extraction with unchanged archive",
+      "hidden-file visibility",
+      "marking and metadata header sorting",
+      "pane divider and minimum 820x500 content resizing",
+      "Light, Dark and System rendering; saved System preference",
+      "Help keyboard-shortcut dialog"
+    ],
+    "filesystem_verifier": "tools/w08_gui.py:verify_filesystem",
+    "session_launcher_exit_code": 0
+  },
+  "w07": {
+    "status": "passed",
+    "destination_children": 9387,
+    "partial_children": 1,
+    "source_files": 20000,
+    "checks": [
+      "actual Pause/Resume/Cancel controls",
+      "copy roots and marks",
+      "second job disabled",
+      "browse and mark unrelated location while paused",
+      "unrelated marks retained on acknowledgement",
+      "window close wakes paused worker and exits normally before driver cleanup",
+      "earlier destination preserved, interrupted folder partial, later roots untouched",
+      "all source and completed-child bytes"
+    ],
+    "filesystem_fixture": "artifacts/gui/W07-macos",
+    "pause_observation": {
+      "children": 2741,
+      "total_bytes": 57561
+    },
+    "pause_stability_observed_twice": true,
+    "filesystem_verifier": "tools/w07_gui.py:verify_filesystem",
+    "launchservices_wait_exit_code": 0,
+    "fixture_window_closed_without_termination": true
+  },
+  "captures": [
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w07-browsing-while-paused.png",
+      "sha256": "77b67e09ee4e27daac2a1b62b3730a85ae21e1bd1d55d8705ab43592cf22cd19"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w07-cancelled-details.png",
+      "sha256": "92a4540dee0a30aac4b584dcd210ff7e36b86b46095f4b628724d147315d444d"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w07-close-paused.png",
+      "sha256": "89f0efad5e144a3758f013c25cdf8e2742c5a0e69ce13de18fc2c9215061ec9c"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w07-paused.png",
+      "sha256": "8d2f42f51e1533fe6143166944b097c50d0b971bf2dc96ee064603def29a3d64"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w08-batch-preview.png",
+      "sha256": "b70203b49ab4918763922cc71853738d663ca1e26ee65e00cc869d8d308d4e3f"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w08-copy-review.png",
+      "sha256": "39aeff2f1b188eba08eaa0553320579e01f78c2c1595c3c3f344d1a07bda89d5"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w08-dark.png",
+      "sha256": "14bce84b4e7cdc21faba22de1428745cf684c9f19f3df51fdb486f32e253cd90"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w08-light.png",
+      "sha256": "04f925ebaaaee2cf7be82ebe4479186b096750886f86841548a9cbf8b7250905"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w08-minimum-window.png",
+      "sha256": "a3521cdae76a233454e3f9f58f8b22e2715d9b29c66f515c788164bf15005b8b"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w08-system-initial.png",
+      "sha256": "83c2ce74244d807bfc693fcc8bd1780c449f9e839a76a64b78e321f447661f57"
+    }
+  ],
+  "accessibility_records": [
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w07-paused.ax.txt",
+      "sha256": "c357850f6714109928107ca614af594495864b1ce1df434a99a60851efb16e49"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w07-unrelated-marks.ax.txt",
+      "sha256": "3fed1718b6208e45ed9dd9c49cfb42184b2a9fb32b1fed9e72b6ddfd5756632a"
+    },
+    {
+      "path": "evidence/platforms/macos-arm64/gui/w08-final.ax.txt",
+      "sha256": "398123bf3a0c8b127d7b39c481e84ab55b35ae7e2f3f3c372273a943472866e1"
+    }
+  ],
+  "live_os_theme_notification": {
+    "status": "awaiting_user_permission",
+    "reason": "Requires temporarily changing macOS Appearance; explicit approval requested. Current OS System rendering and injected theme changes pass."
+  },
+  "limitations": [
+    "Menus render in-window; native macOS menu integration is not implemented",
+    "Other OS versions, locales, ACLs/xattrs/resource forks and exhaustive shortcut parity are outside this verification"
+  ]
+}

@@ -21,7 +21,17 @@ ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = ROOT / "artifacts/reference/mucommander-1.6.2-1"
 SPEC = ROOT / "fixtures/W01-local-browse-sort/cases.json"
 SOURCE = ROOT / "tools/java/W01Oracle.java"
-EVIDENCE = ROOT / "evidence/workflows/W01-local-browse-sort"
+def evidence_directory(workflow):
+    """Keep fresh Mac results beside, rather than over, Linux receipts."""
+    base = ROOT / "evidence"
+    if platform.system() == "Darwin":
+        base = base / "platforms" / ("macos-" + platform.machine())
+    destination = base / "workflows" / workflow
+    destination.mkdir(parents=True, exist_ok=True)
+    return destination
+
+
+EVIDENCE = evidence_directory("W01-local-browse-sort")
 
 
 def digest(path):
@@ -194,7 +204,7 @@ def execute_suite(compare, reserved, rust_adapter, run_id, run):
         import hashlib
         class_hash = hashlib.sha256(archive.read(class_entry)).hexdigest()
     tracked_inputs = [SPEC, SOURCE, ROOT / "tools/w01.py", ROOT / "Cargo.lock", ROOT / "Cargo.toml",
-                      EVIDENCE / "contract.md"]
+                      ROOT / "evidence/workflows/W01-local-browse-sort/contract.md"]
     for folder in (ROOT / "crates/core", ROOT / "crates/compare"):
         tracked_inputs.extend(sorted(folder.rglob("*.rs")))
         tracked_inputs.append(folder / "Cargo.toml")

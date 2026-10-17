@@ -16,11 +16,11 @@ import zipfile
 import hashlib
 
 import acquire_mucommander as acquisition
-from w01 import ROOT, REFERENCE, capture, digest
+from w01 import ROOT, REFERENCE, capture, digest, evidence_directory
 
 SPEC = ROOT / "fixtures/W02-selection-marking/cases.json"
 SOURCE = ROOT / "tools/java/W02Oracle.java"
-EVIDENCE = ROOT / "evidence/workflows/W02-selection-marking"
+EVIDENCE = evidence_directory('W02-selection-marking')
 
 
 def generated(spec, reserved):
@@ -113,7 +113,7 @@ def run_suite(compare, reserved, rust_adapter):
                 if left != right:
                     differences.append(dict(id=expected["id"], state=i, expected=left, actual=right))
     acquisition.run(verify_only=True)
-    files = [SPEC, SOURCE, ROOT / "tools/w02.py", ROOT / "Cargo.lock", ROOT / "Cargo.toml", EVIDENCE / "contract.md"]
+    files = [SPEC, SOURCE, ROOT / "tools/w02.py", ROOT / "Cargo.lock", ROOT / "Cargo.toml", ROOT / "evidence/workflows/W02-selection-marking/contract.md"]
     files += sorted((ROOT / "crates").rglob("*.rs")) + sorted((ROOT / "crates").rglob("Cargo.toml"))
     class_hashes = []
     with zipfile.ZipFile(REFERENCE / "app/mucommander-core-1.6.2.jar") as archive:

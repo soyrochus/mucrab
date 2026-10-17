@@ -85,6 +85,9 @@ compact menus, file tables and saved Light/Dark/System appearance.
 See the [current status report](docs/current-status.md) for workflow details,
 comparison results, verification dates, supported platforms and remaining limits.
 
+Fresh [macOS arm64 verification](evidence/platforms/macos-arm64/README.md) covers all
+nine comparison suites, full Rust/Python checks and native W07/W08 interaction.
+
 ## Migration screenshots
 
 ### muCrab — current Rust implementation
@@ -189,9 +192,9 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The Rust suite has forty-six tests covering recovered rules, navigation/error state,
+The Rust suite has forty-six cross-platform tests plus one macOS filename regression covering recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes and large-table UI interaction. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has forty-nine tests. The separate
+readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes and large-table UI interaction. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has fifty-one tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 

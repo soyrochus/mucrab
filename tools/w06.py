@@ -17,12 +17,12 @@ import uuid
 import zipfile
 
 import acquire_mucommander as acquisition
-from w01 import ROOT, REFERENCE, capture, digest
+from w01 import ROOT, REFERENCE, capture, digest, evidence_directory
 from w02c import java_capture
-from w03 import materialize_tree, snapshot
+from w03 import comparable_tree, materialize_tree, snapshot
 
 SPEC = ROOT / "fixtures/W06-zip-browsing-extraction/cases.json"
-EVIDENCE = ROOT / "evidence/workflows/W06-zip-browsing-extraction"
+EVIDENCE = evidence_directory('W06-zip-browsing-extraction')
 SOURCE = ROOT / "tools/java/W06Oracle.java"
 
 
@@ -157,8 +157,8 @@ def comparable(value):
 
 
 def run_suite(compare, reserved, rust_adapter):
-    if platform.system() != "Linux" or os.geteuid() == 0:
-        raise ValueError("W06 comparisons require unprivileged Linux")
+    if platform.system() not in ("Linux", "Darwin") or os.geteuid() == 0:
+        raise ValueError("W06 comparisons require an unprivileged Linux or macOS user")
     acquisition.run(verify_only=True)
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
     run = ROOT / "artifacts/runs" / ("W06-" + run_id)
@@ -195,14 +195,14 @@ def run_suite(compare, reserved, rust_adapter):
             if comparable(left) != comparable(right):
                 differences.append(dict(id=left["id"], component="listing_extraction", expected=left, actual=right))
         for left, right in zip(after, native_after):
-            if comparable(left) != comparable(right):
+            if comparable(dict(left, destination=comparable_tree(left["destination"]))) != comparable(dict(right, destination=comparable_tree(right["destination"]))):
                 differences.append(dict(id=left["id"], component="filesystem", expected=left, actual=right))
     acquisition.run(verify_only=True)
     files = [SPEC, SOURCE, Path(__file__), ROOT / "tools/w03.py", ROOT / "tools/w02c.py", ROOT / "tools/w01.py", ROOT / "Cargo.toml", ROOT / "Cargo.lock"]
-    if (EVIDENCE / "contract.md").exists():
-        files.append(EVIDENCE / "contract.md")
+    if (ROOT / "evidence/workflows/W06-zip-browsing-extraction/contract.md").exists():
+        files.append(ROOT / "evidence/workflows/W06-zip-browsing-extraction/contract.md")
     files += sorted((ROOT / "crates").rglob("*.rs")) + sorted((ROOT / "crates").rglob("Cargo.toml"))
-    report = dict(schema_version=1, workflow="W06-zip-browsing-extraction", run_id=run_id,
+    report = dict(filesystem_normalization="macOS filesystem paths compared in NFC; raw paths retained; ZIP entry names remain exact", schema_version=1, workflow="W06-zip-browsing-extraction", run_id=run_id,
         suite="reserved" if reserved else "predefined", status=("differences" if differences else "passed") if compare else "oracle_ready",
         scope="Original ZIP provider/archive tree and UnpackJob processFile with fixed collision policy; full GUI lifecycle separate",
         normalization="DOS-derived modified times compared at whole-second precision: original Calendar retains nondeterministic current milliseconds. Directory dates omitted; all raw observations retained.",

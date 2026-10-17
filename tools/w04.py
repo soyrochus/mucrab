@@ -14,12 +14,12 @@ import tempfile
 import uuid
 
 import acquire_mucommander as acquisition
-from w01 import ROOT, REFERENCE, capture, digest
+from w01 import ROOT, REFERENCE, capture, digest, evidence_directory
 from w02c import java_capture
-from w03 import generated, materialize_tree, snapshot, decode
+from w03 import generated, materialize_tree, snapshot, decode, filesystem_name, comparable_tree
 
 SPEC=ROOT/'fixtures/W04-move-rename/cases.json'
-EVIDENCE=ROOT/'evidence/workflows/W04-move-rename'
+EVIDENCE = evidence_directory('W04-move-rename')
 SOURCE=ROOT/'tools/java/W04Oracle.java'
 
 
@@ -91,30 +91,30 @@ def observe(requests,items,before):
 
 
 def comparable_after(state):
-    return dict(state,identities=[{k:v for k,v in entry.items() if k!='destination_identity'} for entry in state['identities']])
+    return dict(state, source=comparable_tree(state['source']), destination=comparable_tree(state['destination']), identities=[{k:v for k,v in entry.items() if k!='destination_identity'} for entry in state['identities']])
 
 
 def assert_selected_content_preserved(requests, before, after):
     """Every selected byte stream/link survives at its old or mapped new path."""
     for request, old, new in zip(requests, before, after):
-        remaining={entry['path']:entry for entry in new['source']}
-        destination={entry['path']:entry for entry in new['destination']}
+        remaining={filesystem_name(entry['path']):entry for entry in new['source']}
+        destination={filesystem_name(entry['path']):entry for entry in new['destination']}
         for entry in old['source']:
-            path=Path(entry['path'])
-            selected=next((name for name in request['names'] if path==Path(name) or path.is_relative_to(name)),None)
+            path=Path(filesystem_name(entry['path']))
+            selected=next((name for name in request['names'] if path==Path(filesystem_name(name)) or path.is_relative_to(filesystem_name(name))),None)
             if selected is None:continue
-            mapped=(Path(request['new_name'] or selected)/path.relative_to(selected)).as_posix()
+            mapped=(Path(filesystem_name(request['new_name'] or selected))/path.relative_to(filesystem_name(selected))).as_posix()
             def same_data(actual):
                 if actual is None or actual['kind']!=entry['kind']:return False
                 if entry['kind']=='file':return (actual['size'],actual['sha256'])==(entry['size'],entry['sha256'])
                 if entry['kind']=='symlink':return actual['target']==entry['target']
                 return True
-            if not same_data(remaining.get(entry['path'])) and not same_data(destination.get(mapped)):
+            if not same_data(remaining.get(filesystem_name(entry['path']))) and not same_data(destination.get(mapped)):
                 raise ValueError('Selected input content lost: '+request['id']+'/'+entry['path'])
 
 
 def run_suite(compare,reserved,rust_adapter):
-    if platform.system()!='Linux' or os.geteuid()==0:raise ValueError('W04 requires unprivileged Linux')
+    if platform.system() not in ('Linux', 'Darwin') or os.geteuid()==0:raise ValueError('W04 requires an unprivileged Linux or macOS user')
     acquisition.run(verify_only=True)
     run_id=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')+'-'+uuid.uuid4().hex[:8]
     run=ROOT/'artifacts/runs'/('W04-'+run_id);run.mkdir(parents=True)
@@ -145,10 +145,11 @@ def run_suite(compare,reserved,rust_adapter):
             if comparable_after(expected)!=comparable_after(actual):differences.append(dict(id=left['id'],component='filesystem_results',expected=comparable_after(expected),actual=comparable_after(actual)))
     acquisition.run(verify_only=True)
     files=[SPEC,SOURCE,ROOT/'tools/w04.py',ROOT/'tools/w03.py',ROOT/'tools/w02c.py',ROOT/'tools/w01.py',ROOT/'Cargo.toml',ROOT/'Cargo.lock']
-    if (EVIDENCE/'contract.md').exists():files.append(EVIDENCE/'contract.md')
+    if (ROOT / "evidence/workflows/W04-move-rename/contract.md").exists():files.append(ROOT / "evidence/workflows/W04-move-rename/contract.md")
     files+=sorted((ROOT/'crates').rglob('*.rs'))+sorted((ROOT/'crates').rglob('Cargo.toml'))
     report=dict(schema_version=1,workflow='W04-move-rename',run_id=run_id,suite='reserved' if reserved else 'predefined',
         status=('differences' if differences else 'passed') if compare else 'oracle_ready',
+        filesystem_normalization='macOS filesystem paths compared in NFC; raw paths retained; all other fields exact',
         scope='Original MoveJob.processFile, rename/copy-delete/merge/policies, real same/cross filesystem trees; lifecycle/UI excluded',
         source_revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),source_status=subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).splitlines(),
         source_inputs=[dict(path=p.relative_to(ROOT).as_posix(),sha256=digest(p)) for p in files],

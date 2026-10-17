@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+mod support;
+
 use mucrab_core::*;
-use std::{
-    fs,
-    path::PathBuf,
-    sync::mpsc,
-    time::{Duration, SystemTime, UNIX_EPOCH},
-};
+use std::{fs, path::PathBuf, sync::mpsc, time::Duration};
 
 struct Fixture(PathBuf);
 impl Fixture {
@@ -14,10 +11,7 @@ impl Fixture {
         let path = std::env::temp_dir().join(format!(
             "mucrab-jobs-{}-{}",
             std::process::id(),
-            SystemTime::now()
-                .duration_since(UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
+            support::nonce()
         ));
         fs::create_dir_all(path.join("source")).unwrap();
         fs::create_dir(path.join("target")).unwrap();
