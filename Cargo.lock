@@ -1491,6 +1491,8 @@ dependencies = [
  "num-traits",
  "png",
  "tiff",
+ "zune-core",
+ "zune-jpeg",
 ]
 
 [[package]]
@@ -1762,13 +1764,17 @@ name = "mucrab-core"
 version = "0.10.0"
 dependencies = [
  "chrono",
+ "crc32fast",
  "flate2",
  "icu_collator",
  "icu_locale_core",
  "icu_normalizer",
+ "image",
  "serde",
  "serde_json",
  "zip",
+ "zune-core",
+ "zune-jpeg",
 ]
 
 [[package]]

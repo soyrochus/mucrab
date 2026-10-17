@@ -1,0 +1,202 @@
+[
+  {
+    "id": "reserved-0",
+    "text": "plain\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-1",
+    "text": "needle\nneedle\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-2",
+    "text": "café 中 😀\r\nlast",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-3",
+    "text": "café 中 😀\r\nlast",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "reserved-4",
+    "text": "plain\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "reserved-5",
+    "text": "",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "reserved-6",
+    "text": "tabs\there\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-7",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "reserved-8",
+    "text": "",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-9",
+    "text": "",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-10",
+    "text": "tabs\there\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "reserved-11",
+    "text": "tabs\there\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-12",
+    "text": "",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-13",
+    "text": "",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "reserved-14",
+    "text": "plain\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-15",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-16",
+    "text": "é / é\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "reserved-17",
+    "text": "",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "reserved-18",
+    "text": "plain\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "reserved-19",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-20",
+    "text": "plain\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-21",
+    "text": "plain\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-22",
+    "text": "é / é\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "reserved-23",
+    "text": "é / é\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "reserved-24",
+    "text": "é / é\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-25",
+    "text": "",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-26",
+    "text": "café 中 😀\r\nlast",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-27",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-28",
+    "text": "tabs\there\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "reserved-29",
+    "text": "",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "reserved-30",
+    "text": "é / é\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-31",
+    "text": "tabs\there\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "reserved-32",
+    "text": "tabs\there\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-33",
+    "text": "",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-34",
+    "text": "needle\nneedle\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-35",
+    "text": "plain\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-36",
+    "text": "é / é\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "reserved-37",
+    "text": "é / é\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "reserved-38",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "reserved-39",
+    "text": "plain\n",
+    "encoding": "utf16-le"
+  }
+]

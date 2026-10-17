@@ -99,6 +99,20 @@ def main():
             for name in action["keys"]: key(name, True)
             time.sleep(action.get("hold", 0.08))
             for name in reversed(action["keys"]): key(name, False)
+        elif op == "metadata":
+            target = Path(action["path"])
+            if not target.parent.resolve().is_relative_to(args.launch.resolve().parent):
+                raise ValueError("Metadata observation must stay in the disposable run")
+            observed = target.lstat()
+            record = dict(mode=observed.st_mode & 0o7777, atime_ns=observed.st_atime_ns, mtime_ns=observed.st_mtime_ns, links=observed.st_nlink)
+            metadata_path = output / "metadata.json"
+            records = json.loads(metadata_path.read_text()) if metadata_path.exists() else {}
+            records[action["name"]] = record
+            metadata_path.write_text(json.dumps(records, indent=2) + "\n")
+        elif op == "assert_clipboard":
+            clip = subprocess.run(["xclip", "-selection", "clipboard", "-out"], capture_output=True, timeout=5)
+            if clip.returncode or clip.stdout.decode("utf-8") != action["text"]:
+                raise ValueError("Native text clipboard differs from the expected decoded selection")
         elif op == "text":
             shifted = {"_": "minus", ":": "semicolon", "~": "grave"}
             names = {"/": "slash", ".": "period", "-": "minus", " ": "space", "[": "bracketleft", "]": "bracketright", ",": "comma"}

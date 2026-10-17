@@ -1,0 +1,449 @@
+[
+  {
+    "op": "click",
+    "x": 80,
+    "y": 235
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "capture": "text-viewer"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "c"
+    ]
+  },
+  {
+    "op": "assert_clipboard",
+    "text": "first line\r\ncafé 中 😀\nneedle one\nlast line\n",
+    "capture": "text-copied"
+  },
+  {
+    "op": "click",
+    "x": 210,
+    "y": 141
+  },
+  {
+    "op": "text",
+    "text": "needle"
+  },
+  {
+    "op": "click",
+    "x": 415,
+    "y": 142,
+    "capture": "text-find"
+  },
+  {
+    "op": "click",
+    "x": 538,
+    "y": 142
+  },
+  {
+    "op": "assert_clipboard",
+    "text": "needle"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ],
+    "capture": "viewer-closed"
+  },
+  {
+    "op": "metadata",
+    "path": "{run}/left/notes.txt",
+    "name": "left-before"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Return"
+    ],
+    "capture": "local-properties"
+  },
+  {
+    "op": "click",
+    "x": 36,
+    "y": 436
+  },
+  {
+    "op": "click",
+    "x": 171,
+    "y": 488
+  },
+  {
+    "op": "click",
+    "x": 35,
+    "y": 566
+  },
+  {
+    "op": "click",
+    "x": 230,
+    "y": 590
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "2026-10-18T12:34:56.123456789Z"
+  },
+  {
+    "op": "click",
+    "x": 96,
+    "y": 615,
+    "capture": "metadata-review"
+  },
+  {
+    "op": "click",
+    "x": 353,
+    "y": 414,
+    "wait": 0.6,
+    "capture": "metadata-applied"
+  },
+  {
+    "op": "metadata",
+    "path": "{run}/left/notes.txt",
+    "name": "left-after"
+  },
+  {
+    "op": "click",
+    "x": 672,
+    "y": 39
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 189
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Return"
+    ],
+    "capture": "folder-properties"
+  },
+  {
+    "op": "click",
+    "x": 116,
+    "y": 424,
+    "wait": 0.5,
+    "capture": "folder-total"
+  },
+  {
+    "op": "click",
+    "x": 672,
+    "y": 39
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 258
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "capture": "image-viewer"
+  },
+  {
+    "op": "click",
+    "x": 237,
+    "y": 141,
+    "capture": "image-actual-size"
+  },
+  {
+    "op": "click",
+    "x": 301,
+    "y": 141,
+    "count": 4,
+    "capture": "image-zoom"
+  },
+  {
+    "op": "drag",
+    "x": 330,
+    "y": 330,
+    "to_x": 140,
+    "to_y": 220,
+    "capture": "image-pan"
+  },
+  {
+    "op": "click",
+    "x": 195,
+    "y": 141,
+    "capture": "image-fit"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ],
+    "capture": "image-closed"
+  },
+  {
+    "op": "click",
+    "x": 650,
+    "y": 189
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Return"
+    ],
+    "capture": "right-properties"
+  },
+  {
+    "op": "click",
+    "x": 36,
+    "y": 453
+  },
+  {
+    "op": "click",
+    "x": 171,
+    "y": 505
+  },
+  {
+    "op": "click",
+    "x": 92,
+    "y": 631,
+    "capture": "right-metadata-review"
+  },
+  {
+    "op": "click",
+    "x": 354,
+    "y": 406,
+    "wait": 0.5,
+    "capture": "right-metadata-applied"
+  },
+  {
+    "op": "metadata",
+    "path": "{run}/right/alias.txt",
+    "name": "right-after"
+  },
+  {
+    "op": "click",
+    "x": 672,
+    "y": 39
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 281,
+    "count": 2
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 189,
+    "count": 2
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 189
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Return"
+    ],
+    "capture": "zip-properties"
+  },
+  {
+    "op": "click",
+    "x": 672,
+    "y": 39
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "capture": "zip-viewer"
+  },
+  {
+    "op": "click",
+    "x": 74,
+    "y": 104,
+    "wait": 1,
+    "capture": "archive-external-open"
+  },
+  {
+    "op": "click",
+    "x": 88,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 126,
+    "y": 183
+  },
+  {
+    "op": "click",
+    "x": 300,
+    "y": 235
+  },
+  {
+    "op": "click",
+    "x": 900,
+    "y": 580,
+    "capture": "text-dark"
+  },
+  {
+    "op": "resize",
+    "width": 820,
+    "height": 500,
+    "capture": "viewer-narrow"
+  },
+  {
+    "op": "resize",
+    "width": 1120,
+    "height": 720
+  },
+  {
+    "op": "click",
+    "x": 210,
+    "y": 104
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 258
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "capture": "image-dark"
+  },
+  {
+    "op": "click",
+    "x": 180,
+    "y": 87
+  },
+  {
+    "op": "click",
+    "x": 88,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 126,
+    "y": 183
+  },
+  {
+    "op": "click",
+    "x": 300,
+    "y": 235
+  },
+  {
+    "op": "click",
+    "x": 900,
+    "y": 580,
+    "capture": "dark-application"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 189
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "capture": "actual-text-dark"
+  },
+  {
+    "op": "click",
+    "x": 180,
+    "y": 87
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 258
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "capture": "actual-image-dark"
+  },
+  {
+    "op": "resize",
+    "width": 820,
+    "height": 500,
+    "capture": "image-dark-narrow"
+  },
+  {
+    "op": "resize",
+    "width": 1120,
+    "height": 720
+  },
+  {
+    "op": "click",
+    "x": 180,
+    "y": 87
+  },
+  {
+    "op": "click",
+    "x": 20,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 62,
+    "y": 399
+  },
+  {
+    "op": "await_exit"
+  }
+]

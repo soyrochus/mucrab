@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "reserved": true,
+  "cases": 52,
+  "scope": "Pinned TextViewer.loadDocument with actual TextEditorImpl; image boundary uses JDK ImageIO called by recovered ImageViewer, with independent Pillow orientation/pixels; no full original window parity",
+  "jpeg_max_channel_delta": 0,
+  "unexpected_differences": [],
+  "intentional_differences": [
+    {
+      "id": "reserved-2",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "reserved-3",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "reserved-7",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "reserved-15",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "reserved-19",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "reserved-26",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "reserved-27",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "reserved-38",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    }
+  ],
+  "run": "artifacts/runs/W14-20261017T210533Z-78d91504",
+  "sources": {
+    "tools/java/W14Oracle.java": "2fa2f93641f7973ba5fce590642915d2b5089d40a12f20feac31e2b79fa0f874",
+    "crates/compare/src/w14.rs": "b75e2ecdf4355d028efac61a761de81b645d74b777a06f590cd00074095aa5f4",
+    "tools/w13_w14_fixtures.py": "50cd1f478b999a76aa68950af04de0e139b9bcd4919432404bbaf42faf34a65f"
+  }
+}

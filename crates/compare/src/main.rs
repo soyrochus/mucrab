@@ -13,6 +13,8 @@ mod w07;
 mod w10;
 mod w11;
 mod w12;
+mod w13;
+mod w14;
 use serde::{Deserialize, Serialize};
 use std::{
     io::{self, BufRead},
@@ -97,6 +99,26 @@ fn adapter() -> Result<(), Box<dyn std::error::Error>> {
 
 fn main() -> ExitCode {
     let arguments: Vec<_> = std::env::args_os().skip(1).collect();
+    for (flag, adapter) in [
+        (
+            "--adapter-w13",
+            w13::adapter as fn() -> Result<(), Box<dyn std::error::Error>>,
+        ),
+        (
+            "--adapter-w14",
+            w14::adapter as fn() -> Result<(), Box<dyn std::error::Error>>,
+        ),
+    ] {
+        if arguments.as_slice() == [flag] {
+            return match adapter() {
+                Ok(()) => ExitCode::SUCCESS,
+                Err(e) => {
+                    eprintln!("{flag} unavailable: {e}");
+                    ExitCode::from(2)
+                }
+            };
+        }
+    }
     if arguments.first().is_some_and(|a| a == "--probe-w11") {
         return match w11::probe(&arguments[1..]) {
             Ok(()) => ExitCode::SUCCESS,

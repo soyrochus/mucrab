@@ -2,6 +2,42 @@
 
 [Back to the README](../README.md).
 
+**W13 — Properties and permissions** and **W14 — Built-in viewer** are implemented
+and Linux-verified. Alt+Enter captures focused-entry local/ZIP properties, including
+lstat link details, available timestamps, allocated size and numeric/named Unix
+owner/group. Folder totals include hidden entries and hard links per name, exclude
+link targets/descendant mounts and visibly retain partial results. Reviewed
+non-recursive rwx/modified-time edits preserve special bits/access time, revalidate
+the captured target, use the existing mutation worker and retain unrelated marks.
+ZIP metadata stays read-only with unavailable host fields shown explicitly.
+
+F3 opens strict UTF-8/BOM UTF-16 text or bounded PNG/JPEG images in a separate
+cancellable worker. Text is virtualized and preserves exact decoded newlines for
+selection/copy and literal find; images support orientation, alpha checkerboard,
+fit/100%, zoom and pan. ZIP viewer leases are removed on close; explicit external
+opening retains an independent W09 copy. Enter/double-click behavior is unchanged.
+Text limits:16 MiB input,100,000 lines,64 KiB decoded bytes per line. Image limits:
+32 MiB encoded,64 MiB RGBA/decoder samples,16,384 pixels per dimension and the
+current GPU limit. Oversized/unsupported/malformed input reports visible errors.
+
+Verification: **101 Rust tests**, **51 Python tests**, locked/offline build,
+format/Clippy, Linux native both-pane properties/metadata changes, exact Unicode
+text clipboard/find, image controls, light/dark/narrow layouts and archive external
+handoff. Viewer/folder totals completed beside a paused real copy; W07–W12 native
+regressions pass. Scoped W13 original/native runs cover **40 + 40 cases**;
+W14 covers **68 + 52 cases**, with zero unexpected differences. Declared differences
+include the isolated original provider's owner-only permission mask, preserved
+special bits/link guards, Swing newline normalization and EXIF orientation.
+JPEG pixel comparison has maximum channel difference1 within tolerance2.
+
+Native macOS, full original-window parity, a real bind-mount boundary, foreign-owner
+chmod denial and broader GPU/font coverage remain pending. Bundled fonts lack some
+CJK glyphs although decoded text/clipboard is exact. Read cancellation is cooperative;
+blocked lookup/OS/decoder calls must return before close acknowledgment. Stable-entry
+checks do not provide race-free filesystem access. See
+[W13 evidence](../evidence/workflows/W13-properties-permissions/README.md) and
+[W14 evidence](../evidence/workflows/W14-built-in-viewer/README.md).
+
 **W11 — Tabs and bookmarks** and **W12 — File search** are implemented and
 Linux-verified. Each pane supports 1–32 independent session tabs, including
 New Home/Duplicate/Close/switch commands and per-tab history, marks and column

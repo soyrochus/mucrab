@@ -1,0 +1,108 @@
+{
+  "status": "passed",
+  "reserved": false,
+  "cases": 68,
+  "scope": "Pinned TextViewer.loadDocument with actual TextEditorImpl; image boundary uses JDK ImageIO called by recovered ImageViewer, with independent Pillow orientation/pixels; no full original window parity",
+  "jpeg_max_channel_delta": 1,
+  "unexpected_differences": [],
+  "intentional_differences": [
+    {
+      "id": "case-3",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "case-7",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "case-12",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "case-13",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "case-16",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "case-19",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "case-21",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "case-29",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "case-35",
+      "reason": "Original Swing document normalizes line endings; native preserves decoded CR/CRLF/LF for exact selection/copy"
+    },
+    {
+      "id": "jpg-orientation-2.jpg",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "jpg-orientation-3.jpg",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "jpg-orientation-4.jpg",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "jpg-orientation-5.jpg",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "jpg-orientation-6.jpg",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "jpg-orientation-7.jpg",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "jpg-orientation-8.jpg",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "png-orientation-2.png",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "png-orientation-3.png",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "png-orientation-4.png",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "png-orientation-5.png",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "png-orientation-6.png",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "png-orientation-7.png",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    },
+    {
+      "id": "png-orientation-8.png",
+      "reason": "Native applies EXIF orientation; original ImageIO boundary exposes raw raster"
+    }
+  ],
+  "run": "artifacts/runs/W14-20261017T210512Z-cf7eccbd",
+  "sources": {
+    "tools/java/W14Oracle.java": "2fa2f93641f7973ba5fce590642915d2b5089d40a12f20feac31e2b79fa0f874",
+    "crates/compare/src/w14.rs": "b75e2ecdf4355d028efac61a761de81b645d74b777a06f590cd00074095aa5f4",
+    "tools/w13_w14_fixtures.py": "50cd1f478b999a76aa68950af04de0e139b9bcd4919432404bbaf42faf34a65f"
+  }
+}

@@ -12,12 +12,12 @@ session can continue without the original conversation.
 | Field | Current value |
 | --- | --- |
 | Last updated | 2026-10-17 |
-| Last verified implementation commit | `5a60e92` — macOS portability fixes and acceptance; exact tested source/binary hashes in the Mac receipts |
+| Last verified implementation commit | `675bcd1` — W11 tabs/bookmarks and W12 file search; W13/W14 changes follow uncommitted, with source/binary hashes in their validation receipts |
 | Current phase | Phase 6 in progress: bounded macOS acceptance completed; broader platform/product acceptance remains |
-| Active workflow | W11 tabs/bookmarks and W12 local file search implemented; Linux native/input/regression checks pass. Native Mac and broader original UI/search traversal comparisons remain pending; see evidence indexes |
+| Active workflow | W13 properties/permissions and W14 built-in text/image viewer implemented; scoped comparisons and Linux native/input/regression checks pass. Mac/full original-window/real-mount checks remain pending |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | Verify W09–W12 on macOS; retain pending full original tab/search UI and real-mount gates. W13 remote SFTP, W14 viewer and W15 checksums remain proposed |
-| Ported workflows | W11 — independent tabs and shared persisted local/ZIP bookmarks; W12 — bounded cancellable recursive local search and result navigation; W10 — New Folder, reviewed Delete/Trash, native clipboard Copy/Paste, prefix-find, per-pane history; W09 — default-application local/archive opening; W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
+| Next executable task | Verify W09–W14 on macOS and remaining original-window/real-mount gates; W15 checksums is the next proposed feature. W13 is properties/permissions, not SFTP |
+| Ported workflows | W13 — focused properties, bounded folder totals, reviewed local rwx/modified-time edits; W14 — bounded text/PNG/JPEG viewer with ZIP leases and external handoff; W11 — independent tabs and shared persisted local/ZIP bookmarks; W12 — bounded cancellable recursive local search and result navigation; W10 — New Folder, reviewed Delete/Trash, native clipboard Copy/Paste, prefix-find, per-pane history; W09 — default-application local/archive opening; W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
 | Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. W07: 30 full-job lifecycle/marks/tree comparisons (18 predefined + 12 reserved). Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
 | Verification platform | Linux x86_64/ext4/JDK 25.0.4.1 and macOS 26.6.2 arm64/APFS/JDK 21.0.10; all nine suites. Real second filesystem for W04/W07. Native input: X11/Xvfb and Mac cua_repl; Wayland unverified |
@@ -1365,3 +1365,42 @@ pending. Native macOS and full original-window/trace gates stay unchecked.
 See [W11 evidence](evidence/workflows/W11-tabs-bookmarks/README.md),
 [W12 evidence](evidence/workflows/W12-file-search/README.md) and their task lists.
 No dependency version changed: core now directly uses already-locked serde_json.
+
+
+## W13 and W14 — Properties/permissions and built-in viewer (2026-10-17)
+
+W11/W12 were committed as `675bcd1` before starting these increments. W13/W14
+implementation is delivered without a version bump. Recovery, seeded generators,
+predefined/reserved data and decoder selection were recorded before Rust changes;
+the native action traces were recorded afterward and make no blind-fixture claim.
+
+W13 captures lstat local properties or ZIP-only metadata, resolves account names
+in the read worker, calculates hidden-inclusive/link-safe bounded totals, and
+reviews non-recursive ordinary permission/mtime changes. Special bits/access time
+are preserved; combined edits preflight a time handle before chmod, detect stale
+entries and expose per-field partial/cancel outcomes without rollback. Mutations
+reuse W07's gate and keep unrelated marks/origin tabs intact.
+
+W14 isolates background reads by generation, rejects changed sources and malformed
+or oversized content, virtualizes exact decoded text, and uses bounded PNG/JPEG
+codecs plus one GPU texture. All eight orientation variants are covered. ZIP
+leases are independently owned; external handoff retains its own W09 copy. Close
+joins workers, clears leases/textures and restores surviving origin focus.
+
+Scoped comparisons pass: W13 40 predefined +40 reserved actual metadata changes,
+W14 68+52 text/image outcomes, zero unexpected differences. Every W13 random case
+has a declared difference due to original capability0700, special bits, link
+mutation rejection or preserving-handle preflight; this is not whole-property
+parity. W14 uses actual pinned TextViewer/TextEditorImpl and JDK ImageIO at the
+recovered loader boundary, not a full original viewer window. Swing newline
+normalization and EXIF correction intentionally differ; maximum JPEG channel
+difference1 meets the frozen tolerance2.
+
+Linux checks:101 Rust/51 Python tests, locked/offline all-feature build, format,
+Clippy, both-pane metadata editing, hidden/cycle totals, exact native text copy/find,
+image controls/light-dark/narrow layouts, ZIP lease cleanup/retained external copy,
+viewer+folder totals beside a paused 20,000-file copy and fresh W07–W12 native
+regressions. Codec versions were already locked; features/direct edges and exact
+license notices are recorded. Native macOS, real bind mounts, foreign-owner chmod
+denial, broader GPU/font and original full-window gates remain explicitly open.
+See W13/W14 evidence indexes and OpenSpec tasks for reproducible commands/limits.

@@ -21,8 +21,14 @@ use everyday_ui::Action as EverydayAction;
 #[path = "navigation_ui.rs"]
 mod navigation_ui;
 use navigation_ui::Action as NavigationAction;
+#[path = "properties_ui.rs"]
+mod properties_ui;
+#[path = "read_job.rs"]
+mod read_job;
 #[path = "search_ui.rs"]
 mod search_ui;
+#[path = "viewer_ui.rs"]
+mod viewer_ui;
 
 pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
     let options = eframe::NativeOptions {
@@ -61,6 +67,8 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 zip_review: None,
                 navigation: navigation_ui::Navigation::load(),
                 search: search_ui::Search::default(),
+                properties: properties_ui::Properties::default(),
+                viewer: viewer_ui::Viewer::default(),
                 everyday: everyday_ui::Everyday::default(),
                 opener: crate::opening::Opener::default(),
                 copy_job: None,
@@ -88,6 +96,8 @@ struct MuCrabApp {
     zip_review: Option<ZipReview>,
     navigation: navigation_ui::Navigation,
     search: search_ui::Search,
+    properties: properties_ui::Properties,
+    viewer: viewer_ui::Viewer,
     everyday: everyday_ui::Everyday,
     opener: crate::opening::Opener,
     copy_job: Option<PendingCopy>,
@@ -114,6 +124,7 @@ struct PendingCopy {
 }
 #[derive(Clone, Copy, PartialEq)]
 enum FileAction {
+    Metadata,
     NewFolder,
     Trash,
     Delete,
@@ -127,6 +138,7 @@ enum FileAction {
 impl FileAction {
     fn label(self) -> &'static str {
         match self {
+            Self::Metadata => "Metadata changes",
             Self::NewFolder => "New folder",
             Self::Trash => "Move to Trash",
             Self::Delete => "Permanent delete",
@@ -522,7 +534,7 @@ impl MuCrabApp {
                         .outcomes
                         .first()
                         .is_some_and(|outcome| outcome.success);
-                if job.action != FileAction::Paste
+                if !matches!(job.action, FileAction::Paste | FileAction::Metadata)
                     && let Some(pane) = self.panes.find_mut(job.source_tab)
                     && pane.location.as_ref() == Some(&job.source_directory)
                 {
@@ -574,8 +586,16 @@ impl MuCrabApp {
         {
             pane.focus_name(&name);
         }
+        if job.action == FileAction::Metadata {
+            self.refresh_properties_after_metadata();
+        }
         self.restore_copy_focus = true;
-        if self.close_after_job && !self.opener.busy() && !self.search.busy() {
+        if self.close_after_job
+            && !self.opener.busy()
+            && !self.search.busy()
+            && !self.properties.busy()
+            && !self.viewer.busy()
+        {
             ctx.send_viewport_cmd(egui::ViewportCommand::Close);
         }
     }
@@ -716,6 +736,17 @@ impl eframe::App for MuCrabApp {
             self.search.cancel();
             self.close_after_job = true;
         }
+        if ui.input(|input| input.viewport().close_requested())
+            && (self.properties.busy() || self.viewer.busy())
+        {
+            ui.ctx()
+                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
+            self.properties.cancel();
+            self.viewer.cancel();
+            self.close_after_job = true;
+        }
+        self.properties.poll(ui.ctx());
+        self.viewer.poll(ui.ctx());
         self.search.poll(ui.ctx());
         self.poll_everyday(ui.ctx());
         self.opener.poll();
@@ -723,6 +754,8 @@ impl eframe::App for MuCrabApp {
             && self.copy_job.is_none()
             && !self.opener.busy()
             && !self.search.busy()
+            && !self.properties.busy()
+            && !self.viewer.busy()
         {
             ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
         }
@@ -730,7 +763,8 @@ impl eframe::App for MuCrabApp {
             ui.ctx().request_repaint_after(Duration::from_millis(100));
         }
         self.poll_copy(ui.ctx());
-        let idle = !self.navigation.modal()
+        let idle = self.properties.review.is_none()
+            && !self.navigation.modal()
             && self.everyday.review.is_none()
             && !self.everyday.busy()
             && self.copy_job.is_none()
@@ -739,7 +773,8 @@ impl eframe::App for MuCrabApp {
             && self.zip_review.is_none()
             && !self.show_copy_details
             && self.help.is_none();
-        let browsing = !self.navigation.modal()
+        let browsing = self.properties.review.is_none()
+            && !self.navigation.modal()
             && self.everyday.review.is_none()
             && self.copy_confirmation.is_none()
             && self.batch_review.is_none()
@@ -766,6 +801,12 @@ impl eframe::App for MuCrabApp {
         if browsing && ui.memory(|m| m.has_focus(listing_id(self.active))) {
             if ui.input_mut(|i| i.consume_key(egui::Modifiers::COMMAND, egui::Key::F)) {
                 self.open_search();
+            }
+            if ui.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::F3)) {
+                self.open_viewer(ui.ctx());
+            }
+            if ui.input_mut(|i| i.consume_key(egui::Modifiers::ALT, egui::Key::Enter)) {
+                self.open_properties();
             }
             let nav = ui.input_mut(|i| {
                 if i.consume_key(
@@ -862,6 +903,7 @@ impl eframe::App for MuCrabApp {
             ui.memory_mut(|memory| memory.request_focus(listing_id(self.active)));
         }
         let browsing = browsing
+            && self.properties.review.is_none()
             && self.copy_confirmation.is_none()
             && self.zip_review.is_none()
             && self.everyday.review.is_none()
@@ -956,6 +998,22 @@ impl eframe::App for MuCrabApp {
                         );
                     }
                     ui.separator();
+                    menu_action(
+                        ui,
+                        "View file…",
+                        "F3",
+                        browsing && self.focused_target().is_some(),
+                        Command::View,
+                        &mut command,
+                    );
+                    menu_action(
+                        ui,
+                        "Properties…",
+                        "Alt+Enter",
+                        browsing && self.focused_target().is_some(),
+                        Command::Properties,
+                        &mut command,
+                    );
                     if ui.button("Close window").clicked() {
                         ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
                     }
@@ -1481,7 +1539,7 @@ impl eframe::App for MuCrabApp {
                         "Shift+Up / Down — mark range",
                         "Ctrl+A / Ctrl+D (⌘ on macOS) — mark / unmark all",
                         "F5 — copy (extract inside ZIP); F6 — move",
-                        "F2 — rename focused item",
+                        "F2 — rename focused item · F3 — view focused file · Alt+Enter — properties",
                         "Click a column header to sort; click again to reverse",
                         "Drag column borders or the divider to resize",
                     ] {
@@ -1502,9 +1560,12 @@ impl eframe::App for MuCrabApp {
             }
         }
         self.search_window(ui.ctx());
+        self.properties_window(ui.ctx());
+        self.viewer_window(ui.ctx());
         self.bookmark_dialogs(ui.ctx());
         self.everyday_dialog(ui.ctx());
         self.copy_dialogs(ui.ctx());
+        self.properties_review(ui.ctx());
         self.batch_dialog(ui.ctx());
         self.zip_dialog(ui.ctx());
     }
@@ -1588,6 +1649,8 @@ pub(crate) fn selection_key(event: &egui::Event) -> Option<PaneEvent> {
 }
 
 enum Command {
+    View,
+    Properties,
     Navigation(NavigationAction),
     Search,
     Everyday(EverydayAction),
@@ -1625,6 +1688,8 @@ impl MuCrabApp {
         match command {
             Command::Navigation(action) => self.navigation_action(action, ctx),
             Command::Search => self.open_search(),
+            Command::View => self.open_viewer(ctx),
+            Command::Properties => self.open_properties(),
             Command::Everyday(action) => self.everyday_action(action, ctx),
             Command::Open => {
                 let pane = &mut self.panes[index];
@@ -1769,6 +1834,8 @@ mod job_tests {
             zip_review: None,
             navigation: navigation_ui::Navigation::default(),
             search: search_ui::Search::default(),
+            properties: properties_ui::Properties::default(),
+            viewer: viewer_ui::Viewer::default(),
             everyday: everyday_ui::Everyday::default(),
             opener: crate::opening::Opener::default(),
             copy_job: None,
@@ -2037,6 +2104,92 @@ mod job_tests {
         assert!(app.copy_summary.is_none());
         send.send(()).unwrap();
         await_job(&mut app, &ctx);
+        std::fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn viewer_escape_closes_focused_window_and_metadata_preserves_other_marks() {
+        let mut app = app();
+        let ctx = egui::Context::default();
+        let root = std::env::temp_dir().join(format!(
+            "mucrab-properties-focus-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        std::fs::create_dir(&root).unwrap();
+        std::fs::write(root.join("focused.txt"), b"hello\n").unwrap();
+        std::fs::write(root.join("marked.txt"), b"marked").unwrap();
+        app.panes[0].open(&root, &app.sorter);
+        app.panes[0].focus_name("marked.txt");
+        app.panes[0]
+            .apply_event(&PaneEvent::Space, &app.sorter)
+            .unwrap();
+        app.panes[0].focus_name("focused.txt");
+        let marks = app.panes[0].selection.marked_count();
+        assert_eq!(
+            app.focused_target().unwrap().display_path(),
+            root.join("focused.txt")
+        );
+        app.open_viewer(&ctx);
+        let deadline = Instant::now() + Duration::from_secs(5);
+        while app.viewer.busy() {
+            assert!(Instant::now() < deadline);
+            app.viewer.poll(&ctx);
+            std::thread::sleep(Duration::from_millis(2));
+        }
+        for _ in 0..3 {
+            ctx.run_ui(
+                egui::RawInput {
+                    screen_rect: Some(egui::Rect::from_min_size(
+                        egui::Pos2::ZERO,
+                        egui::vec2(1120., 720.),
+                    )),
+                    ..Default::default()
+                },
+                |_| app.viewer_window(&ctx),
+            )
+            .drop_without_applying_deltas();
+        }
+        ctx.run_ui(
+            egui::RawInput {
+                screen_rect: Some(egui::Rect::from_min_size(
+                    egui::Pos2::ZERO,
+                    egui::vec2(1120., 720.),
+                )),
+                events: vec![egui::Event::Key {
+                    key: egui::Key::Escape,
+                    physical_key: None,
+                    pressed: true,
+                    repeat: false,
+                    modifiers: egui::Modifiers::NONE,
+                }],
+                ..Default::default()
+            },
+            |_| app.viewer_window(&ctx),
+        )
+        .drop_without_applying_deltas();
+        assert!(!app.viewer.visible);
+        assert_eq!(app.panes[0].selection.marked_count(), marks);
+        let snapshot =
+            mucrab_core::PropertySnapshot::capture(app.focused_target().unwrap()).unwrap();
+        let plan = snapshot.metadata_plan(Some(0o640), None).unwrap();
+        let origin = app.panes.stack(0).active().id;
+        app.start_job(
+            FileAction::Metadata,
+            PaneSide::Left,
+            origin,
+            root.clone(),
+            None,
+            move |c| {
+                let r = plan.apply(&c).unwrap();
+                assert!(r.steps[0].changed);
+                Ok(report())
+            },
+        );
+        await_job(&mut app, &ctx);
+        assert_eq!(app.panes[0].selection.marked_count(), marks);
         std::fs::remove_dir_all(root).unwrap();
     }
 }

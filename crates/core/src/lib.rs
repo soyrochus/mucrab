@@ -51,3 +51,15 @@ mod search;
 pub use search::{
     SearchHit, SearchKind, SearchLimits, SearchPlan, SearchQuery, SearchReport, search_time_bound,
 };
+
+mod properties;
+pub use properties::{
+    EntryKind, EntryTarget, FolderSizeReport, MetadataPlan, MetadataReport, MetadataStep,
+    PropertyRequest, PropertySnapshot, folder_size, folder_size_with_limits, parse_modified_time,
+    time_from_millis,
+};
+
+mod viewer;
+pub use viewer::{
+    Preview, PreviewContent, PreviewImage, TextDocument, ViewRequest, ViewerLease, decode_preview,
+};

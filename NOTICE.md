@@ -150,3 +150,20 @@ and [W12 evidence](evidence/workflows/W12-file-search/README.md) distinguish
 recovered boundaries, chosen native differences and outstanding host checks.
 The runtime remains Rust-only. Bookmark JSON reuses the already locked
 serde_json; search dates reuse chrono. No new dependency versions are introduced.
+
+
+## Properties and built-in viewer (W13/W14)
+
+Properties/permissions/date jobs and text/image viewing were investigated through
+pinned muCommander actions, dialogs, workers and loaders. The upstream attribution
+and GPL notices above apply. [W13 evidence](evidence/workflows/W13-properties-permissions/README.md)
+and [W14 evidence](evidence/workflows/W14-built-in-viewer/README.md) record exact
+runtime boundaries and declared differences. No Java implementation/runtime is
+bundled in the native application.
+
+W14 enables PNG/JPEG on already locked image **0.25.10** (MIT OR Apache-2.0),
+uses zune-jpeg **0.5.15** and zune-core **0.5.3** (MIT OR Apache-2.0 OR Zlib)
+for strict JPEG decoding, and crc32fast **1.5.2** (MIT OR Apache-2.0) for complete
+PNG CRC checks. [Preserved codec notices](third_party/viewer-codecs/README.md)
+include exact published license files and provenance hashes. No dependency version
+changed; release packaging retains all transitive notices and vendored sources.

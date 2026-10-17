@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "run": "artifacts/gui/W13-W14-concurrent-final",
+  "binary_sha256": "7f38287929081cab6fae54082fc7da8b5f63f3c293a90b4c0049109b26ee0d58",
+  "trace_sha256": "428b7c62dbd1c6d0b9e42f9a3a3bb452b224334c45d29a7c9fd80234839426bf",
+  "actions": 19,
+  "source_files": 20000,
+  "source_bytes_unchanged": true,
+  "destination_children": 2506,
+  "later_roots_untouched": true,
+  "paused_path_crop": [
+    740,
+    660,
+    1110,
+    678
+  ],
+  "paused_path_unchanged": true,
+  "visually_observed": "Viewer text loaded and folder totals completed at 420000 bytes / 20000 files while copy remained paused; Resume/Cancel remained visible",
+  "normal_exit": true,
+  "scope": "Linux X11 isolated native windows and actual W07 copy; not scheduler or full original UI parity"
+}

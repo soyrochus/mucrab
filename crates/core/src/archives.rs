@@ -309,6 +309,23 @@ impl ZipCatalog {
         Ok(())
     }
 
+    /// Member metadata only; implicit folders have no timestamp/size of their own.
+    pub fn explicit_metadata(
+        &self,
+        prefix: &str,
+        name: &str,
+    ) -> io::Result<Option<crate::FileMetadata>> {
+        if !crate::is_valid_leaf_name(name) {
+            return Err(invalid("One ZIP child required"));
+        }
+        let path = format!("{}{}", prefix, name);
+        let node = self
+            .by_path
+            .get(path.trim_end_matches('/'))
+            .and_then(|i| self.nodes.get(*i))
+            .ok_or_else(|| invalid("ZIP child missing"))?;
+        Ok(node.explicit.then(|| node.entry.metadata.clone()).flatten())
+    }
     pub fn list(&self, prefix: &str) -> io::Result<Vec<FileEntry>> {
         let prefix = prefix.trim_end_matches('/');
         if !prefix.is_empty() {

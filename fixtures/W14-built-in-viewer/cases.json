@@ -1,0 +1,262 @@
+[
+  {
+    "id": "case-0",
+    "text": "tabs\there\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "case-1",
+    "text": "",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "case-2",
+    "text": "needle\nneedle\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-3",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-4",
+    "text": "é / é\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "case-5",
+    "text": "needle\nneedle\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-6",
+    "text": "tabs\there\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "case-7",
+    "text": "café 中 😀\r\nlast",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "case-8",
+    "text": "é / é\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-9",
+    "text": "",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "case-10",
+    "text": "é / é\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "case-11",
+    "text": "é / é\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "case-12",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "case-13",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "case-14",
+    "text": "é / é\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "case-15",
+    "text": "plain\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "case-16",
+    "text": "café 中 😀\r\nlast",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-17",
+    "text": "tabs\there\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-18",
+    "text": "tabs\there\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "case-19",
+    "text": "café 中 😀\r\nlast",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-20",
+    "text": "é / é\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "case-21",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "case-22",
+    "text": "",
+    "encoding": "utf8"
+  },
+  {
+    "id": "case-23",
+    "text": "tabs\there\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-24",
+    "text": "é / é\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-25",
+    "text": "tabs\there\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "case-26",
+    "text": "plain\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "case-27",
+    "text": "é / é\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "case-28",
+    "text": "é / é\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "case-29",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "case-30",
+    "text": "tabs\there\n",
+    "encoding": "utf8-bom"
+  },
+  {
+    "id": "case-31",
+    "text": "plain\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-32",
+    "text": "plain\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "case-33",
+    "text": "é / é\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "case-34",
+    "text": "tabs\there\n",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-35",
+    "text": "one\rtwo\nthree\r\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "case-36",
+    "text": "",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-37",
+    "text": "é / é\n",
+    "encoding": "utf8"
+  },
+  {
+    "id": "case-38",
+    "text": "",
+    "encoding": "utf16-be"
+  },
+  {
+    "id": "case-39",
+    "text": "needle\nneedle\n",
+    "encoding": "utf16-le"
+  },
+  {
+    "id": "bad-utf8",
+    "error": true,
+    "recipe": "bad-utf8"
+  },
+  {
+    "id": "unpaired-utf16",
+    "error": true,
+    "recipe": "unpaired-utf16"
+  },
+  {
+    "id": "odd-utf16",
+    "error": true,
+    "recipe": "odd-utf16"
+  },
+  {
+    "id": "nul-binary",
+    "error": true,
+    "recipe": "nul-binary"
+  },
+  {
+    "id": "text-over-limit",
+    "error": true,
+    "recipe": "text-over-limit"
+  },
+  {
+    "id": "line-over-limit",
+    "error": true,
+    "recipe": "line-over-limit"
+  },
+  {
+    "id": "lines-over-limit",
+    "error": true,
+    "recipe": "lines-over-limit"
+  },
+  {
+    "id": "truncated-png",
+    "error": true,
+    "recipe": "truncated-png"
+  },
+  {
+    "id": "oversized-png",
+    "error": true,
+    "recipe": "oversized-png"
+  },
+  {
+    "id": "truncated-jpeg",
+    "error": true,
+    "recipe": "truncated-jpeg"
+  },
+  {
+    "id": "pdf",
+    "error": true,
+    "recipe": "pdf"
+  },
+  {
+    "id": "gif",
+    "error": true,
+    "recipe": "gif"
+  }
+]

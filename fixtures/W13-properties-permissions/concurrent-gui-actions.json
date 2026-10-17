@@ -1,0 +1,114 @@
+[
+  {
+    "op": "click",
+    "x": 80,
+    "y": 189,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 212,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 235,
+    "modifiers": [
+      "Control_L"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 794,
+    "y": 478,
+    "wait": 0.05
+  },
+  {
+    "op": "click",
+    "x": 250,
+    "y": 668,
+    "capture": "copy-paused"
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 189,
+    "count": 2
+  },
+  {
+    "op": "click",
+    "x": 80,
+    "y": 189
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "capture": "viewer-copy-independent"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "BackSpace"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Down"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Return"
+    ],
+    "capture": "properties-copy-independent"
+  },
+  {
+    "op": "click",
+    "x": 112,
+    "y": 424,
+    "wait": 0.8,
+    "capture": "folder-total-copy-independent"
+  },
+  {
+    "op": "click",
+    "x": 672,
+    "y": 39
+  },
+  {
+    "op": "click",
+    "x": 20,
+    "y": 14
+  },
+  {
+    "op": "click",
+    "x": 62,
+    "y": 399,
+    "wait": 0.8
+  },
+  {
+    "op": "await_exit"
+  }
+]

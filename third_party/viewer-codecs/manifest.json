@@ -1,0 +1,44 @@
+[
+  {
+    "name": "image",
+    "version": "0.25.10",
+    "license_files": {
+      "LICENSE-APACHE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "LICENSE-MIT": "c77a4cf9da729987d0fe7ccd811e3bd27393914ddf3d23467c18cc22954513b3"
+    },
+    "registry_sha256": "b45592b42e4f065d5258379bac78e2a00ab6e50bbeec265fcceeea9cf5829c26",
+    "revision": "76e57184f22772dad1138e96954e57945406b15e"
+  },
+  {
+    "name": "zune-jpeg",
+    "version": "0.5.15",
+    "license_files": {
+      "LICENSE-APACHE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "LICENSE-MIT": "d30047bca3b516639339a3c279bb84c3483124fb5a9dafe3c75056a85090e745",
+      "LICENSE-ZLIB": "d201d14804d3bcd3b944147173175e4abfbd838b7c8069b6bd3452496bf13e6c"
+    },
+    "registry_sha256": "0ff579eaf0dbe4cb0529bc3e5256cd25eff1ae146289f40a4f77442171b5995b",
+    "revision": "31d81fed7551c8ccea456d9d8e2b1fd8bebb6995"
+  },
+  {
+    "name": "zune-core",
+    "version": "0.5.3",
+    "license_files": {
+      "LICENSE-APACHE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "LICENSE-MIT": "d30047bca3b516639339a3c279bb84c3483124fb5a9dafe3c75056a85090e745",
+      "LICENSE-ZLIB": "d201d14804d3bcd3b944147173175e4abfbd838b7c8069b6bd3452496bf13e6c"
+    },
+    "registry_sha256": "c17da79ddd25919908712cdd9a9e7e0273d53bda0b5be554a08270431a325b28",
+    "revision": "de5dfc800cfa063116eb695edb6ccd01cb96ea7a"
+  },
+  {
+    "name": "crc32fast",
+    "version": "1.5.2",
+    "license_files": {
+      "LICENSE-APACHE": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+      "LICENSE-MIT": "61d383b05b87d78f94d2937e2580cce47226d17823c0430fbcad09596537efcf"
+    },
+    "registry_sha256": "30261035ec5967fb1560c961b2d5205dd1e54d2b2a2e07151e40b0749ca9d080",
+    "revision": "7eb0b8a2c9b246d27dc4cb5a53d3fc3b43a4bb83"
+  }
+]

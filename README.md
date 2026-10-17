@@ -78,6 +78,14 @@ on the target, host and configured providers. See REA's
 
 ## Current status
 
+**W13 — Properties and permissions** and **W14 — Built-in viewer** are implemented.
+**Alt+Enter** opens properties for the focused entry, with cancellable folder totals
+and reviewed local permission/modified-time edits. **F3** opens a read-only text
+or PNG/JPEG viewer with text find/copy and image fit/zoom/pan. Enter and double-click
+continue to open files in their default application. Linux native checks pass;
+macOS verification remains pending. See [W13 evidence](evidence/workflows/W13-properties-permissions/README.md)
+and [W14 evidence](evidence/workflows/W14-built-in-viewer/README.md).
+
 **W11 — Tabs and bookmarks** and **W12 — File search** are implemented.
 Each pane has independent tabs; shared local/ZIP bookmarks persist across restarts.
 Background local search supports wildcard names, extension/type/size/UTC date
@@ -219,7 +227,7 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The W11/W12 Linux checkpoint passes 84 Rust tests (one native-service test remains separately invoked). These cover recovered rules, navigation/error state,
+The W13/W14 Linux checkpoint passes 101 Rust tests (one native-service test remains separately invoked). These cover recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
 readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction, plus live theme changes, large-table UI interaction and W09 temporary-copy/cancellation/launcher checks, plus W10 mutations, clipboard URLs, quick-find and history. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has fifty-one tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
@@ -252,6 +260,25 @@ traversed. Search stops visibly partial at 10,000 hits, one million visited
 entries or depth 256. Cancel retains results; replacing waits for cancellation.
 Double-click a result or use Open Containing Folder to focus its name in the
 currently active tab. Search can run alongside a file operation.
+
+**Alt+Enter** or File → Properties captures the focused entry, independently of
+marks. Local properties show link metadata without following its target, available
+timestamps, owner/group, Unix mode and link count. Folder totals include hidden
+entries, count hard links per name and skip link targets and descendant mounts;
+limits or errors are reported as partial. Local files/folders support reviewed,
+non-recursive rwx and RFC3339 modified-time edits, preserving special bits and
+access time. ZIP properties are read-only; host-only fields are unavailable.
+
+**F3** or File → View opens the focused file in the built-in viewer. Text supports
+strict UTF-8 and BOM-tagged UTF-16, exact decoded newline/clipboard content,
+selection and literal case-sensitive find. Limits are 16 MiB input, 100,000 lines
+and 64 KiB per decoded line. PNG/JPEG viewing supports orientation, transparency,
+fit/100%, zoom and drag-to-pan, with 32 MiB encoded / 64 MiB decoded limits and
+GPU-dependent dimensions. Unsupported or malformed files show an error; Open
+externally is an explicit action. ZIP viewing uses private copies removed on
+viewer close; externally opened copies retain W09's separate lifetime.
+The bundled font may lack some glyphs. Viewer reads and folder totals can run
+alongside a file operation; cancellation waits for blocked OS/decoder calls.
 
 Click a row to give its listing keyboard focus. Ctrl-click toggles a mark and
 Shift-click toggles a range; Space toggles and advances. Up/Down, Home/End, and

@@ -1,0 +1,16 @@
+{
+  "stage": "before W14 Rust implementation",
+  "selected": "image=0.25.10 default-features=false png/jpeg; zune-jpeg=0.5.15, zune-core=0.5.3, all already locked",
+  "limits": "Explicit encoded/RGBA/dimension checks plus decoder Limits(max_alloc=64MiB); JPEG uses direct strict zune decoding because image adapter explicitly disables strict mode",
+  "orientation": "ImageDecoder.orientation and DynamicImage.apply_orientation",
+  "license": "image MIT/Apache-2.0; zune MIT/Apache-2.0/Zlib; locked transitive licenses retained by release collector",
+  "source_sha256": {
+    "Cargo.toml": "b45592b42e4f065d5258379bac78e2a00ab6e50bbeec265fcceeea9cf5829c26",
+    "src/io/limits.rs": "a6a291fd1a3da07e240f511fffa06b5500d54894413c0f873b683015bc020787",
+    "src/io/image_reader_type.rs": "cdf18ec7f5e4ac575c0c944dc833d4dbc14a1b524093d39d187d4a65199b6731",
+    "src/codecs/jpeg/decoder.rs": "135116b08028d03ba7481f7e704a461e239b01f960f576c1e70f48d7e9616569",
+    "LICENSE-APACHE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "LICENSE-MIT": "c77a4cf9da729987d0fe7ccd811e3bd27393914ddf3d23467c18cc22954513b3"
+  },
+  "followup_boundary_test": "PNG skips corrupt ancillary-chunk CRC by default. Native validates every encoded chunk using already locked crc32fast=1.5.2 before decoding."
+}

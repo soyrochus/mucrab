@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "results": {
+    "W07": {
+      "status": "passed",
+      "destination_children": 6496,
+      "partial_children": 2,
+      "source_files": 20000,
+      "checks": [
+        "actual Pause/Resume/Cancel controls",
+        "copy roots and marks",
+        "second job disabled",
+        "browse and mark unrelated location while paused",
+        "unrelated marks retained on acknowledgement",
+        "window close wakes paused worker and exits normally before driver cleanup",
+        "earlier destination preserved, interrupted folder partial, later roots untouched",
+        "all source and completed-child bytes"
+      ],
+      "actions": 27,
+      "run": "artifacts/gui/W13-regression-W07"
+    },
+    "W08": {
+      "status": "passed",
+      "scope": "Operation trees, unchanged archive and persisted appearance",
+      "actions": 54,
+      "run": "artifacts/gui/W13-regression-W08"
+    },
+    "W09": {
+      "status": "passed",
+      "dispatches": 3,
+      "actions": 10,
+      "run": "artifacts/gui/W13-regression-W09"
+    },
+    "W10": {
+      "status": "passed",
+      "scope": "Folder, clipboard, Trash and delete outcomes",
+      "actions": 47,
+      "run": "artifacts/gui/W13-regression-W10-retry"
+    },
+    "W11-W12": {
+      "status": "passed",
+      "run": "artifacts/gui/W13-regression-W11-W12",
+      "scope": "Tabs/Home/marks/bookmark restart and both-pane search result navigation; exact trace and unchanged source bytes"
+    }
+  },
+  "note": "Fresh isolated fixtures; close-menu coordinates account for View/Properties. Earlier evidence is unchanged.",
+  "native_binary_sha256": "7e6c419b43f95190e4be507ee69e33dabea7833b06db876286f2002b75c35e6f",
+  "candidate_note": "Before final read-result abandonment fix; repeated W13/W14 native and workspace receipts record final binary separately"
+}

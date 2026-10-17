@@ -156,7 +156,7 @@ impl JobControl {
     pub(crate) fn completed(&self) {
         self.update(|p| p.completed_items += 1);
     }
-    fn advance(&self, bytes: u64) {
+    pub(crate) fn advance(&self, bytes: u64) {
         self.update(|p| {
             p.current_file_bytes = p.current_file_bytes.saturating_add(bytes);
             p.transferred_bytes = p.transferred_bytes.saturating_add(bytes);
