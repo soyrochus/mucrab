@@ -15,10 +15,9 @@ The experiment uses [REA](https://github.com/morluto/rea), a JVM decompiler, and
 
 ## Current status
 
-The current verified milestone is **W05 — bounded local batch rename**
+The current verified milestone is **W06 — bounded local ZIP browsing and extraction**
 (see the [implementation ledger](mucrab-implementation-plan.md)). The latest full verification was recorded on
-**2026-10-16**. **W06 — ZIP browsing and extraction** is next; full background-job control and
-cancellation (W07) remain planned.
+**2026-10-17**. **W07 — background operations and cancellation** is next.
 
 **W01 is implemented:** the native application opens local folders in two independent panes, navigates into regular subfolders and back, and sorts names using recovered muCommander behavior. The Java/Rust suite passes **187 predefined and 155 reserved cases**, including **45,696 pairwise signs**, **336 complete ordered lists**, and **54 enumeration/error checks**, with no differences in the declared scope. Counts include option combinations and repeated real-folder checks; they are not counts of distinct user journeys.
 
@@ -77,14 +76,27 @@ mutation. **86 fixture sets** (54 predefined + 32 reserved) pass **346 previews,
 Manual per-row overrides and Unicode case conversion remain outside this increment.
 [W05 evidence](evidence/workflows/W05-batch-rename/README.md) records the limits.
 
-The latest recorded verification passes all seven component suites on
+**W06 adds ZIP browsing and extraction:** double-click a local `.zip` or enter
+its path in either pane, navigate its folders, and use **Extract ZIP…** (or **F5**
+inside an archive) to review extraction into the other local pane. Stored and
+deflated files, explicit/implicit folders, UTF-8 names, hidden descendants,
+selections and four collision policies are covered. The first transfer error
+stops the archive, retaining earlier writes and exposing details. The original
+ZIP-provider/UnpackJob comparison passes **259 cases** (163 predefined + 96
+reserved), **814 folder listings** and **1,887 entry observations**, with zero
+differences in scope. DOS-derived dates are compared at whole-second precision;
+the original retains a stray millisecond fraction. Archive panes are read-only.
+[W06 evidence](evidence/workflows/W06-zip-browsing-extraction/README.md) records
+the contract, native guards, original GUI boundary and limitations.
+
+The latest recorded verification passes all eight component suites on
 **Linux x86_64/ext4**, OpenJDK **25.0.4.1**, with en-US ordering and a separate
 `/tmp` filesystem for cross-device moves. Native input checks run under X11/Xvfb; representative
 original menu-action checks retain live-table states and Swing renders.
-The macOS badge refers to earlier W01/W02a checks on macOS arm64; W03/W04/W05
+The macOS badge refers to earlier W01/W02a checks on macOS arm64; W03/W04/W05/W06
 validation covers Linux. Wayland/physical-desktop
 behavior, Windows hidden attributes and exhaustive OS shortcut parity remain
-unverified. Opening symbolic links, other filters, archives, cancellation
+unverified. Opening symbolic links, other filters, additional archive formats, cancellation
 and other locales remain for later increments. Copy rejects overlapping source/
 destination paths, outside link targets and destination aliases; race-free
 filesystem handling and full background-job parity remain unverified.
@@ -93,12 +105,12 @@ filesystem handling and full background-job parity remain unverified.
 
 ### muCrab — current Rust implementation
 
-The W05 checkpoint provides two independent file panes, local folder browsing,
+The W06 checkpoint provides two independent file panes, local and ZIP folder browsing,
 name/metadata sorting, focus/marking, hidden-file filtering, and reviewed recursive
-copy, move, single-item rename and batch rename. The native Rust application runs independently
+copy, move, single-item rename, batch rename and reviewed ZIP extraction. The native Rust application runs independently
 of Java.
 
-![muCrab's native Rust interface with two file panes, batch rename preview with a mask, search/replacement controls, selected items and generated names](images/mucrab.png)
+![muCrab's native Rust interface with a ZIP folder listing, marked entries, and a reviewed extraction into the other pane](images/mucrab.png)
 
 ### muCommander — Java reference application
 
@@ -127,9 +139,9 @@ The [Cargo workspace](Cargo.toml) contains:
 
 | Package | Role | Current contents |
 | --- | --- | --- |
-| `mucrab-core` | Framework-independent behavior | Local enumeration/filtering, focus/marks, name/metadata sorting, recursive copy, move/rename, batch preview/apply and detailed outcomes |
-| `mucrab-desktop` | Native `mucrab` executable | Two-pane browser using eframe/egui 0.36.2 with the OpenGL backend |
-| `mucrab-compare` | Java/Rust comparison harness | W01, W02a, W02b, W02c, W03, W04 and W05 original-binary oracles, Rust adapters, and difference reports |
+| `mucrab-core` | Framework-independent behavior | Local/ZIP enumeration, filtering, focus/marks, sorting, copy/move/rename, batch preview/apply and reviewed ZIP extraction |
+| `mucrab-desktop` | Native `mucrab` executable | Local/ZIP two-pane browser using eframe/egui 0.36.2 with the OpenGL backend |
+| `mucrab-compare` | Java/Rust comparison harness | W01–W06 original-binary oracles, Rust adapters, and difference reports (eight suites including W02 splits) |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
 
@@ -140,7 +152,7 @@ cargo run --locked -p mucrab-desktop
 cargo run --locked -p mucrab-desktop -- /path/to/left /path/to/right
 ```
 
-The application supports browsing, sorting, marking, filtering and recursive local copy/move plus focused and batch rename; archive handling and other mutation controls are deferred. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder to enter it; each pane has Open, Parent, Refresh, and sort controls. Check the native command-line entry points without opening a window:
+The application supports local/ZIP browsing, sorting, marking, filtering, recursive local copy/move, focused/batch rename and ZIP extraction. Running it requires no Java, Node, REA, or reference JARs. Hidden dotfiles start hidden; **Show hidden files** controls both panes. Double-click a regular folder or local `.zip` to enter it; each pane has Open, Parent, Refresh, and sort controls. ZIP paths such as `/path/archive.zip/folder` also work as initial locations. Check the native command-line entry points without opening a window:
 
 ```sh
 cargo run --locked -p mucrab-desktop -- --version
@@ -164,6 +176,8 @@ cargo run --locked -p mucrab-compare -- --suite w04
 cargo run --locked -p mucrab-compare -- --suite w04 --reserved
 cargo run --locked -p mucrab-compare -- --suite w05
 cargo run --locked -p mucrab-compare -- --suite w05 --reserved
+cargo run --locked -p mucrab-compare -- --suite w06
+cargo run --locked -p mucrab-compare -- --suite w06 --reserved
 ```
 
 W04 comparisons and Rust move tests require unprivileged execution and two real
@@ -183,9 +197,9 @@ cargo test --workspace --all-features --locked
 python3 -B -m unittest discover -s tools -p 'test_*.py' -v
 ```
 
-The Rust suite has twenty-six tests covering recovered rules, navigation/error state,
+The Rust suite has thirty-four tests covering recovered rules, navigation/error state,
 filtering, metadata/timestamp rules, selection persistence and pane isolation, link enumeration, and the zero-case
-readiness guard, plus copy/move integrity, real cross-device fallback, failed source deletion, focused rename, batch preview/apply, stale-plan rejection and boundary checks. The Python helper/protocol and release-packaging suite has forty-three tests. The separate
+readiness guard, copy/move integrity, real cross-device fallback, failed source deletion, focused/batch rename and reviewed ZIP extraction. Archive tests cover navigation, partial failures, CRC corruption, stale reviews, unsafe paths, duplicates, resource limits and destination links/aliases. The Python helper/protocol and release-packaging suite has forty-six tests. The separate
 Java/Rust comparison suites supply the behavioral evidence. Once dependencies
 are cached, Cargo build, test, and Clippy commands also work with `--offline`.
 
@@ -202,6 +216,22 @@ The result details report failed children even when their parent folder was
 processed. The worker has no pause/cancel controls yet. A focused row is
 highlighted and marks use `[x]`. With no marks, the focused child is the effective
 selection. The parent row can be focused but is never included in file selection.
+
+Use **Extract ZIP…** on one selected local ZIP to extract the whole archive,
+including hidden entries. Inside a ZIP, it extracts the effective selection;
+selected folders include hidden descendants. F5 also opens this review while
+the archive listing has keyboard focus. Archive move/rename/batch controls and
+writes into archives are disabled. Extraction merges folders, starts with Skip,
+and stops at its first actual transfer error. Earlier writes remain; Details
+shows skipped/failed paths. The ZIP stays unchanged.
+
+This increment accepts ordinary ZIP32 stored/deflate files with ASCII/UTF-8
+names and UTC DOS timestamps. Native guards reject unsafe paths, archive links,
+ambiguous duplicates and destination links/aliases, and enforce 512 MiB archive/
+entry, 2 GiB expanded total, 20,000 tree entries and 64 path-component limits.
+ZIP64, encryption, other methods/encodings, extended timestamps, nested archives
+and archive creation/editing remain outside the verified scope. Static guards
+and stale-review checks do not provide race-free filesystem handling.
 
 Capture the native browser and exit automatically (verified on macOS):
 
@@ -329,7 +359,7 @@ The [implementation plan and progress ledger](mucrab-implementation-plan.md) rec
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
-5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename and W05 batch rename are verified within their contracts. Next is W06 ZIP browsing/extraction, applying the same recovery and comparison gates. Permissions/owner/group sorting and additional filters remain deferred.
+5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. Next is W07 background operations and cancellation, applying the same recovery and comparison gates. Permissions/owner/group sorting and additional filters remain deferred.
 6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
 
 Upstream Java implementation source will be withheld during reconstruction; license and attribution material remains available. Decompiled representations, binary metadata, and observations of the original are permitted inputs. Findings from the earlier feasibility investigation must be identified as prior evidence if reused.
@@ -338,9 +368,9 @@ Upstream Java implementation source will be withheld during reconstruction; lice
 
 Each workflow will have explicit inputs and acceptance criteria established before its Rust implementation. A harness will exercise the original JARs and the Rust implementation against equivalent fixtures, comparing observable results and recording discrepancies. Any normalization of paths, timestamps, or platform details must be stated explicitly.
 
-W01 through W05 have scoped original-JAR/Rust comparisons, reserved cases,
+W01 through W06 have scoped original-JAR/Rust comparisons, reserved cases,
 integrity checks and representative GUI evidence. The broader demo still needs
-ZIP handling and cancellation coverage; the existing case counts
+job lifecycle and cancellation coverage; the existing case counts
 do not close those acceptance targets.
 
 Current fixtures include numeric and Unicode names, existing destinations,
@@ -361,9 +391,9 @@ The experiment will distinguish evidence that binary-to-Rust reconstruction work
 - `third_party/`: preserved upstream notices and their provenance.
 
 The repository includes acquisition/analysis helpers, pinned manifests and
-lockfiles, the native workspace, W01/W02a/W02b/W02c/W03/W04/W05 Java/Rust adapters
+lockfiles, the native workspace, W01/W02a/W02b/W02c/W03/W04/W05/W06 Java/Rust adapters
 and fixtures, scoped results, GUI evidence, and the maintained implementation
-plan. W06 and W07 remain unimplemented; W05 manual row overrides remain deferred.
+plan. W07 remains unimplemented; W05 manual row overrides remain deferred.
 
 ## License and attribution
 

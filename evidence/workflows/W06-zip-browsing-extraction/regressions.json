@@ -1,0 +1,223 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "suite": "w01",
+      "reserved": false,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w01"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w01-predefined.log",
+      "log_sha256": "404317126641fcdb2f9b2e8ed0179d26f3828b9c52247ec9e4eccaddc338f305",
+      "report": "evidence/workflows/W01-local-browse-sort/comparison-predefined.json",
+      "report_sha256": "624cad8abab6177a76f09cb949a813247eeabd8ddeb34f028644325ca9000f76",
+      "result": "passed"
+    },
+    {
+      "suite": "w01",
+      "reserved": true,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w01",
+        "--reserved"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w01-reserved.log",
+      "log_sha256": "116f4d9dc6ccf50eacfaa9c3eb51e5d718802c8cf6709f73e898a0cc4f57f634",
+      "report": "evidence/workflows/W01-local-browse-sort/comparison-reserved.json",
+      "report_sha256": "7138f38f25aae5bcc79ce4772c56ca6584ff8139e4a5cde583b20593f0ea7007",
+      "result": "passed"
+    },
+    {
+      "suite": "w02",
+      "reserved": false,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w02"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w02-predefined.log",
+      "log_sha256": "939e351a77724725df1849064e75359b1653f7d7fb02eea9e5cae86a5b35c33b",
+      "report": "evidence/workflows/W02-selection-marking/comparison-predefined.json",
+      "report_sha256": "501a9d7b903e72d17878afbde758041b1109387f0440a6cccff7d1fc06227128",
+      "result": "passed"
+    },
+    {
+      "suite": "w02",
+      "reserved": true,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w02",
+        "--reserved"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w02-reserved.log",
+      "log_sha256": "99fc5e526345e529492f2a5824e18641d38d56b2f7ab32d0db9754b872cd06c8",
+      "report": "evidence/workflows/W02-selection-marking/comparison-reserved.json",
+      "report_sha256": "924452bbb0746f17f534f34c7a40d193894a8d58061bbc36ff1afed7f87ca89d",
+      "result": "passed"
+    },
+    {
+      "suite": "w02b",
+      "reserved": false,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w02b"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w02b-predefined.log",
+      "log_sha256": "7de20cf10060694c6a0c9c122b9c116179a6d70f2fb5d965ed1f6007f248ab6b",
+      "report": "evidence/workflows/W02b-hidden-filtering/comparison-predefined.json",
+      "report_sha256": "0a5d2a73b109f507597986987b9d15fa7c19b3a9ed29af04f5c50873afbcd8d5",
+      "result": "passed"
+    },
+    {
+      "suite": "w02b",
+      "reserved": true,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w02b",
+        "--reserved"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w02b-reserved.log",
+      "log_sha256": "8cff4f7a82d8c0bc19d084de2c6f7e21f5bfe2431f2d258711b66a42650c50df",
+      "report": "evidence/workflows/W02b-hidden-filtering/comparison-reserved.json",
+      "report_sha256": "98048f73cc28aa03ba75061503d76fc598d51ea568a3961500c797f1521bda70",
+      "result": "passed"
+    },
+    {
+      "suite": "w02c",
+      "reserved": false,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w02c"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w02c-predefined.log",
+      "log_sha256": "d5e30f08f4bb201194d02ab404dc8d84d8d852c6befcc3209f079226a8ea3ee0",
+      "report": "evidence/workflows/W02c-metadata-sorting/comparison-predefined.json",
+      "report_sha256": "a36cf535861e09432e4e3ed94627dcd5801d8c00c0586e92f8308dae2237983c",
+      "result": "passed"
+    },
+    {
+      "suite": "w02c",
+      "reserved": true,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w02c",
+        "--reserved"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w02c-reserved.log",
+      "log_sha256": "d296a6efb970346564c36af3c8d5de03fc8aa46611bc70c75aa7d04862568ac4",
+      "report": "evidence/workflows/W02c-metadata-sorting/comparison-reserved.json",
+      "report_sha256": "6b05b9d941d17f7503620341acf5c3ca273491fbc6e7d9f7ef86c325029c9942",
+      "result": "passed"
+    },
+    {
+      "suite": "w03",
+      "reserved": false,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w03"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w03-predefined.log",
+      "log_sha256": "4770a10896f2ce6dd031d5c24cfef61eddb635677c9fe02297d804857521741a",
+      "report": "evidence/workflows/W03-recursive-copy/comparison-predefined.json",
+      "report_sha256": "0bc9a7adcf7faa054b208159589a97a4f61c8e1fd1cba4ef53d9ce6a89a3769b",
+      "result": "passed"
+    },
+    {
+      "suite": "w03",
+      "reserved": true,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w03",
+        "--reserved"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w03-reserved.log",
+      "log_sha256": "a0dd13e2763f6f277bc94d9f463a4fa2dd3abbabb8c02169f1468fd12a0319be",
+      "report": "evidence/workflows/W03-recursive-copy/comparison-reserved.json",
+      "report_sha256": "eead8e4fc285a22910af5a2d4398a6bad5043fbd649b1acab0ad0d9510c32598",
+      "result": "passed"
+    },
+    {
+      "suite": "w04",
+      "reserved": false,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w04"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w04-predefined.log",
+      "log_sha256": "5b5d87fb2f5f519915be37bcb1b9c3b13224842d854caf75860f5abc63d50f2c",
+      "report": "evidence/workflows/W04-move-rename/comparison-predefined.json",
+      "report_sha256": "555a2f121dccee86cf8d609e10b2b1a502da07a2611c290063f19a7b9b4e2cb5",
+      "result": "passed"
+    },
+    {
+      "suite": "w04",
+      "reserved": true,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w04",
+        "--reserved"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w04-reserved.log",
+      "log_sha256": "ba44e9b5e2705e5c40551df44f167b068ca50263b8040b5fc2e1f19c19660f9c",
+      "report": "evidence/workflows/W04-move-rename/comparison-reserved.json",
+      "report_sha256": "eb33115c77446ec677722eecda69266ff8f499f2da6c8573d7e774be4f702ee4",
+      "result": "passed"
+    },
+    {
+      "suite": "w05",
+      "reserved": false,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w05"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w05-predefined.log",
+      "log_sha256": "6ecc7e01f3c7c477068457fcb95eff213567cc663dfff3dc9e8eb17a0d571707",
+      "report": "evidence/workflows/W05-batch-rename/comparison-predefined.json",
+      "report_sha256": "2a538603832946428b1351f44b60037e84d1f50e6aba39436e4b2058f99d8ee2",
+      "result": "passed"
+    },
+    {
+      "suite": "w05",
+      "reserved": true,
+      "exit_code": 0,
+      "command": [
+        "{repository}/target/debug/mucrab-compare",
+        "--suite",
+        "w05",
+        "--reserved"
+      ],
+      "log": "artifacts/runs/W06-regressions-final/w05-reserved.log",
+      "log_sha256": "918a05d7e64f43cf772689cdaf89edb9d8b73083c46418f6bf3fcbc76cc207d5",
+      "report": "evidence/workflows/W05-batch-rename/comparison-reserved.json",
+      "report_sha256": "60b824349d34165364008e30e54390c2bb5fe0333344dd473be846407b4070fa",
+      "result": "passed"
+    }
+  ],
+  "scope": "All fourteen earlier original-JAR/native predefined and reserved suite executions on W06 application sources"
+}

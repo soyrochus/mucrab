@@ -3,6 +3,7 @@
 
 //! Recovered W01 name ordering and local browsing, independent of the GUI.
 
+mod archives;
 mod batch_renaming;
 mod browsing;
 mod copying;
@@ -11,6 +12,7 @@ mod moving;
 mod selection;
 mod sorting;
 
+pub use archives::{ZipCatalog, ZipExtractPlan, ZipExtractReport, ZipLocation, extract_zip};
 pub use batch_renaming::{
     BatchRenameOptions, BatchRenameOutcome, BatchRenamePlan, BatchRenamePreview, BatchRenameReport,
     BatchRenameRow, apply_batch_rename,

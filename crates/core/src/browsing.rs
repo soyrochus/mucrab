@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
-use crate::{FileSelection, NameSorter, PaneEvent, SortOptions};
+use crate::{FileSelection, NameSorter, PaneEvent, SortOptions, ZipCatalog, ZipLocation};
 use serde::{Deserialize, Serialize};
 use std::{
     fs, io,
@@ -95,6 +95,7 @@ pub fn list_directory(path: &Path) -> io::Result<Vec<FileEntry>> {
 #[derive(Default)]
 pub struct BrowserPane {
     pub location: Option<PathBuf>,
+    pub archive: Option<ZipLocation>,
     pub path_input: String,
     pub entries: Vec<FileEntry>,
     pub order: Vec<usize>,
@@ -108,6 +109,10 @@ pub struct BrowserPane {
 impl BrowserPane {
     pub fn open(&mut self, path: &Path, sorter: &NameSorter) -> bool {
         let result = (|| {
+            if let Some(location) = ZipLocation::resolve(path)? {
+                let entries = ZipCatalog::open(&location.archive)?.list(&location.prefix)?;
+                return Ok((location.display_path(), entries, Some(location)));
+            }
             // Store a real location so Parent works after input such as child/..
             // instead of returning to the lexical child component.
             let path = fs::canonicalize(path)?;
@@ -118,12 +123,13 @@ impl BrowserPane {
                 ));
             }
             let entries = list_directory(&path)?;
-            Ok((path, entries))
+            Ok((path, entries, None))
         })();
         match result {
-            Ok((path, entries)) => {
+            Ok((path, entries, archive)) => {
                 let has_parent = path.parent().is_some();
                 self.load_listing(path, entries, has_parent, sorter);
+                self.archive = archive;
                 true
             }
             Err(error) => {
@@ -142,6 +148,7 @@ impl BrowserPane {
         has_parent: bool,
         sorter: &NameSorter,
     ) {
+        self.archive = None;
         let old = self.selection.snapshot(&self.entries, &self.order);
         let same_folder = self.location.as_ref() == Some(&path);
         let returning = self.location.as_deref().and_then(Path::parent) == Some(&path);

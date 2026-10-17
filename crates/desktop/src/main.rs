@@ -15,11 +15,12 @@ fn main() -> ExitCode {
         if argument == "--help" || argument == "-h" {
             println!(
                 "muCrab — Two claws, two panes.\n\n\
-                 Usage: mucrab [LEFT_FOLDER [RIGHT_FOLDER]]\n\
+                 Usage: mucrab [LEFT_PATH [RIGHT_PATH]]\n\
                         mucrab [--help | --version]\n\n\
-                 Opens the native two-pane local browser.\n\
+                 Opens local folders or ZIP paths in the native two-pane browser.\n\
                  Name ordering uses en-US; Show hidden files applies to both panes.\n\
                  F5 copies, F6 moves, F2 renames; Batch rename reviews masks and counters.\n\
+                 Inside a ZIP, F5 extracts to the other pane. Extract ZIP also opens a review.\n\
                  Opening symbolic links from the listing is deferred."
             );
             return ExitCode::SUCCESS;
@@ -30,7 +31,7 @@ fn main() -> ExitCode {
             .iter()
             .any(|arg| arg.to_string_lossy().starts_with('-'))
     {
-        eprintln!("Expected up to two folder paths. Use mucrab --help.");
+        eprintln!("Expected up to two folder or ZIP paths. Use mucrab --help.");
         return ExitCode::from(2);
     }
     match app::run(

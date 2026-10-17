@@ -65,6 +65,20 @@ display modified timestamps and expand batch-rename date tokens in UTC. Chrono o
 are preserved. It does not supply file comparison behavior. Release packaging
 retains the complete vendored sources and applicable notices as described above.
 
+## ZIP browsing and extraction
+
+ZIP tree construction, selection/base-depth handling, collision choices and
+partial extraction results were recovered from the pinned muCommander ZIP
+provider, archive tree, CopyDialog and UnpackJob binaries. The upstream GPL
+attribution above applies. [The W06 contract](evidence/workflows/W06-zip-browsing-extraction/contract.md)
+records the DOS timestamp normalization, measured boundary and native guards.
+
+Container parsing and stored/deflate/CRC reading use Rust zip **9.0.4** (MIT),
+with [its preserved license and provenance](third_party/zip/README.md). flate2
+**1.1.10** remains pinned. The release workflow preserves their complete sources
+and notices along with nix and typed-path, and the native application requires
+no Java runtime. Library filesystem-extraction convenience methods are not used.
+
 ## Recursive local copy
 
 Recursive copy, collision policies, transfer metadata and partial outcomes were

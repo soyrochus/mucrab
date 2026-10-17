@@ -1,0 +1,19 @@
+{
+  "archive_entries": [
+    {"path":"folder/child.txt","text":"nested ZIP contents"},
+    {"path":"folder/empty/"},
+    {"path":"folder/.hidden-child","text":"hidden descendant"},
+    {"path":"root.txt","text":"new root ZIP contents"},
+    {"path":".hidden","text":"hidden ZIP root"}
+  ],
+  "return_entries": [{"path":"reply.txt","text":"return ZIP contents"}],
+  "left": [
+    {"path":"keep.txt","kind":"file","size":11},
+    {"path":".hidden","kind":"file","size":7}
+  ],
+  "right": [
+    {"path":"root.txt","kind":"file","size":13,"pattern":201},
+    {"path":".hidden","kind":"file","size":17,"pattern":202},
+    {"path":"folder/retained.txt","kind":"file","size":19}
+  ]
+}

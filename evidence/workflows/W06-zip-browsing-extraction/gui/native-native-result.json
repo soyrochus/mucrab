@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "tree_checks": 2,
+  "bytes_modes_dates": true,
+  "archive_integrity": true,
+  "normalization": "whole-second dates; directory dates omitted"
+}

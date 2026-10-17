@@ -1,0 +1,24 @@
+{
+  "fixture_sha256": "01dd94acc1444b00a97ce2670d44d1d39fbbaba181734b62d6df5387616c71c4",
+  "cases_sha256": "d90cfb73de6d9ff0a503d4f5c71d8ba006fff5e9f7d88469a41aafae008adb2b",
+  "reference_copy_verified": true,
+  "native_binary_sha256": "e36211d06590a8748a9e50acfb83532377df8866bcfb2fee21b738057d7dc83c",
+  "probe_sources": [
+    {
+      "path": "tools/java/W06GuiProbe.java",
+      "sha256": "4620012c023be76cf69474fe15d77ca54f09b1cba1b2028ee14e24085533efa0"
+    },
+    {
+      "path": "tools/java/W03GuiProbe.java",
+      "sha256": "0c77d865bd50f06ee2136218daa83c2dd806fe8e1531c6e623ef8133b8c5c5ec"
+    },
+    {
+      "path": "tools/java/W02bGuiProbe.java",
+      "sha256": "e4cfcdb0e86f18b2c74b287ced26bba641cf2040f95323a4651062977e4a90c8"
+    }
+  ],
+  "preference_sha256": "799c4ab71817e9ede93e78769dc679b3afa97039175845af286fd76d96c49012",
+  "helper_sha256": "b62c29a0e5852e94bb4572960c4a1be14bd381d644129d7d796e6b3109a69ff2",
+  "probe_jar_sha256": "5826a420411b70dee8470602ea8dda4021bec2d6995febe7df11c6aa002eb084",
+  "preparation_only": true
+}

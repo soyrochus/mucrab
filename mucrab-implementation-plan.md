@@ -11,14 +11,14 @@ session can continue without the original conversation.
 
 | Field | Current value |
 | --- | --- |
-| Last updated | 2026-10-16 |
+| Last updated | 2026-10-17 |
 | Last verified implementation commit | `3fb6b51` — Migrate verified local batch rename to muCrab |
 | Current phase | Phase 5: migrate one verified workflow at a time |
-| Active workflow | W05 — bounded local batch rename verified; next is W06 ZIP browsing/extraction |
+| Active workflow | W06 — bounded local ZIP browsing/extraction verified; next is W07 background operations/cancellation |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | W06: recover original ZIP listing/extraction and path/error handling; freeze oracle/fixtures before Rust; keep all seven predefined/reserved suites passing |
-| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename |
-| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. Zero differences/omitted test cases within scope |
+| Next executable task | W07: recover original FileJob start/run/finish, progress and cancellation boundaries; freeze lifecycle fixtures before adding controls; preserve all eight predefined/reserved suites |
+| Ported workflows | W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
+| Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
 | Verification platform | Historical GUI: macOS arm64/APFS. Current component comparisons: Linux x86_64/ext4 plus distinct /tmp for W04, JDK 25.0.4.1. Native input: X11/Xvfb; original menu action/live tables and Swing renders; Wayland unverified |
 | Release automation | Stable version tag workflow added for Linux x86_64 and macOS arm64; source/notices/checksums bundled. Local Linux packaging verified; first hosted build/publication pending |
@@ -60,16 +60,16 @@ complete, observable workflow before expanding the scope.
 | 2. Binary acquisition | Complete | `15427e7`; `tools/acquire_mucommander.py`, `tools/manifests/mucommander.json`, `evidence/acquisition/mucommander-1.6.2-1.json` |
 | 3. Analysis toolchain | Complete for static inspection | `9996a3e`; `tools/analysis_tools.py`, pinned manifests and npm lockfile, `evidence/toolchain/readiness.json` |
 | 4. Cargo workspace and preview | Complete | `88baf29`; `Cargo.toml`, `Cargo.lock`, `crates/`, `evidence/workspace/readiness.json` |
-| 5. Verified workflows | W01, W02a, W02b, bounded W02c, W03, W04 and W05 verified within contracts | Workflow evidence directories and gate ledgers below |
+| 5. Verified workflows | W01, W02a, W02b, bounded W02c, W03, W04, W05 and W06 verified within contracts | Workflow evidence directories and gate ledgers below |
 | 6. Broader comparison and demo | Not started | Final acceptance below |
 
 The workspace contains:
 
 | Package | Current behavior | Intended responsibility |
 | --- | --- | --- |
-| `mucrab-core` | Local enumeration, focus/marks, pane state, recovered sorting, ICU4X collation, recursive copy/move and batch preview/apply | Recovered behavior, independent of the GUI |
-| `mucrab-desktop` | Native two-pane local browser using eframe/egui 0.36.2 and OpenGL | Navigation, sorting, marking, filtering, reviewed copy/move/focused rename, live batch preview and apply |
-| `mucrab-compare` | Original-JAR/Rust W01/W02/W02b/W02c/W03/W04/W05 adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
+| `mucrab-core` | Local/ZIP enumeration, focus/marks, pane state, recovered sorting, copy/move, batch preview/apply and reviewed ZIP extraction | Recovered behavior, independent of the GUI |
+| `mucrab-desktop` | Native two-pane local/ZIP browser using eframe/egui 0.36.2 and OpenGL | Navigation, sorting, marking/filtering, reviewed copy/move/rename, batch preview/apply and ZIP extraction |
+| `mucrab-compare` | Original-JAR/Rust W01/W02/W02b/W02c/W03/W04/W05/W06 adapters and scoped suites; status alone reports `not_run`/zero cases/exit 2 | Run fresh comparisons and report differences |
 
 Historical checks passed on the baseline: Cargo build, formatting, Clippy with
 warnings denied, Rust tests, CLI checks, and native preview capture. The baseline Rust
@@ -430,7 +430,7 @@ further when their acceptance criteria cannot be closed in one increment.
 | W03 | Recursive local copy | Paths, bytes, empty folders, declared metadata, fixed collision policies and partial errors | `verified` within bounded Linux/owned-file contract |
 | W04 | Move and rename | Destination results, source removal rules, collision and failure outcomes | `verified` within bounded Linux/owned-file/same-and-cross-device contract |
 | W05 | Batch rename | Generated names, preview/apply consistency, collisions, partial failures | `verified` within bounded ASCII-case/UTC/local-owned-file contract; manual row controls deferred |
-| W06 | ZIP browsing and extraction | Entry listing, extracted paths and bytes, supported edge/error cases | `not_started` |
+| W06 | ZIP browsing and extraction | Entry listing, extracted paths and bytes, supported edge/error cases | `verified` within ZIP32 stored/deflate UTF-8/UTC DOS/local-owned-file contract |
 | W07 | Background operations and cancellation | Completion, cancellation boundaries, partial results, UI responsiveness | `not_started` |
 
 Order after W01 is provisional and may be changed with a recorded reason.
@@ -613,6 +613,25 @@ the accepted increment. Existing W04 path/link guards remain. Core reuses pinned
 chrono 0.4.45; Cargo.lock adds only the local core-to-chrono dependency edge,
 without refreshing any package. W06 ZIP browsing/extraction is next.
 
+### W06 gate ledger
+
+| Gate | State | Evidence / unresolved work |
+| --- | --- | --- |
+| G1: original Java adapter | `verified` within method boundary | Actual ZIP provider, archive tree, entry objects and UnpackJob processFile; fixed policies and original auto-skip/integrity settings, no behavior overrides |
+| G2: recovered contract | `verified` within bounded scope | 27-class recovery; implicit/explicit folder order, selected base depth, collision/first-error behavior, owner permissions and explicit DOS timestamp normalization |
+| G3: fixtures and protocol | `verified` | 25 named + 18 generated + 24 withheld reserved sets, four policies; strict listings/outcomes, separate trees and source ZIP hashes; guards not counted as equivalence |
+| G4: Rust and comparison | `verified` within scope | 163 predefined + 96 reserved cases; 814 listings, 1887 entry observations, 256 jobs, 259 trees and 518 archive integrity checks; zero differences/omissions; all sixteen suite executions pass |
+| G5: native workflow | `verified` within X11/Xvfb scope | 43 replay actions plus initial capture; both panes, root/child/parent, hidden filter, Cancel, SKIP/OVERWRITE, selected/full/reverse extraction, partial details and invalid ZIP recovery. Original twelve stages/24 pane states, real Copy/Unpack dialogs and three full jobs; 54 retained artifacts; W05 GUI regression passes |
+| G6: reproducible closure | `verified` for local development | 34 Rust/46 Python tests, formatting/Clippy, locked offline build, original integrity, no-Java CLI/linkage, vendored-source frozen release build and Linux packaging, notices, updated README/preview/ledger and checkpoint |
+
+See `evidence/workflows/W06-zip-browsing-extraction/README.md`, `contract.md`,
+`decisions.md`, comparison/GUI/validation receipts and all fourteen earlier
+regressions. Native CRC/size/path/link/alias/stale-review guards are extra integrity
+measures, not equivalence cases. ZIP64, encryption, other methods/encodings,
+extended timestamps, nested archives, archive writing and current macOS/Wayland
+GUI behavior remain outside scope. Existing external pins are unchanged; only
+zip 9.0.4, nix 0.31.3 and typed-path 0.12.3 are added. W07 remains next.
+
 ### Open issues
 
 | ID | Issue | Next investigation |
@@ -627,6 +646,7 @@ without refreshing any package. W06 ZIP browsing/extraction is next.
 | R08 | Recursive copy is bounded; full job orchestration and race-safe mutation remain unverified | Preserve W03/W04 guards and partial-error details; cancellation/lifecycle remains W07 |
 | R09 | Original cross-device symlink fallback can consume targets | Keep W04 diagnostic separate (exit 2/zero equivalence); native retains links/targets when atomic rename fails |
 | R10 | Batch rename is bounded to ASCII case/UTC and excludes manual row controls | Extend recovery/fixtures before claiming those controls, other locale/timezone semantics or arbitrary collision prompts |
+| R11 | ZIP scope is bounded and original DOS dates retain nondeterministic milliseconds | Keep whole-second normalization explicit; recover/fixture ZIP64, encryption, extra timestamp/encoding/method support separately; preserve native guards |
 
 ### Session entry template
 
@@ -1037,6 +1057,49 @@ Exact next executable action:
   build/signing and GUI checks remain pending. This changes release tooling,
   not the W05 application or historical behavioral evidence; W06 remains next.
 
+- **2026-10-17 — W06 ZIP browsing/extraction:** started clean at `16640b0`
+  (release workflow checkpoint, main ahead of origin by one commit). The pinned
+  reference and analysis tools were available and verified. Original-only runs
+  `W06-20261017T091304Z-5c35ab2b` and `W06-20261017T091448Z-5e11ab58` precede
+  native implementation; the 25 named + 18 generated sets, 24 withheld reserved
+  sets and contract were frozen first. Recovery ultimately covers 27 classes,
+  including the actual ZIP provider/tree, UnpackJob, CopyDialog and folder-change
+  callers. Original Calendar millisecond residue is explicitly normalized to
+  whole seconds, with raw observations retained and same-second older-policy
+  collisions excluded.
+
+  Native implements read-only ZIP pane navigation and reviewed whole/selected
+  extraction, four policies, central-directory sequencing, implicit folders,
+  first-error partial results and detailed issues. CRC/size/path/link/alias/
+  stale-review/resource guards are tested separately. zip 9.0.4 adds only nix
+  0.31.3 and typed-path 0.12.3; no existing external pin changes. Final component
+  runs are identified precisely in the comparison receipts:
+  163 predefined + 96 reserved cases, 814 listings, 1887 entry observations,
+  256 jobs, 259 trees and 518 archive checks, zero differences/omissions. All
+  fourteen earlier predefined/reserved executions pass; their source hashes
+  match the current implementation. The validation receipt records exact run IDs.
+
+  Native GUI `W06-20261017T095834Z-de85f0e8` passes 43 replay actions plus initial
+  capture; original `W06-20261017T094547Z-9527943c` passes twelve stages, 24 pane
+  states and three full jobs through actual Copy/Unpack dialogs. Retained 54 GUI
+  artifacts. Both panes, nested/parent/hidden browsing, Cancel, SKIP/OVERWRITE,
+  whole/selected/reverse extraction, invalid ZIP retention and partial details
+  are covered. Earlier harness attempts and the X11/menu/navigation/binary-byte
+  corrections remain in decisions/raw logs. W05's fresh native batch-rename GUI
+  replay also passes on the final binary.
+
+  Closure passes formatting, Clippy with warnings denied, 34 Rust/46 Python
+  tests, all sixteen suites, reference integrity and native CLI/linkage without
+  Java. A corresponding-source export vendors all 387 external crates and builds
+  release mode with --frozen and an empty registry cache; source/Linux bundles
+  retain notices, pass checksums and report the test export version 0.9.0. This
+  does not create a project tag or publish a release. README, previews, notices,
+  evidence and the gate ledger are updated. Gates G1–G6 are verified only within
+  the frozen Linux/X11 scope; ZIP64/encryption/other methods/encodings/timestamp
+  extras/nested archives and macOS/Wayland GUI remain unverified. Implementation
+  and evidence checkpoint is recorded in the following handoff commit. Next is
+  W07 original job lifecycle/cancellation recovery before implementing controls.
+
 ## Final demonstration acceptance
 
 After the selected workflows are verified, run an agreed suite targeting
@@ -1061,10 +1124,10 @@ muCommander parity or automated conversion of arbitrary Java applications.
 > Inspect Git, repository instructions, code, and committed evidence first;
 > reconcile the live checkpoint before acting. Rehydrate ignored inputs on this
 > machine and record fresh verification. Resume the first unfinished workflow
-> gate. W01, W02a, W02b, W02c, W03, W04 and W05 are verified within their declared contracts; Linux
+> gate. W01, W02a, W02b, W02c, W03, W04, W05 and W06 are verified within their declared contracts; Linux
 > component comparisons and representative X11/Xvfb checks are recorded.
-> The next action is W06 ZIP browsing/extraction recovery and original adapter.
-> Keep all seven W01/W02/W02b/W02c/W03/W04/W05 predefined/reserved suites passing. Continue through each workflow's gates before expanding
+> The next action is W07 background-job/lifecycle/cancellation recovery and original adapter.
+> Keep all eight W01/W02/W02b/W02c/W03/W04/W05/W06 predefined/reserved suites passing. Continue through each workflow's gates before expanding
 > scope. Preserve GPL notices and the immutable reference, withhold upstream
 > Java implementation source, and keep the native application independent of
 > Java. Update the plan and evidence at each checkpoint, including exact next
