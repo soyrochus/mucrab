@@ -1,0 +1,12 @@
+{
+  "status": "host_cleanup_pending",
+  "scope": "Disposable verification image cleanup; application checks passed",
+  "mount_table_listed_test_filesystem": false,
+  "image_handle_retained": true,
+  "image_path": "artifacts/macos-verification/cross-device.sparseimage",
+  "devices": [
+    "/dev/disk4",
+    "/dev/disk5"
+  ],
+  "notes": "Detach/eject stalled after the filesystem disappeared from the mount table. The dedicated image helper was stopped; macOS retained its device registration. A subsequent stat of the mount path blocked in kernel I/O and its termination was requested. No further image operations were attempted. All verification receipts and release artifacts are on the normal checkout filesystem."
+}

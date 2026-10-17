@@ -146,3 +146,16 @@ xattrs/resource forks and exhaustive shortcut parity remain outside this scope.
 The minimum deployment target is not a test of older macOS releases. Ad-hoc
 signing is separate from Developer ID signing/notarization, and no release is
 published by these local checks.
+
+
+## Host cleanup note
+
+The test filesystem disappeared from the mount table, but macOS retained its
+image/device registration after detach/eject stalled. Its dedicated helper was
+stopped; a later status query also blocked in kernel I/O and its termination
+was requested.
+[Cleanup state](cleanup.json) records this host issue. Avoid accessing the old
+`artifacts/macos-verification/cross-device` mount path until that registration
+is released. The image, verification receipts and release archives are retained;
+the completed application/comparison/packaging checks remain passed. No further
+storage operations were attempted on other volumes.
