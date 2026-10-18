@@ -1,0 +1,116 @@
+{
+  "status": "passed",
+  "host": "macOS 26.6.2 arm64 APFS",
+  "test_executions": 4,
+  "distinct_tests": 4,
+  "checks": [
+    {
+      "check": "real-sftp",
+      "passed": 2,
+      "argv": [
+        "cargo",
+        "test",
+        "-p",
+        "mucrab-core",
+        "--test",
+        "sftp",
+        "--locked",
+        "--offline",
+        "real_sftp_",
+        "--",
+        "--ignored",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "environment_paths_relative_to_repository": {
+        "MUCRAB_W15_RUN": "artifacts/gui/W15-macos-service"
+      },
+      "log": "artifacts/macos-verification/w15-macos-services-final.log",
+      "log_sha256": "c152ac8827cb2f5e13118fbf593738f8aac1ad15f9bd0cf1adaf326f0b64d9c8"
+    },
+    {
+      "check": "keychain",
+      "passed": 1,
+      "argv": [
+        "cargo",
+        "test",
+        "-p",
+        "mucrab-core",
+        "--test",
+        "sftp",
+        "--locked",
+        "--offline",
+        "macos_native_keychain_unique_item",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "environment_paths_relative_to_repository": {
+        "MUCRAB_W15_KEYCHAIN_FIXTURE": "unique-item"
+      },
+      "log": "artifacts/macos-verification/w15-macos-keychain.log",
+      "log_sha256": "7b5d3c89a7081c4203f17bcf210be7b9a72d61923bef9f2d431695b75cc3a15b"
+    },
+    {
+      "check": "mounted-child",
+      "passed": 1,
+      "argv": [
+        "cargo",
+        "test",
+        "-p",
+        "mucrab-core",
+        "--test",
+        "search",
+        "--locked",
+        "--offline",
+        "macos_real_mounted_child",
+        "--",
+        "--ignored",
+        "--nocapture"
+      ],
+      "environment_paths_relative_to_repository": {
+        "MUCRAB_MOUNT_FIXTURE": "artifacts/macos-verification/w11-w15-boundary"
+      },
+      "log": "artifacts/macos-verification/w11-w15-real-mount.log",
+      "log_sha256": "5f8cbe0d6424ebfc0df82b6fd4b4237df80c8278ec035dbd5e962a86279c35ca"
+    }
+  ],
+  "fixture_freeze": {
+    "W11-tabs-bookmarks": {
+      "files": 5,
+      "status": "passed",
+      "existing_w15_errata_applied": false
+    },
+    "W12-file-search": {
+      "files": 5,
+      "status": "passed",
+      "existing_w15_errata_applied": false
+    },
+    "W13-properties-permissions": {
+      "files": 45,
+      "status": "passed",
+      "existing_w15_errata_applied": false
+    },
+    "W14-built-in-viewer": {
+      "files": 45,
+      "status": "passed",
+      "existing_w15_errata_applied": false
+    },
+    "W15-sftp-connections": {
+      "files": 5,
+      "status": "passed",
+      "existing_w15_errata_applied": true
+    }
+  },
+  "source_sha256": {
+    "crates/core/tests/sftp.rs": "81c3f7c9a7c2b3d0d9076d6a0156c416557a7aea3088b869e9b9f02084f4fe73",
+    "crates/core/tests/search.rs": "64d070ac79eff3dc763ba85eefe8d1efffb5b1fef23656c7c5aeb7fec8d3b860",
+    "crates/core/src/sftp/store.rs": "7b61b1e295214847bb89eb328675170d50258abcdf7c78d45ddcd98d70334508",
+    "tools/w15_server.py": "e9da416407af6b2922e8d27a1546479e1331bc7d4483b6c4e60e0ce6e46b408a"
+  },
+  "limitations": [
+    "Invalid UTF-8 server fixture is Linux-only because APFS rejects the filename",
+    "Keychain test isolates a unique item in the default user Keychain; no separate database or locked/unavailable-store test",
+    "No personal profile, key or server is used"
+  ]
+}

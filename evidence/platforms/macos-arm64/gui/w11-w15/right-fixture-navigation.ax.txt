@@ -1,0 +1,19 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 129-158, 160, 177, 179-206
+~		17 text (settable) Right > Left
+~		53 toggle button (settable, boolean) W11-W15-macos, Value: on
+~		102 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos
+~		113 toggle button (settable, boolean) cache, Value: off
++		126 toggle button (settable, boolean) config, Value: off
+~		127 toggle button (settable, boolean) data, Value: off
+~		128 toggle button (settable, boolean) home, Value: off
++		129 toggle button (settable, boolean) left, Value: off
++		130 toggle button (settable, boolean) right, Value: on
++		131 toggle button (settable, boolean) actions.json, Value: off
++		132 toggle button (settable, boolean) before.json, Value: off
++		133 toggle button (settable, boolean) launch.json, Value: off
++		134 toggle button (settable, boolean) restart-actions.json, Value: off
++		135 toggle button (settable, boolean) restart-launch.json, Value: off
++		114 text (settable) 1 of 11 selected · 0 B
++		136 text (settable) Active pane
+The focused UI element is 60 unknown

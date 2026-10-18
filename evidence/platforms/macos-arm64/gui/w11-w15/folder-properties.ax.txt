@@ -1,0 +1,67 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 128-150
+~		118 toggle button (settable, boolean) Folder, Value: on
+~		123 toggle button (settable, boolean) picture.png, Value: off
+~		117 text (settable) 1 of 9 selected · 0 B
+~		127 text (settable) sample.zip
++		128 container Properties
++			129 button Hide
++			130 button Close window
++			131 unknown
++			132 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/Folder
++			133 button Refresh properties
++			134 text (settable) Type
++			135 text (settable) Folder
++			136 text (settable) Entry size (bytes)
++			137 text (settable) 160
++			138 text (settable) Allocated bytes
++			139 text (settable) 0
++			140 text (settable) Modified (UTC)
++			141 text (settable) 2026-10-18T08:35:05.963022320Z
++			142 text (settable) Accessed (UTC)
++			143 text (settable) 2026-10-18T08:35:05.982919313Z
++			144 text (settable) Created (UTC)
++			145 text (settable) 2026-10-18T08:35:05.963022320Z
++			146 text (settable) Owner
++			147 text (settable) ivanderk (502)
++			148 text (settable) Group
++			149 text (settable) staff (20)
++			150 text (settable) Unix mode
++			151 text (settable) 0755
++			152 text (settable) Hard links
++			153 text (settable) 5
++			154 text (settable) Link target
++			155 text (settable) Unavailable
++			156 button Calculate folder contents
++			157 button (disabled) Cancel calculation
++			158 text (settable) Logical file bytes, including hidden entries; hard links counted per name. Links are not followed; mount roots are excluded.
++			159 text (settable) Non-recursive changes. Special bits and access time are preserved. UTC input has nanosecond resolution; filesystem rounding is shown after refresh.
++			160 checkbox (settable, boolean) Change permissions, Value: off
++			161 text (settable) Read
++			162 text (settable) Write
++			163 text (settable) Execute
++			164 text (settable) Owner
++			165 checkbox (disabled, settable, boolean) on
++			166 checkbox (disabled, settable, boolean) on
++			167 checkbox (disabled, settable, boolean) on
++			168 text (settable) Group
++			169 checkbox (disabled, settable, boolean) on
++			170 checkbox (disabled, settable, boolean) off
++			171 checkbox (disabled, settable, boolean) on
++			172 text (settable) Other
++			173 checkbox (disabled, settable, boolean) on
++			174 checkbox (disabled, settable, boolean) off
++			175 checkbox (disabled, settable, boolean) on
++			176 checkbox (settable, boolean) Change modified time, Value: off
++			177 text field (disabled, settable) 2026-10-18T08:35:05.963022320Z
++			178 button (disabled) Review changes…
++			179 scroll bar
++			180 splitter
++			181 splitter
++			182 splitter
++			183 splitter
++			184 splitter
++			185 splitter
++			186 splitter
++			187 splitter
+The focused UI element is 33 unknown

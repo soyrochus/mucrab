@@ -1,0 +1,30 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 157-182
+~		127 container View file
+~			131 unknown
+~			132 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/notes.txt
+~			133 button Open externally
+~			134 button Close viewer (Esc)
+~			135 text (settable) Resolved preview: /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/notes.txt
+~			136 text (settable) UTF-8 · 4 lines
+~			137 text (settable) Find
+~			138 text field (settable)
+~			139 button Previous
+~			140 button Next
+~			141 button Select all
+~			142 button (disabled) Copy text
+~			143 text (settable) Read-only · drag or Shift-click to select · Ctrl/Cmd+A/C · F3 / Shift+F3 find next/previous
+~			144 unknown
+~			145 unknown
+~			146 unknown
+~			147 unknown
+~			148 unknown
+~			149 splitter
+~			150 splitter
+~			151 splitter
+~			152 splitter
+~			153 splitter
+~			154 splitter
+~			155 splitter
+~			156 splitter
+The focused UI element is 144 unknown

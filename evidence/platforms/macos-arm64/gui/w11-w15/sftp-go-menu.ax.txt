@@ -1,0 +1,11 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
++		75 unknown
++			76 button (disabled) Back Alt+Left
++			77 button (disabled) Forward Alt+Right
++			78 button Parent folder Backspace
++			79 button Home folder 
++			80 button Refresh 
++			81 button Search files… Ctrl/Cmd+F
++			82 button Bookmarks ⏵
++			83 button SFTP connections… 
+The focused UI element is 33 unknown

@@ -80,19 +80,25 @@ on the target, host and configured providers. See REA's
 
 Latest implementation checkpoint: **2026-10-18**, commit `5b77e5a` (W15).
 
+**2026-10-18 Mac verification:** W11–W15 workspace, scoped Java/Rust comparisons,
+native interactions, real SFTP failure tests and disposable Keychain round-trip
+pass: **107 Rust / 51 Python tests**, plus four explicit fixture-dependent tests.
+Search now matches composed accented names on APFS. See the
+[Mac evidence and remaining gates](evidence/platforms/macos-arm64/W11-W15.md).
+
 **W15 — SFTP connections and transfers** is implemented. Go → SFTP connections
 manages saved profiles, verified host keys and session-only or optional native
 credentials. Browse remote folders, review local↔SFTP copies, and open/view files
-through retained private downloads. Linux checks pass within the documented scope;
-macOS build, Keychain and native interaction checks remain pending. See
+through retained private downloads. Linux and bounded Mac checks pass, including
+native upload/download, disconnect/reconnect and closing a paused transfer. See
 [W15 evidence](evidence/workflows/W15-sftp-connections/README.md).
 
 **W13 — Properties and permissions** and **W14 — Built-in viewer** are implemented.
 **Alt+Enter** opens properties for the focused entry, with cancellable folder totals
 and reviewed local permission/modified-time edits. **F3** opens a read-only text
 or PNG/JPEG viewer with text find/copy and image fit/zoom/pan. Enter and double-click
-continue to open files in their default application. Linux native checks pass;
-macOS verification remains pending. See [W13 evidence](evidence/workflows/W13-properties-permissions/README.md)
+continue to open files in their default application. Bounded Linux and Mac native
+checks pass. See [W13 evidence](evidence/workflows/W13-properties-permissions/README.md)
 and [W14 evidence](evidence/workflows/W14-built-in-viewer/README.md).
 
 **W11 — Tabs and bookmarks** and **W12 — File search** are implemented.
@@ -100,7 +106,8 @@ Each pane has independent tabs; shared local/ZIP bookmarks persist across restar
 with profile-backed SFTP bookmarks added in W15.
 Background local search supports wildcard names, extension/type/size/UTC date
 filters, cancellation, partial results and Open Containing Folder in either pane.
-Linux native checks pass; macOS verification remains pending. See
+Bounded Linux and Mac native checks pass, including bookmark restart and both-pane
+search navigation. See
 [W11 evidence](evidence/workflows/W11-tabs-bookmarks/README.md) and
 [W12 evidence](evidence/workflows/W12-file-search/README.md) for comparison scope
 and remaining acceptance checks.
@@ -112,8 +119,8 @@ remain pending. See [W10 evidence](evidence/workflows/W10-everyday-file-manageme
 
 **W09 — Default-application file opening** now supports local files and archive
 members through Enter, double-click and File → Open. ZIP members open as private
-temporary copies without archive writeback. Linux native dispatch is verified;
-macOS dispatch is implemented and awaits native verification. See the
+temporary copies without archive writeback. Linux native dispatch is verified.
+Mac viewer-to-TextEdit archive handoff passes; the other W09 gestures remain open. See the
 [W09 evidence](evidence/workflows/W09-open-files/README.md).
 
 **W07 — background operations and cancellation** remains verified. File operations
@@ -123,8 +130,8 @@ compact menus, file tables and saved Light/Dark/System appearance.
 See the [current status report](docs/current-status.md) for workflow details,
 comparison results, verification dates, supported platforms and remaining limits.
 
-The pre-W09 [macOS arm64 verification](evidence/platforms/macos-arm64/README.md) covers all
-nine comparison suites, full Rust/Python checks and native W07/W08 interaction.
+The [macOS arm64 verification](evidence/platforms/macos-arm64/README.md) includes
+the earlier nine comparison suites/W07–W08 interaction and the fresh W11–W15 checks.
 
 ## Migration screenshots
 
@@ -513,7 +520,8 @@ symbolic links, unreadable files, and partial copy/move failures. File operation
 run inside disposable fixture directories. W07 adds cancellation, paused jobs,
 partial-prefix checks and real cross-device source-retention fixtures.
 W09 adds default-application dispatch, retained archive copies and an isolated
-Linux MIME-association replay; native macOS dispatch remains unverified.
+Linux MIME-association replay. The Mac W11–W15 checkpoint verifies archive/SFTP
+viewer handoff to TextEdit; local Enter/double-click/File → Open remain separate.
 GUI demonstrations supplement the behavioral comparisons. Build success alone
 does not establish equivalence.
 

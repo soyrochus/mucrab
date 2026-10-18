@@ -1,0 +1,15 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		17 text (settable) Left > Right
+~		26 toggle button (settable, boolean) left, Value: on
+~		79 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left
+~		116 toggle button (settable, boolean) Documents, Value: on
++		118 toggle button (settable, boolean) Folder, Value: off
++		119 toggle button (settable, boolean) alpha.txt, Value: off
++		120 toggle button (settable, boolean) beta.log, Value: off
++		121 toggle button (settable, boolean) link, Value: off
++		122 toggle button (settable, boolean) notes.txt, Value: off
++		123 toggle button (settable, boolean) picture.png, Value: off
++		124 toggle button (settable, boolean) sample.zip, Value: off
++		125 toggle button (settable, boolean) unrelated.txt, Value: off
+~		117 text (settable) 1 of 9 selected · 0 B
++		126 text (settable) Active pane

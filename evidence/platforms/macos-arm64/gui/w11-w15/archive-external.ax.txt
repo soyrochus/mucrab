@@ -1,0 +1,23 @@
+Window: "archive.txt", App: TextEdit.
+0 standard window archive.txt, Secondary Actions: Raise, URL: file:///private/var/folders/5b/zl9jb8n51qg_6vqcfpms0f8m0000gp/T/mucrab-open-42319-1792317014197601000-0/archive.txt
+	1 scroll area Secondary Actions: Scroll Left, Scroll Right, Scroll Up, Scroll Down
+		2 text entry area (settable) ID: First Text View, Value: Archive viewer document
+
+		3 scroll bar (disabled, settable, float) 0.1851851791143417
+		4 scroll bar (disabled, settable, float) 0
+	5 close button
+	6 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	7 minimize button
+	8 menu button (disabled) document actions
+	9 image archive.txt
+	10 text archive.txt
+11 menu bar
+	12 TextEdit
+	13 File
+	14 Edit
+	15 Format
+	16 View
+	17 Window
+	18 Help
+
+The focused UI element is 2 text entry area (settable) ID: First Text View, Value: Archive viewer document

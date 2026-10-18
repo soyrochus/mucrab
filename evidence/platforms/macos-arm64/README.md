@@ -1,5 +1,11 @@
 # macOS arm64 verification — 2026-10-17
 
+**Latest extension — 2026-10-18:** [W11–W15 acceptance](W11-W15.md) records 107
+Rust/51 Python tests, four explicit service/mount tests, scoped original/native
+comparisons and native tabs/search/properties/viewer/SFTP checks. It includes
+Keychain round-trip, real mount boundaries and origin-tab/app closure during a
+paused SFTP transfer. The W01–W08 and release receipts below remain historical.
+
 This extends the bounded Linux verification to **macOS 26.6.2 / arm64 / APFS**,
 as an unprivileged user, with Rust/Cargo **1.99.0**, OpenJDK **21.0.10**,
 Python **3.14.5**, Node **24.12.0** and npm **11.7.0**. Linux receipts remain

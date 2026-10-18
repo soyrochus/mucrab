@@ -2,7 +2,11 @@
 
 Implemented with bounded Linux verification on 2026-10-17/18. W13/W14 were
 committed as `e44dbb0` before W15 work. W15 is SFTP, correcting the old ledger's
-checksums wording. Native macOS build/Keychain/UI and the gates below remain open.
+checksums wording. The [2026-10-18 Mac checkpoint](../../platforms/macos-arm64/W11-W15.md)
+passes vendored-OpenSSL build, Keychain round-trip, 32+16 provider cases, real SFTP
+failure tests and native upload/download/open/view/disconnect/reconnect. Closing
+an origin tab and then the app during a paused SFTP overwrite preserves source,
+previous destination and owned partial stage. Remaining gates are listed below.
 
 Go → SFTP connections edits versioned non-secret profiles. Save the profile before
 connecting; changed connection settings require saving and disconnect old sessions.
@@ -102,8 +106,8 @@ config and other protocols remain unsupported.
 - [Notices](../../../third_party/sftp/README.md): exact published files/checksums,
   including libssh2 and bundled OpenSSL. Linux needs OpenSSL/DBus development
   packages to build and their system libraries at runtime. Mac builds enable
-  pinned vendored OpenSSL3.6.3 to avoid a Homebrew runtime dependency; this host
-  does not establish the Mac build or Keychain result.
+  pinned vendored OpenSSL3.6.3 to avoid a Homebrew runtime dependency. The Linux
+  receipts do not establish Mac behavior; the linked Mac checkpoint records it separately.
 
 Protocol references: [SFTPv3 draft](https://datatracker.ietf.org/doc/html/draft-ietf-secsh-filexfer-02)
 and [OpenSSH extensions](https://github.com/openssh/openssh-portable/blob/master/PROTOCOL).
@@ -148,9 +152,10 @@ W11/W12 restart afterward, then `verify` writes only W15 receipts.
 
 ## Pending acceptance
 
-Native macOS build/Keychain/UI; full original connection/job/window parity; native
-input during active remote transfer tab/app closure and expanded disconnect races;
-other servers, key formats, IPv6 and unusual network behavior remain unverified.
+Full original connection/job/window parity; locked/unavailable Mac Keychain and
+GUI Remember/use-saved behavior; Linux active-transfer tab/app closure and expanded
+disconnect races; other servers, key formats, IPv6 and unusual network behavior
+remain unverified. Mac active/paused-transfer origin-tab/app closure passes.
 The initial provider has no resume/automatic retry, remote archive/search/mutation
 extension, strong remote inode identity or complete secret-memory erasure claim.
 Tests/scope/limits are explicit in the OpenSpec task list and maintained status.

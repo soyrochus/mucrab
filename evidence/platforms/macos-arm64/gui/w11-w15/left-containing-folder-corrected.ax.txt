@@ -1,0 +1,9 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 154-171
+~		15 button Back (Alt+Left)
+~		26 toggle button (settable, boolean) Documents, Value: on
+~		79 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/Documents
++		115 toggle button (settable, boolean) .., Value: off
++		116 toggle button (settable, boolean) nested.txt, Value: on
++		117 text (settable) 1 of 1 selected · 7 B
++		118 text (settable) Active pane

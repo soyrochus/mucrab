@@ -1,0 +1,30 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 51-54, 56-68
+~		13 button Rename focused item (F2)
+~		15 button (disabled) Back (Alt+Left)
+~		17 text (settable) Right > Left
+~		131 button Rename  F2
+~		132 button Batch rename…
+~		48 toggle button (settable, boolean) local, Value: off
++		141 toggle button (settable, boolean) local, Value: on
+~		50 button ×
++		142 button Current folder
++		143 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W15-macos-native/local
++		144 button Parent folder (Backspace)
++		145 button Refresh
++		146 button Sort by Name
++		147 unknown
++		148 button Sort by Ext
++		149 unknown
++		150 button Sort by Size
++		151 unknown
++		152 button Sort by Modified (UTC)
++		153 toggle button (settable, boolean) .., Value: off
++		154 toggle button (settable, boolean) folder, Value: off
++		155 toggle button (settable, boolean) large.bin, Value: off
++		156 toggle button (settable, boolean) link, Value: off
++		157 toggle button (settable, boolean) notes.txt, Value: off
++		158 toggle button (settable, boolean) upload.txt, Value: on
++		159 text (settable) 1 of 5 selected · 30 B
++		160 text (settable) Active pane
+The focused UI element is 55 unknown

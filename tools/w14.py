@@ -6,7 +6,7 @@ from datetime import datetime,timezone
 from pathlib import Path
 from PIL import Image,ImageOps
 import acquire_mucommander as acquisition
-from w01 import ROOT,REFERENCE,capture,digest
+from w01 import ROOT,REFERENCE,capture,digest,evidence_directory
 
 def main(reserved):
  acquisition.run(verify_only=True);run=ROOT/'artifacts/runs'/('W14-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')+'-'+uuid.uuid4().hex[:8]);run.mkdir(parents=True)
@@ -42,6 +42,6 @@ def main(reserved):
    elif max(abs(x-y) for x,y in zip(a['rgba'],e['raw_rgba']))>(2 if key.endswith('.jpg') else 0):unexpected.append(dict(id=key,reason='Original raw pixels disagree with reference'))
    if e['orientation']!=1:intentional.append(dict(id=key,reason='Native applies EXIF orientation; original ImageIO boundary exposes raw raster'))
  report=dict(status='passed' if not unexpected else 'failed',reserved=reserved,cases=len(expected),scope='Pinned TextViewer.loadDocument with actual TextEditorImpl; image boundary uses JDK ImageIO called by recovered ImageViewer, with independent Pillow orientation/pixels; no full original window parity',jpeg_max_channel_delta=jpeg_max_delta,unexpected_differences=unexpected,intentional_differences=intentional,run=str(run.relative_to(ROOT)),sources={p:digest(ROOT/p) for p in ['tools/java/W14Oracle.java','crates/compare/src/w14.rs','tools/w13_w14_fixtures.py']})
- acquisition.run(verify_only=True);acquisition.write_json(ROOT/'evidence/workflows/W14-built-in-viewer'/('comparison-reserved.json' if reserved else 'comparison.json'),report);print(json.dumps(dict(status=report['status'],cases=len(expected),unexpected=len(unexpected),intentional=len(intentional),jpeg_max_delta=jpeg_max_delta,run=report['run']),indent=2));assert not unexpected,unexpected
+ acquisition.run(verify_only=True);acquisition.write_json(evidence_directory('W14-built-in-viewer')/('comparison-reserved.json' if reserved else 'comparison.json'),report);print(json.dumps(dict(status=report['status'],cases=len(expected),unexpected=len(unexpected),intentional=len(intentional),jpeg_max_delta=jpeg_max_delta,run=report['run']),indent=2));assert not unexpected,unexpected
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--reserved',action='store_true');main(p.parse_args().reserved)

@@ -9,7 +9,7 @@ import argparse,hashlib,json,os,subprocess,sys,time,uuid
 from pathlib import Path
 from datetime import datetime,timezone
 import acquire_mucommander as acquisition
-from w01 import ROOT,REFERENCE,digest
+from w01 import ROOT,REFERENCE,digest,evidence_directory
 from w15_prepare import prepare
 
 def main(reserved,python):
@@ -45,7 +45,7 @@ def main(reserved,python):
     entries=replies[side][key+'-list'].get('entries',[]);assert len(entries)==1,(key,side,entries);e=entries[0];stat=(run/'remote'/side/key/case['name']).lstat();assert e['modified_ms']==int(stat.st_mtime)*1000,(key,side,'Modified precision mismatch');listings[side]={k:e[k]for k in ['name','directory','link','size']}
    if listings['original']!=listings['native']:differences.append(dict(id=key,listings=listings))
   report=dict(status='passed'if not differences else'failed',reserved=reserved,cases=len(cases),stream_calls={k:sum(v['operation']!='list' for v in vals)for k,vals in requests.items()},listing_pairs=len(cases),unexpected_differences=differences,source_destination_hashes=hashes,run=str(run.relative_to(ROOT)),scope='Pinned SFTPFile provider listings and getInputStream/getOutputStream on actual disposable SFTP server; regular-file names/types/length and observed whole-second modified time; native Skip integrity separate from original stream semantics; no full original CopyJob/trust/UI equivalence',intentional_design_differences=['Native explicit first-use trust and changed-key refusal; recovered original UserInfo.promptYesNo returns true','Native staged writes and advertised POSIX rename; recovered original rename may delete destination first','Native does not follow links or support remote mutation beyond mixed Copy'],sources={p:digest(ROOT/p)for p in ['tools/w15.py','tools/java/W15Oracle.java','crates/compare/src/w15.rs','tools/w15_server.py']})
-  out=ROOT/'evidence/workflows/W15-sftp-connections'/('comparison-reserved.json'if reserved else'comparison.json');out.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(dict(status=report['status'],cases=len(cases),unexpected=len(differences),run=report['run']),indent=2));assert not differences
+  out=evidence_directory('W15-sftp-connections')/('comparison-reserved.json'if reserved else'comparison.json');out.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(dict(status=report['status'],cases=len(cases),unexpected=len(differences),run=report['run']),indent=2));assert not differences
  finally:server.terminate();server.wait(timeout=5);serverlog.close()
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--reserved',action='store_true');p.add_argument('--server-python',default=sys.executable);a=p.parse_args();main(a.reserved,a.server_python)

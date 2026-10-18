@@ -1,0 +1,36 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		11 button Copy to other pane (F5)
+~		14 button Extract ZIP to other pane
+~		19 button Extract  F5
+~		23 button Extract ZIP…
+~		115 toggle button (settable, boolean) .., Value: off
+~		116 toggle button (settable, boolean) archive.txt, Value: on
+~		117 text (settable) 1 of 1 selected · 24 B
++		120 container View file
++			121 button Hide
++			122 button Close window
++			123 unknown
++			124 unknown
++			125 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/sample.zip/nested/archive.txt
++			126 button Open externally
++			127 button Close viewer (Esc)
++			128 text (settable) Resolved preview: /var/folders/5b/zl9jb8n51qg_6vqcfpms0f8m0000gp/T/mucrab-viewer-42319-0/archive.txt
++			129 text (settable) UTF-8 · 1 lines
++			130 text (settable) Find
++			131 text field (settable)
++			132 button Previous
++			133 button Next
++			134 button Select all
++			135 button (disabled) Copy text
++			136 text (settable) Read-only · drag or Shift-click to select · Ctrl/Cmd+A/C · F3 / Shift+F3 find next/previous
++			137 unknown
++			138 unknown
++			139 splitter
++			140 splitter
++			141 splitter
++			142 splitter
++			143 splitter
++			144 splitter
++			145 splitter
++			146 splitter
+The focused UI element is 137 unknown

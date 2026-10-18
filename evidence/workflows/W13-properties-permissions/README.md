@@ -1,7 +1,11 @@
 # W13 — Properties and permissions
 
-Implemented and Linux-verified on 2026-10-17. Native macOS and the acceptance
-checks listed below remain pending. W11/W12 were committed as `675bcd1` first.
+Implemented and Linux-verified on 2026-10-17. The
+[2026-10-18 Mac checkpoint](../../platforms/macos-arm64/W11-W15.md) passes both-pane
+inspection/editing, nanosecond time read-back, hidden/link-safe totals, real
+mounted-child omission and 40+40 scoped metadata comparisons. Exact automated
+atime checks use a noatime fixture volume; regular-volume native edits have their
+own read-back. W11/W12 were committed as `675bcd1` first.
 
 Alt+Enter / File → Properties captures the focused child and originating tab,
 independently of marks. Local lstat fields include available logical/allocated
@@ -82,8 +86,9 @@ The concurrent trace pauses real work, so the copied-child count varies by host.
 
 ## Remaining gates
 
-Native macOS both-pane inspection/editing, full original-window interactions,
-a real bind-mount traversal boundary and foreign-owner chmod denial remain open.
+Full original-window interactions, Linux same-device bind-mount traversal and
+foreign-owner chmod denial remain open. Bounded Mac both-pane input and a real
+different-device mounted child pass.
 No ownership/ACL/xattr/special-bit editing, recursion or elevation is implemented.
 Stable-entry checks do not guarantee race-free access. Cancellation waits for
 blocked filesystem/account-lookup calls; no rollback is promised.

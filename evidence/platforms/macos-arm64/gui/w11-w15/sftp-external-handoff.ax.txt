@@ -1,0 +1,11 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 93-98
+~		77 text (settable) Open request sent to the default application.
++		127 button Dismiss
++		128 text (settable) SFTP copy finished; inspect partial paths in Details. Remote metadata identity is weaker than local inode identity. · 0 skipped · 0 problems
++		129 button Copy  F5
++		130 button (disabled) Move  F6
++		131 button (disabled) Rename  F2
++		132 button (disabled) Batch rename…
++		133 button (disabled) Extract ZIP…
++		134 button Refresh

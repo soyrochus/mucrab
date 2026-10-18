@@ -4,7 +4,7 @@
 import json,os,subprocess,uuid
 from datetime import datetime,timezone
 import acquire_mucommander as acquisition
-from w01 import ROOT,REFERENCE,capture,digest
+from w01 import ROOT,REFERENCE,capture,digest,evidence_directory
 
 def main():
  acquisition.run(verify_only=True)
@@ -17,5 +17,5 @@ def main():
  differences=[k for k in result['original'] if k in result['native'] and result['original'][k]!=result['native'][k]]
  assert differences==['duplicate_history_length'],differences
  report=dict(status='passed',scope='Supplemental Default/ClonedFileTableTabFactory and Bookmark value methods; not full tab UI/job/persistence parity and not frozen before implementation',run=str(run.relative_to(ROOT)),results=result,intentional_differences={'duplicate_history_length':'Java factory starts a new empty history; W11 independently copies existing history'},original_only_observation='Bookmark.equals compares labels only; this is not a comparison against native storage validation, which is tested separately',sources={p:digest(ROOT/p) for p in ['tools/java/W11Oracle.java','crates/compare/src/w11.rs']})
- acquisition.run(verify_only=True);acquisition.write_json(ROOT/'evidence/workflows/W11-tabs-bookmarks/original-probe.json',report);print(json.dumps(report,indent=2))
+ acquisition.run(verify_only=True);acquisition.write_json(evidence_directory('W11-tabs-bookmarks')/'original-probe.json',report);print(json.dumps(report,indent=2))
 if __name__=='__main__':main()

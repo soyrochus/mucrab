@@ -1,0 +1,35 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 89-100, 145
++		154 text (settable) Find:
++		155 text field (settable) *.txt
++		156 button Previous
++		157 button Next
++		158 button ×
++		159 text (settable) No matching filename
++		160 toggle button (settable, boolean) .., Value: off
++		161 toggle button (settable, boolean) Documents, Value: off
++		162 toggle button (settable, boolean) Folder, Value: off
++		163 toggle button (settable, boolean) alpha.txt, Value: on
++		164 toggle button (settable, boolean) beta.log, Value: off
++		165 toggle button (settable, boolean) link, Value: off
++		166 toggle button (settable, boolean) notes.txt, Value: off
++		167 toggle button (settable, boolean) picture.png, Value: off
++		168 toggle button (settable, boolean) sample.zip, Value: off
++		169 toggle button (settable, boolean) unrelated.txt, Value: off
++		170 text (settable) 9 of 9 selected · 2207 B
++		171 text (settable) Active pane
++			172 text (settable) Complete — 14 visited, 12 matches, 0 omissions/errors
++			173 text (settable) Relative path · type · bytes · modified UTC
++			174 toggle button (settable, boolean) Documents · Folder · 96 · 2026-10-18 08:35:05, Value: off
++			175 toggle button (settable, boolean) Documents/nested.txt · File · 7 · 2026-10-18 08:35:05, Value: off
++			176 toggle button (settable, boolean) Folder · Folder · 160 · 2026-10-18 08:35:05, Value: off
++			177 toggle button (settable, boolean) Folder/cycle · Link · 1 · 2026-10-18 08:35:05, Value: off
++			178 toggle button (settable, boolean) Folder/inside.txt · File · 5 · 2026-10-18 08:35:05, Value: off
++			179 toggle button (settable, boolean) alpha.txt · File · 6 · 2026-10-18 08:35:05, Value: off
++			180 toggle button (settable, boolean) beta.log · File · 5 · 2026-10-18 08:35:05, Value: off
++			181 toggle button (settable, boolean) link · Link · 9 · 2026-10-18 08:35:05, Value: off
++			182 toggle button (settable, boolean) notes.txt · File · 48 · 2026-10-18 08:35:05, Value: off
++			183 toggle button (settable, boolean) picture.png · File · 1932 · 2026-10-18 08:35:05, Value: off
++			184 toggle button (settable, boolean) sample.zip · File · 158 · 2026-10-18 08:35:05, Value: off
++			185 scroll bar
+The focused UI element is 155 text field (settable) *.txt

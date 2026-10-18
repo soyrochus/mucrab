@@ -1,0 +1,58 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 116-135
+~		11 button Copy to other pane (F5)
+~		12 button Move to other pane (F6)
+~		13 button Rename focused item (F2)
+~		17 text (settable) Left > Right
+~		19 button Copy  F5
+~		20 button Move  F6
+~		21 button Rename  F2
+~		22 button Batch rename…
+~		92 toggle button (settable, boolean) alpha.txt, Value: on
+~		93 toggle button (settable, boolean) beta.log, Value: off
+~		100 text (settable) Active pane
++		53 toggle button (settable, boolean) right, Value: on
+~		55 button (disabled) ×
+~		102 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/right
+~		113 toggle button (settable, boolean) right.txt, Value: off
+~		114 text (settable) 0 of 1 selected · 0 B
+~		115 container Search files
++			116 button Hide
++			117 button Close window
++			118 unknown
++			119 text (settable) Local folder
++			120 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left
++			121 text (settable) Name pattern
++			122 text field (settable) *
++			123 checkbox (settable, boolean) Match case, Value: off
++			124 text (settable) Extension
++			125 text field (settable)
++			126 checkbox (settable, boolean) Include hidden, Value: off
++			127 text (settable) Types
++			128 checkbox (settable, boolean) Files, Value: on
++			129 checkbox (settable, boolean) Folders, Value: on
++			130 checkbox (settable, boolean) Links (never followed), Value: on
++			131 text (settable) Size in bytes
++			132 text (settable) Min
++			133 text field (settable)
++			134 text (settable) Max
++			135 text field (settable)
++			136 text (settable) Modified (UTC)
++			137 text (settable) From
++			138 text field (settable)
++			139 text (settable) To
++			140 text field (settable)
++			141 text (settable) Dates: YYYY-MM-DD (To includes that day), or RFC3339 timestamp (To is exclusive). Blank bounds mean no limit.
++			142 button Search
++			143 button (disabled) Cancel search
++			144 button (disabled) Open containing folder
++			145 text (settable) Relative path · type · bytes · modified UTC
++			146 splitter
++			147 splitter
++			148 splitter
++			149 splitter
++			150 splitter
++			151 splitter
++			152 splitter
++			153 splitter
+The focused UI element is 33 unknown

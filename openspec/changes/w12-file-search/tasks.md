@@ -22,3 +22,9 @@
 
 Implementation and Linux receipts: [W12 evidence](../../../evidence/workflows/W12-file-search/README.md).
 Unchecked original full-trace/native-host gates remain pending; see the evidence index for exact tested boundaries.
+
+## Mac checkpoint — 2026-10-18
+
+- [x] Both-pane native result navigation, Unicode NFC search on APFS and real mounted-child omission.
+- [x] 64+64 scoped predicate cases, current workspace checks and deterministic worker cancellation/replacement tests; [Mac evidence](../../../evidence/platforms/macos-arm64/W11-W15.md).
+- [ ] Full original traversal/error/result-window coverage, native close during active traversal, Linux same-device bind mounts and fresh earlier native regressions.

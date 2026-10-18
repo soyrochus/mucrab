@@ -1,0 +1,1563 @@
+{
+  "status": "passed",
+  "reserved": true,
+  "cases": 40,
+  "scope": "Original ChangeFileAttributesJob.processFile permissions/date and native combined plans; filesystem mode/mtime/atime/owner/link-count read back; original lstat owner fields are not claimed",
+  "unexpected_differences": [],
+  "intentional_differences": [
+    {
+      "id": "reserved-0",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 646,
+        "mtime_ns": 1610000077589000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 673,
+        "mtime_ns": 1610000077589000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-1",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 354,
+        "mtime_ns": 1610000094241000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "native": {
+        "mode": 98,
+        "mtime_ns": 1600000021419000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-2",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 74,
+        "mtime_ns": 1610000031294000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 118,
+        "mtime_ns": 1610000031294000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-3",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575604281481,
+        "atime_ns": 1792317575604281481,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575616513881,
+        "atime_ns": 1792317575616513881,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-4",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 72,
+        "mtime_ns": 1610000095524000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "native": {
+        "mode": 113,
+        "mtime_ns": 1610000095524000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-5",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 1440,
+        "mtime_ns": 1610000004596000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 1415,
+        "mtime_ns": 1610000004596000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-6",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 55,
+        "mtime_ns": 1610000005255000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "native": {
+        "mode": 21,
+        "mtime_ns": 1610000005255000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-7",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 846,
+        "mtime_ns": 1610000033077000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "native": {
+        "mode": 590,
+        "mtime_ns": 1600000011116000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-8",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575605854265,
+        "atime_ns": 1792317575605854265,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575617374794,
+        "atime_ns": 1792317575617374794,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-9",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575606068972,
+        "atime_ns": 1792317575606068972,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575617565501,
+        "atime_ns": 1792317575617565501,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-10",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 317,
+        "mtime_ns": 1610000004280000000,
+        "atime_ns": 1500000000000000000,
+        "size": 17,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 309,
+        "mtime_ns": 1610000004280000000,
+        "atime_ns": 1500000000000000000,
+        "size": 17,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-11",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 1415,
+        "mtime_ns": 1610000024104000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "native": {
+        "mode": 1223,
+        "mtime_ns": 1600000053480000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-12",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 1016,
+        "mtime_ns": 1610000090066000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 1019,
+        "mtime_ns": 1610000090066000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-13",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 319,
+        "mtime_ns": 1610000069219000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "native": {
+        "mode": 272,
+        "mtime_ns": 1610000069219000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-14",
+      "fields": [
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 541,
+        "mtime_ns": 1610000008361000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 541,
+        "mtime_ns": 1600000090441000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-15",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575608248587,
+        "atime_ns": 1792317575608248587,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575619421992,
+        "atime_ns": 1792317575619421992,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets"
+      ]
+    },
+    {
+      "id": "reserved-16",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575608517128,
+        "atime_ns": 1792317575608517128,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575619619325,
+        "atime_ns": 1792317575619619325,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-17",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575608786793,
+        "atime_ns": 1792317575608786793,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575619832574,
+        "atime_ns": 1792317575619832574,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets"
+      ]
+    },
+    {
+      "id": "reserved-18",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 289,
+        "mtime_ns": 1610000039386000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 225,
+        "mtime_ns": 1600000010410000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-19",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 1025,
+        "mtime_ns": 1610000011731000000,
+        "atime_ns": 1500000000000000000,
+        "size": 17,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 1068,
+        "mtime_ns": 1610000011731000000,
+        "atime_ns": 1500000000000000000,
+        "size": 17,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-20",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 128,
+        "mtime_ns": 1610000048564000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "native": {
+        "mode": 176,
+        "mtime_ns": 1610000048564000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-21",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575609826496,
+        "atime_ns": 1792317575609826496,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575621027818,
+        "atime_ns": 1792317575621027818,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-22",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 847,
+        "mtime_ns": 1610000035940000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 655,
+        "mtime_ns": 1600000023770000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-23",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 640,
+        "mtime_ns": 1610000038955000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 512,
+        "mtime_ns": 1600000095745000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-24",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 658,
+        "mtime_ns": 1610000005856000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "native": {
+        "mode": 530,
+        "mtime_ns": 1600000084127000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-25",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575611085824,
+        "atime_ns": 1792317575611085824,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575622055563,
+        "atime_ns": 1792317575622055563,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-26",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 805,
+        "mtime_ns": 1610000070072000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 741,
+        "mtime_ns": 1600000035923000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-27",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575611537405,
+        "atime_ns": 1792317575611537405,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575622591685,
+        "atime_ns": 1792317575622591685,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-28",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 1180,
+        "mtime_ns": 1610000031028000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 1172,
+        "mtime_ns": 1610000031028000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-29",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 748,
+        "mtime_ns": 1610000051713000000,
+        "atime_ns": 1500000000000000000,
+        "size": 17,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 731,
+        "mtime_ns": 1610000051713000000,
+        "atime_ns": 1500000000000000000,
+        "size": 17,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-30",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 860,
+        "mtime_ns": 1610000072496000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 732,
+        "mtime_ns": 1600000060739000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-31",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 689,
+        "mtime_ns": 1610000054085000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 753,
+        "mtime_ns": 1600000020687000000,
+        "atime_ns": 1500000000000000000,
+        "size": 0,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-32",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575613359479,
+        "atime_ns": 1792317575613359479,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575624437385,
+        "atime_ns": 1792317575624437385,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets"
+      ]
+    },
+    {
+      "id": "reserved-33",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 402,
+        "mtime_ns": 1610000026604000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "native": {
+        "mode": 426,
+        "mtime_ns": 1610000026604000000,
+        "atime_ns": 1500000000000000000,
+        "size": 64,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "Folder"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-34",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575613872685,
+        "atime_ns": 1792317575613872685,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575624788634,
+        "atime_ns": 1792317575624788634,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-35",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575614059685,
+        "atime_ns": 1792317575614059685,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575625115757,
+        "atime_ns": 1792317575625115757,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-36",
+      "fields": [
+        "mode"
+      ],
+      "original": {
+        "mode": 1083,
+        "mtime_ns": 1610000091059000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 1079,
+        "mtime_ns": 1610000091059000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        true,
+        true
+      ],
+      "reasons": [
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-37",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 1194,
+        "mtime_ns": 1610000024329000000,
+        "atime_ns": 1500000000000000000,
+        "size": 17,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 1066,
+        "mtime_ns": 1600000090281000000,
+        "atime_ns": 1500000000000000000,
+        "size": 17,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    },
+    {
+      "id": "reserved-38",
+      "fields": [
+        "mode",
+        "mtime_ns"
+      ],
+      "original": {
+        "mode": 41,
+        "mtime_ns": 1610000038887000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "native": {
+        "mode": 233,
+        "mtime_ns": 1600000091766000000,
+        "atime_ns": 1500000000000000000,
+        "size": 1024,
+        "uid": 502,
+        "gid": 20,
+        "links": 2,
+        "kind": "File"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native combined plan fails before writing when a preserving time handle cannot be opened",
+        "Original local provider exposes only a changeable permission mask of 0o700 in this isolated runtime; native supports all nine rwx bits"
+      ]
+    },
+    {
+      "id": "reserved-39",
+      "fields": [
+        "mtime_ns",
+        "atime_ns"
+      ],
+      "original": {
+        "mode": 493,
+        "mtime_ns": 1792317575615335553,
+        "atime_ns": 1792317575615335553,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "native": {
+        "mode": 493,
+        "mtime_ns": 1792317575626775999,
+        "atime_ns": 1792317575626775999,
+        "size": 6,
+        "uid": 502,
+        "gid": 20,
+        "links": 1,
+        "kind": "Link"
+      },
+      "original_steps": [
+        true,
+        true
+      ],
+      "native_steps": [
+        false,
+        false
+      ],
+      "reasons": [
+        "Native lstat properties and link mutation rejection; original jobs can operate on targets",
+        "Native preserves special permission bits; original job receives the ordinary-bit replacement"
+      ]
+    }
+  ],
+  "run": "artifacts/runs/W13-20261018T095935Z-a4b592a5",
+  "sources": {
+    "tools/java/W13Oracle.java": "07752d151b441418db44f92131b466f7c2d1d78e7a0bc3ca650e2364dac738a8",
+    "crates/compare/src/w13.rs": "8cf1cbabccf8807b620c8d911919c24b0ec5e1b90886694680e736ed8c32af44",
+    "tools/w13_w14_fixtures.py": "50cd1f478b999a76aa68950af04de0e139b9bcd4919432404bbaf42faf34a65f",
+    "tools/w13.py": "8567d34b91dd5f57b2055dfa99cc372c87781347e4b5d6cfa34e9c1a540c7677"
+  },
+  "atime_boundary": "macOS: exact native pre-plan captured atime versus post-plan read-back; independent original/native host-access times are recorded separately",
+  "fixture_root": "/Users/ivanderk/src/rea-test/artifacts/macos-verification/w11-w15-mount/w13-fixtures/W13-20261018T095935Z-a4b592a5",
+  "fixture_device": 16777239
+}

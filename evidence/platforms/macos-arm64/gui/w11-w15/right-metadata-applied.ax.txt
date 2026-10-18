@@ -1,0 +1,62 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 193-199
+~		8 button Parent folder (Backspace)
+~		9 button Home folder
+~		10 button Refresh active pane
+~		11 button Copy to other pane (F5)
+~		12 button Move to other pane (F6)
+~		13 button Rename focused item (F2)
+~		15 button Back (Alt+Left)
+~		18 text (settable) Metadata: 1/1 fields changed · Permissions changed · 0 skipped · 0 problems
+~		19 button Copy  F5
+~		20 button Move  F6
+~		21 button Rename  F2
+~		22 button Batch rename…
+~		24 button Refresh
+~		26 toggle button (settable, boolean) left, Value: on
+~		77 toggle button (settable, boolean) left, Value: off
+~		27 button +
+~		28 button ×
+~		78 button Current folder
+~		79 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left
+~		80 button Parent folder (Backspace)
+~		81 button Refresh
+~		82 button Sort by Name
+~		84 button Sort by Ext
+~		86 button Sort by Size
+~		88 button Sort by Modified (UTC)
+~		115 toggle button (settable, boolean) .., Value: off
+~		116 toggle button (settable, boolean) Documents, Value: off
+~		118 toggle button (settable, boolean) Folder, Value: on
+~		119 toggle button (settable, boolean) alpha.txt, Value: off
+~		120 toggle button (settable, boolean) beta.log, Value: off
+~		121 toggle button (settable, boolean) link, Value: off
+~		122 toggle button (settable, boolean) notes.txt, Value: off
+~		123 toggle button (settable, boolean) picture.png, Value: off
+~		124 toggle button (settable, boolean) sample.zip, Value: off
+~		125 toggle button (settable, boolean) unrelated.txt, Value: off
+~		53 toggle button (settable, boolean) right, Value: on
+~		54 button +
+~		101 button Current folder
+~		102 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/right
+~		103 button Parent folder (Backspace)
+~		104 button Refresh
+~		105 button Sort by Name
+~		107 button Sort by Ext
+~		109 button Sort by Size
+~		111 button Sort by Modified (UTC)
+~		112 toggle button (settable, boolean) .., Value: off
+~		113 toggle button (settable, boolean) right.txt, Value: on
+~			160 text (settable) 0664
+~			166 checkbox (settable, boolean) Change permissions, Value: off
+~			171 checkbox (disabled, settable, boolean) on
+~			172 checkbox (disabled, settable, boolean) on
+~			173 checkbox (disabled, settable, boolean) off
+~			175 checkbox (disabled, settable, boolean) on
+~			176 checkbox (disabled, settable, boolean) on
+~			177 checkbox (disabled, settable, boolean) off
+~			179 checkbox (disabled, settable, boolean) on
+~			180 checkbox (disabled, settable, boolean) off
+~			181 checkbox (disabled, settable, boolean) off
+~			184 button (disabled) Review changes…
+The focused UI element is 60 unknown

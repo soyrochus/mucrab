@@ -1,0 +1,14 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~			166 checkbox (settable, boolean) Change permissions, Value: on
++			193 text (settable)
+~			171 checkbox (settable, boolean) on
+~			172 checkbox (settable, boolean) on
+~			173 checkbox (settable, boolean) off
+~			175 checkbox (settable, boolean) on
+~			176 checkbox (settable, boolean) off
+~			177 checkbox (settable, boolean) off
+~			179 checkbox (settable, boolean) on
+~			180 checkbox (settable, boolean) off
+~			181 checkbox (settable, boolean) off
+~			184 button Review changes…
+The focused UI element is 60 unknown

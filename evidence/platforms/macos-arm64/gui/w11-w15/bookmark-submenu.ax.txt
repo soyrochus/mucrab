@@ -1,0 +1,6 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
++		110 unknown
++			111 button Add current location… Ctrl/Cmd+B
++			112 button Manage bookmarks… 
++			113 button Reload bookmarks 
+The focused UI element is 33 unknown

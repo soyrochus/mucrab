@@ -1,0 +1,43 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 85-91
+~		13 button (disabled) Rename focused item (F2)
+~		15 button Back (Alt+Left)
+~		17 text (settable) Left > Right
++		93 button Copy  F5
++		94 button (disabled) Move  F6
++		95 button (disabled) Rename  F2
++		96 button (disabled) Batch rename…
++		97 button (disabled) Extract ZIP…
++		98 button Refresh
+~		41 toggle button (settable, boolean) folder, Value: off
+~		43 toggle button (settable, boolean) notes.txt, Value: on
+~		46 text (settable) 1 of 4 selected · 20 B
++		99 text (settable) Active pane
++		100 container View file
++			101 button Hide
++			102 button Close window
++			103 unknown
++			104 unknown
++			105 text (settable) /var/folders/5b/zl9jb8n51qg_6vqcfpms0f8m0000gp/T/mucrab-sftp-open-58943-5/notes.txt
++			106 button Open externally
++			107 button Close viewer (Esc)
++			108 text (settable) Resolved preview: /private/var/folders/5b/zl9jb8n51qg_6vqcfpms0f8m0000gp/T/mucrab-sftp-open-58943-5/notes.txt
++			109 text (settable) UTF-8 · 1 lines
++			110 text (settable) Find
++			111 text field (settable)
++			112 button Previous
++			113 button Next
++			114 button Select all
++			115 button (disabled) Copy text
++			116 text (settable) Read-only · drag or Shift-click to select · Ctrl/Cmd+A/C · F3 / Shift+F3 find next/previous
++			117 unknown
++			118 unknown
++			119 splitter
++			120 splitter
++			121 splitter
++			122 splitter
++			123 splitter
++			124 splitter
++			125 splitter
++			126 splitter
+The focused UI element is 117 unknown

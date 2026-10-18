@@ -17,7 +17,8 @@ public final class W12Oracle {
   Field sensitive=SearchBuilder.class.getDeclaredField("matchCaseSensitive");sensitive.setAccessible(true);sensitive.setBoolean(builder,r.case_sensitive);
   Method matcher=SearchBuilder.class.getDeclaredMethod("createFilenamePredicate");matcher.setAccessible(true);
   Predicate<AbstractFile> predicate=(Predicate<AbstractFile>)matcher.invoke(builder);
-  return Map.of("id",r.id,"matches",predicate.test(FileFactory.getFile(r.root+"/"+r.name)));
+  AbstractFile file=FileFactory.getFile(r.root+"/"+r.name);
+  return Map.of("id",r.id,"matches",predicate.test(file),"observed_name",file.getName());
  }
  public static void main(String[] args)throws Exception {
   PrintStream protocol=System.out;System.setOut(System.err);Gson gson=new Gson();

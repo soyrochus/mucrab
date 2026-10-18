@@ -1,0 +1,4 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~			141 text (settable) 125% · drag to pan
++			151 scroll bar
+The focused UI element is 131 unknown

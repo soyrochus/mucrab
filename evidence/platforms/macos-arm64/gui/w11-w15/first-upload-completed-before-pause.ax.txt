@@ -1,0 +1,14 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 168-172
+~		11 button Copy to other pane (F5)
+~		13 button Rename focused item (F2)
+~		128 text (settable) SFTP copy finished; inspect partial paths in Details. Remote metadata identity is weaker than local inode identity. · 0 skipped · 0 problems
+~		161 button Copy  F5
+~		163 button Rename  F2
+~		164 button Batch rename…
+~		136 toggle button (settable, boolean) large.bin, Value: off
+~		137 toggle button (settable, boolean) link, Value: off
+~		138 toggle button (settable, boolean) notes.txt, Value: on
++		167 toggle button (settable, boolean) upload.txt, Value: off
+~		139 text (settable) 1 of 5 selected · 20 B
+The focused UI element is 55 unknown

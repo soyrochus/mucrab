@@ -1,0 +1,49 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 19-24
+~		8 button (disabled) Parent folder (Backspace)
+~		9 button (disabled) Home folder
+~		10 button (disabled) Refresh active pane
++		113 button (disabled) Copy  F5
++		114 button (disabled) Move  F6
++		115 button (disabled) Rename  F2
++		116 button (disabled) Batch rename…
++		117 button (disabled) Extract ZIP…
++		118 button (disabled) Refresh
+~		26 toggle button (disabled, settable, boolean) local, Value: on
+~		27 button (disabled) +
+~		29 button (disabled) Current folder
+~		30 text field (disabled, settable) /Users/ivanderk/src/rea-test/artifacts/gui/W15-macos-native/local
+~		31 button (disabled) Parent folder (Backspace)
+~		32 button (disabled) Refresh
+~		34 button (disabled) Sort by Name
+~		36 button (disabled) Sort by Ext
+~		38 button (disabled) Sort by Size
+~		40 button (disabled) Sort by Modified (UTC)
+~		41 toggle button (disabled, settable, boolean) .., Value: on
+~		42 toggle button (disabled, settable, boolean) folder, Value: off
+~		43 toggle button (disabled, settable, boolean) link, Value: off
+~		44 toggle button (disabled, settable, boolean) notes.txt, Value: off
+~		45 toggle button (disabled, settable, boolean) upload.txt, Value: off
+~		48 toggle button (disabled, settable, boolean) local, Value: on
+~		49 button (disabled) +
+~		51 button (disabled) Current folder
+~		52 text field (disabled, settable) /Users/ivanderk/src/rea-test/artifacts/gui/W15-macos-native/local
+~		53 button (disabled) Parent folder (Backspace)
+~		54 button (disabled) Refresh
+~		56 button (disabled) Sort by Name
+~		58 button (disabled) Sort by Ext
+~		60 button (disabled) Sort by Size
+~		62 button (disabled) Sort by Modified (UTC)
+~		63 toggle button (disabled, settable, boolean) .., Value: on
+~		64 toggle button (disabled, settable, boolean) folder, Value: off
+~		65 toggle button (disabled, settable, boolean) link, Value: off
+~		66 toggle button (disabled, settable, boolean) notes.txt, Value: off
+~		67 toggle button (disabled, settable, boolean) upload.txt, Value: off
+~			101 button (disabled) Connect
++		119 text (settable) Trust this SFTP host key?
++		120 text (settable) [127.0.0.1]:55140
++		121 text (settable) Rsa
++		122 text (settable) SHA256:GPrn0uVR3rjHM309tMj5hJlZyjZB6xMtVRsQMlW8rIY
++		123 text (settable) Verify this fingerprint with the server owner before trusting. Authentication has not been sent.
++		124 button Cancel
++		125 button Trust host and connect

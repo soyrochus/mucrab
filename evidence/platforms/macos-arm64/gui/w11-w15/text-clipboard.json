@@ -1,0 +1,5 @@
+{
+  "status": "passed",
+  "actual": "first line\r\ncaf\u00e9 \u4e2d \ud83d\ude00\nneedle one\nlast line\n",
+  "expected": "first line\r\ncaf\u00e9 \u4e2d \ud83d\ude00\nneedle one\nlast line\n"
+}

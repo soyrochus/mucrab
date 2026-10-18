@@ -1,0 +1,5 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 78-107, 109-119
+~		70 toggle button (settable, boolean) alpha.txt, Value: off
+~		72 toggle button (settable, boolean) café.txt, Value: on
+~		43 text (settable) 1 of 10 selected · 19 B

@@ -408,7 +408,9 @@ fn real_sftp_failure_boundaries_preserve_sources_destinations_and_owned_partials
             .is_err()
     );
     assert!(session.list(&loc.child("denied").unwrap(), &c).is_err());
-    #[cfg(unix)]
+    // APFS rejects invalid UTF-8 names before the server can expose them.
+    // The Linux fixture executes this protocol case on a byte-name filesystem.
+    #[cfg(target_os = "linux")]
     {
         use std::os::unix::ffi::OsStrExt;
         let bad = remote.join(std::ffi::OsStr::from_bytes(b"non-unicode-\xff"));
@@ -547,6 +549,7 @@ fn real_sftp_failure_boundaries_preserve_sources_destinations_and_owned_partials
 }
 
 #[test]
+#[cfg(target_os = "linux")]
 #[ignore = "requires isolated DBus/Secret Service fixture; do not run against personal credential stores"]
 fn isolated_native_credential_roundtrip_or_unavailable_has_no_plaintext_fallback() {
     let mode = std::env::var("MUCRAB_W15_CREDENTIAL_FIXTURE")
@@ -565,6 +568,46 @@ fn isolated_native_credential_roundtrip_or_unavailable_has_no_plaintext_fallback
         assert!(save_secret(&id, "disposable-native-secret").is_err());
         assert!(load_secret(&id).is_err());
     }
+}
+
+#[cfg(target_os = "macos")]
+#[test]
+#[ignore = "requires MUCRAB_W15_KEYCHAIN_FIXTURE=unique-item; creates/removes only a disposable Keychain account"]
+fn macos_native_keychain_unique_item_roundtrip_update_and_removal() {
+    assert_eq!(
+        std::env::var("MUCRAB_W15_KEYCHAIN_FIXTURE").as_deref(),
+        Ok("unique-item")
+    );
+    let id = format!(
+        "w15-macos-disposable-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos()
+    );
+    // Never replace an existing account, change Keychain defaults or lock it.
+    assert!(load_secret(&id).is_err());
+    struct Cleanup(String);
+    impl Drop for Cleanup {
+        fn drop(&mut self) {
+            let _ = delete_secret(&self.0);
+        }
+    }
+    let _cleanup = Cleanup(id.clone());
+    save_secret(&id, "disposable-native-secret").unwrap();
+    assert_eq!(
+        load_secret(&id).unwrap().as_str(),
+        "disposable-native-secret"
+    );
+    save_secret(&id, "disposable-updated-café").unwrap();
+    assert_eq!(
+        load_secret(&id).unwrap().as_str(),
+        "disposable-updated-café"
+    );
+    delete_secret(&id).unwrap();
+    assert!(load_secret(&id).is_err());
+    delete_secret(&id).unwrap();
 }
 
 #[test]

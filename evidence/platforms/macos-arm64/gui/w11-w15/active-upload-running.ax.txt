@@ -1,0 +1,45 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 173-176
+~		8 button Parent folder (Backspace)
+~		9 button Home folder
+~		10 button Refresh active pane
++		167 progress indicator
++		168 text (settable) SFTP copy in progress…
+~		128 progress indicator (settable, float) 858554368 / 1073741824 B, Value: 79
++		169 text (settable) 0 / 1 items
++		170 button Pause
++		171 button Cancel
++		172 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W15-macos-native/local/large.bin
+~		166 button Refresh
+~		26 toggle button (settable, boolean) Root, Value: on
+~		27 button +
+~		29 button Current folder
+~		30 text field (settable) sftp://server-1/
+~		31 button Parent folder (Backspace)
+~		32 button Refresh
+~		34 button Sort by Name
+~		36 button Sort by Ext
+~		38 button Sort by Size
+~		40 button Sort by Modified (UTC)
+~		135 toggle button (settable, boolean) folder, Value: off
+~		136 toggle button (settable, boolean) link, Value: off
+~		137 toggle button (settable, boolean) notes.txt, Value: on
+~		138 toggle button (settable, boolean) upload.txt, Value: off
+~		48 toggle button (settable, boolean) local, Value: off
+~		141 toggle button (settable, boolean) local, Value: on
+~		49 button +
+~		50 button ×
+~		142 button Current folder
+~		143 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W15-macos-native/local
+~		144 button Parent folder (Backspace)
+~		145 button Refresh
+~		146 button Sort by Name
+~		148 button Sort by Ext
+~		150 button Sort by Size
+~		152 button Sort by Modified (UTC)
+~		153 toggle button (settable, boolean) .., Value: off
+~		154 toggle button (settable, boolean) folder, Value: off
+~		155 toggle button (settable, boolean) large.bin, Value: on
+~		156 toggle button (settable, boolean) link, Value: off
+~		157 toggle button (settable, boolean) notes.txt, Value: off
+~		158 toggle button (settable, boolean) upload.txt, Value: off

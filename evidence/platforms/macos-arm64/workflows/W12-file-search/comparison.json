@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "cases": 64,
+  "reserved": false,
+  "scope": "Pinned SearchBuilder.createFilenamePredicate only; metadata/traversal/GUI checked separately, no full original search-job parity claim",
+  "unexpected_differences": [],
+  "intentional_differences": [],
+  "run": "artifacts/runs/W12-20261018T095929Z-bf604b18",
+  "sources": {
+    "tools/java/W12Oracle.java": "131fd268869d1e7f3caebc8d0d5af35c8c0253af35dc577284905d9e0577fbf4",
+    "crates/compare/src/w12.rs": "2f70ff5b4a98e0ec12e3da43d11ff41983e85b477412d6c06b10bb0499c07d28",
+    "tools/w11_w12_fixtures.py": "77e7b0e2551ed1177780ab40e5239c32a75949ff8efe7759cde48896d497222a"
+  },
+  "observed_filename_inputs": {
+    "generated-0": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "generated-5": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "generated-18": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "generated-24": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "generated-48": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "generated-52": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "generated-54": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    }
+  },
+  "filename_boundary": "Both predicates receive the original provider getName() value; raw spellings remain in original stdout and native requests. macOS traversal separately normalizes to NFC like pane listings."
+}

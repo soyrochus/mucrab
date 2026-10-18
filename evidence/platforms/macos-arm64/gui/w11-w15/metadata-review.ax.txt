@@ -1,0 +1,57 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		8 button (disabled) Parent folder (Backspace)
+~		9 button (disabled) Home folder
+~		10 button (disabled) Refresh active pane
+~		11 button (disabled) Copy to other pane (F5)
+~		12 button (disabled) Move to other pane (F6)
+~		13 button (disabled) Rename focused item (F2)
+~		15 button (disabled) Back (Alt+Left)
+~		19 button (disabled) Copy  F5
+~		20 button (disabled) Move  F6
+~		21 button (disabled) Rename  F2
+~		22 button (disabled) Batch rename…
+~		24 button (disabled) Refresh
+~		26 toggle button (disabled, settable, boolean) left, Value: on
+~		77 toggle button (disabled, settable, boolean) left, Value: off
+~		27 button (disabled) +
+~		28 button (disabled) ×
+~		78 button (disabled) Current folder
+~		79 text field (disabled, settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left
+~		80 button (disabled) Parent folder (Backspace)
+~		81 button (disabled) Refresh
+~		82 button (disabled) Sort by Name
+~		84 button (disabled) Sort by Ext
+~		86 button (disabled) Sort by Size
+~		88 button (disabled) Sort by Modified (UTC)
+~		115 toggle button (disabled, settable, boolean) .., Value: off
+~		116 toggle button (disabled, settable, boolean) Documents, Value: off
+~		118 toggle button (disabled, settable, boolean) Folder, Value: off
+~		119 toggle button (disabled, settable, boolean) alpha.txt, Value: off
+~		120 toggle button (disabled, settable, boolean) beta.log, Value: off
+~		121 toggle button (disabled, settable, boolean) link, Value: off
+~		122 toggle button (disabled, settable, boolean) notes.txt, Value: on
+~		123 toggle button (disabled, settable, boolean) picture.png, Value: off
+~		124 toggle button (disabled, settable, boolean) sample.zip, Value: off
+~		125 toggle button (disabled, settable, boolean) unrelated.txt, Value: off
+~		53 toggle button (disabled, settable, boolean) Documents, Value: on
+~		54 button (disabled) +
+~		101 button (disabled) Current folder
+~		102 text field (disabled, settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/Documents
+~		103 button (disabled) Parent folder (Backspace)
+~		104 button (disabled) Refresh
+~		105 button (disabled) Sort by Name
+~		107 button (disabled) Sort by Ext
+~		109 button (disabled) Sort by Size
+~		111 button (disabled) Sort by Modified (UTC)
+~		112 toggle button (disabled, settable, boolean) .., Value: off
+~		113 toggle button (disabled, settable, boolean) nested.txt, Value: on
+~			163 checkbox (settable, boolean) on
+~			173 text field (settable) 2026-10-18T10:34:56.123456789Z
++		184 text (settable) Apply metadata changes
++		185 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/notes.txt
++		186 text (settable) One entry only; no recursion. Completed changes are retained if a later field fails.
++		187 text (settable) Permissions: 0640 → 0740 (special bits retained)
++		188 text (settable) Modified UTC: 2026-10-18T08:35:05.962671612Z → 2026-10-18T10:34:56.123456789Z
++		189 text (settable) Access time is preserved; actual stored precision is read back.
++		190 button Cancel
++		191 button Apply changes

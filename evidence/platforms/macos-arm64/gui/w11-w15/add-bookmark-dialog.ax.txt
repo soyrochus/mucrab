@@ -1,0 +1,54 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 102-113
+~		8 button (disabled) Parent folder (Backspace)
+~		9 button (disabled) Home folder
+~		10 button (disabled) Refresh active pane
+~		11 button (disabled) Copy to other pane (F5)
+~		12 button (disabled) Move to other pane (F6)
+~		13 button (disabled) Rename focused item (F2)
+~		19 button (disabled) Copy  F5
+~		20 button (disabled) Move  F6
+~		21 button (disabled) Rename  F2
+~		22 button (disabled) Batch rename…
+~		24 button (disabled) Refresh
+~		26 toggle button (disabled, settable, boolean) left, Value: on
+~		77 toggle button (disabled, settable, boolean) left, Value: off
+~		27 button (disabled) +
+~		28 button (disabled) ×
+~		78 button (disabled) Current folder
+~		79 text field (disabled, settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left
+~		80 button (disabled) Parent folder (Backspace)
+~		81 button (disabled) Refresh
+~		82 button (disabled) Sort by Name
+~		84 button (disabled) Sort by Ext
+~		86 button (disabled) Sort by Size
+~		88 button (disabled) Sort by Modified (UTC)
+~		89 toggle button (disabled, settable, boolean) .., Value: off
+~		90 toggle button (disabled, settable, boolean) Documents, Value: off
+~		91 toggle button (disabled, settable, boolean) Folder, Value: off
+~		92 toggle button (disabled, settable, boolean) alpha.txt, Value: off
+~		93 toggle button (disabled, settable, boolean) beta.log, Value: on
+~		94 toggle button (disabled, settable, boolean) link, Value: off
+~		95 toggle button (disabled, settable, boolean) notes.txt, Value: off
+~		96 toggle button (disabled, settable, boolean) picture.png, Value: off
+~		97 toggle button (disabled, settable, boolean) sample.zip, Value: off
+~		98 toggle button (disabled, settable, boolean) unrelated.txt, Value: off
+~		53 toggle button (disabled, settable, boolean) right, Value: on
+~		54 button (disabled) +
+~		56 button (disabled) Current folder
+~		57 text field (disabled, settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/right
+~		58 button (disabled) Parent folder (Backspace)
+~		59 button (disabled) Refresh
+~		61 button (disabled) Sort by Name
+~		63 button (disabled) Sort by Ext
+~		65 button (disabled) Sort by Size
+~		67 button (disabled) Sort by Modified (UTC)
+~		68 toggle button (disabled, settable, boolean) .., Value: on
+~		69 toggle button (disabled, settable, boolean) right.txt, Value: off
+~		101 text (settable) Add Bookmark
++		102 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left
++		103 text (settable) Name:
++		104 text field (settable) left
++		105 button Cancel
++		106 button Save bookmark
+The focused UI element is 104 text field (settable) left

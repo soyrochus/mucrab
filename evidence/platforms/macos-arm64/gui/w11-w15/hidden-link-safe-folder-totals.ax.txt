@@ -1,0 +1,24 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 159, 161-176, 178
++			188 text (settable) Complete — 8 bytes · 2 files · 1 folders · 1 links · 4 visited · 0 omissions/errors
+~			160 text (settable) Non-recursive changes. Special bits and access time are preserved. UTC input has nanosecond resolution; filesystem rounding is shown after refresh.
++			189 checkbox (settable, boolean) Change permissions, Value: off
++			190 text (settable) Read
++			191 text (settable) Write
++			192 text (settable) Execute
++			193 text (settable) Owner
++			194 checkbox (disabled, settable, boolean) on
++			195 checkbox (disabled, settable, boolean) on
++			196 checkbox (disabled, settable, boolean) on
++			197 text (settable) Group
++			198 checkbox (disabled, settable, boolean) on
++			199 checkbox (disabled, settable, boolean) off
++			200 checkbox (disabled, settable, boolean) on
++			201 text (settable) Other
++			202 checkbox (disabled, settable, boolean) on
++			203 checkbox (disabled, settable, boolean) off
++			204 checkbox (disabled, settable, boolean) on
+~			177 checkbox (settable, boolean) Change modified time, Value: off
++			205 text field (disabled, settable) 2026-10-18T08:35:05.963022320Z
++			206 button (disabled) Review changes…
+The focused UI element is 33 unknown

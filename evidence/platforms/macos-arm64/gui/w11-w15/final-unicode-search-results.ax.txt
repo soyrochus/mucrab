@@ -1,0 +1,4 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~			85 text field (settable) café.*
+~			117 text (settable) Complete — 15 visited, 1 matches, 0 omissions/errors
++			119 toggle button (settable, boolean) café.txt · File · 19 · 2026-10-18 09:51:29, Value: off

@@ -1,0 +1,20 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		11 button Copy to other pane (F5)
+~		12 button Move to other pane (F6)
+~		13 button Rename focused item (F2)
+~		19 button Copy  F5
+~		20 button Move  F6
+~		21 button Rename  F2
+~		22 button Batch rename…
+~		41 toggle button (settable, boolean) .., Value: off
+~		45 toggle button (settable, boolean) beta.log, Value: on
+~		51 text (settable) 1 of 9 selected · 6 B
++		77 unknown
++			78 button New Tab Ctrl/Cmd+T
++			79 button Duplicate Tab Ctrl/Cmd+Shift+T
++			80 button (disabled) Close Tab Ctrl/Cmd+W
++			81 button Next Tab Ctrl+Tab
++			82 button Previous Tab Ctrl+Shift+Tab
++			83 button Switch pane Tab
++			84 button Split equally
+The focused UI element is 33 unknown

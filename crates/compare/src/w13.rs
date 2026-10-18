@@ -17,7 +17,11 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
     for line in io::stdin().lock().lines() {
         let r: Request = serde_json::from_str(&line?)?;
         let s = PropertySnapshot::capture(EntryTarget::Local(r.path))?;
-        let before = json!({"kind":format!("{:?}",s.kind),"size":s.size,"mode":s.mode,"uid":s.uid,"gid":s.gid,"links":s.links});
+        let accessed_ns = s
+            .accessed
+            .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
+            .map(|d| d.as_nanos());
+        let before = json!({"kind":format!("{:?}",s.kind),"size":s.size,"mode":s.mode,"uid":s.uid,"gid":s.gid,"links":s.links,"accessed_ns":accessed_ns});
         let result = s
             .metadata_plan(Some(r.new_mode), time_from_millis(r.new_mtime_ms))
             .and_then(|p| p.apply(&JobControl::default()));

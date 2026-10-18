@@ -1,0 +1,41 @@
+{
+  "stopped_test_servers": [
+    {
+      "pid": 56234,
+      "command": "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B tools/w15_server.py artifacts/gui/W15-macos-service"
+    },
+    {
+      "pid": 58559,
+      "command": "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B tools/w15_server.py artifacts/gui/W15-macos-native"
+    }
+  ],
+  "removed_large_disposable_files": [
+    {
+      "path": "artifacts/gui/W15-macos-native/local/large.bin",
+      "size": 4294967296
+    },
+    {
+      "path": "artifacts/gui/W15-macos-native/remote/large.bin",
+      "size": 1073741824
+    },
+    {
+      "path": "artifacts/gui/W15-macos-native/remote/large.bin.mucrab-stage-58943-8",
+      "size": 2206203904
+    }
+  ],
+  "mounts": [
+    {
+      "path": "artifacts/macos-verification/w11-w15-boundary/mounted",
+      "exit_code": 0,
+      "stdout": "\"disk6\" ejected.\n",
+      "stderr": ""
+    },
+    {
+      "path": "artifacts/macos-verification/w11-w15-mount",
+      "exit_code": 0,
+      "stdout": "\"disk4\" ejected.\n",
+      "stderr": ""
+    }
+  ],
+  "status": "passed"
+}

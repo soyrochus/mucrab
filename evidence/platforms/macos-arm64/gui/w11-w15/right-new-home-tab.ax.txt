@@ -1,0 +1,49 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 56-59, 61-70
+~		11 button (disabled) Copy to other pane (F5)
+~		12 button (disabled) Move to other pane (F6)
+~		13 button (disabled) Rename focused item (F2)
+~		17 text (settable) Right > Left
+~		19 button (disabled) Copy  F5
+~		20 button (disabled) Move  F6
+~		21 button (disabled) Rename  F2
+~		22 button (disabled) Batch rename…
+~		53 toggle button (settable, boolean) right, Value: off
++		100 toggle button (settable, boolean) ivanderk, Value: on
+~		55 button ×
++		101 button Current folder
++		102 text field (settable) /Users/ivanderk
++		103 button Parent folder (Backspace)
++		104 button Refresh
++		105 button Sort by Name
++		106 unknown
++		107 button Sort by Ext
++		108 unknown
++		109 button Sort by Size
++		110 unknown
++		111 button Sort by Modified (UTC)
++		112 toggle button (settable, boolean) .., Value: on
++		113 toggle button (settable, boolean) access-request-demo-ui, Value: off
++		114 toggle button (settable, boolean) Applications, Value: off
++		115 toggle button (settable, boolean) apps, Value: off
++		116 toggle button (settable, boolean) bin, Value: off
++		117 toggle button (settable, boolean) Capgemini, Value: off
++		118 toggle button (settable, boolean) curriculums-main, Value: off
++		119 toggle button (settable, boolean) Desktop, Value: off
++		120 toggle button (settable, boolean) Documents, Value: off
++		121 toggle button (settable, boolean) Downloads, Value: off
++		122 toggle button (settable, boolean) gdrive, Value: off
++		123 toggle button (settable, boolean) Insync, Value: off
++		124 toggle button (settable, boolean) Library, Value: off
++		125 toggle button (settable, boolean) Movies, Value: off
++		126 toggle button (settable, boolean) Music, Value: off
++		127 toggle button (settable, boolean) OneDrive - Capgemini, Value: off
++		128 toggle button (settable, boolean) Pictures, Value: off
++		129 toggle button (settable, boolean) Public, Value: off
++		130 toggle button (settable, boolean) shared, Value: off
++		131 toggle button (settable, boolean) src, Value: off
++		132 toggle button (settable, boolean) tmp, Value: off
++		133 scroll bar
++		134 text (settable) 0 of 21 selected · 0 B
++		135 text (settable) Active pane
+The focused UI element is 60 unknown

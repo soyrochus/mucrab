@@ -1,0 +1,9 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 179-185
+~			122 text field (settable) *.txt
+~			172 text (settable) Complete — 14 visited, 5 matches, 0 omissions/errors
+~			174 toggle button (settable, boolean) Documents/nested.txt · File · 7 · 2026-10-18 08:35:05, Value: off
+~			175 toggle button (settable, boolean) Folder/inside.txt · File · 5 · 2026-10-18 08:35:05, Value: off
+~			176 toggle button (settable, boolean) alpha.txt · File · 6 · 2026-10-18 08:35:05, Value: off
+~			177 toggle button (settable, boolean) notes.txt · File · 48 · 2026-10-18 08:35:05, Value: off
+~			178 toggle button (settable, boolean) unrelated.txt · File · 10 · 2026-10-18 08:35:05, Value: off

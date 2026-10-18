@@ -2,10 +2,13 @@
 
 [Back to the README](../README.md).
 
-Updated **2026-10-18** for W15 commit `5b77e5a`. The latest Linux checkpoint
-passes **106 Rust tests** and **51 Python tests**, formatting, locked all-feature
-build and Clippy. Counts below for earlier workflows describe their historical
-checkpoints. Native macOS acceptance covers W01–W08; W09–W15 checks remain pending.
+Updated **2026-10-18** after W11–W15 Mac acceptance. The latest Mac checkpoint
+passes **107 Rust / 51 Python tests**, four separately invoked service/mount tests,
+formatting, locked/offline all-feature build, Clippy and scoped W11–W15 Java/Rust
+comparisons. Bounded native checks pass for tabs/bookmarks/search, properties,
+viewer and SFTP, including Keychain round-trip and paused-transfer tab/app closure.
+See [Mac evidence and remaining gates](../evidence/platforms/macos-arm64/W11-W15.md).
+The Linux checkpoint is 106 Rust / 51 Python tests; earlier counts below are historical.
 
 **W15 — SFTP connections and transfers** is implemented and Linux-verified within
 its bounded contract. Saved non-secret profiles back typed remote tabs/history/
@@ -16,8 +19,8 @@ authentication run on workers. Save changed profile settings before connecting;
 changing an endpoint disconnects its old sessions. Optional native credential
 storage has no plaintext fallback. Saved credentials are bound to endpoint, user
 and authentication method; changing those settings cannot reuse the old secret. Linux uses bounded Secret Service calls and
-refuses locked stores without prompting to unlock; macOS Keychain is implemented
-but awaits native verification.
+refuses locked stores without prompting to unlock. Mac Keychain save/read/update/
+delete passes with a disposable account; locked/unavailable-store checks remain open.
 
 Local↔SFTP copies review endpoints/names/policy, include hidden descendants, reject
 links/special files, pin available source/destination metadata and use unique
@@ -47,9 +50,10 @@ regressions pass on the preceding W15 candidate; final trust/credential adjustme
 have their own final workspace/service/native receipts. Historical receipts are
 not relabeled as final-source execution.
 
-Mac build/Keychain/UI, full original connection/job UI parity, active-tab closure
-or app-close during an active remote transfer through native input, and broader
-server/IPv6/agent-free key-format interoperability remain open acceptance gates.
+Mac build, Keychain round-trip, native transfers/open/view/disconnect/reconnect and
+origin-tab/app closure during a paused remote transfer pass. Full original
+connection/job UI parity, expanded disconnect races, unavailable/locked Mac Keychain
+and broader server/IPv6/key-format interoperability remain open acceptance gates.
 The server fixture needed documented root/key corrections and later failure
 instrumentation after Rust began; no fully blind server/GUI fixture claim is made.
 See [W15 evidence](../evidence/workflows/W15-sftp-connections/README.md).
@@ -82,7 +86,9 @@ include the isolated original provider's owner-only permission mask, preserved
 special bits/link guards, Swing newline normalization and EXIF orientation.
 JPEG pixel comparison has maximum channel difference1 within tolerance2.
 
-Native macOS, full original-window parity, a real bind-mount boundary, foreign-owner
+Mac both-pane editing, exact text clipboard, image Light/Dark/narrow controls and
+real mounted-child boundaries pass. Full original-window parity, Linux same-device
+bind-mount boundaries, foreign-owner
 chmod denial and broader GPU/font coverage remain pending. Bundled fonts lack some
 CJK glyphs although decoded text/clipboard is exact. Read cancellation is cooperative;
 blocked lookup/OS/decoder calls must return before close acknowledgment. Stable-entry
@@ -113,8 +119,9 @@ regressions. W12 compares **64 predefined + 64 reserved filename cases** against
 the pinned Java predicate: zero unexpected differences; two reserved escape
 cases intentionally differ. W11 includes a supplemental original factory/value
 probe, with a deliberate copied-history difference; native bookmark validation is tested separately.
-Full original tab/search UI parity, native macOS verification and real mount
-integration remain acceptance gates. See [W11 evidence](../evidence/workflows/W11-tabs-bookmarks/README.md)
+Mac tab/bookmark restart, both-pane search and a real mounted-child boundary pass.
+Full original tab/search UI parity and Linux same-device bind mounts remain open.
+See [W11 evidence](../evidence/workflows/W11-tabs-bookmarks/README.md)
 and [W12 evidence](../evidence/workflows/W12-file-search/README.md).
 
 **W10 — Everyday file management** now implements New Folder, reviewed
@@ -130,7 +137,7 @@ W10 is not yet closed across all hosts. See
 **W09 — default-application file opening** is implemented for local files and
 archive members, with native Linux verification of Enter, double-click and
 File → Open. Archive copies survive application exit and do not update ZIPs.
-The macOS dispatch path awaits native verification. See
+Mac archive viewer-to-TextEdit dispatch passes; the other W09 gestures remain open. See
 [W09 evidence](../evidence/workflows/W09-open-files/README.md) for scope and results.
 
 The preceding verified functional milestone is **W07 — background operations,
@@ -271,7 +278,9 @@ covers Enter, archive double-click and File → Open with an isolated real file
 association, exact filenames/contents and temporary-copy retention after exit.
 The W09 checkpoint passes **51 Linux Rust tests**, **51 Python tests**, formatting,
 denied-warning Clippy, and the W07/W08 native regressions. The earlier Mac
-checkpoint's 47 Rust tests predate W09; native macOS dispatch remains pending.
+checkpoint's 47 Rust tests predate W09. The later Mac W11–W15 checkpoint verifies
+archive viewer-to-TextEdit dispatch and retained-copy lifetime; other W09 gestures
+remain pending.
 [W09 evidence](../evidence/workflows/W09-open-files/README.md) records static
 original-binary recovery and native implementation checks. W09 does not yet have
 a Java/Rust runtime parity suite.
@@ -320,11 +329,11 @@ closing a paused job. See the [Mac receipts](../evidence/platforms/macos-arm64/R
 for Unicode path rules and source hashes. Live OS theme-notification delivery,
 restoration of the original preference and the signed Mac release bundle pass. Other macOS versions,
 Wayland, Windows hidden attributes and exhaustive OS shortcut parity remain
-unverified. W09–W15 have bounded Linux verification; their native macOS acceptance
-remains pending, including default-application dispatch, clipboard/Trash,
-tabs/bookmarks/search, properties/viewer and SFTP build/Keychain/UI. The earlier
-signed Mac release bundle predates these additions and does not verify the W15
-vendored OpenSSL build. Linux SFTP builds require OpenSSL and DBus development
+unverified. W11–W15 now have bounded Mac acceptance, including vendored OpenSSL
+build, scoped comparisons, native UI, real SFTP and Keychain round-trip. Mac W09/W10
+gesture/clipboard/Trash coverage remains incomplete; viewer external handoffs pass.
+The earlier signed release bundle predates these additions; no new W15 release
+package was verified here. Linux SFTP builds require OpenSSL and DBus development
 packages; macOS enables locked vendored OpenSSL.
 
 Additional remote protocols, archive formats and other locales remain for later

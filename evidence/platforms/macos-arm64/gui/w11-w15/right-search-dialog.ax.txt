@@ -1,0 +1,53 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		15 button (disabled) Back (Alt+Left)
+~		17 text (settable) Right > Left
+~		112 toggle button (settable, boolean) .., Value: off
+~		113 toggle button (settable, boolean) right.txt, Value: on
+~		114 text (settable) 1 of 1 selected · 6 B
++		118 text (settable) Active pane
++		119 container Search files
++			120 button Hide
++			121 button Close window
++			122 unknown
++			123 text (settable) Local folder
++			124 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left
++			125 text (settable) Name pattern
++			126 text field (settable) *.txt
++			127 checkbox (settable, boolean) Match case, Value: off
++			128 text (settable) Extension
++			129 text field (settable)
++			130 checkbox (settable, boolean) Include hidden, Value: off
++			131 text (settable) Types
++			132 checkbox (settable, boolean) Files, Value: on
++			133 checkbox (settable, boolean) Folders, Value: on
++			134 checkbox (settable, boolean) Links (never followed), Value: on
++			135 text (settable) Size in bytes
++			136 text (settable) Min
++			137 text field (settable)
++			138 text (settable) Max
++			139 text field (settable)
++			140 text (settable) Modified (UTC)
++			141 text (settable) From
++			142 text field (settable)
++			143 text (settable) To
++			144 text field (settable)
++			145 text (settable) Dates: YYYY-MM-DD (To includes that day), or RFC3339 timestamp (To is exclusive). Blank bounds mean no limit.
++			146 button Search
++			147 button (disabled) Cancel search
++			148 button Open containing folder
++			149 text (settable) Complete — 14 visited, 5 matches, 0 omissions/errors
++			150 text (settable) Relative path · type · bytes · modified UTC
++			151 toggle button (settable, boolean) Documents/nested.txt · File · 7 · 2026-10-18 08:35:05, Value: on
++			152 toggle button (settable, boolean) Folder/inside.txt · File · 5 · 2026-10-18 08:35:05, Value: off
++			153 toggle button (settable, boolean) alpha.txt · File · 6 · 2026-10-18 08:35:05, Value: off
++			154 toggle button (settable, boolean) notes.txt · File · 48 · 2026-10-18 08:35:05, Value: off
++			155 toggle button (settable, boolean) unrelated.txt · File · 10 · 2026-10-18 08:35:05, Value: off
++			156 splitter
++			157 splitter
++			158 splitter
++			159 splitter
++			160 splitter
++			161 splitter
++			162 splitter
++			163 splitter
+The focused UI element is 60 unknown

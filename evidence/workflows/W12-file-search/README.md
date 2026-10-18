@@ -1,12 +1,19 @@
 # W12 — File search
 
-Implemented and Linux-verified. Native macOS and broader original traversal/UI
-acceptance remain open in [tasks](../../../openspec/changes/w12-file-search/tasks.md).
+**Mac checkpoint — 2026-10-18:** [workspace/comparison/native evidence](../../platforms/macos-arm64/W11-W15.md)
+passes both-pane result navigation, composed-name search on APFS, real mounted-child
+omission and 64+64 scoped predicate cases. Mac traversal now uses NFC like pane
+listings; predicate comparisons preserve the same observed direct-provider inputs.
+
+Implemented with bounded Linux/Mac verification. Broader original traversal/UI
+and composite regression gates remain open in [tasks](../../../openspec/changes/w12-file-search/tasks.md).
 
 Go → Search files / Ctrl/Cmd+F opens a nonmodal search window. Each start captures
 a canonical local root and immutable criteria. Filename globs use `*`, `?` and
 backslash escaping; `?` matches one Unicode scalar, literals compare per-scalar
-lowercase unless Match Case is enabled. No canonical normalization is applied.
+lowercase unless Match Case is enabled. The matcher keeps exact scalar inputs;
+Mac traversal supplies visible NFC names like pane listings while retaining raw
+filesystem paths. No cross-platform canonical-equivalence guarantee is made.
 Extension uses the existing last-dot rule. Inclusive byte-size filters apply to
 regular files only. UTC modified bounds are [From, To); date-only To advances to
 the following midnight, while RFC3339 To remains exclusive. Hidden inclusion
@@ -63,8 +70,9 @@ persisted. Content/regex/archive/remote search is outside W12.
 - [W07–W10 regressions](regressions.json) and [workspace checks](validation.json).
 
 Full original traversal/error/result-window comparisons, native close during an
-actively traversing search, real mount integration and macOS native verification
-remain pending. No blind holdout or full search-job parity claim is made.
+actively traversing search and Linux same-device bind mounts remain pending.
+Mac both-pane input and a real different-device mounted child pass. No blind
+holdout or full search-job parity claim is made.
 
 ## Reproduce
 

@@ -1,0 +1,11 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 89-104
+~		81 unknown
+~			82 checkbox (settable, boolean) Show hidden files, Value: off
+~			83 checkbox (settable, boolean) Folders first, Value: on
+~			84 checkbox (settable, boolean) Ascending order, Value: on
+~			85 button Sort by ⏵
+~			86 button Name ordering ⏵
+~			87 button Appearance ⏵
+~			88 button Find by name… Type a prefix
+The focused UI element is 33 unknown

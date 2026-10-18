@@ -1,0 +1,40 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		75 container SFTP connections
+~			76 button Hide
+~			77 button Close window
+~			78 unknown
+~			79 toggle button (settable, boolean) SFTP server, Value: on
+~			80 button New profile
+~			81 text (settable) Profile ID
+~			82 text field (settable) server-1
+~			83 text (settable) Label
++			84 text field (settable) SFTP server
++			85 text (settable) Host (no URL)
++			86 text field (settable)
++			87 text (settable) User
++			88 text field (settable)
++			89 text (settable) Initial directory
++			90 text field (settable) /
++			91 text (settable) Port
++			92 stepper (settable) 22
++			93 checkbox (settable, boolean) Private-key file authentication, Value: off
++			94 text (settable) Password / key passphrase
++			95 secure text field (settable)
++			96 checkbox (settable, boolean) Use saved native credential, Value: off
++			97 checkbox (settable, boolean) Remember secret in OS credential store (explicit opt-in), Value: off
++			98 text (settable) If Keychain/Secret Service is unavailable, remembering fails visibly. Uncheck Remember to connect for this session. Secrets are never saved in profiles.
++			99 button Save profile
++			100 button Delete profile…
++			101 button Connect
++			102 button (disabled) Disconnect
++			103 button Cancel pending
++			104 button Trusted hosts
++			105 splitter
++			106 splitter
++			107 splitter
++			108 splitter
++			109 splitter
++			110 splitter
++			111 splitter
++			112 splitter
+The focused UI element is 33 unknown

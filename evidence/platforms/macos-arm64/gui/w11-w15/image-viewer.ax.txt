@@ -1,0 +1,29 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		122 toggle button (settable, boolean) notes.txt, Value: off
+~		123 toggle button (settable, boolean) picture.png, Value: on
+~		117 text (settable) 1 of 9 selected · 1932 B
++		127 container View file
++			128 button Hide
++			129 button Close window
++			130 unknown
++			131 unknown
++			132 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/picture.png
++			133 button Open externally
++			134 button Close viewer (Esc)
++			135 text (settable) Resolved preview: /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/picture.png
++			136 text (settable) 560 × 400 · Original orientation
++			137 button Fit
++			138 button 100%
++			139 button −
++			140 button +
++			141 text (settable) 102% · drag to pan
++			142 unknown
++			143 splitter
++			144 splitter
++			145 splitter
++			146 splitter
++			147 splitter
++			148 splitter
++			149 splitter
++			150 splitter
+The focused UI element is 131 unknown

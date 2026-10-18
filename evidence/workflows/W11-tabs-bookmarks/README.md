@@ -1,7 +1,10 @@
 # W11 — Tabs and bookmarks
 
-Implemented and Linux-verified; broader original-window and macOS acceptance
-remain open in [tasks](../../../openspec/changes/w11-tabs-bookmarks/tasks.md).
+Implemented with bounded Linux and Mac verification. The
+[2026-10-18 Mac checkpoint](../../platforms/macos-arm64/W11-W15.md) adds native
+tab/mark isolation, bookmark restart, same-path origin-tab closure during a paused
+SFTP transfer, workspace checks and the original value probe. Composite original/
+regression gates remain open in [tasks](../../../openspec/changes/w11-tabs-bookmarks/tasks.md).
 
 Each pane has 1–32 session tabs with stable nonreused IDs, location/history,
 marks/focus, sorting and widths. New opens Home with default options; Duplicate
@@ -46,7 +49,7 @@ race-free filesystem guarantee is claimed. Tabs/history are not persisted.
 
 Full original tab-state predefined/reserved comparison, tab switching during
 all move/Paste/open preparation variants, a native ZIP-bookmark UI replay and
-macOS native checks remain pending. Do not turn those gates into passes from
+fresh earlier Mac native regressions remain pending. Do not turn those gates into passes from
 unit tests or static recovery alone. No Java dependency enters the application.
 
 ## Reproduce

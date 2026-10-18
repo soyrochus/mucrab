@@ -1,5 +1,9 @@
 # W14 — Built-in viewer
 
+**Mac checkpoint — 2026-10-18:** [workspace/comparison/native evidence](../../platforms/macos-arm64/W11-W15.md)
+passes 68+52 text/image cases, exact Unicode/CRLF clipboard, find, image controls,
+Light/Dark/narrow layouts, ZIP lease cleanup and retained TextEdit handoff.
+
 Implemented and Linux-verified on 2026-10-17. F3 / File → View captures the focused
 file or resolved file link, independently of marks. Enter/double-click retain
 W09 default-application opening. Preview failures are visible and never launch
@@ -79,7 +83,7 @@ after implementation; raw captures/logs are in the ignored run paths referenced
 by receipts. Python original probes need the acquired reference JARs and JDK;
 the native application requires neither.
 
-Native macOS, full original-window parity, alternate GPU limits/backends and
+Full original-window parity, alternate GPU limits/backends and
 broader font/IME/accessibility coverage remain pending. The bundled Linux font
 lacks some CJK glyphs; decoded strings and clipboard are exact despite missing
 glyph boxes. No fallback font was downloaded. Filesystem race freedom, editing,

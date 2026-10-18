@@ -104,6 +104,11 @@ fn frozen_metadata_cases_preserve_special_bits_atime_bytes_and_hardlinks() {
                 m.permissions().mode() & 0o7777,
                 (s.mode.unwrap() & 0o7000) | newmode
             );
+            // chmod can trigger host-side access on macOS. Preserve the value
+            // captured immediately before the plan, not an older fixture value.
+            #[cfg(target_os = "macos")]
+            assert_eq!(m.accessed().ok(), s.accessed, "{}", case["id"]);
+            #[cfg(not(target_os = "macos"))]
             assert_eq!(m.accessed().unwrap(), atime);
             assert_eq!(m.modified().unwrap(), changed);
             if kind == "hardlink" {

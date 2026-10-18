@@ -1,0 +1,57 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 161-166
+~		8 button (disabled) Parent folder (Backspace)
+~		9 button (disabled) Home folder
+~		10 button (disabled) Refresh active pane
+~		11 button (disabled) Copy to other pane (F5)
+~		13 button (disabled) Rename focused item (F2)
++		168 button (disabled) Copy  F5
++		169 button (disabled) Move  F6
++		170 button (disabled) Rename  F2
++		171 button (disabled) Batch rename…
++		172 button (disabled) Extract ZIP…
++		173 button (disabled) Refresh
+~		26 toggle button (disabled, settable, boolean) Root, Value: on
+~		27 button (disabled) +
+~		29 button (disabled) Current folder
+~		30 text field (disabled, settable) sftp://server-1/
+~		31 button (disabled) Parent folder (Backspace)
+~		32 button (disabled) Refresh
+~		34 button (disabled) Sort by Name
+~		36 button (disabled) Sort by Ext
+~		38 button (disabled) Sort by Size
+~		40 button (disabled) Sort by Modified (UTC)
+~		135 toggle button (disabled, settable, boolean) folder, Value: off
+~		136 toggle button (disabled, settable, boolean) large.bin, Value: off
+~		137 toggle button (disabled, settable, boolean) link, Value: off
+~		138 toggle button (disabled, settable, boolean) notes.txt, Value: on
+~		167 toggle button (disabled, settable, boolean) upload.txt, Value: off
+~		48 toggle button (disabled, settable, boolean) local, Value: off
+~		141 toggle button (disabled, settable, boolean) local, Value: on
+~		49 button (disabled) +
+~		50 button (disabled) ×
+~		142 button (disabled) Current folder
+~		143 text field (disabled, settable) /Users/ivanderk/src/rea-test/artifacts/gui/W15-macos-native/local
+~		144 button (disabled) Parent folder (Backspace)
+~		145 button (disabled) Refresh
+~		146 button (disabled) Sort by Name
+~		148 button (disabled) Sort by Ext
+~		150 button (disabled) Sort by Size
+~		152 button (disabled) Sort by Modified (UTC)
+~		153 toggle button (disabled, settable, boolean) .., Value: off
+~		154 toggle button (disabled, settable, boolean) folder, Value: off
+~		155 toggle button (disabled, settable, boolean) large.bin, Value: on
+~		156 toggle button (disabled, settable, boolean) link, Value: off
+~		157 toggle button (disabled, settable, boolean) notes.txt, Value: off
+~		158 toggle button (disabled, settable, boolean) upload.txt, Value: off
+~		159 text (settable) 1 of 5 selected · 4294967296 B
++		174 text (settable) Copy between local folder and SFTP
++		175 text (settable) From: /Users/ivanderk/src/rea-test/artifacts/gui/W15-macos-native/local
++		176 text (settable) To: sftp://server-1/
++		177 text (settable) large.bin
++		178 toggle button (settable, boolean) Skip existing, Value: on
++		179 toggle button (settable, boolean) Overwrite, Value: off
++		180 text (settable) Hidden descendants included; links/special files are rejected. Remote identity uses kind/size/second-resolution time. Owned staging paths may remain after failure or cancellation; sources and earlier completed work are retained.
++		181 text (settable) Overwrite requires advertised POSIX rename. A failed/uncertain publication is not retried automatically. No remote move or writeback.
++		182 button Cancel
++		183 button Apply copy

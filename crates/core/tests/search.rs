@@ -35,6 +35,64 @@ fn run(q: SearchQuery) -> SearchReport {
         .run(&JobControl::default(), |_| true)
         .unwrap()
 }
+#[cfg(target_os = "macos")]
+#[test]
+fn macos_search_matches_visible_composed_names_and_opens_raw_paths() {
+    let t = Tree::new();
+    fs::write(t.0.join("cafe\u{301}.txt"), b"accented").unwrap();
+    let report = run(SearchQuery {
+        pattern: "café.*".into(),
+        ..t.query()
+    });
+    assert_eq!(report.hits.len(), 1);
+    assert_eq!(fs::read(&report.hits[0].path).unwrap(), b"accented");
+    let sorter = NameSorter::en_us().unwrap();
+    let mut pane = BrowserPane::default();
+    report.hits[0].open_containing(&mut pane, &sorter).unwrap();
+    assert_eq!(
+        pane.selection
+            .snapshot(&pane.entries, &pane.order)
+            .focused
+            .as_deref(),
+        Some("café.txt")
+    );
+}
+#[cfg(target_os = "macos")]
+#[test]
+#[ignore = "requires MUCRAB_MOUNT_FIXTURE with a real mounted child and disposable marker files"]
+fn macos_real_mounted_child_is_omitted_by_search_and_folder_totals() {
+    use std::os::unix::fs::MetadataExt;
+    let root = fs::canonicalize(std::env::var_os("MUCRAB_MOUNT_FIXTURE").unwrap()).unwrap();
+    let mounted = root.join("mounted");
+    assert_ne!(
+        fs::metadata(&root).unwrap().dev(),
+        fs::metadata(&mounted).unwrap().dev()
+    );
+    assert_eq!(fs::read(root.join("outside.txt")).unwrap(), b"outside");
+    assert_eq!(fs::read(mounted.join("inside.txt")).unwrap(), b"inside");
+    let report = run(SearchQuery {
+        root: root.clone(),
+        ..Default::default()
+    });
+    assert!(report.partial());
+    assert_eq!(report.hits.len(), 2);
+    assert!(
+        report
+            .hits
+            .iter()
+            .all(|h| h.relative_path != std::path::Path::new("mounted/inside.txt"))
+    );
+    assert!(report.issues.iter().any(|s| s.contains("Mount boundary")));
+    let totals = folder_size(&root, &JobControl::default()).unwrap();
+    assert!(totals.partial());
+    assert_eq!((totals.bytes, totals.files), (7, 1));
+    assert!(
+        totals
+            .details
+            .iter()
+            .any(|s| s.to_lowercase().contains("mount"))
+    );
+}
 #[test]
 fn unicode_globs_escapes_validation_and_utc_boundaries() {
     let t = Tree::new();

@@ -1,0 +1,15 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 126-135
+~		11 button (disabled) Copy to other pane (F5)
+~		12 button (disabled) Move to other pane (F6)
+~		13 button (disabled) Rename focused item (F2)
+~		19 button (disabled) Copy  F5
+~		20 button (disabled) Move  F6
+~		21 button (disabled) Rename  F2
+~		22 button (disabled) Batch rename…
+~		53 toggle button (settable, boolean) right, Value: on
+~		102 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/right
+~		112 toggle button (settable, boolean) .., Value: on
+~		113 toggle button (settable, boolean) right.txt, Value: off
+~		114 text (settable) 0 of 1 selected · 0 B
+The focused UI element is 60 unknown

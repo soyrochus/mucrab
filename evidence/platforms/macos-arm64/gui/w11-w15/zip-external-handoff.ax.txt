@@ -1,0 +1,12 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 19-24
+~		18 text (settable) Open request sent. Changes to the retained temporary copy do not update the ZIP.
++		147 button Dismiss
++		148 text (settable) Metadata: 1/1 fields changed · Permissions changed · 0 skipped · 0 problems
++		149 button Extract  F5
++		150 button (disabled) Move  F6
++		151 button (disabled) Rename  F2
++		152 button (disabled) Batch rename…
++		153 button Extract ZIP…
++		154 button Refresh
+The focused UI element is 137 unknown

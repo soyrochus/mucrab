@@ -1,0 +1,42 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 93-101
+~		8 button Parent folder (Backspace)
+~		9 button Home folder
+~		10 button Refresh active pane
+~		11 button Copy to other pane (F5)
+~		13 button Rename focused item (F2)
+~		85 button Copy  F5
+~		87 button Rename  F2
+~		88 button Batch rename…
+~		90 button Refresh
+~		26 toggle button (settable, boolean) Root, Value: on
+~		27 button +
+~		29 button Current folder
+~		30 text field (settable) sftp://server-1/
+~		31 button Parent folder (Backspace)
+~		32 button Refresh
+~		34 button Sort by Name
+~		36 button Sort by Ext
+~		38 button Sort by Size
+~		40 button Sort by Modified (UTC)
+~		41 toggle button (settable, boolean) folder, Value: on
+~		42 toggle button (settable, boolean) link, Value: off
+~		43 toggle button (settable, boolean) notes.txt, Value: off
++		92 toggle button (settable, boolean) upload.txt, Value: off
+~		46 text (settable) 1 of 4 selected · 0 B
+~		48 toggle button (settable, boolean) local, Value: on
+~		49 button +
+~		51 button Current folder
+~		52 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W15-macos-native/local
+~		53 button Parent folder (Backspace)
+~		54 button Refresh
+~		56 button Sort by Name
+~		58 button Sort by Ext
+~		60 button Sort by Size
+~		62 button Sort by Modified (UTC)
+~		63 toggle button (settable, boolean) .., Value: off
+~		64 toggle button (settable, boolean) folder, Value: off
+~		65 toggle button (settable, boolean) link, Value: off
+~		66 toggle button (settable, boolean) notes.txt, Value: off
+~		67 toggle button (settable, boolean) upload.txt, Value: on
+The focused UI element is 55 unknown

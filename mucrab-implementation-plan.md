@@ -14,9 +14,9 @@ session can continue without the original conversation.
 | Last updated | 2026-10-18 |
 | Implementation checkpoint | W15 SFTP connections/transfers included in this commit, following `e44dbb0` (W13/W14); exact verified source/binary hashes are in W15 evidence |
 | Current phase | Phase 6 in progress: bounded macOS acceptance completed; broader platform/product acceptance remains |
-| Active workflow | W15 SFTP connections/transfers implemented; scoped provider comparisons, real protocol/credential checks and Linux native checks pass. Mac/full original UI and expanded remote active-job input gates remain pending |
+| Active workflow | W15 implemented; bounded Linux/Mac workspace, original-provider comparisons, real SFTP/native credentials and native UI pass. Mac origin-tab/app closure during paused transfer passes; broader original UI, unavailable Keychain and disconnect races remain open |
 | W01 status | `verified` within en-US Linux x86_64/ext4 and macOS arm64/APFS scope; representative original GUI evidence |
-| Next executable task | Verify W09–W15 on macOS, W15 Keychain/vendored OpenSSL build and remaining original-window/active-remote-job/real-mount gates. W15 is SFTP connections/transfers; earlier checksums wording was incorrect |
+| Next executable task | Complete Mac W09/W10 gesture/clipboard/Trash checks, locked/unavailable Mac Keychain, full original-window parity, Linux same-device bind mounts, foreign-owner chmod denial and broader disconnect/server checks |
 | Ported workflows | W15 — saved SFTP profiles/trust, async browsing, staged mixed copies and retained Open/View downloads; W13 — focused properties, bounded folder totals, reviewed local rwx/modified-time edits; W14 — bounded text/PNG/JPEG viewer with ZIP leases and external handoff; W11 — independent tabs and shared persisted local/ZIP bookmarks; W12 — bounded cancellable recursive local search and result navigation; W10 — New Folder, reviewed Delete/Trash, native clipboard Copy/Paste, prefix-find, per-pane history; W09 — default-application local/archive opening; W07 — bounded job lifecycle, progress and cancellation; W08 — classic UI/Light-Dark-System appearance (presentation scope); W01 — local browsing/name ordering; W02a — focus and marking; W02b — hidden-file filtering; W02c — size/date/extension sorting; W03 — bounded recursive copy; W04 — bounded local move and focused rename; W05 — bounded local batch rename; W06 — bounded local ZIP browsing/extraction |
 | Behavioral comparison cases run | W01: 342 cases, 45,696 pair signs, 336 lists, 54 enumeration/error checks. W02a: 60 sequences/4,022 snapshots. W02b: 56 sequences/2,520 global snapshots/5,040 pane snapshots. W02c: 74 sequences/1,454 snapshots/223,432 pair signs/1,386 lists/8 metadata enumeration checks; 4 sequences are pair-only. W03: 242 copy cases/271 top-level outcomes/242 destination trees/484 source integrity checks. W04: 479 cases (263 same-device/216 real cross-device), 544 outcomes/identity relations, 479 source + 479 destination tree comparisons, 958 selected-content checks. W05: 86 sets/346 previews/1,721 row pairs/315 outcomes/86 trees/404 identity relations/172 selected-content checks. W06: 259 ZIP cases/814 listings/1887 entry observations/256 extraction jobs/259 trees/518 source archive checks. W07: 30 full-job lifecycle/marks/tree comparisons (18 predefined + 12 reserved). Zero differences/omitted test cases within scope |
 | Known blocker | None within the bounded contracts; original sorter can stall on extreme synthetic timestamp overflow (separate diagnostic); original symlink fallback target consumption is excluded by native guards; OS dispatch/Wayland remain unverified |
@@ -1454,3 +1454,37 @@ its native build/Keychain verification remains pending. Complete notices are kep
 under third_party/sftp and collected for release. Expanded native remote-job
 closure/disconnect races, full original UI, other servers/key formats/IPv6 and
 macOS gates remain open. See W15 evidence/contract/tasks before further acceptance.
+
+## 2026-10-18 — W11–W15 Mac verification
+
+The [Mac evidence](evidence/platforms/macos-arm64/W11-W15.md) records fresh
+107 Rust/51 Python tests, locked/offline all-feature build, formatting, denied-
+warning Clippy, all five strict OpenSpec checks and scoped original/native probes:
+W11 factory/bookmark values, W12 64+64 predicates, W13 40+40 metadata changes,
+W14 68+52 text/image outcomes and W15 32+16 real SFTP listing/stream cases.
+Zero unexpected differences; existing declared differences remain visible.
+
+Four explicitly invoked tests cover real SFTP authentication/transfers/failures,
+unique-item native Keychain save/read/update/delete and a real mounted APFS child
+omitted by both search and folder totals. Exact automated atime checks use a
+dedicated noatime test volume to isolate observed host access-time changes. Native
+edits on the regular volume have separate read-back; no external-access immunity
+is claimed. APFS cannot represent the invalid-byte filename fixture, which remains
+a Linux-only protocol case.
+
+Native Mac input verifies tab mark isolation, bookmark restart/session-only tabs,
+both-pane search and metadata editing, exact Unicode/CRLF clipboard, image controls
+in Light/Dark/narrow layouts, ZIP viewer lease cleanup/retained external handoff,
+SFTP upload/download/view/external opening/disconnect/reconnect. A 4 GiB overwrite
+paused at 2,206,203,904 bytes remains paused after closing its origin tab; app close
+cancels and exits normally. Full source/old-destination/partial-stage bytes pass.
+Large disposable files were removed after receipts; both test images detach cleanly.
+
+Verification fixed Mac NFC search traversal, canonical paths in the mount fixture,
+and timestamp collisions between parallel search-worker tests. Comparison tools
+retain Mac receipts beside Linux evidence. No production dependency pin changed.
+Native candidate/final-source provenance is explicit; historical tests are not
+relabeled. Full original windows, fresh earlier native regressions, unavailable/
+locked Mac Keychain, W09/W10 gestures/clipboard/Trash, Linux same-device bind mounts,
+foreign-owner chmod denial and broader servers/disconnect races remain open.
+No commit, tag, hosted build or release publication is part of this checkpoint.

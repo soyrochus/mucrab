@@ -1,0 +1,88 @@
+{
+  "status": "passed",
+  "cases": 64,
+  "reserved": true,
+  "scope": "Pinned SearchBuilder.createFilenamePredicate only; metadata/traversal/GUI checked separately, no full original search-job parity claim",
+  "unexpected_differences": [],
+  "intentional_differences": [
+    {
+      "case": {
+        "id": "reserved-37",
+        "name": "a*b.txt",
+        "pattern": "a\\*b.txt",
+        "case_sensitive": false,
+        "size": 1,
+        "modified_ms": 2000,
+        "min_size": null,
+        "max_size": 1024,
+        "from_ms": null,
+        "to_ms": null
+      },
+      "original": {
+        "matches": false,
+        "id": "reserved-37"
+      },
+      "native": {
+        "id": "reserved-37",
+        "matches": true
+      },
+      "reason": "W12 backslash escapes the next scalar; original wildcard conversion treats backslash literally before expanding the star"
+    },
+    {
+      "case": {
+        "id": "reserved-53",
+        "name": "a*b.txt",
+        "pattern": "a\\*b.txt",
+        "case_sensitive": false,
+        "size": 1024,
+        "modified_ms": 1000,
+        "min_size": null,
+        "max_size": 1024,
+        "from_ms": null,
+        "to_ms": 1000
+      },
+      "original": {
+        "matches": false,
+        "id": "reserved-53"
+      },
+      "native": {
+        "id": "reserved-53",
+        "matches": true
+      },
+      "reason": "W12 backslash escapes the next scalar; original wildcard conversion treats backslash literally before expanding the star"
+    }
+  ],
+  "run": "artifacts/runs/W12-20261018T095931Z-e400925d",
+  "sources": {
+    "tools/java/W12Oracle.java": "131fd268869d1e7f3caebc8d0d5af35c8c0253af35dc577284905d9e0577fbf4",
+    "crates/compare/src/w12.rs": "2f70ff5b4a98e0ec12e3da43d11ff41983e85b477412d6c06b10bb0499c07d28",
+    "tools/w11_w12_fixtures.py": "77e7b0e2551ed1177780ab40e5239c32a75949ff8efe7759cde48896d497222a"
+  },
+  "observed_filename_inputs": {
+    "reserved-3": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "reserved-12": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "reserved-17": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "reserved-47": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "reserved-54": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    },
+    "reserved-62": {
+      "requested": "caf\u00e9.txt",
+      "observed": "cafe\u0301.txt"
+    }
+  },
+  "filename_boundary": "Both predicates receive the original provider getName() value; raw spellings remain in original stdout and native requests. macOS traversal separately normalizes to NFC like pane listings."
+}

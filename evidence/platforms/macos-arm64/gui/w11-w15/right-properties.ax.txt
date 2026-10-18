@@ -1,0 +1,68 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		11 button Copy to other pane (F5)
+~		12 button Move to other pane (F6)
+~		13 button Rename focused item (F2)
+~		19 button Copy  F5
+~		20 button Move  F6
+~		21 button Rename  F2
+~		22 button Batch rename…
+~		112 toggle button (settable, boolean) .., Value: off
+~		113 toggle button (settable, boolean) right.txt, Value: on
+~		114 text (settable) 1 of 1 selected · 6 B
++		137 container Properties
++			138 button Hide
++			139 button Close window
++			140 unknown
++			141 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/right/right.txt
++			142 button Refresh properties
++			143 text (settable) Type
++			144 text (settable) File
++			145 text (settable) Entry size (bytes)
++			146 text (settable) 6
++			147 text (settable) Allocated bytes
++			148 text (settable) 4096
++			149 text (settable) Modified (UTC)
++			150 text (settable) 2026-10-18T08:35:05.963188070Z
++			151 text (settable) Accessed (UTC)
++			152 text (settable) 2026-10-18T08:35:16.284895977Z
++			153 text (settable) Created (UTC)
++			154 text (settable) 2026-10-18T08:35:05.963188070Z
++			155 text (settable) Owner
++			156 text (settable) ivanderk (502)
++			157 text (settable) Group
++			158 text (settable) staff (20)
++			159 text (settable) Unix mode
++			160 text (settable) 0644
++			161 text (settable) Hard links
++			162 text (settable) 1
++			163 text (settable) Link target
++			164 text (settable) Unavailable
++			165 text (settable) Non-recursive changes. Special bits and access time are preserved. UTC input has nanosecond resolution; filesystem rounding is shown after refresh.
++			166 checkbox (settable, boolean) Change permissions, Value: off
++			167 text (settable) Read
++			168 text (settable) Write
++			169 text (settable) Execute
++			170 text (settable) Owner
++			171 checkbox (disabled, settable, boolean) on
++			172 checkbox (disabled, settable, boolean) on
++			173 checkbox (disabled, settable, boolean) off
++			174 text (settable) Group
++			175 checkbox (disabled, settable, boolean) on
++			176 checkbox (disabled, settable, boolean) off
++			177 checkbox (disabled, settable, boolean) off
++			178 text (settable) Other
++			179 checkbox (disabled, settable, boolean) on
++			180 checkbox (disabled, settable, boolean) off
++			181 checkbox (disabled, settable, boolean) off
++			182 checkbox (settable, boolean) Change modified time, Value: off
++			183 text field (disabled, settable) 2026-10-18T08:35:05.963188070Z
++			184 button (disabled) Review changes…
++			185 splitter
++			186 splitter
++			187 splitter
++			188 splitter
++			189 splitter
++			190 splitter
++			191 splitter
++			192 splitter
+The focused UI element is 60 unknown

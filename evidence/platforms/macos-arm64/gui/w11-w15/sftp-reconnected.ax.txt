@@ -1,0 +1,13 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 174-182
+~		11 button Copy to other pane (F5)
+~		18 text (settable) Connected. Remote links, archives and mutations other than Copy are unsupported.
+~		129 button Copy  F5
++		135 toggle button (settable, boolean) folder, Value: off
++		136 toggle button (settable, boolean) link, Value: off
++		137 toggle button (settable, boolean) notes.txt, Value: on
++		138 toggle button (settable, boolean) upload.txt, Value: off
++		139 text (settable) 1 of 4 selected · 20 B
++		140 text (settable) SFTP
++		141 text (settable) Active pane
+The focused UI element is 33 unknown

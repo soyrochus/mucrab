@@ -1,0 +1,16 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 41-43, 46, 84, 92, 99
+~		11 button (disabled) Copy to other pane (F5)
+~		18 text (settable) Disconnected; associated network work is cancelling. Partial transfer paths remain in Details.
+~		129 button (disabled) Copy  F5
++		174 text (settable) Cannot open location: SFTP disconnected; reconnect to browse or copy
++		175 text (settable) The last successfully opened folder is retained.
++		176 toggle button (settable, boolean) folder, Value: off
++		177 toggle button (settable, boolean) link, Value: off
++		178 toggle button (settable, boolean) notes.txt, Value: on
++		179 toggle button (settable, boolean) upload.txt, Value: off
++		180 text (settable) 1 of 4 selected · 20 B
++		181 text (settable) SFTP · disconnected
++		182 text (settable) Active pane
+~			162 button (disabled) Disconnect
+~			165 text (settable) Disconnected; associated network work is cancelling. Partial transfer paths remain in Details.

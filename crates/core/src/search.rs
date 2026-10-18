@@ -205,6 +205,11 @@ impl SearchPlan {
                 report.issue(&path, "Non-Unicode name omitted");
                 continue;
             };
+            // Use the same visible spelling as local pane listings on macOS.
+            #[cfg(target_os = "macos")]
+            let name = icu_normalizer::ComposingNormalizerBorrowed::new_nfc()
+                .normalize(&name)
+                .into_owned();
             if !self.query.include_hidden && name.starts_with('.') {
                 continue;
             }
@@ -495,6 +500,8 @@ mod mount_tests {
                 .as_nanos()
         ));
         fs::create_dir_all(root.join("mounted")).unwrap();
+        // Match SearchPlan's canonical root (macOS /var aliases /private/var).
+        let root = fs::canonicalize(root).unwrap();
         fs::write(root.join("mounted/omitted"), b"x").unwrap();
         let plan = SearchPlan::new(SearchQuery {
             root: root.clone(),

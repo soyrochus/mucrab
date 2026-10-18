@@ -26,4 +26,5 @@
 
 - [x] Linux native exact text clipboard/find, image controls, light/dark/narrow layouts, archive handoff and worker independence.
 - [x] Workspace checks and fresh W07–W12 native regressions; final queued-result abandonment fix separately tested and replayed.
-- [ ] Complete native macOS and original full-window coverage for 3.4; broader GPU/font checks remain pending.
+- [x] Native macOS exact text clipboard/find, image fit/100%/zoom/pan, Light/Dark/narrow layouts, ZIP lease cleanup and retained external handoff; [Mac evidence](../../../evidence/platforms/macos-arm64/W11-W15.md).
+- [ ] Complete original full-window coverage and fresh earlier native regressions for 3.4; broader GPU/font checks remain pending.

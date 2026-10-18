@@ -1,0 +1,61 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~		116 toggle button (settable, boolean) Documents, Value: off
+~		122 toggle button (settable, boolean) notes.txt, Value: on
+~		117 text (settable) 1 of 9 selected · 48 B
++		127 container Properties
++			128 button Hide
++			129 button Close window
++			130 unknown
++			131 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W11-W15-macos/left/notes.txt
++			132 button Refresh properties
++			133 text (settable) Type
++			134 text (settable) File
++			135 text (settable) Entry size (bytes)
++			136 text (settable) 48
++			137 text (settable) Allocated bytes
++			138 text (settable) 4096
++			139 text (settable) Modified (UTC)
++			140 text (settable) 2026-10-18T08:35:05.962671612Z
++			141 text (settable) Accessed (UTC)
++			142 text (settable) 2026-10-18T08:35:16.282876478Z
++			143 text (settable) Created (UTC)
++			144 text (settable) 2026-10-18T08:35:05.962671612Z
++			145 text (settable) Owner
++			146 text (settable) ivanderk (502)
++			147 text (settable) Group
++			148 text (settable) staff (20)
++			149 text (settable) Unix mode
++			150 text (settable) 0640
++			151 text (settable) Hard links
++			152 text (settable) 1
++			153 text (settable) Link target
++			154 text (settable) Unavailable
++			155 text (settable) Non-recursive changes. Special bits and access time are preserved. UTC input has nanosecond resolution; filesystem rounding is shown after refresh.
++			156 checkbox (settable, boolean) Change permissions, Value: off
++			157 text (settable) Read
++			158 text (settable) Write
++			159 text (settable) Execute
++			160 text (settable) Owner
++			161 checkbox (disabled, settable, boolean) on
++			162 checkbox (disabled, settable, boolean) on
++			163 checkbox (disabled, settable, boolean) off
++			164 text (settable) Group
++			165 checkbox (disabled, settable, boolean) on
++			166 checkbox (disabled, settable, boolean) off
++			167 checkbox (disabled, settable, boolean) off
++			168 text (settable) Other
++			169 checkbox (disabled, settable, boolean) off
++			170 checkbox (disabled, settable, boolean) off
++			171 checkbox (disabled, settable, boolean) off
++			172 checkbox (settable, boolean) Change modified time, Value: off
++			173 text field (disabled, settable) 2026-10-18T08:35:05.962671612Z
++			174 button (disabled) Review changes…
++			175 splitter
++			176 splitter
++			177 splitter
++			178 splitter
++			179 splitter
++			180 splitter
++			181 splitter
++			182 splitter
+The focused UI element is 33 unknown

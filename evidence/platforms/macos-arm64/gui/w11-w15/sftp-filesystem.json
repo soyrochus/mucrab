@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "normal_launchservices_exit_code": 0,
+  "origin_tab_closed_while_paused": true,
+  "app_close_acknowledged_cancellation": true,
+  "previous_destination_preserved": true,
+  "files": {
+    "local/large.bin": {
+      "size": 4294967296,
+      "sha256": "8479e43911dc45e89f934fe48d01297e16f51d17aa561d4d1c216b1ae0fcddca",
+      "all_zero_bytes": true
+    },
+    "remote/large.bin": {
+      "size": 1073741824,
+      "sha256": "49bc20df15e412a64472421e13fe86ff1c5165e18b2afccf160d4dc19fe68a14",
+      "all_zero_bytes": true
+    },
+    "remote/large.bin.mucrab-stage-58943-8": {
+      "size": 2206203904,
+      "sha256": "226a54d35d2a5af4b89b0803c88555c52d0dbf62400c893046d4af82707cda74",
+      "all_zero_bytes": true
+    }
+  },
+  "config_nonsecret": true,
+  "session_only_authentication": true
+}

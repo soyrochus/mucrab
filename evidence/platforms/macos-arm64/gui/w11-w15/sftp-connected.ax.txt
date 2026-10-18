@@ -1,0 +1,49 @@
+The following is a diff from the previous accessibility tree for Window: "muCrab" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 44-45, 47, 113-125
+~		8 button Parent folder (Backspace)
+~		9 button Home folder
+~		10 button Refresh active pane
+~		11 button Copy to other pane (F5)
+~		15 button Back (Alt+Left)
+~		18 text (settable) Connected. Remote links, archives and mutations other than Copy are unsupported.
++		75 button Connections…
++		76 button Dismiss
++		77 text (settable) Ready
++		78 button Copy  F5
++		79 button (disabled) Move  F6
++		80 button (disabled) Rename  F2
++		81 button (disabled) Batch rename…
++		82 button (disabled) Extract ZIP…
++		83 button Refresh
+~		26 toggle button (settable, boolean) Root, Value: on
+~		27 button +
+~		29 button Current folder
+~		30 text field (settable) sftp://server-1/
+~		31 button Parent folder (Backspace)
+~		32 button Refresh
+~		34 button Sort by Name
+~		36 button Sort by Ext
+~		38 button Sort by Size
+~		40 button Sort by Modified (UTC)
+~		41 toggle button (settable, boolean) folder, Value: on
+~		42 toggle button (settable, boolean) link, Value: off
+~		43 toggle button (settable, boolean) notes.txt, Value: off
+~		46 text (settable) 1 of 3 selected · 0 B
++		84 text (settable) SFTP
++		85 text (settable) Active pane
+~		48 toggle button (settable, boolean) local, Value: on
+~		49 button +
+~		51 button Current folder
+~		52 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/W15-macos-native/local
+~		53 button Parent folder (Backspace)
+~		54 button Refresh
+~		56 button Sort by Name
+~		58 button Sort by Ext
+~		60 button Sort by Size
+~		62 button Sort by Modified (UTC)
+~		63 toggle button (settable, boolean) .., Value: on
+~		64 toggle button (settable, boolean) folder, Value: off
+~		65 toggle button (settable, boolean) link, Value: off
+~		66 toggle button (settable, boolean) notes.txt, Value: off
+~		67 toggle button (settable, boolean) upload.txt, Value: off
+The focused UI element is 33 unknown
