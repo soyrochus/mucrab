@@ -1,0 +1,34 @@
+[
+  {
+    "name": "muda",
+    "version": "0.21.1",
+    "license": "Apache-2.0 OR MIT",
+    "registry_sha256": "9a7b000cca0783af26837fe2ebd9ddf1c42279463c085b97622ee1d2f444b89e",
+    "license_files": {
+      "LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "LICENSE-MIT": "2ab5537b8c0cb1d475e2145b6a7994b04e7c71e6e5bd836f7f9c47c221a5ad9a",
+      "LICENSE.spdx": "b99f9d43803f2ac979c50949df630bd8eeaf2fcd1b9fdb9093710d70f5dfb63d"
+    }
+  },
+  {
+    "name": "crossbeam-channel",
+    "version": "0.5.17",
+    "license": "MIT OR Apache-2.0",
+    "registry_sha256": "98b0cc327b5bc766e7fda9c9260cc0fa81b43a8e240440422dff70788e3f9ef1",
+    "license_files": {
+      "LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "LICENSE-MIT": "5734ed989dfca1f625b40281ee9f4530f91b2411ec01cb748223e7eb87e201ab",
+      "LICENSE-THIRD-PARTY": "b16db96b93b1d7cf7bea533f572091ec6bca3234fbe0a83038be772ff391a44c"
+    }
+  },
+  {
+    "name": "keyboard-types",
+    "version": "0.8.3",
+    "license": "MIT OR Apache-2.0",
+    "registry_sha256": "0fbe853b403ae61a04233030ae8a79d94975281ed9770a1f9e246732b534b28d",
+    "license_files": {
+      "LICENSE-APACHE": "769f80b5bcb42ed0af4e4d2fd74e1ac9bf843cb80c5a29219d1ef3544428a6bb",
+      "LICENSE-MIT": "31dbbab009f1b2e59a1622d5955dfafc38ebe834000215b49d954c6f85fe927c"
+    }
+  }
+]

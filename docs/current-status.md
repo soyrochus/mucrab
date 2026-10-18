@@ -232,8 +232,11 @@ View → Appearance offers only System, Light and Dark, saves the preference,
 and follows reported OS light/dark changes (Light fallback). Help contains
 shortcuts and About information. New headless regressions cover live reported
 OS changes and 10,000-row keyboard/selection/sort/scroll behavior; a native replay
-checks file-operation results, menus, themes and resizing. Menus are in-window;
-macOS native menu integration is not implemented. Physical theme notification
+checks file-operation results, menus, themes and resizing. Linux menus remain
+in-window; macOS now uses the system menu bar through a Mac-only muda adapter.
+The existing commands, toolbar and review dialogs are shared.
+[Native menu implementation and verification](native-menus.md) records the scope
+and checks. Physical theme notification
 delivery is verified on macOS 26.6.2 through a live Dark/Light/Dark change with
 the original system preference restored. W07 adds the background-job controls described below.
 

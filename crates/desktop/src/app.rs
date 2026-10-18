@@ -21,6 +21,9 @@ use everyday_ui::Action as EverydayAction;
 #[path = "navigation_ui.rs"]
 mod navigation_ui;
 use navigation_ui::Action as NavigationAction;
+#[cfg(target_os = "macos")]
+#[path = "native_menu.rs"]
+mod native_menu;
 #[path = "properties_ui.rs"]
 mod properties_ui;
 #[path = "read_job.rs"]
@@ -56,6 +59,8 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 pane.open(paths.get(i).unwrap_or(&default), &sorter);
             }
             Ok(Box::new(MuCrabApp {
+                #[cfg(target_os = "macos")]
+                native_menu: Some(native_menu::NativeMenu::new(&creation.egui_ctx)?),
                 appearance,
                 preference_error: None,
                 help: None,
@@ -86,6 +91,8 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
 }
 
 struct MuCrabApp {
+    #[cfg(target_os = "macos")]
+    native_menu: Option<native_menu::NativeMenu>,
     appearance: Appearance,
     preference_error: Option<String>,
     help: Option<bool>,
@@ -736,40 +743,8 @@ impl eframe::App for MuCrabApp {
                 ui.ctx().request_repaint();
             }
         }
-        if ui.input(|input| input.viewport().close_requested())
-            && let Some(job) = &self.copy_job
-        {
-            ui.ctx()
-                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
-            job.control.cancel();
-            self.close_after_job = true;
-        }
-        if ui.input(|input| input.viewport().close_requested()) && self.opener.busy() {
-            ui.ctx()
-                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
-            self.opener.cancel();
-            self.close_after_job = true;
-        }
-        if ui.input(|input| input.viewport().close_requested()) && self.search.busy() {
-            ui.ctx()
-                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
-            self.search.cancel();
-            self.close_after_job = true;
-        }
-        if ui.input(|input| input.viewport().close_requested())
-            && (self.properties.busy() || self.viewer.busy())
-        {
-            ui.ctx()
-                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
-            self.properties.cancel();
-            self.viewer.cancel();
-            self.close_after_job = true;
-        }
-        if ui.input(|input| input.viewport().close_requested()) && self.remote.busy() {
-            ui.ctx()
-                .send_viewport_cmd(egui::ViewportCommand::CancelClose);
-            self.remote.cancel();
-            self.close_after_job = true;
+        if ui.input(|input| input.viewport().close_requested()) {
+            self.request_close(ui.ctx());
         }
         self.poll_remote(ui.ctx());
         self.properties.poll(ui.ctx());
@@ -791,6 +766,8 @@ impl eframe::App for MuCrabApp {
             ui.ctx().request_repaint_after(Duration::from_millis(100));
         }
         self.poll_copy(ui.ctx());
+        #[cfg(target_os = "macos")]
+        self.poll_native_menu(ui.ctx());
         let idle = !self.remote.modal()
             && self.properties.review.is_none()
             && !self.navigation.modal()
@@ -942,7 +919,8 @@ impl eframe::App for MuCrabApp {
         let mut command = None;
         let old_appearance = self.appearance;
         egui::Panel::top("menus").show(ui, |ui| {
-            egui::MenuBar::new().ui(ui, |ui| {
+            #[cfg(not(target_os = "macos"))]
+            let _ = egui::MenuBar::new().ui(ui, |ui| {
                 ui.menu_button("File", |ui| {
                     menu_action(ui, "Open", "Enter", browsing, Command::Open, &mut command);
                     menu_action(
@@ -1260,6 +1238,7 @@ impl eframe::App for MuCrabApp {
                     }
                 });
             });
+            #[cfg(not(target_os = "macos"))]
             ui.separator();
             ui.horizontal(|ui| {
                 for (icon, tip, enabled, action) in [
@@ -1634,6 +1613,8 @@ impl eframe::App for MuCrabApp {
         self.properties_review(ui.ctx());
         self.batch_dialog(ui.ctx());
         self.zip_dialog(ui.ctx());
+        #[cfg(target_os = "macos")]
+        self.sync_native_menu(ui.ctx());
     }
 }
 
@@ -1714,7 +1695,10 @@ pub(crate) fn selection_key(event: &egui::Event) -> Option<PaneEvent> {
     }
 }
 
+#[derive(Clone)]
 enum Command {
+    #[cfg(target_os = "macos")]
+    Native(native_menu::Action),
     Connections,
     View,
     Properties,
@@ -1732,6 +1716,7 @@ enum Command {
     Mark(PaneEvent),
 }
 
+#[cfg(not(target_os = "macos"))]
 fn menu_action(
     ui: &mut egui::Ui,
     text: &str,
@@ -1753,6 +1738,11 @@ impl MuCrabApp {
     fn execute(&mut self, command: Command, ctx: &egui::Context) {
         let index = usize::from(self.active == PaneSide::Right);
         match command {
+            #[cfg(target_os = "macos")]
+            Command::Native(action) => {
+                self.native_menu_action(action, ctx);
+                return;
+            }
             Command::Connections => {
                 self.remote.visible = true;
                 self.remote
@@ -1836,6 +1826,40 @@ impl MuCrabApp {
 }
 
 impl MuCrabApp {
+    /// Window close and the native Quit menu share cancellation/acknowledgment.
+    fn request_close(&mut self, ctx: &egui::Context) {
+        let busy = self.copy_job.is_some()
+            || self.opener.busy()
+            || self.search.busy()
+            || self.properties.busy()
+            || self.viewer.busy()
+            || self.remote.busy();
+        if !busy {
+            ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+            return;
+        }
+        ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+        self.close_after_job = true;
+        if let Some(job) = &self.copy_job {
+            job.control.cancel();
+        }
+        if self.opener.busy() {
+            self.opener.cancel();
+        }
+        if self.search.busy() {
+            self.search.cancel();
+        }
+        if self.properties.busy() {
+            self.properties.cancel();
+        }
+        if self.viewer.busy() {
+            self.viewer.cancel();
+        }
+        if self.remote.busy() {
+            self.remote.cancel();
+        }
+    }
+
     fn start_job(
         &mut self,
         action: FileAction,
@@ -1902,8 +1926,10 @@ mod job_tests {
         time::Instant,
     };
 
-    fn app() -> MuCrabApp {
+    pub(super) fn app() -> MuCrabApp {
         MuCrabApp {
+            #[cfg(target_os = "macos")]
+            native_menu: None,
             appearance: Appearance::System,
             preference_error: None,
             help: None,
@@ -1949,6 +1975,50 @@ mod job_tests {
             std::thread::sleep(Duration::from_millis(2));
         }
     }
+    #[test]
+    fn closing_waits_for_a_cancelled_worker_to_acknowledge() {
+        let mut app = app();
+        let ctx = egui::Context::default();
+        let (release, wait) = mpsc::channel();
+        app.start_job(
+            FileAction::Copy,
+            PaneSide::Left,
+            app.panes.stack(0).active().id,
+            PathBuf::from("/unused"),
+            None,
+            move |_| {
+                wait.recv().unwrap();
+                Ok(report())
+            },
+        );
+        let control = app.copy_job.as_ref().unwrap().control.clone();
+        let mut output = ctx.run_ui(Default::default(), |_| {
+            #[cfg(target_os = "macos")]
+            app.execute(Command::Native(native_menu::Action::Close), &ctx);
+            #[cfg(not(target_os = "macos"))]
+            app.request_close(&ctx);
+            app.poll_copy(&ctx);
+        });
+        output.textures_delta.clear();
+        let commands = &output.viewport_output[&egui::ViewportId::ROOT].commands;
+        assert!(commands.contains(&egui::ViewportCommand::CancelClose));
+        assert!(!commands.contains(&egui::ViewportCommand::Close));
+        assert!(app.close_after_job);
+        assert!(app.copy_job.is_some());
+        assert_eq!(control.snapshot().state, JobState::Cancelling);
+
+        release.send(()).unwrap();
+        let mut output = ctx.run_ui(Default::default(), |_| await_job(&mut app, &ctx));
+        output.textures_delta.clear();
+        assert!(app.copy_job.is_none());
+        assert_eq!(control.snapshot().state, JobState::Cancelled);
+        assert!(
+            output.viewport_output[&egui::ViewportId::ROOT]
+                .commands
+                .contains(&egui::ViewportCommand::Close)
+        );
+    }
+
     #[test]
     fn cancelling_waits_for_worker_acknowledgement_and_blocks_a_second_job() {
         let mut app = app();

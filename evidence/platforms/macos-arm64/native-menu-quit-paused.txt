@@ -1,0 +1,84 @@
+Window: "muCrab", App: muCrab.
+0 standard window muCrab, Secondary Actions: Raise
+	1 container
+		2 button Parent folder (Backspace)
+		3 button Home folder
+		4 button Refresh active pane
+		5 button (disabled) Copy to other pane (F5)
+		6 button (disabled) Move to other pane (F6)
+		7 button (disabled) Rename focused item (F2)
+		8 button (disabled) Extract ZIP to other pane
+		9 button Back (Alt+Left)
+		10 button (disabled) Forward (Alt+Right)
+		11 text (settable) Left > Right
+		12 text (settable) Copy paused
+		13 progress indicator (settable, float) 0 / 34 B, Value: 0
+		14 text (settable) 0 / 1 items
+		15 button Resume
+		16 button Cancel
+		17 text (settable) /Users/ivanderk/src/rea-test/artifacts/gui/native-menu-macos/left/quit-paused/item-042617.txt
+		18 button (disabled) Copy  F5
+		19 button (disabled) Move  F6
+		20 button (disabled) Rename  F2
+		21 button (disabled) Batch rename…
+		22 button (disabled) Extract ZIP…
+		23 button Refresh
+		24 unknown
+		25 toggle button (settable, boolean) left, Value: on
+		26 button +
+		27 button (disabled) ×
+		28 button Current folder
+		29 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/native-menu-macos/left
+		30 button Parent folder (Backspace)
+		31 button Refresh
+		32 unknown
+		33 button Sort by Name
+		34 unknown
+		35 button Sort by Ext
+		36 unknown
+		37 button Sort by Size
+		38 unknown
+		39 button Sort by Modified (UTC)
+		40 toggle button (settable, boolean) .., Value: off
+		41 toggle button (settable, boolean) folder, Value: off
+		42 toggle button (settable, boolean) quit-job, Value: off
+		43 toggle button (settable, boolean) quit-paused, Value: on
+		44 toggle button (settable, boolean) .hidden.txt, Value: off
+		45 toggle button (settable, boolean) alpha.txt, Value: off
+		46 toggle button (settable, boolean) beta.txt, Value: off
+		47 text (settable) 1 of 6 selected · 0 B
+		48 text (settable) Active pane
+		49 toggle button (settable, boolean) right, Value: on
+		50 button +
+		51 button (disabled) ×
+		52 button Current folder
+		53 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/native-menu-macos/right
+		54 button Parent folder (Backspace)
+		55 button Refresh
+		56 unknown
+		57 button Sort by Name
+		58 unknown
+		59 button Sort by Ext
+		60 unknown
+		61 button Sort by Size
+		62 unknown
+		63 button Sort by Modified (UTC)
+		64 toggle button (settable, boolean) .., Value: on
+		65 toggle button (settable, boolean) quit-job, Value: off
+		66 toggle button (settable, boolean) alpha.txt, Value: off
+		67 text (settable) 0 of 2 selected · 0 B
+	68 close button
+	69 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	70 minimize button
+	71 text muCrab
+72 menu bar
+	73 muCrab
+	74 File
+	75 Edit
+	76 Mark
+	77 View
+	78 Go
+	79 Window
+	80 Help
+
+The focused UI element is 32 unknown

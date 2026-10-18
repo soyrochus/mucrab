@@ -1,0 +1,75 @@
+Window: "muCrab", App: muCrab.
+0 standard window muCrab, Secondary Actions: Raise
+	1 container
+		2 button Parent folder (Backspace)
+		3 button Home folder
+		4 button Refresh active pane
+		5 button (disabled) Copy to other pane (F5)
+		6 button (disabled) Move to other pane (F6)
+		7 button (disabled) Rename focused item (F2)
+		8 button (disabled) Extract ZIP to other pane
+		9 button (disabled) Back (Alt+Left)
+		10 button (disabled) Forward (Alt+Right)
+		11 text (settable) Left > Right
+		12 text (settable) Ready
+		13 button (disabled) Copy  F5
+		14 button (disabled) Move  F6
+		15 button (disabled) Rename  F2
+		16 button (disabled) Batch rename…
+		17 button (disabled) Extract ZIP…
+		18 button Refresh
+		19 unknown
+		20 toggle button (settable, boolean) left, Value: on
+		21 button +
+		22 button (disabled) ×
+		23 button Current folder
+		24 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/native-menu-macos/left
+		25 button Parent folder (Backspace)
+		26 button Refresh
+		27 unknown
+		28 button Sort by Name
+		29 unknown
+		30 button Sort by Ext
+		31 unknown
+		32 button Sort by Size
+		33 unknown
+		34 button Sort by Modified (UTC)
+		35 toggle button (settable, boolean) .., Value: on
+		36 toggle button (settable, boolean) folder, Value: off
+		37 toggle button (settable, boolean) .hidden.txt, Value: off
+		38 toggle button (settable, boolean) alpha.txt, Value: off
+		39 toggle button (settable, boolean) beta.txt, Value: off
+		40 text (settable) 0 of 4 selected · 0 B
+		41 text (settable) Active pane
+		42 toggle button (settable, boolean) right, Value: on
+		43 button +
+		44 button (disabled) ×
+		45 button Current folder
+		46 text field (settable) /Users/ivanderk/src/rea-test/artifacts/gui/native-menu-macos/right
+		47 button Parent folder (Backspace)
+		48 button Refresh
+		49 unknown
+		50 button Sort by Name
+		51 unknown
+		52 button Sort by Ext
+		53 unknown
+		54 button Sort by Size
+		55 unknown
+		56 button Sort by Modified (UTC)
+		57 toggle button (settable, boolean) .., Value: on
+		58 text (settable) 0 of 0 selected · 0 B
+	59 close button
+	60 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	61 minimize button
+	62 text muCrab
+63 menu bar
+	64 muCrab
+	65 File
+	66 Edit
+	67 Mark
+	68 View
+	69 Go
+	70 Window
+	71 Help
+
+The focused UI element is 27 unknown

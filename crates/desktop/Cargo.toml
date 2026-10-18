@@ -21,6 +21,9 @@ chrono = { version = "=0.4.45", default-features = false, features = ["std"] }
 [target.'cfg(target_os = "linux")'.dependencies]
 x11rb = "=0.13.2"
 
+[target.'cfg(target_os = "macos")'.dependencies]
+muda = { version = "=0.21.1", default-features = false }
+
 [features]
 screenshot = ["eframe/__screenshot"]
 

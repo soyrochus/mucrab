@@ -8,7 +8,7 @@ Original muCrab material is copyright (C) 2026 muCrab contributors and is licens
 
 ## muCommander
 
-muCrab is an independent experimental port of selected workflows from [muCommander](https://github.com/mucommander/mucommander). Credit belongs to the [muCommander contributors](https://github.com/mucommander/mucommander/graphs/contributors) for the reference application. Existing upstream copyrights and license grants are retained for any incorporated material.
+muCrab is an independent port of selected workflows from [muCommander](https://github.com/mucommander/mucommander). Credit belongs to the [muCommander contributors](https://github.com/mucommander/mucommander/graphs/contributors) for the reference application. Existing upstream copyrights and license grants are retained for any incorporated material.
 
 The reference release is **1.6.2**, tag **`1.6.2-1`**. Its distribution manifest identifies implementation revision **`3bc2118`**.
 
@@ -120,7 +120,7 @@ no Java runtime is required.
 
 REA-authored code uses the MIT license. [third_party/rea/LICENSE](third_party/rea/LICENSE) is copied verbatim from the pinned official npm package, whose registry integrity value and dependency lock are recorded in [the tool manifest](tools/manifests/analysis-tools.json) and [npm lockfile](tools/rea/package-lock.json). REA's third-party dependencies retain their own notices in the local installation.
 
-CFR uses the MIT license. [third_party/cfr/LICENSE](third_party/cfr/LICENSE) is copied verbatim from [the upstream `0.152` tag](https://raw.githubusercontent.com/leibnitz27/cfr/0.152/LICENSE), copyright (c) 2011-2019 Lee Benfield. The decompiler JAR comes from [the author's official download](https://www.benf.org/other/cfr/cfr-0.152.jar). Its recorded SHA-256 is a locally computed reproducibility pin; its MD5 matches the value published by the author. The license-file digest is also recorded in the tool manifest.
+CFR uses the MIT license. [third_party/cfr/LICENSE](third_party/cfr/LICENSE) is copied verbatim from [the upstream `0.152` tag](https://raw.githubusercontent.com/leibnitz27/cfr/0.152/LICENSE), copyright (c) 2011-2019 Lee Benfield. The decompiler JAR comes from [the author&#39;s official download](https://www.benf.org/other/cfr/cfr-0.152.jar). Its recorded SHA-256 is a locally computed reproducibility pin; its MD5 matches the value published by the author. The license-file digest is also recorded in the tool manifest.
 
 OpenJDK's installed `javap` supplies the bytecode listing. The installed JDK is not redistributed by this repository. Decompiled muCommander output remains derived upstream material under its original applicable terms and is kept in ignored local storage at this stage.
 
@@ -139,7 +139,6 @@ Linux selection ownership directly uses the existing locked **x11rb 0.13.2**
 (MIT); release packaging collects its dependency notices. `gio`, `xclip` and
 macOS `osascript` are system services invoked at runtime and are not bundled.
 
-
 ## Tabs, bookmarks and file search (W11/W12)
 
 Tab factories/actions, bookmark values/persistence and search actions, predicates,
@@ -150,7 +149,6 @@ and [W12 evidence](evidence/workflows/W12-file-search/README.md) distinguish
 recovered boundaries, chosen native differences and outstanding host checks.
 The runtime remains Rust-only. Bookmark JSON reuses the already locked
 serde_json; search dates reuse chrono. No new dependency versions are introduced.
-
 
 ## Properties and built-in viewer (W13/W14)
 
@@ -167,7 +165,6 @@ for strict JPEG decoding, and crc32fast **1.5.2** (MIT OR Apache-2.0) for comple
 PNG CRC checks. [Preserved codec notices](third_party/viewer-codecs/README.md)
 include exact published license files and provenance hashes. No dependency version
 changed; release packaging retains all transitive notices and vendored sources.
-
 
 ## SFTP connections and transfers (W15)
 
@@ -190,3 +187,13 @@ The disposable test server uses Paramiko **4.0.0** only in an external test virt
 environment; it is not an application dependency or bundled runtime. Original
 Java/JSch binaries likewise remain test-only. No personal hosts/keys/credentials
 are required by the fixture suite.
+
+## Native macOS menus
+
+The macOS desktop uses muda **0.21.1** (MIT OR Apache-2.0) to present the existing
+application commands through AppKit. Its new transitive dependencies are
+crossbeam-channel **0.5.17** and keyboard-types **0.8.3**, also MIT OR Apache-2.0.
+[Preserved native-menu notices](third_party/native-menu/README.md) include the
+published license files and registry/license hashes. The existing release source
+and notice collector includes these locked packages. Linux retains the egui menu
+and does not compile muda.

@@ -4,12 +4,12 @@
 [![Rust 1.95 or newer](https://img.shields.io/badge/Rust-1.95%2B-orange?logo=rust)](#build-and-run-mucrab)
 [![License: GPL-3.0-only](https://img.shields.io/badge/license-GPL--3.0--only-blue)](LICENSE)
 [![Status: experimental](https://img.shields.io/badge/status-experimental-yellow)](docs/current-status.md)
-[![Verified on macOS arm64](https://img.shields.io/badge/verified-macOS%20arm64-lightgrey?logo=apple)](docs/current-status.md#platform-scope-and-limitations)
-[![Verified on Linux x86_64](https://img.shields.io/badge/verified-Linux%20x86__64-lightgrey?logo=linux)](docs/current-status.md#platform-scope-and-limitations)
+[![Verified on macOS arm64](<https://img.shields.io/badge/verified-macOS%20arm64-lightgrey?logo=apple>)](docs/current-status.md#platform-scope-and-limitations)
+[![Verified on Linux x86_64](<https://img.shields.io/badge/verified-Linux%20x86__64-lightgrey?logo=linux>)](docs/current-status.md#platform-scope-and-limitations)
 
 **Two claws, two panes.**
 
-muCrab is an experimental Rust port of selected file-management workflows from
+muCrab is a Rust port of selected file-management workflows from
 [muCommander](https://github.com/mucommander/mucommander), reconstructed from its
 published Java binaries. The application is **muCrab**; its command is **`mucrab`**.
 
@@ -173,11 +173,11 @@ Requirements: Rust **1.95** or newer, Cargo, and a native desktop session for th
 
 The [Cargo workspace](Cargo.toml) contains:
 
-| Package | Role | Current contents |
-| --- | --- | --- |
-| `mucrab-core` | Framework-independent behavior | Local/ZIP/SFTP providers, tabs/bookmarks/search, properties/view preparation, sorting/selection and reviewed file operations |
-| `mucrab-desktop` | Native `mucrab` executable | Local/ZIP/SFTP two-pane browser, tabs, search, properties and viewer using eframe/egui 0.36.2 with the OpenGL backend |
-| `mucrab-compare` | Java/Rust comparison harness | W01–W07 suites plus W10–W15 scoped original-binary probes/adapters and difference reports |
+| Package            | Role                           | Current contents                                                                                                             |
+| ------------------ | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `mucrab-core`    | Framework-independent behavior | Local/ZIP/SFTP providers, tabs/bookmarks/search, properties/view preparation, sorting/selection and reviewed file operations |
+| `mucrab-desktop` | Native `mucrab` executable   | Local/ZIP/SFTP two-pane browser, tabs, search, properties and viewer using eframe/egui 0.36.2 with the OpenGL backend        |
+| `mucrab-compare` | Java/Rust comparison harness   | W01–W07 suites plus W10–W15 scoped original-binary probes/adapters and difference reports                                  |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
 
@@ -464,12 +464,12 @@ python3 -B tools/analysis_tools.py probe
 
 The probe does not download tools, execute muCommander classes, or modify global agent configuration. It writes raw command arguments, stdout, stderr, bytecode, and decompiler output under ignored `artifacts/analysis/toolchain/`. Its compact [readiness evidence](evidence/toolchain/readiness.json) is tracked in Git and records each producer, version, command, output digest, and limitation.
 
-| Producer | Observed capability | Boundary |
-| --- | --- | --- |
-| REA `inspect-artifact` | Inventoried the file-library JAR and verified the selected class fingerprint | Coverage concerns ZIP entries; the class format is reported as `unknown`, with no JVM method semantics |
-| REA `inspect-android-package` | Explicitly rejected the JAR because it requires a standalone APK | This is an expected format refusal, not a successful Java decompilation |
-| CFR | Decompiled `FileComparator` into 163 lines of Java with its dependencies resolved | One static smoke test; output correctness is not established |
-| JDK `javap` | Returned method signatures and bytecode instructions for the same class | Disassembly supports investigation; it does not establish equivalence |
+| Producer                        | Observed capability                                                                 | Boundary                                                                                                 |
+| ------------------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| REA `inspect-artifact`        | Inventoried the file-library JAR and verified the selected class fingerprint        | Coverage concerns ZIP entries; the class format is reported as `unknown`, with no JVM method semantics |
+| REA `inspect-android-package` | Explicitly rejected the JAR because it requires a standalone APK                    | This is an expected format refusal, not a successful Java decompilation                                  |
+| CFR                             | Decompiled `FileComparator` into 163 lines of Java with its dependencies resolved | One static smoke test; output correctness is not established                                             |
+| JDK `javap`                   | Returned method signatures and bytecode instructions for the same class             | Disassembly supports investigation; it does not establish equivalence                                    |
 
 The selected class was previously examined during the feasibility investigation. This repeatable probe establishes tool readiness and must not be presented as a blind reconstruction or a new behavioral discovery. The input class has JVM class-file major version **55**.
 
@@ -482,14 +482,14 @@ observations are recorded separately for each implemented workflow.
 
 ## Initial demo scope
 
-| Workflow | Intended comparison |
-| --- | --- |
-| Two-pane navigation and selection | Locations, listings, and selection behavior |
-| Sorting and filtering | Ordering, numeric names, locale behavior, and ties |
-| Recursive copy, move, and rename | Resulting paths, contents, and selected metadata |
-| Batch renaming | Generated names, collision handling, and errors |
-| ZIP browsing and extraction | Entry names and extracted contents |
-| Background file operations | Completion, cancellation, and failure outcomes |
+| Workflow                          | Intended comparison                                |
+| --------------------------------- | -------------------------------------------------- |
+| Two-pane navigation and selection | Locations, listings, and selection behavior        |
+| Sorting and filtering             | Ordering, numeric names, locale behavior, and ties |
+| Recursive copy, move, and rename  | Resulting paths, contents, and selected metadata   |
+| Batch renaming                    | Generated names, collision handling, and errors    |
+| ZIP browsing and extraction       | Entry names and extracted contents                 |
+| Background file operations        | Completion, cancellation, and failure outcomes     |
 
 This scope is an initial demonstration target. Complete muCommander feature parity, remote and cloud filesystems, additional archive formats, and support across operating systems require further increments.
 

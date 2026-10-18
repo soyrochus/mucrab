@@ -1,0 +1,53 @@
+{
+  "scope": "Native-menu integration only; Linux in-window menu retained",
+  "date": "2026-10-18",
+  "platform": {
+    "os": "26.6.2",
+    "arch": "arm64"
+  },
+  "macos_desktop_tests": {
+    "passed": 27,
+    "failed": 0,
+    "command": "TMPDIR=\"$PWD/artifacts/tests/native-menu-tmp\" cargo test -p mucrab-desktop --all-features --locked --offline"
+  },
+  "linux_desktop_tests": {
+    "passed": 23,
+    "failed": 0,
+    "ignored": 1,
+    "environment": "Disposable rust:1.97.1-trixie Linux container; existing isolated Xvfb/DBus native clipboard test ignored"
+  },
+  "clippy": "Passed all desktop targets/features with -D warnings",
+  "native_acceptance": {
+    "system_menu_bar": "passed; File/Edit/Mark/View/Go/Window/Help exposed by macOS accessibility; inline menu removed",
+    "file_copy": "passed; alpha.txt bytes match between panes",
+    "modal_availability": "passed; File operations disabled while Copy review open",
+    "hidden_files": "passed; native View toggle reveals .hidden.txt",
+    "tab_shortcuts": "passed; Cmd+T creates one tab, Cmd+W closes it",
+    "text_editing": "passed; native Select All/Cut/Copy/Paste retain field focus and exact text",
+    "bookmark": "passed; added bookmark immediately appears in system menu and opens correct local folder",
+    "appearance": "passed; Light applied and saved, restored to System using native View menu; isolated application preferences only",
+    "file_clipboard": "existing adapter returned OS service failure, reproduced after unlocking; unchanged in this scope",
+    "paused_copy_quit": "passed; native application-menu Quit exits cleanly from Copy paused; no test process remains, partial destination stops changing and all 100,000 source files retain exact contents"
+  },
+  "binary_sha256": "35afe60dfd184fa035abe22dbecf1a7831dad44133fb64ca9e4cf68967e0b6c2",
+  "captures": {
+    "native-menu-menubar.txt": "9c5f3cf7421a7e073c6f8e4b58310a95a451c855a46a48aba48f8e2d72f44fbb",
+    "native-menu-quit-paused.png": "c8061e81fbbc55584886cc0363266918fba974268b69d9bb7cad1b6c3cd935ff",
+    "native-menu-quit-paused.txt": "f021594db20447f8297bb513514ce32dcbea205bc1acbe99ed3268d5139a63a1",
+    "native-menu-window.png": "6a4786d162446636087dec31e29596979a1ffcce26b9f41ccf57a680fc4612ed"
+  },
+  "paused_copy_quit_observation": {
+    "source_files": 100000,
+    "destination_files_before_quit": 19146,
+    "partial_bytes_before_quit": 650930,
+    "destination_files_after_exit": 19146,
+    "source_files_after_exit": 100000,
+    "app_processes_after_quit": "",
+    "app_exit_status": 0,
+    "source_contents_unchanged": true,
+    "complete_destination_files": 19145,
+    "partial_destination_files": 1,
+    "destination_files_still_stable": true,
+    "large_disposable_fixtures_removed_after_verification": true
+  }
+}
