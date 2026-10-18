@@ -78,60 +78,42 @@ on the target, host and configured providers. See REA's
 
 ## Current status
 
-Latest implementation checkpoint: **2026-10-18**, commit `5b77e5a` (W15).
+**v0.10.0 — updated 2026-10-18.** W11–W15 are implemented with bounded
+Linux x86_64 and Apple Silicon macOS validation:
 
-**2026-10-18 Mac verification:** W11–W15 workspace, scoped Java/Rust comparisons,
-native interactions, real SFTP failure tests and disposable Keychain round-trip
-pass: **107 Rust / 51 Python tests**, plus four explicit fixture-dependent tests.
-Search now matches composed accented names on APFS. See the
-[Mac evidence and remaining gates](evidence/platforms/macos-arm64/W11-W15.md).
+| Workflow | Available behavior |
+| --- | --- |
+| [W11 — Tabs and bookmarks](evidence/workflows/W11-tabs-bookmarks/README.md) | Up to 32 independent tabs per pane, per-tab history and persistent local/ZIP/SFTP bookmarks. Tabs are session-only. |
+| [W12 — File search](evidence/workflows/W12-file-search/README.md) | Background recursive local search with Unicode wildcards, extension/type/size/date filters, cancellation, partial results and Open Containing Folder in either pane. |
+| [W13 — Properties and permissions](evidence/workflows/W13-properties-permissions/README.md) | Focused-entry metadata, cancellable folder totals, reviewed local permission/modified-time edits and read-only ZIP properties. |
+| [W14 — Built-in viewer](evidence/workflows/W14-built-in-viewer/README.md) | Read-only text viewing with find/copy, plus PNG/JPEG fit, zoom and pan. Local, ZIP and privately downloaded SFTP files are supported within size limits. |
+| [W15 — SFTP connections and transfers](evidence/workflows/W15-sftp-connections/README.md) | Saved profiles, host-key verification, session-only or optional OS-stored credentials, local↔SFTP copies and private downloads for viewing/external opening. |
 
-**W15 — SFTP connections and transfers** is implemented. Go → SFTP connections
-manages saved profiles, verified host keys and session-only or optional native
-credentials. Browse remote folders, review local↔SFTP copies, and open/view files
-through retained private downloads. Linux and bounded Mac checks pass, including
-native upload/download, disconnect/reconnect and closing a paused transfer. See
-[W15 evidence](evidence/workflows/W15-sftp-connections/README.md).
+**Native macOS menus** now use the system menu bar, with context-sensitive
+commands, checked settings, live bookmark items and focus-aware text editing.
+Quit waits for active workers to acknowledge cancellation. Linux retains its
+in-window menu; the toolbar and review dialogs are shared. See
+[native menu behavior and verification](docs/native-menus.md).
 
-**W13 — Properties and permissions** and **W14 — Built-in viewer** are implemented.
-**Alt+Enter** opens properties for the focused entry, with cancellable folder totals
-and reviewed local permission/modified-time edits. **F3** opens a read-only text
-or PNG/JPEG viewer with text find/copy and image fit/zoom/pan. Enter and double-click
-continue to open files in their default application. Bounded Linux and Mac native
-checks pass. See [W13 evidence](evidence/workflows/W13-properties-permissions/README.md)
-and [W14 evidence](evidence/workflows/W14-built-in-viewer/README.md).
+**Mac validation:** the W11–W15 checkpoint passes **107 Rust / 51 Python tests**,
+four separately invoked service/mount tests, scoped Java/Rust comparisons and
+native input checks on **macOS 26.6.2 / arm64 / APFS**. Checks cover bookmark
+restart, composed accented filename search, both-pane properties/viewing, real
+SFTP transfers, Keychain round-trip and closing a paused remote transfer.
+The later menu increment separately passes **27 Mac desktop tests** and
+**23 Linux desktop tests** (one service-dependent test ignored), Clippy and
+native menu checks, including Quit from a paused 100,000-file copy. These are
+separate verification runs. See [W11–W15 Mac acceptance](evidence/platforms/macos-arm64/W11-W15.md)
+and [native menu evidence](evidence/platforms/macos-arm64/native-menu.json).
 
-**W11 — Tabs and bookmarks** and **W12 — File search** are implemented.
-Each pane has independent tabs; shared local/ZIP bookmarks persist across restarts,
-with profile-backed SFTP bookmarks added in W15.
-Background local search supports wildcard names, extension/type/size/UTC date
-filters, cancellation, partial results and Open Containing Folder in either pane.
-Bounded Linux and Mac native checks pass, including bookmark restart and both-pane
-search navigation. See
-[W11 evidence](evidence/workflows/W11-tabs-bookmarks/README.md) and
-[W12 evidence](evidence/workflows/W12-file-search/README.md) for comparison scope
-and remaining acceptance checks.
-
-**W10 — Everyday file management** adds New Folder, reviewed Delete/Trash,
-system clipboard Copy/Paste, type-to-find and per-pane Back/Forward history.
-Linux X11 native checks and W07/W08/W09 regressions pass; native macOS W10 checks
-remain pending. See [W10 evidence](evidence/workflows/W10-everyday-file-management/README.md).
-
-**W09 — Default-application file opening** now supports local files and archive
-members through Enter, double-click and File → Open. ZIP members open as private
-temporary copies without archive writeback. Linux native dispatch is verified.
-Mac viewer-to-TextEdit archive handoff passes; the other W09 gestures remain open. See the
-[W09 evidence](evidence/workflows/W09-open-files/README.md).
-
-**W07 — background operations and cancellation** remains verified. File operations
-show progress and support Pause/Resume/Cancel while
-browsing remains available. **W08 — classic desktop UI** was delivered first, with
-compact menus, file tables and saved Light/Dark/System appearance.
-See the [current status report](docs/current-status.md) for workflow details,
-comparison results, verification dates, supported platforms and remaining limits.
-
-The [macOS arm64 verification](evidence/platforms/macos-arm64/README.md) includes
-the earlier nine comparison suites/W07–W08 interaction and the fresh W11–W15 checks.
+Earlier local/ZIP operations, background progress/cancellation, default-application
+opening and W10 everyday file management remain available. **Known Mac issue:**
+the file-clipboard service returned an OS error during native menu verification;
+text Cut/Copy/Paste and direct pane-to-pane copying pass. Broader W09/W10
+gestures/Trash, locked or unavailable Keychain storage, full original-window
+parity and other macOS versions remain outside the completed acceptance.
+The [current status report](docs/current-status.md) owns the detailed workflow
+results, historical checkpoints and remaining gates.
 
 ## Migration screenshots
 
@@ -160,11 +142,12 @@ recorded in the [current status report](docs/current-status.md).
 ## Release downloads
 
 The [release workflow](.github/workflows/release.yml) builds **Linux x86_64** and
-**Apple Silicon macOS** when a stable tag such as `v0.9.0` is pushed. After all
+**Apple Silicon macOS** when a stable tag such as `v0.10.0` is pushed. After all
 checks pass, archives, corresponding source with vendored dependencies, notices
 and SHA-256 checksums are published under [GitHub Releases](https://github.com/soyrochus/mucrab/releases).
 macOS bundles contain an ad-hoc signed `muCrab.app`; Developer ID signing and
-notarization are not configured. The first hosted release run is pending.
+notarization are not configured. The local validation receipts describe the
+tested builds; consult the hosted release's jobs and provenance for its artifacts.
 See [release instructions and platform requirements](docs/releases.md).
 
 ## Build and run muCrab
@@ -176,7 +159,7 @@ The [Cargo workspace](Cargo.toml) contains:
 | Package            | Role                           | Current contents                                                                                                             |
 | ------------------ | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
 | `mucrab-core`    | Framework-independent behavior | Local/ZIP/SFTP providers, tabs/bookmarks/search, properties/view preparation, sorting/selection and reviewed file operations |
-| `mucrab-desktop` | Native `mucrab` executable   | Local/ZIP/SFTP two-pane browser, tabs, search, properties and viewer using eframe/egui 0.36.2 with the OpenGL backend        |
+| `mucrab-desktop` | Native `mucrab` executable   | Local/ZIP/SFTP browser, tabs, search, properties and viewer using eframe/egui 0.36.2/OpenGL, with AppKit menus on macOS        |
 | `mucrab-compare` | Java/Rust comparison harness   | W01–W07 suites plus W10–W15 scoped original-binary probes/adapters and difference reports                                  |
 
 All three packages use `GPL-3.0-only` and are marked non-publishable. [Cargo.lock](Cargo.lock) pins the resolved dependencies; it is committed. Build and launch from the repository root:
@@ -201,7 +184,11 @@ with cancellation during preparation and visible launcher errors.
 
 Press Enter in the location field to open a typed location. View contains sorting/filtering options and
 **Appearance → System / Light / Dark**; System follows the OS color preference
-and falls back to Light if unavailable. ZIP paths such as `/path/archive.zip/folder` also work as initial locations. Check the native command-line entry points without opening a window:
+and falls back to Light if unavailable. On macOS, these menus are in the system
+menu bar; **Cmd+Q** quits and **Cmd+Shift+W** closes the window through the shared
+worker-cancellation path. Listing-specific shortcuts yield to focused text fields.
+ZIP paths such as `/path/archive.zip/folder` also work as initial locations.
+Check the native command-line entry points without opening a window:
 
 ```sh
 cargo run --locked -p mucrab-desktop -- --version
@@ -257,8 +244,14 @@ isolated credential services. Coverage includes local/ZIP operations, navigation
 tabs/bookmarks/search, properties/viewer, remote profiles/trust, staged transfers
 and temporary-copy opening. Separate Java/Rust comparisons and native GUI checks
 record their scope and source provenance in the
-[current status report](docs/current-status.md). Once dependencies
-are cached, Cargo build, test, and Clippy commands also work with `--offline`.
+[current status report](docs/current-status.md). The later
+[Mac W11–W15 run](evidence/platforms/macos-arm64/W11-W15.md) passes 107 Rust and
+51 Python tests plus four explicit service/mount tests; the subsequent
+[menu checks](evidence/platforms/macos-arm64/native-menu.json) separately record
+27 Mac / 23 Linux desktop tests and native paused-copy Quit acceptance.
+These counts describe their recorded checkpoints, not a combined current total.
+Once dependencies are cached, Cargo build, test, and Clippy commands also work
+with `--offline`.
 
 **F7** reviews creation of a folder in the active local pane. **F8/Delete**
 reviews moving selected entries to the OS Trash; **Shift+F8/Shift+Delete** separately
@@ -268,8 +261,9 @@ Paste into the current local folder. Text fields retain normal clipboard editing
 Type a prefix to find a visible name; Enter or Escape dismisses find before file
 activation. **Alt+Left/Right**, Go menu actions and toolbar arrows navigate each
 tab's independent session history, including ZIP and profile-backed SFTP locations.
-Clipboard Cut and Trash restore/emptying UI remain deferred. Linux X11 is verified;
-native macOS W10 verification and real IME input remain pending.
+File-selection Cut and Trash restore/emptying UI remain deferred. Linux X11 is
+verified. Native macOS text Cut/Copy/Paste passes, but file-selection Copy returns
+an OS service error; full W10 Mac/Trash and real IME input checks remain open.
 
 **Ctrl/Cmd+T** opens a Home tab; **Ctrl/Cmd+Shift+T** duplicates the current tab;
 **Ctrl/Cmd+W** closes it, retaining at least one tab per pane. **Ctrl+Tab** and
@@ -282,7 +276,9 @@ SFTP bookmarks reference a saved profile and remote path; they contain no creden
 root and a name pattern (`*`, `?`, or backslash to escape the next character),
 then optionally set extension, types, byte-size bounds and modified dates in UTC.
 Date-only To includes that day; timestamp To is exclusive. Matching defaults to
-case-insensitive Unicode lowercase, without canonical normalization. Hidden
+case-insensitive Unicode lowercase. On macOS, traversal uses NFC filenames to
+match pane listings, so composed accented patterns match decomposed APFS names;
+the matcher itself has no general canonical-equivalence guarantee. Hidden
 folders are pruned unless included; links and descendant mounts are never
 traversed. Search stops visibly partial at 10,000 hits, one million visited
 entries or depth 256. Cancel retains results; replacing waits for cancellation.
@@ -379,7 +375,10 @@ EFRAME_SCREENSHOT_TO="$PWD/artifacts/workspace/mucrab-preview.png" \
 The optional `screenshot` feature is for development captures.
 [Workspace readiness evidence](evidence/workspace/readiness.json) is the historical
 phase 4 scaffold snapshot. [W15 evidence](evidence/workflows/W15-sftp-connections/README.md)
-records the latest SFTP checks and W07–W14 regression provenance. Earlier workflow
+records Linux SFTP checks and W07–W14 regression provenance;
+[Mac W11–W15 acceptance](evidence/platforms/macos-arm64/W11-W15.md) and
+[native-menu evidence](evidence/platforms/macos-arm64/native-menu.json) record the
+later platform and menu checks. Earlier workflow
 evidence retains its original comparison results. W09 currently has static
 original-binary recovery and native Linux checks, rather than a Java/Rust runtime
 parity suite. A screenshot supplements runtime comparisons.
@@ -491,7 +490,10 @@ observations are recorded separately for each implemented workflow.
 | ZIP browsing and extraction       | Entry names and extracted contents                 |
 | Background file operations        | Completion, cancellation, and failure outcomes     |
 
-This scope is an initial demonstration target. Complete muCommander feature parity, remote and cloud filesystems, additional archive formats, and support across operating systems require further increments.
+This table records the initial demonstration target. v0.10.0 also implements
+W10–W15 everyday operations, tabs/bookmarks, local search, properties, viewing and
+bounded SFTP support. Complete muCommander parity, additional remote/cloud
+protocols, archive formats and operating systems require further increments.
 
 ## Execution sequence
 
@@ -501,8 +503,8 @@ The [implementation plan and progress ledger](mucrab-implementation-plan.md) rec
 2. **Complete:** add reproducible acquisition scripts and a checksum manifest; download and extract the reference into ignored local storage.
 3. **Complete for static inspection:** pin REA and a JVM decompiler, verify JAR inventory, the APK-only refusal, class decompilation, and bytecode inspection against the reference, and record tool provenance and limits.
 4. **Complete:** create a GPLv3 Cargo workspace separating the Rust core, native desktop interface, and comparison-harness entry point; commit `Cargo.lock`, verify the build and unavailable-harness guard, and capture the native preview.
-5. **In progress:** W01 browsing/name sorting, W02a selection/marking, W02b hidden-file filtering, W02c size/date/extension sorting, bounded W03 recursive copy, W04 move/rename, W05 batch rename and W06 ZIP browsing/extraction are verified within their contracts. W08 implements the classic desktop interface as a presentation increment. W07 adds bounded background operations, progress and cancellation with original full-job lifecycle comparisons. W09 implements default-application opening for local files and retained archive copies, with Linux native verification and macOS verification pending. W10 implements New Folder, Delete/Trash, clipboard Copy/Paste, quick-find and history, with Linux checks passing and Mac verification pending. Permissions/owner/group sorting and additional filters remain deferred.
-6. Run the agreed comparison suite and demonstrate fresh scenarios with the compiled Rust application running independently of Java.
+5. **Implemented through W15:** local/ZIP operations, background jobs, default-application opening, everyday file management, tabs/bookmarks, local search, properties, viewing and SFTP. Bounded Linux and Mac acceptance and native macOS menus are recorded in the [current status report](docs/current-status.md).
+6. **Acceptance continues:** complete the remaining original-window, Mac W09/W10 and credential/disconnect checks, then extend platform/protocol coverage. Fresh comparisons and native scenarios use disposable fixtures; the application runs independently of Java.
 
 Upstream Java implementation source will be withheld during reconstruction; license and attribution material remains available. Decompiled representations, binary metadata, and observations of the original are permitted inputs. Findings from the earlier feasibility investigation must be identified as prior evidence if reused.
 
@@ -512,8 +514,11 @@ Each workflow will have explicit inputs and acceptance criteria established befo
 
 W01 through W06 have scoped original-JAR/Rust comparisons, reserved cases,
 integrity checks and representative GUI evidence. The broader demo still needs
-broader platform/end-to-end acceptance; W07 now covers bounded job lifecycle
-and cancellation separately from the earlier component case counts.
+broader platform/end-to-end acceptance; W07 covers bounded job lifecycle
+and cancellation separately from the earlier component case counts. W11–W15 add
+scoped original-binary comparisons, background-worker/service checks and native
+Linux/Mac scenarios. Native-menu acceptance is recorded separately from these
+workflow comparisons; it includes safe Quit from a paused local copy.
 
 Current fixtures include numeric and Unicode names, existing destinations,
 symbolic links, unreadable files, and partial copy/move failures. File operations
@@ -537,13 +542,16 @@ The experiment will distinguish evidence that binary-to-Rust reconstruction work
 - `third_party/`: preserved upstream notices and their provenance.
 
 The repository includes acquisition/analysis helpers, pinned manifests and
-lockfiles, the native workspace, W01/W02a/W02b/W02c/W03/W04/W05/W06 Java/Rust adapters
-and fixtures, scoped results, GUI evidence, and the maintained implementation
-plan. [W08 UI evidence](evidence/workflows/W08-desktop-ui/README.md) records the
+lockfiles, the native workspace, W01–W07 comparison suites, W10–W15 scoped
+original-binary probes/adapters and fixtures, GUI/platform evidence, and the
+maintained implementation plan.
+[W08 UI evidence](evidence/workflows/W08-desktop-ui/README.md) records the
 UI changes and scoped checks. [W07 evidence](evidence/workflows/W07-background-operations/README.md)
 records lifecycle recovery, comparisons and native progress/cancellation checks.
 [W09 evidence](evidence/workflows/W09-open-files/README.md) records default-application
-opening, temporary-copy lifetime and native Linux verification; W05 manual row
+opening, temporary-copy lifetime and native Linux verification.
+[Mac acceptance](evidence/platforms/macos-arm64/W11-W15.md) and
+[native menus](docs/native-menus.md) describe the later Mac work; W05 manual row
 overrides remain deferred.
 
 ## Principles of Participation
@@ -559,6 +567,6 @@ relevant OpenSpec artifacts when behavior or requirements change.
 
 Copyright (c) 2026 Iwan van der Kleijn
 
-muCrab-authored material is licensed under the **GNU General Public License, version 3** (`GPL-3.0-only`); see [LICENSE](LICENSE). Upstream material retains its original copyright notices and applicable terms. See [NOTICE.md](NOTICE.md) and the [preserved muCommander license file](third_party/mucommander/license.txt).
+muCrab-authored material is licensed under the **GNU General Public License, version 3** (`GPL-3.0-only`); see [LICENSE](LICENSE). [NOTICE.md](NOTICE.md) is the attribution and third-party license index shipped with releases; it links to preserved notices in `third_party/`. Detailed reconstruction and verification history lives in `docs/` and `evidence/`.
 
 Distribution of the Rust executable will include the corresponding buildable source, build instructions, the GPL text, and applicable notices. Additional dependencies and copied material must retain their own notices and be compatible with the application's distribution terms.

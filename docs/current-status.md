@@ -2,16 +2,32 @@
 
 [Back to the README](../README.md).
 
-Updated **2026-10-18** after W11–W15 Mac acceptance. The latest Mac checkpoint
-passes **107 Rust / 51 Python tests**, four separately invoked service/mount tests,
-formatting, locked/offline all-feature build, Clippy and scoped W11–W15 Java/Rust
-comparisons. Bounded native checks pass for tabs/bookmarks/search, properties,
-viewer and SFTP, including Keychain round-trip and paused-transfer tab/app closure.
-See [Mac evidence and remaining gates](../evidence/platforms/macos-arm64/W11-W15.md).
-The Linux checkpoint is 106 Rust / 51 Python tests; earlier counts below are historical.
+**v0.10.0 — updated 2026-10-18.** W11–W15 and native macOS menu integration are
+implemented. Scoped Linux x86_64 and Apple Silicon Mac checks pass; full
+muCommander UI parity and the remaining platform/service gates stay open.
 
-**W15 — SFTP connections and transfers** is implemented and Linux-verified within
-its bounded contract. Saved non-secret profiles back typed remote tabs/history/
+The [Mac W11–W15 checkpoint](../evidence/platforms/macos-arm64/W11-W15.md) passes
+**107 Rust / 51 Python tests**, four separately invoked service/mount tests,
+formatting, locked/offline all-feature build, Clippy and scoped Java/Rust
+comparisons on **macOS 26.6.2 / arm64 / APFS**. Native checks cover
+tabs/bookmarks/search, both-pane properties/viewing, real SFTP, Keychain round-trip
+and origin-tab/window closure during a paused remote transfer. Search uses the
+same NFC filenames as Mac pane listings while retaining raw filesystem paths.
+
+The later [native-menu increment](../evidence/platforms/macos-arm64/native-menu.json)
+separately passes **27 Mac desktop tests**, **23 Linux desktop tests** (one
+service-dependent test ignored), Clippy and native menu interactions, including
+Quit from a paused 100,000-file local copy. Mac menus now occupy the system menu
+bar; Linux retains its in-window menu. The Mac file-clipboard service reports an
+OS error, while text clipboard editing and direct pane-to-pane copying pass.
+See [native macOS menus](#native-macos-menus) for details.
+
+The W15 Linux workspace checkpoint is **106 Rust / 51 Python tests**. These
+counts belong to separate receipts; they are not a combined current test total.
+Earlier workflow counts below describe their historical implementation checkpoints.
+
+**W15 — SFTP connections and transfers** is implemented with bounded Linux and
+Mac verification. Saved non-secret profiles back typed remote tabs/history/
 bookmarks. Host keys are checked before authentication, first-use trust is
 explicit, changed keys fail, and trust/profile changes during authentication
 prevent a stale connection from becoming active. Password and key-file/passphrase
@@ -59,8 +75,9 @@ instrumentation after Rust began; no fully blind server/GUI fixture claim is mad
 See [W15 evidence](../evidence/workflows/W15-sftp-connections/README.md).
 
 **W13 — Properties and permissions** and **W14 — Built-in viewer** are implemented
-and Linux-verified. Alt+Enter captures focused-entry local/ZIP properties, including
-lstat link details, available timestamps, allocated size and numeric/named Unix
+with bounded Linux and Mac verification. Alt+Enter captures focused-entry
+local/ZIP properties, including lstat link details, available timestamps,
+allocated size and numeric/named Unix
 owner/group. Folder totals include hidden entries and hard links per name, exclude
 link targets/descendant mounts and visibly retain partial results. Reviewed
 non-recursive rwx/modified-time edits preserve special bits/access time, revalidate
@@ -96,9 +113,9 @@ checks do not provide race-free filesystem access. See
 [W13 evidence](../evidence/workflows/W13-properties-permissions/README.md) and
 [W14 evidence](../evidence/workflows/W14-built-in-viewer/README.md).
 
-**W11 — Tabs and bookmarks** and **W12 — File search** are implemented and
-Linux-verified. Each pane supports 1–32 independent session tabs, including
-New Home/Duplicate/Close/switch commands and per-tab history, marks and column
+**W11 — Tabs and bookmarks** and **W12 — File search** are implemented with
+bounded Linux and Mac verification. Each pane supports 1–32 independent session
+tabs, including New Home/Duplicate/Close/switch commands and per-tab history, marks and column
 widths. Reviewed jobs retain their original tab identity and paths even when
 tabs switch or close. Shared local/ZIP bookmarks have ordered stable IDs,
 validated versioned storage, atomic saves and visible load/save failures. W15 adds
@@ -112,6 +129,9 @@ link/mount boundaries, bounded traversal, 64-hit batches, an eight-batch queue,
 replacement acknowledgment and partial results keep scope and progress explicit.
 Results are sorted by relative path and open their containing folder in the
 current tab after revalidation. Changed/missing results retain the current pane.
+On macOS, traversal normalizes candidate filenames to NFC to match pane listings;
+composed accented patterns therefore match decomposed APFS names. The standalone
+predicate still has no general canonical-equivalence guarantee.
 
 Verification: **84 Rust tests**, **51 Python tests**, locked/offline all-feature
 build and Clippy, both-pane native input, bookmark restart and W07–W10 native
@@ -130,8 +150,9 @@ history. Linux X11 checks pass: 66 Rust tests, the separately invoked native
 clipboard/Trash restoration check, 51 Python tests, both-pane W10 input and
 W07/W08/W09 native regressions. Two bounded 80-case original/native runs have
 zero unexpected differences and one declared matching difference each.
-Native macOS verification and remaining original UI/IME checks are pending;
-W10 is not yet closed across all hosts. See
+The native-menu Mac check verifies text Cut/Copy/Paste, but file-selection Copy
+returns an OS service error. Broader Mac W10 gestures/Trash and original UI/IME
+checks remain open; W10 is not yet closed across all hosts. See
 [W10 evidence](../evidence/workflows/W10-everyday-file-management/README.md).
 
 **W09 — default-application file opening** is implemented for local files and
@@ -232,13 +253,41 @@ View → Appearance offers only System, Light and Dark, saves the preference,
 and follows reported OS light/dark changes (Light fallback). Help contains
 shortcuts and About information. New headless regressions cover live reported
 OS changes and 10,000-row keyboard/selection/sort/scroll behavior; a native replay
-checks file-operation results, menus, themes and resizing. Linux menus remain
-in-window; macOS now uses the system menu bar through a Mac-only muda adapter.
-The existing commands, toolbar and review dialogs are shared.
-[Native menu implementation and verification](native-menus.md) records the scope
-and checks. Physical theme notification
+checks file-operation results, menus, themes and resizing. The later
+[native macOS menu integration](#native-macos-menus) moves Mac menus to the system
+menu bar while Linux retains the W08 in-window menu. Physical theme notification
 delivery is verified on macOS 26.6.2 through a live Dark/Light/Dark change with
 the original system preference restored. W07 adds the background-job controls described below.
+
+## Native macOS menus
+
+macOS uses AppKit menus through the Mac-only muda 0.21.1 dependency. The muCrab
+application menu provides About, Services, Hide and Quit; File, Edit, Mark, View,
+Go, Window and Help expose the existing application commands. Enabled states,
+checkmarks and bookmark items follow the active pane and review state. Text
+Cut/Copy/Paste and Select All retain focused-control editing, and listing-only
+shortcuts yield to text fields. Linux keeps its in-window egui menu; the toolbar,
+file operations and review dialogs are shared.
+
+**Cmd+Q** and **Cmd+Shift+W** use the window-close cancellation/acknowledgment path.
+Native acceptance paused a 100,000-file local copy, selected Quit from the system
+menu, and observed a clean exit with no test process remaining. All source bytes
+were unchanged and the retained partial destination stopped changing. A headless
+regression separately verifies that close waits for worker acknowledgment.
+
+The [menu receipt](../evidence/platforms/macos-arm64/native-menu.json) records
+**27 passing Mac desktop tests**, **23 passing Linux desktop tests** with one
+existing service-dependent test ignored, and Clippy with denied warnings. Native
+checks cover system-menu placement, modal command availability, pane-to-pane
+copying, hidden-file toggling, tab shortcuts, text clipboard editing, dynamically
+added bookmarks and saved appearance changes. These checks follow the W11–W15
+workspace acceptance and do not replace its service or original/native comparisons.
+
+**Known issue:** Edit → Copy reaches the existing macOS file-clipboard adapter,
+which returns an OS service failure even after unlocking. Text clipboard commands
+and direct pane-to-pane copying pass. The adapter was unchanged by menu integration;
+full W10 Mac clipboard/Trash acceptance remains open. See
+[native menu implementation and verification](native-menus.md).
 
 ## W07 background operations
 
@@ -314,10 +363,11 @@ locations. Failed navigation preserves its cursor/listing.
 records actual original jobs/history/matching comparisons, bidirectional original
 Java/native clipboard exchange, native Trash restoration and both-pane input.
 Prefix-only matching intentionally differs from original substring matching.
-Clipboard Cut, New File and Trash restoration/emptying UI remain deferred.
-Recursive local search is implemented in W12. Native macOS adapters are implemented
-but unverified; real IME and exhaustive original window/shortcut parity remain open,
-as does full W10 closure.
+File-selection Cut, New File and Trash restoration/emptying UI remain deferred.
+Recursive local search is implemented in W12. macOS text Cut/Copy/Paste passes
+through the native menu, while file-selection Copy reports an OS service error.
+Broader Mac W10 gestures/Trash, real IME and exhaustive original window/shortcut
+parity remain open, as does full W10 closure.
 
 ## Platform scope and limitations
 
@@ -330,14 +380,21 @@ OpenJDK **21.0.10**, with a real second APFS volume for cross-device moves.
 Native desktop input verifies the W08 operations and W07 controls, including
 closing a paused job. See the [Mac receipts](../evidence/platforms/macos-arm64/README.md)
 for Unicode path rules and source hashes. Live OS theme-notification delivery,
-restoration of the original preference and the signed Mac release bundle pass. Other macOS versions,
-Wayland, Windows hidden attributes and exhaustive OS shortcut parity remain
-unverified. W11–W15 now have bounded Mac acceptance, including vendored OpenSSL
-build, scoped comparisons, native UI, real SFTP and Keychain round-trip. Mac W09/W10
-gesture/clipboard/Trash coverage remains incomplete; viewer external handoffs pass.
-The earlier signed release bundle predates these additions; no new W15 release
-package was verified here. Linux SFTP builds require OpenSSL and DBus development
-packages; macOS enables locked vendored OpenSSL.
+restoration of the original preference and the earlier ad-hoc signed Mac release
+bundle pass. The later [W11–W15 acceptance](../evidence/platforms/macos-arm64/W11-W15.md)
+includes the vendored OpenSSL build, scoped comparisons, native UI, real SFTP and
+Keychain round-trip. The [menu acceptance](../evidence/platforms/macos-arm64/native-menu.json)
+adds system-menu placement, focus-aware commands and Quit during a paused local
+copy. These local development-build receipts do not verify a newly packaged or
+signed v0.10.0 release artifact.
+
+Other macOS versions, Wayland, Windows hidden attributes and exhaustive OS shortcut
+parity remain unverified. Mac W09/W10 gesture/Trash coverage remains incomplete;
+the Mac file-clipboard service error is recorded explicitly. Viewer external
+handoffs pass. Locked/unavailable Mac Keychain behavior, GUI Remember/use-saved-secret
+flows, broader SFTP server/key-format/IPv6 interoperability, full original-window
+parity and expanded disconnect races remain open. Linux SFTP builds require
+OpenSSL and DBus development packages; macOS enables locked vendored OpenSSL.
 
 Additional remote protocols, archive formats and other locales remain for later
 increments. Copy rejects overlapping source/
@@ -346,5 +403,7 @@ filesystem handling and full scheduler/parallel-job parity remain unverified. W0
 cooperative between entries and 64 KiB chunks; blocked OS calls/atomic renames
 must return before acknowledgement, and cancellation does not roll back writes.
 W15 remote transfers use 32 KiB chunks and finite SSH timeouts; remote metadata
-checks have weaker identity guarantees than local files. Native active-transfer
-tab/app closure and broader disconnect races remain acceptance gates.
+checks have weaker identity guarantees than local files. Mac origin-tab closure
+while a remote transfer stays paused and subsequent cancellation on window close
+pass; broader disconnect races and complete original connection/job UI parity
+remain acceptance gates.
