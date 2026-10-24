@@ -71,9 +71,7 @@ impl<T: Send + 'static> ReadJob<T> {
                 let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                     work(worker_control.clone())
                 }))
-                .unwrap_or_else(|_| {
-                    Err("Read/decoder worker panicked; preview was discarded".into())
-                });
+                .unwrap_or_else(|_| Err("Read worker panicked; result was discarded".into()));
                 worker_control.finish(result.is_err() && !worker_control.is_cancelled());
                 let _ = send.send(result);
             })

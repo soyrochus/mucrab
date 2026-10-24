@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
-use super::*;
+//! Validated non-secret profiles and exact host trust with native credential adapters.
+use super::{Path, PathBuf, error, fs, io, next_id};
 const ESCAPE: &percent_encoding::AsciiSet = &percent_encoding::CONTROLS
     .add(b' ')
     .add(b'%')
@@ -9,26 +10,43 @@ use serde::{Deserialize, Serialize};
 use std::{collections::HashSet, io::Write};
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "method", content = "key_file", deny_unknown_fields)]
+/// Non-secret authentication configuration; passwords and passphrases are supplied separately.
 pub enum Authentication {
+    #[doc = "Password authentication with a separately supplied session secret."]
     Password,
+    #[doc = "A configured private-key file with a separately supplied optional passphrase."]
     PrivateKey(PathBuf),
 }
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
+/// Saved non-secret connection settings, validated before transport or persistence.
 pub struct Profile {
+    /// Stable identity used instead of a mutable display position.
     pub id: String,
+    /// User-facing non-secret label, validated before persistence.
     pub label: String,
+    /// Non-secret hostname or address; URLs and credential-bearing values are rejected.
     pub host: String,
+    /// Nonzero SSH service port.
     pub port: u16,
+    /// Non-secret account name, separate from passwords and passphrases.
     pub user: String,
+    /// Password or private-key-file configuration, without the secret itself.
     pub authentication: Authentication,
+    /// Initial absolute remote directory, validated with the saved-profile identifier.
     pub directory: String,
     #[serde(default)]
+    /// Whether a native credential was explicitly saved for this profile.
     pub remembered: bool,
     #[serde(default)]
+    /// Non-secret endpoint/account/authentication binding for the saved credential.
     pub credential_context: Option<String>,
 }
 impl Profile {
+    /// Validate non-secret profile fields and the profile-backed initial directory.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn validate(&self) -> io::Result<()> {
         if !valid_id(&self.id)
             || self.label.trim().is_empty()
@@ -57,37 +75,85 @@ impl Profile {
         RemoteLocation::new(&self.id, &self.directory)?;
         Ok(())
     }
+    /// Encode the endpoint, account and authentication context binding a saved credential.
     pub fn credential_context_key(&self) -> String {
         serde_json::to_string(&(self.endpoint(), &self.user, &self.authentication))
             .expect("serializable profile context")
     }
+    /// Check that remembered credentials belong to the current connection settings.
     pub fn saved_credential_matches(&self) -> bool {
         self.remembered
             && self.credential_context.as_deref() == Some(self.credential_context_key().as_str())
     }
+    /// Compare profile identity and authentication settings without comparing any secret.
     pub fn same_connection(&self, other: &Self) -> bool {
         self.id == other.id
             && self.endpoint() == other.endpoint()
             && self.user == other.user
             && self.authentication == other.authentication
     }
+    /// Format a normalized host and port identity used for host-key trust.
     pub fn endpoint(&self) -> String {
         format!("[{}]:{}", self.host.to_lowercase(), self.port)
     }
 }
+/// Validate a bounded ASCII saved-profile identifier rather than a host or credential URL.
 pub fn valid_id(s: &str) -> bool {
     !s.is_empty()
         && s.len() <= 64
         && s.bytes()
             .all(|c| c.is_ascii_alphanumeric() || c == b'-' || c == b'_')
 }
+/// A normalized absolute path belonging to a saved SFTP profile.
+///
+/// Serialized locations use the same validation as [`Self::new`].
+///
+/// ```compile_fail
+/// use mucrab_core::sftp::RemoteLocation;
+/// let mut location = RemoteLocation::new("server", "/")?;
+/// location.path = "relative".into();
+/// # Ok::<(), std::io::Error>(())
+/// ```
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(deny_unknown_fields)]
+#[serde(try_from = "LocationWire")]
 pub struct RemoteLocation {
-    pub profile: String,
-    pub path: String,
+    profile: String,
+    path: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct LocationWire {
+    profile: String,
+    path: String,
+}
+
+impl TryFrom<LocationWire> for RemoteLocation {
+    type Error = io::Error;
+    fn try_from(value: LocationWire) -> Result<Self, Self::Error> {
+        Self::new(&value.profile, &value.path)
+    }
+}
+
+impl std::fmt::Display for RemoteLocation {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.display())
+    }
 }
 impl RemoteLocation {
+    /// Saved profile identifier; never credentials or a host URL.
+    pub fn profile(&self) -> &str {
+        &self.profile
+    }
+    /// Normalized absolute remote path.
+    pub fn path(&self) -> &str {
+        &self.path
+    }
+
+    /// Normalize an absolute path and validate its saved-profile identifier.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn new(profile: &str, path: &str) -> io::Result<Self> {
         if !valid_id(profile)
             || !path.starts_with('/')
@@ -112,6 +178,7 @@ impl RemoteLocation {
             path: format!("/{}", parts.join("/")),
         })
     }
+    /// Format a profile-backed URL with reserved path characters percent-encoded.
     pub fn display(&self) -> String {
         format!(
             "sftp://{}{}",
@@ -119,6 +186,10 @@ impl RemoteLocation {
             percent_encoding::utf8_percent_encode(&self.path, ESCAPE)
         )
     }
+    /// Parse only saved-profile SFTP URLs and reject credentials or malformed encoding.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn parse(s: &str) -> io::Result<Self> {
         let rest = s
             .strip_prefix("sftp://")
@@ -138,25 +209,37 @@ impl RemoteLocation {
             .map_err(|_| error("Invalid encoded remote path"))?;
         Self::new(id, &format!("/{path}"))
     }
+    /// Join one validated direct-child name, enforcing the remote path length bound.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn child(&self, name: &str) -> io::Result<Self> {
         if !crate::is_valid_leaf_name(name) || name.chars().any(char::is_control) {
             return Err(error("Unsupported remote filename"));
         }
         Self::new(&self.profile, &format!("{}/{name}", self.path))
     }
+    /// Return a normalized parent, keeping the remote root at the root.
     pub fn parent(&self) -> Self {
         let p = self.path.rsplit_once('/').map_or("", |(p, _)| p);
-        Self::new(&self.profile, if p.is_empty() { "/" } else { p }).expect("validated parent")
+        Self {
+            profile: self.profile.clone(),
+            path: if p.is_empty() { "/".into() } else { p.into() },
+        }
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
+/// Exact endpoint, algorithm and fingerprint accepted before authentication.
 pub struct HostIdentity {
+    /// Normalized host/port trust identity.
     pub endpoint: String,
+    /// Reported SSH host-key algorithm identifier.
     pub algorithm: String,
+    /// SHA-256 host-key fingerprint that must be verified before authentication.
     pub fingerprint: String,
 }
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Document {
     version: u32,
@@ -172,6 +255,8 @@ impl Default for Document {
         }
     }
 }
+#[derive(Debug)]
+/// Bounded non-secret profiles and trusted hosts with checked atomic saves.
 pub struct ConnectionStore {
     path: PathBuf,
     document: Document,
@@ -194,6 +279,10 @@ fn read(path: &Path) -> io::Result<Option<Vec<u8>>> {
     }
 }
 impl ConnectionStore {
+    /// Load bounded non-secret connection/trust data without overwriting invalid input.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn load(path: PathBuf) -> io::Result<Self> {
         let baseline = read(&path)?;
         let document: Document = baseline
@@ -234,21 +323,29 @@ impl ConnectionStore {
             baseline,
         })
     }
+    /// Choose an unused bounded identifier within the loaded connection document.
     pub fn unused_profile_id(&self) -> String {
         (1..=129)
             .map(|n| format!("server-{n}"))
             .find(|id| self.profile(id).is_none())
             .expect("at most128 profiles")
     }
+    /// Borrow saved profiles in their persisted order.
     pub fn profiles(&self) -> &[Profile] {
         &self.document.profiles
     }
+    /// Borrow explicitly accepted host identities; changed keys require separate removal.
     pub fn trusted(&self) -> &[HostIdentity] {
         &self.document.trusted
     }
+    /// Find a saved profile by its stable identifier.
     pub fn profile(&self, id: &str) -> Option<&Profile> {
         self.document.profiles.iter().find(|p| p.id == id)
     }
+    /// Validate and atomically persist a profile after checking for external configuration changes.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn save_profile(&mut self, p: Profile) -> io::Result<()> {
         p.validate()?;
         let mut d = self.document.clone();
@@ -262,11 +359,19 @@ impl ConnectionStore {
         }
         self.commit(d)
     }
+    /// Persist profile removal without implicitly deleting native credential-store items.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn remove_profile(&mut self, id: &str) -> io::Result<()> {
         let mut d = self.document.clone();
         d.profiles.retain(|p| p.id != id);
         self.commit(d)
     }
+    /// Return first-use or exact trusted-match status; changed host keys are errors.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn trust_status(&self, key: &HostIdentity) -> io::Result<bool> {
         match self
             .document
@@ -281,6 +386,10 @@ impl ConnectionStore {
             )),
         }
     }
+    /// Persist explicit acceptance of this exact host identity without replacing changed keys.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn trust(&mut self, key: HostIdentity) -> io::Result<()> {
         if self.trust_status(&key)? {
             return Ok(());
@@ -292,6 +401,10 @@ impl ConnectionStore {
         d.trusted.push(key);
         self.commit(d)
     }
+    /// Persist explicit removal of a trusted endpoint identity.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn forget_host(&mut self, endpoint: &str) -> io::Result<()> {
         let mut d = self.document.clone();
         d.trusted.retain(|k| k.endpoint != endpoint);
@@ -345,12 +458,20 @@ pub fn load_secret(profile: &str) -> io::Result<zeroize::Zeroizing<String>> {
         .map_err(|_| error("Native credential unavailable; enter a session-only secret"))
 }
 #[cfg(target_os = "macos")]
+/// Write a secret only to the platform credential service, never to profile JSON.
+///
+/// # Errors
+/// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
 pub fn save_secret(profile: &str, secret: &str) -> io::Result<()> {
     keyring::Entry::new("org.mucrab.sftp", profile)
         .and_then(|e| e.set_password(secret))
         .map_err(|_| error("Native credential storage unavailable. Secret was not saved."))
 }
 #[cfg(target_os = "macos")]
+/// Remove one saved native credential without changing other credential items.
+///
+/// # Errors
+/// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
 pub fn delete_secret(profile: &str) -> io::Result<()> {
     let e = keyring::Entry::new("org.mucrab.sftp", profile)
         .map_err(|_| error("Native credential service unavailable"))?;
@@ -380,6 +501,10 @@ mod linux_credentials {
         SecretService::connect_with_max_prompt_timeout(EncryptionType::Dh, 5)
             .map_err(|_| error("Secret Service unavailable; use a session-only secret"))
     }
+    /// Read a native credential into zeroizing ownership; plaintext fallback is unavailable.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn load_secret(profile: &str) -> io::Result<zeroize::Zeroizing<String>> {
         let ss = service()?;
         let found = ss
@@ -402,6 +527,10 @@ mod linux_credentials {
             .map(zeroize::Zeroizing::new)
             .map_err(|_| error("Saved credential is not UTF-8"))
     }
+    /// Write a secret only to the platform credential service, never to profile JSON.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn save_secret(profile: &str, secret: &str) -> io::Result<()> {
         let ss = service()?;
         let found = ss
@@ -439,6 +568,10 @@ mod linux_credentials {
             .map(|_| ())
             .map_err(|_| error("Native credential save failed; no plaintext fallback"))
     }
+    /// Remove one saved native credential without changing other credential items.
+    ///
+    /// # Errors
+    /// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
     pub fn delete_secret(profile: &str) -> io::Result<()> {
         let ss = service()?;
         let found = ss
@@ -457,18 +590,30 @@ mod linux_credentials {
     }
 }
 #[cfg(not(any(target_os = "macos", target_os = "linux")))]
+/// Read a native credential into zeroizing ownership; plaintext fallback is unavailable.
+///
+/// # Errors
+/// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
 pub fn load_secret(_: &str) -> io::Result<zeroize::Zeroizing<String>> {
     Err(error(
         "Native credential storage unavailable on this platform",
     ))
 }
 #[cfg(not(any(target_os = "macos", target_os = "linux")))]
+/// Write a secret only to the platform credential service, never to profile JSON.
+///
+/// # Errors
+/// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
 pub fn save_secret(_: &str, _: &str) -> io::Result<()> {
     Err(error(
         "Native credential storage unavailable on this platform",
     ))
 }
 #[cfg(not(any(target_os = "macos", target_os = "linux")))]
+/// Remove one saved native credential without changing other credential items.
+///
+/// # Errors
+/// Returns invalid-input, changed-configuration or platform-service errors; no plaintext credential fallback is used.
 pub fn delete_secret(_: &str) -> io::Result<()> {
     Err(error(
         "Native credential storage unavailable on this platform",

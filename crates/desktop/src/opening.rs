@@ -192,12 +192,17 @@ fn private_directory(root: &Path) -> io::Result<PathBuf> {
 }
 
 pub fn target(pane: &mucrab_core::BrowserPane, name: &str) -> Target {
-    if let Some(location) = &pane.remote {
+    if let Some(location) = pane.remote() {
         return Target::Remote(location.child(name).expect("validated listed remote name"));
     }
-    match &pane.archive {
+    match pane.archive() {
         Some(location) => Target::Archived(location.clone(), name.to_owned()),
-        None => Target::Local(pane.location.as_deref().unwrap_or(Path::new("")).join(name)),
+        None => Target::Local(
+            pane.location()
+                .map(|p| p.as_path())
+                .unwrap_or(Path::new(""))
+                .join(name),
+        ),
     }
 }
 

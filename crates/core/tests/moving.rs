@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+//! Behavioural regression coverage for moving using disposable fixtures.
 #![cfg(unix)]
 mod support;
 
@@ -258,12 +259,12 @@ fn focused_rename_restores_new_identity_and_preserves_other_marks_and_sorting() 
     pane.options.criterion = SortCriterion::Date;
     pane.resort(&sorter);
     let marked = pane
-        .order
+        .order()
         .iter()
-        .position(|i| pane.entries[*i].name == "marked")
+        .position(|i| pane.entries()[*i].name == "marked")
         .unwrap()
         + 1;
-    pane.selection.set_marked(marked, true, &pane.order);
+    pane.mark(marked, true);
     assert!(pane.focus_name("old"));
     let mut request = f.request(&["old"], false, CopyPolicy::Skip);
     request.rename_mode = true;
@@ -273,7 +274,7 @@ fn focused_rename_restores_new_identity_and_preserves_other_marks_and_sorting() 
     pane.unmark_copy_outcomes(&report.outcomes);
     pane.refresh(&sorter);
     assert!(pane.focus_name("renamed"));
-    let state = pane.selection.snapshot(&pane.entries, &pane.order);
+    let state = pane.selection().snapshot(pane.entries(), pane.order());
     assert_eq!(state.focused.as_deref(), Some("renamed"));
     assert_eq!(state.marked, vec!["marked"]);
     assert_eq!(pane.options.criterion, SortCriterion::Date);

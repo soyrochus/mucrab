@@ -78,8 +78,8 @@ fn state(
                     .collect()
             })
             .collect(),
-        order: pane.map(|p| p.order.clone()),
-        selection: pane.map(|p| p.selection.snapshot(&p.entries, &p.order)),
+        order: pane.map(|p| p.order().to_vec()),
+        selection: pane.map(|p| p.selection().snapshot(p.entries(), p.order())),
     }
 }
 
@@ -112,11 +112,7 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
         let mut pane = if request.pairs_only {
             None
         } else {
-            let mut pane = BrowserPane {
-                options,
-                show_hidden: true,
-                ..Default::default()
-            };
+            let mut pane = BrowserPane::with_options(options, true);
             pane.load_listing(request.path, entries.clone(), request.parent, &sorter);
             Some(pane)
         };
@@ -152,7 +148,7 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
                         .ok_or("Pair-only cases cannot claim selection")?;
                     pane.apply_event(&PaneEvent::Focus { row }, &sorter)?;
                     if matches!(event, Event::Mark { .. }) {
-                        pane.selection.set_marked(row, true, &pane.order);
+                        pane.mark(row, true);
                     }
                 }
             }

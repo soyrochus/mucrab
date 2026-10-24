@@ -197,7 +197,7 @@ pub fn read_clipboard() -> io::Result<Vec<PathBuf>> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use super::{PathBuf, decode_paths, encode_paths};
     #[test]
     fn native_urls_round_trip_exact_names_and_deduplicate() {
         let p = PathBuf::from("/tmp/- café 中 & % #.txt");

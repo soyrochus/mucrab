@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
+//! Behavioural regression coverage for tabs bookmarks using disposable fixtures.
 mod support;
 use mucrab_core::*;
 use std::{fs, path::PathBuf};
@@ -39,13 +40,13 @@ fn duplicate_copies_history_view_and_focus_but_isolates_marks_and_navigation() {
     tabs.active_mut().widths = [80., 90., 100.];
     let duplicate = tabs.duplicate(&s).unwrap();
     assert_ne!(origin, duplicate);
-    assert_eq!(tabs.active().pane.selection.marked_count(), 0);
+    assert_eq!(tabs.active().pane.selection().marked_count(), 0);
     assert_eq!(tabs.active().widths, [80., 90., 100.]);
     assert_eq!(
         tabs.active()
             .pane
-            .selection
-            .snapshot(&tabs.active().pane.entries, &tabs.active().pane.order)
+            .selection()
+            .snapshot(tabs.active().pane.entries(), tabs.active().pane.order())
             .focused
             .as_deref(),
         Some("alpha")
@@ -54,11 +55,11 @@ fn duplicate_copies_history_view_and_focus_but_isolates_marks_and_navigation() {
     assert!(tabs.active_mut().pane.can_back());
     tabs.select(origin);
     assert!(!tabs.active().pane.can_back());
-    assert_eq!(tabs.active().pane.selection.marked_count(), 2);
+    assert_eq!(tabs.active().pane.selection().marked_count(), 2);
     tabs.select(duplicate);
     assert!(tabs.active_mut().pane.traverse_history(false, &s));
     tabs.select(origin);
-    assert_eq!(tabs.active().pane.location.as_ref(), Some(&t.0));
+    assert_eq!(tabs.active().pane.location(), Some(&t.0));
 }
 #[test]
 fn limits_failed_navigation_and_ids() {
@@ -107,7 +108,7 @@ fn bookmark_roundtrip_stable_ids_order_zip_and_missing_targets() {
     assert!(next > z);
     let mut p = pane(&t, &NameSorter::en_us().unwrap());
     assert!(!p.open_location(&b.entries()[0].location, &NameSorter::en_us().unwrap()));
-    assert_eq!(p.location, Some(t.0.clone()));
+    assert_eq!(p.location(), Some(&t.0));
 }
 #[test]
 fn rejected_data_and_failed_save_preserve_old_file_and_store() {
@@ -263,7 +264,7 @@ fn new_home_defaults_and_shared_hidden_reconcile_inactive_tabs() {
     assert!(
         panes
             .all()
-            .all(|tab| !tab.pane.entries.iter().any(|e| e.name == ".hidden"))
+            .all(|tab| !tab.pane.entries().iter().any(|e| e.name == ".hidden"))
     );
     assert_eq!(panes.stack(0).len(), 2);
     assert!(panes.stack_mut(0).select(original));

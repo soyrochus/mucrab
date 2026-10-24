@@ -11,28 +11,44 @@ use std::{
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+/// Worker lifecycle; terminal states require acknowledgement after filesystem work ends.
 pub enum JobState {
+    #[doc = "The worker is active or ready to proceed at its next checkpoint."]
     Running,
+    #[doc = "The worker waits at a cooperative checkpoint until resumed or cancelled."]
     Paused,
+    #[doc = "Cancellation was requested but the worker has not yet acknowledged completion."]
     Cancelling,
+    #[doc = "The operation stopped in response to cancellation; completed writes remain."]
     Cancelled,
+    #[doc = "The worker acknowledged successful completion of its operation."]
     Finished,
+    #[doc = "The operation failed; inspect diagnostics and any retained partial results."]
     Failed,
 }
 impl JobState {
+    /// Test whether a worker has acknowledged final completion, failure or cancellation.
     pub fn is_terminal(self) -> bool {
         matches!(self, Self::Cancelled | Self::Finished | Self::Failed)
     }
 }
 
 #[derive(Clone, Debug, Serialize)]
+/// A bounded snapshot of one worker, replacing previous progress rather than accumulating events.
 pub struct JobProgress {
+    /// Current worker lifecycle, with terminal values set only after acknowledgement.
     pub state: JobState,
+    /// Current operation path, if the worker has started an entry.
     pub current_path: Option<PathBuf>,
+    /// Bytes transferred for the current file so far.
     pub current_file_bytes: u64,
+    /// Expected current-file byte length, when available.
     pub current_file_size: Option<u64>,
+    /// Accumulated transferred bytes across completed and partial files.
     pub transferred_bytes: u64,
+    /// Acknowledged top-level items processed so far.
     pub completed_items: usize,
+    /// Known top-level item count, excluding recursively discovered children.
     pub total_items: usize,
 }
 impl Default for JobProgress {
@@ -68,6 +84,13 @@ impl Default for JobControl {
     }
 }
 impl JobControl {
+    // Only private, non-panicking status transitions hold this lock; observers
+    // run after it is released. Retaining bounded status after a worker unwind
+    // lets the desktop report failure instead of panicking while reading progress.
+    fn lock_progress(&self) -> std::sync::MutexGuard<'_, JobProgress> {
+        self.0.progress.lock().unwrap_or_else(|e| e.into_inner())
+    }
+
     /// An optional synchronous observer for embedding and deterministic boundary
     /// checks. Called without internal locks; it must be fast and must not panic.
     pub fn with_observer(
@@ -79,16 +102,13 @@ impl JobControl {
             observer: Some(Box::new(observer)),
         }))
     }
+    /// Copy bounded progress without retaining a lock in the caller.
     pub fn snapshot(&self) -> JobProgress {
-        self.0
-            .progress
-            .lock()
-            .unwrap_or_else(|e| e.into_inner())
-            .clone()
+        self.lock_progress().clone()
     }
     fn update(&self, f: impl FnOnce(&mut JobProgress)) {
         let snapshot = {
-            let mut progress = self.0.progress.lock().unwrap_or_else(|e| e.into_inner());
+            let mut progress = self.lock_progress();
             if progress.state.is_terminal() {
                 return;
             }
@@ -100,9 +120,11 @@ impl JobControl {
             observer(self, &snapshot);
         }
     }
+    /// Request cancellation and wake a paused worker; completed writes are not rolled back.
     pub fn cancel(&self) {
         self.update(|p| p.state = JobState::Cancelling);
     }
+    /// Pause or resume a running worker without changing a terminal state.
     pub fn set_paused(&self, paused: bool) {
         self.update(|p| match (p.state, paused) {
             (JobState::Running, true) => p.state = JobState::Paused,
@@ -110,6 +132,7 @@ impl JobControl {
             _ => {}
         });
     }
+    /// Test for a requested or acknowledged cancellation.
     pub fn is_cancelled(&self) -> bool {
         matches!(
             self.snapshot().state,
@@ -129,7 +152,7 @@ impl JobControl {
         });
     }
     pub(crate) fn checkpoint(&self) -> bool {
-        let mut progress = self.0.progress.lock().unwrap_or_else(|e| e.into_inner());
+        let mut progress = self.lock_progress();
         while progress.state == JobState::Paused {
             progress = self
                 .0
@@ -154,7 +177,7 @@ impl JobControl {
         self.checkpoint()
     }
     pub(crate) fn completed(&self) {
-        self.update(|p| p.completed_items += 1);
+        self.update(|p| p.completed_items = p.completed_items.saturating_add(1));
     }
     pub(crate) fn advance(&self, bytes: u64) {
         self.update(|p| {
@@ -194,5 +217,13 @@ pub(crate) fn copy_stream(
         output.write_all(&buffer[..count])?;
         copied += count as u64;
         control.advance(count as u64);
+    }
+}
+
+impl std::fmt::Debug for JobControl {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("JobControl")
+            .field("progress", &self.snapshot())
+            .finish_non_exhaustive()
     }
 }

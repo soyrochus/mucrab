@@ -1,11 +1,28 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
-//! Recovered W01 name ordering and local browsing, independent of the GUI.
+//! File-management state, validated operation plans and bounded read preparation.
+//!
+//! This crate is independent of egui. Local, ZIP and SFTP operations expose owned
+//! results, cooperative cancellation and explicit partial-failure reports.
+//! Destructive operations assume stable, owned filesystem trees; identity checks
+//! reject known changes but do not establish a race-proof filesystem sandbox.
+//!
+//! ```
+//! use mucrab_core::sftp::RemoteLocation;
+//! let folder = RemoteLocation::new("saved-server", "/documents/../photos")?;
+//! assert_eq!(folder.path(), "/photos");
+//! assert_eq!(folder.parent().path(), "/");
+//! # Ok::<(), std::io::Error>(())
+//! ```
 
 mod archives;
 mod batch_renaming;
+mod browse_request;
 mod browsing;
+mod capture_error;
+pub use browse_request::{BrowseRequest, PreparedBrowse};
+pub use capture_error::CaptureChanged;
 mod copying;
 mod everyday;
 mod history;
@@ -43,7 +60,9 @@ pub use sorting::{NameSorter, SortCriterion, SortMode, SortOptions};
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Hash)]
 pub enum PaneSide {
     #[default]
+    #[doc = "The fixed left-hand file pane."]
     Left,
+    #[doc = "The fixed right-hand file pane."]
     Right,
 }
 
@@ -65,3 +84,7 @@ pub use viewer::{
 };
 
 pub mod sftp;
+
+/// Side-effect-free, bounded parser entry points for fuzz and regression tooling.
+#[cfg(feature = "test-util")]
+pub mod fuzzing;

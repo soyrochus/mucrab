@@ -1,31 +1,32 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+//! Successful provider navigation history and generation-checked remote publication.
 use crate::{BrowserPane, NameSorter, ZipLocation};
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", content = "location", deny_unknown_fields)]
+/// One committed provider identity: local, virtual ZIP, or saved-profile SFTP.
 pub enum PaneLocation {
+    #[doc = "An existing local filesystem path."]
     Local(PathBuf),
+    #[doc = "A virtual folder or member within a local read-only ZIP."]
     Zip(ZipLocation),
+    #[doc = "A normalized path associated with a saved SFTP profile."]
     Sftp(crate::sftp::RemoteLocation),
 }
-#[derive(Clone, Default)]
+#[derive(Clone, Debug, Default)]
+/// Bounded successful location history with a cursor independent of pending navigation.
 pub struct NavigationHistory {
     entries: Vec<PaneLocation>,
     cursor: usize,
 }
 
 impl BrowserPane {
+    /// The one last successfully committed provider and location.
     pub fn current_location(&self) -> Option<PaneLocation> {
-        if let Some(remote) = &self.remote {
-            return Some(PaneLocation::Sftp(remote.clone()));
-        }
-        self.archive
-            .clone()
-            .map(PaneLocation::Zip)
-            .or_else(|| self.location.clone().map(PaneLocation::Local))
+        self.committed.clone()
     }
     pub(crate) fn record_location(&mut self) {
         let Some(location) = self.current_location() else {
@@ -47,15 +48,27 @@ impl BrowserPane {
         }
         self.history.cursor = self.history.entries.len() - 1;
     }
+    pub(crate) fn commit_history_cursor(&mut self, cursor: usize) {
+        if self.history.entries.get(cursor) == self.current_location().as_ref() {
+            self.history.cursor = cursor;
+        } else {
+            self.record_location();
+        }
+        self.quick_find = None;
+    }
+    /// Test whether an earlier successfully committed history location exists.
     pub fn can_back(&self) -> bool {
         !self.history.entries.is_empty() && self.history.cursor > 0
     }
+    /// Test whether a later successfully committed history location exists.
     pub fn can_forward(&self) -> bool {
         !self.history.entries.is_empty() && self.history.cursor + 1 < self.history.entries.len()
     }
+    /// Count retained successful navigation locations, bounded to one hundred entries.
     pub fn history_len(&self) -> usize {
         self.history.entries.len()
     }
+    /// Navigate backward or forward without recording a duplicate history entry.
     pub fn traverse_history(&mut self, forward: bool, sorter: &NameSorter) -> bool {
         if if forward {
             !self.can_forward()
@@ -72,6 +85,10 @@ impl BrowserPane {
         let target = self.history.entries[cursor].clone();
         if let PaneLocation::Sftp(location) = target {
             self.request_remote(location, false, Some(cursor));
+            return false;
+        }
+        if self.deferred_browsing {
+            self.queue_location(&target, false, Some(cursor));
             return false;
         }
         let success = self.load_location(&target, sorter);
@@ -119,12 +136,15 @@ impl BrowserPane {
 }
 
 impl BrowserPane {
+    /// Queue a validated remote location with generation and optional history cursor.
     pub fn request_remote(
         &mut self,
         location: crate::sftp::RemoteLocation,
         record: bool,
         cursor: Option<usize>,
     ) {
+        self.browse_generation = self.browse_generation.saturating_add(1);
+        self.browse_request = None;
         let Some(generation) = self.remote_generation.checked_add(1) else {
             self.error = Some("Remote navigation generations exhausted".into());
             return;
@@ -138,6 +158,7 @@ impl BrowserPane {
         });
         self.error = None;
     }
+    /// Commit only the currently requested remote generation and restore surviving identities.
     pub fn remote_loaded(
         &mut self,
         request: &crate::sftp::RemoteNavigation,
@@ -147,22 +168,20 @@ impl BrowserPane {
         if self.remote_request.as_ref().map(|r| r.generation) != Some(request.generation) {
             return false;
         }
-        let same = self.remote.as_ref() == Some(&request.location);
+        let same = self.remote() == Some(&request.location);
         let old = self.selection.snapshot(&self.entries, &self.order);
-        let previous = self.remote.clone();
+        let previous = self.remote().cloned();
         if !self.show_hidden {
             entries.retain(|e| !e.name.starts_with('.'));
         }
-        self.location = None;
-        self.archive = None;
-        self.remote = Some(request.location.clone());
+        self.commit_location(PaneLocation::Sftp(request.location.clone()));
         self.remote_request = None;
         self.remote_disconnected = false;
         self.path_input = request.location.display();
         self.entries = entries;
         self.order = sorter.sorted_indices(&self.entries, self.options);
         self.selection
-            .reload(self.entries.len(), request.location.path != "/", Some(0));
+            .reload(self.entries.len(), request.location.path() != "/", Some(0));
         if same {
             if let Some(name) = old.focused {
                 self.focus_name(&name);
@@ -181,9 +200,9 @@ impl BrowserPane {
                 }
             }
         } else if let Some(previous) = previous
-            && previous.profile == request.location.profile
+            && previous.profile() == request.location.profile()
             && previous.parent() == request.location
-            && let Some(name) = previous.path.rsplit('/').next()
+            && let Some(name) = previous.path().rsplit('/').next()
         {
             self.focus_name(name);
         }

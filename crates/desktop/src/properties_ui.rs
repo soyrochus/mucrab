@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 use super::read_job::ReadJob;
-use super::*;
+use super::{
+    CopyIssue, CopyIssueKind, Duration, FileAction, JobResult, MuCrabApp, PaneSide, PathBuf, TabId,
+    egui,
+};
 use mucrab_core::{
     EntryKind, EntryTarget, FolderSizeReport, MetadataPlan, PropertyRequest, PropertySnapshot,
     folder_size, parse_modified_time,
@@ -34,7 +37,7 @@ impl Properties {
         if let Some(result) = self.load.poll() {
             match result {
                 Ok(s) => {
-                    self.mode = s.mode.unwrap_or(0) & 0o777;
+                    self.mode = s.mode().unwrap_or(0) & 0o777;
                     self.time = timestamp(s.modified);
                     self.snapshot = Some(s);
                     self.error = None;
@@ -77,22 +80,22 @@ impl MuCrabApp {
         let i = usize::from(self.active == PaneSide::Right);
         let pane = &self.panes[i];
         let name = pane
-            .selection
-            .snapshot(&pane.entries, &pane.order)
+            .selection()
+            .snapshot(pane.entries(), pane.order())
             .focused
             .filter(|n| n != "..")?;
-        Some(if let Some(location) = &pane.archive {
+        Some(if let Some(location) = pane.archive() {
             EntryTarget::Zip {
                 location: location.clone(),
                 name,
             }
         } else {
-            EntryTarget::Local(pane.location.as_ref()?.join(name))
+            EntryTarget::Local(pane.location()?.join(name))
         })
     }
     pub(super) fn open_properties(&mut self) {
         if self.panes[usize::from(self.active == PaneSide::Right)]
-            .remote
+            .remote()
             .is_some()
         {
             self.remote.message = Some("Remote Properties/metadata editing is unsupported.".into());
@@ -130,16 +133,16 @@ impl MuCrabApp {
    if let Some(s)=&p.snapshot{
     egui::Grid::new("property-values").striped(true).num_columns(2).show(ui,|ui|{
      for (label,value) in [
-      ("Type",format!("{:?}",s.kind)),("Entry size (bytes)",s.size.map(|v|v.to_string()).unwrap_or_else(||"Unavailable".into())),
+      ("Type",format!("{:?}",s.kind())),("Entry size (bytes)",s.size.map(|v|v.to_string()).unwrap_or_else(||"Unavailable".into())),
       ("Allocated bytes",s.allocated_size.map(|v|v.to_string()).unwrap_or_else(||"Unavailable".into())),
       ("Modified (UTC)",timestamp(s.modified)),("Accessed (UTC)",timestamp(s.accessed)),("Created (UTC)",timestamp(s.created)),
       ("Owner",s.uid.map(|id|format!("{} ({id})",s.owner.as_deref().unwrap_or("Name unavailable"))).unwrap_or_else(||"Unavailable".into())),
       ("Group",s.gid.map(|id|format!("{} ({id})",s.group.as_deref().unwrap_or("Name unavailable"))).unwrap_or_else(||"Unavailable".into())),
-      ("Unix mode",s.mode.map(|m|format!("{m:04o}")).unwrap_or_else(||"Unavailable".into())),("Hard links",s.links.map(|v|v.to_string()).unwrap_or_else(||"Unavailable".into())),
+      ("Unix mode",s.mode().map(|m|format!("{m:04o}")).unwrap_or_else(||"Unavailable".into())),("Hard links",s.links.map(|v|v.to_string()).unwrap_or_else(||"Unavailable".into())),
       ("Link target",s.link_target.as_ref().map(|v|v.display().to_string()).unwrap_or_else(||"Unavailable".into()))]{ui.label(label);ui.label(value);ui.end_row();}
     });
-    if s.kind==EntryKind::File&&s.links.is_some_and(|n|n>1){ui.label("Metadata changes affect every hard-linked name of this inode.");}
-    if s.kind==EntryKind::Folder&&matches!(s.target,EntryTarget::Local(_)){
+    if s.kind()==EntryKind::File&&s.links.is_some_and(|n|n>1){ui.label("Metadata changes affect every hard-linked name of this inode.");}
+    if s.kind()==EntryKind::Folder&&matches!(s.target(),EntryTarget::Local(_)){
      ui.separator();ui.horizontal(|ui|{calculate=ui.add_enabled(!p.size.busy()&&!p.load.busy(),egui::Button::new("Calculate folder contents")).clicked();cancel_size=ui.add_enabled(p.size.busy(),egui::Button::new("Cancel calculation")).clicked();});
      ui.small("Logical file bytes, including hidden entries; hard links counted per name. Links are not followed; mount roots are excluded.");
      if let Some(progress)=p.size.progress(){ui.label(format!("{:?} — {} visited",progress.state,progress.completed_items));if let Some(path)=progress.current_path{ui.label(path.display().to_string());}}
@@ -170,7 +173,7 @@ impl MuCrabApp {
         }
         if calculate
             && let Some(snapshot) = self.properties.snapshot.clone()
-            && let EntryTarget::Local(path) = snapshot.target.clone()
+            && let EntryTarget::Local(path) = snapshot.target().clone()
         {
             self.properties.totals = None;
             if let Err(e) = self.properties.size.start(move |c| {
@@ -206,10 +209,10 @@ impl MuCrabApp {
         };
         let mut apply = false;
         let response=egui::Modal::new(egui::Id::new("metadata-review")).show(ctx,|ui|{
-   ui.set_width(620.);ui.heading("Apply metadata changes");ui.label(plan.snapshot.target.display_path().display().to_string());ui.label("One entry only; no recursion. Completed changes are retained if a later field fails.");
-   if let Some(rwx)=plan.rwx{ui.label(format!("Permissions: {:04o} → {:04o} (special bits retained)",plan.snapshot.mode.unwrap_or(0),(plan.snapshot.mode.unwrap_or(0)&0o7000)|rwx));}
-   if let Some(time)=plan.modified{ui.label(format!("Modified UTC: {} → {}",timestamp(plan.snapshot.modified),timestamp(Some(time))));ui.label("Access time is preserved; actual stored precision is read back.");}
-   if plan.snapshot.kind==EntryKind::File&&plan.snapshot.links.is_some_and(|n|n>1){ui.label("This inode has multiple hard links. Every name shares these metadata changes.");}
+   ui.set_width(620.);ui.heading("Apply metadata changes");ui.label(plan.snapshot().target().display_path().display().to_string());ui.label("One entry only; no recursion. Completed changes are retained if a later field fails.");
+   if let Some(rwx)=plan.rwx(){ui.label(format!("Permissions: {:04o} → {:04o} (special bits retained)",plan.snapshot().mode().unwrap_or(0),(plan.snapshot().mode().unwrap_or(0)&0o7000)|rwx));}
+   if let Some(time)=plan.modified(){ui.label(format!("Modified UTC: {} → {}",timestamp(plan.snapshot().modified),timestamp(Some(time))));ui.label("Access time is preserved; actual stored precision is read back.");}
+   if plan.snapshot().kind()==EntryKind::File&&plan.snapshot().links.is_some_and(|n|n>1){ui.label("This inode has multiple hard links. Every name shares these metadata changes.");}
    let mut cancel=false;ui.horizontal(|ui|{cancel=ui.button("Cancel").clicked();apply=ui.add_enabled(self.copy_job.is_none(),egui::Button::new("Apply changes")).clicked();});cancel
   });
         if response.inner || response.should_close() {
@@ -221,8 +224,8 @@ impl MuCrabApp {
                 return;
             };
             let directory = plan
-                .snapshot
-                .target
+                .snapshot()
+                .target()
                 .display_path()
                 .parent()
                 .map(PathBuf::from)
@@ -242,7 +245,7 @@ impl MuCrabApp {
                         .iter()
                         .filter(|step| !step.changed)
                         .map(|step| CopyIssue {
-                            path: plan.snapshot.target.display_path(),
+                            path: plan.snapshot().target().display_path(),
                             kind: if report.cancelled {
                                 CopyIssueKind::Cancelled
                             } else {

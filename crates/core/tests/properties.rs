@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
+//! Behavioural regression coverage for properties using disposable fixtures.
 mod support;
 use mucrab_core::*;
 #[cfg(unix)]
@@ -55,7 +56,7 @@ fn frozen_metadata_cases_preserve_special_bits_atime_bytes_and_hardlinks() {
             }
             if kind == "link" {
                 let s = snapshot(&path);
-                assert_eq!(s.kind, EntryKind::Link);
+                assert_eq!(s.kind(), EntryKind::Link);
                 assert_eq!(
                     s.link_target.as_deref(),
                     Some(std::path::Path::new("target"))
@@ -89,7 +90,7 @@ fn frozen_metadata_cases_preserve_special_bits_atime_bytes_and_hardlinks() {
                     .unwrap()
                     .apply(&JobControl::default());
                 assert!(result.is_err());
-                assert_eq!(snapshot(&path).mode, s.mode);
+                assert_eq!(snapshot(&path).mode(), s.mode());
                 fs::set_permissions(&path, fs::Permissions::from_mode(mode | 0o400)).unwrap();
             }
             let s = snapshot(&path);
@@ -102,7 +103,7 @@ fn frozen_metadata_cases_preserve_special_bits_atime_bytes_and_hardlinks() {
             let m = file.metadata().unwrap();
             assert_eq!(
                 m.permissions().mode() & 0o7777,
-                (s.mode.unwrap() & 0o7000) | newmode
+                (s.mode().unwrap() & 0o7000) | newmode
             );
             // chmod can trigger host-side access on macOS. Preserve the value
             // captured immediately before the plan, not an older fixture value.
@@ -223,7 +224,7 @@ fn denied_folder_and_metadata_handles_are_visible_without_elevation() {
         .unwrap()
         .apply(&JobControl::default());
     assert!(result.is_err());
-    assert_eq!(snapshot(&file).mode, s.mode);
+    assert_eq!(snapshot(&file).mode(), s.mode());
     assert_eq!(snapshot(&file).modified, s.modified);
     fs::set_permissions(&file, fs::Permissions::from_mode(0o600)).unwrap();
     assert_eq!(fs::read(file).unwrap(), b"unchanged");
@@ -239,9 +240,9 @@ fn zip_properties_never_borrow_host_ownership_or_implicit_dates() {
         name: "- café & report.txt".into(),
     })
     .unwrap();
-    assert_eq!(p.kind, EntryKind::File);
+    assert_eq!(p.kind(), EntryKind::File);
     assert!(p.size.is_some());
     assert!(p.modified.is_some());
-    assert!(p.uid.is_none() && p.gid.is_none() && p.mode.is_none() && p.accessed.is_none());
+    assert!(p.uid.is_none() && p.gid.is_none() && p.mode().is_none() && p.accessed.is_none());
     assert!(p.metadata_plan(Some(0o777), None).is_err());
 }

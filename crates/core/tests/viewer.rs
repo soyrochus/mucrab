@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
+//! Behavioural regression coverage for viewer using disposable fixtures.
 mod support;
 use mucrab_core::*;
 use std::{

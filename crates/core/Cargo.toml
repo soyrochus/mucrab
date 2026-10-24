@@ -10,6 +10,10 @@ publish.workspace = true
 [lints]
 workspace = true
 
+[features]
+# Opt-in, side-effect-free parser entry points for fuzzing and test tooling.
+test-util = []
+
 [dependencies]
 percent-encoding = "=2.3.2"
 ssh2 = "=0.9.6"
@@ -34,3 +38,7 @@ icu_normalizer = "=2.2.0"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 dbus-secret-service = { version = "=4.1.0", default-features = false, features = ["crypto-rust"] }
+
+[[example]]
+name = "fuzz_boundaries"
+required-features = ["test-util"]

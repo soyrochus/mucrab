@@ -3,7 +3,7 @@
 
 use crate::{
     app::{click_modifiers, listing_id, selection_key},
-    appearance::{Icon, icon_button, paint_icon},
+    appearance::{FILE_ROW_HEIGHT, Icon, Palette, icon_button, paint_icon},
 };
 use eframe::egui::{self, Align2, Color32, FontId, Rect, Sense, Stroke, Vec2};
 use mucrab_core::{BrowserPane, FileEntry, NameSorter, PaneEvent, PaneSide, SortCriterion};
@@ -21,6 +21,7 @@ pub fn pane(
     let mut open = None;
     ui.push_id(listing_id(side), |ui| {
         let area = ui.max_rect();
+        let palette = Palette::get(ui);
         let is_active = *active == side;
         let stroke = Stroke::new(
             1.0,
@@ -31,16 +32,17 @@ pub fn pane(
             },
         );
         egui::Frame::new()
-            .fill(ui.visuals().panel_fill)
+            .fill(palette.content)
             .stroke(stroke)
-            .inner_margin(2.0)
+            .corner_radius(8)
+            .inner_margin(6.0)
             .show(ui, |ui| {
-                ui.set_min_size(area.size() - Vec2::splat(4.0));
+                ui.set_min_size(area.size() - Vec2::splat(12.0));
                 ui.horizontal(|ui| {
                     if icon_button(
                         ui,
                         Icon::Folder,
-                        if pane.archive.is_some() {
+                        if pane.archive().is_some() {
                             "ZIP archive (read-only)"
                         } else {
                             "Current folder"
@@ -57,12 +59,12 @@ pub fn pane(
                         egui::TextEdit::singleline(&mut pane.path_input)
                             .hint_text("Folder or ZIP path")
                             .id(ui.id().with("path"))
-                            .desired_width((ui.available_width() - 60.0).max(60.0)),
+                            .desired_width((ui.available_width() - 76.0).max(60.0)),
                     );
                     if edit.has_focus() {
                         *active = side;
                     }
-                    if edit.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)) {
+                    if edit.lost_focus() && ui.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::Enter)) {
                         pane.open(&PathBuf::from(&pane.path_input), sorter);
                         *active = side;
                         ui.memory_mut(|m| m.request_focus(listing_id(side)));
@@ -71,7 +73,7 @@ pub fn pane(
                         ui,
                         Icon::Parent,
                         "Parent folder (Backspace)",
-                        enabled && (pane.location.is_some()||pane.remote.is_some()),
+                        enabled && (pane.location().is_some()||pane.remote().is_some()),
                     )
                     .clicked()
                     {
@@ -82,7 +84,7 @@ pub fn pane(
                         ui,
                         Icon::Refresh,
                         "Refresh",
-                        enabled && (pane.location.is_some()||pane.remote.is_some()),
+                        enabled && (pane.location().is_some()||pane.remote().is_some()),
                     )
                     .clicked()
                     {
@@ -129,7 +131,7 @@ pub fn pane(
                     if started || before!=query || direction.is_some(){
                         find_scroll=pane.find_prefix(&query,direction);
                     }
-                    let matches=query.is_empty() || pane.order.iter().any(|i|pane.entries[*i].name.to_lowercase().starts_with(&query.to_lowercase()));
+                    let matches=query.is_empty() || pane.order().iter().any(|i|pane.entries()[*i].name.to_lowercase().starts_with(&query.to_lowercase()));
                     if !matches {ui.colored_label(ui.visuals().error_fg_color,"No matching filename");}
                     if close{pane.quick_find=None;ui.memory_mut(|m|m.request_focus(listing_id(side)));}
                     else {pane.quick_find=Some(query);}
@@ -161,13 +163,13 @@ pub fn pane(
                     }
                     if ui.input(|i| i.events.iter().any(|event| matches!(event, egui::Event::Key { key: egui::Key::Enter, pressed: true, repeat: false, modifiers, .. } if modifiers.is_none())))
                         && ui.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::Enter)) {
-                        if pane.selection.has_parent && pane.selection.focus_row == Some(0) {
+                        if pane.selection().has_parent && pane.selection().focus_row == Some(0) {
                             go_parent = true;
-                        } else if let Some(row) = pane.selection.focus_row {
+                        } else if let Some(row) = pane.selection().focus_row {
                             let position =
-                                row.saturating_sub(usize::from(pane.selection.has_parent));
-                            if let Some(index) = pane.order.get(position) {
-                                let entry = &pane.entries[*index];
+                                row.saturating_sub(usize::from(pane.selection().has_parent));
+                            if let Some(index) = pane.order().get(position) {
+                                let entry = &pane.entries()[*index];
                                 if browsable(entry, pane) {
                                     navigate = Some(entry.name.clone());
                                 } else {
@@ -217,7 +219,7 @@ pub fn pane(
                         let (header, _) =
                             ui.allocate_exact_size(Vec2::new(content_width, 25.0), Sense::hover());
                         ui.painter()
-                            .rect_filled(header, 0, ui.visuals().widgets.inactive.bg_fill);
+                            .rect_filled(header, 0, palette.field);
                         let name_width = content_width - widths.iter().sum::<f32>();
                         let mut x = header.left();
                         for (column, (label, criterion, width)) in [
@@ -306,8 +308,8 @@ pub fn pane(
                                 }
                             }
                         }
-                        let row_height = 23.0;
-                        let count = pane.order.len() + usize::from(pane.selection.has_parent);
+                        let row_height = FILE_ROW_HEIGHT;
+                        let count = pane.order().len() + usize::from(pane.selection().has_parent);
                         let listing_height = (table_height - 42.0).max(35.0);
                         let bg = ui.visuals().extreme_bg_color;
                         let listing_rect = Rect::from_min_size(
@@ -320,7 +322,7 @@ pub fn pane(
                             .id_salt("entries")
                             .auto_shrink([false, false])
                             .max_height(listing_height);
-                        if scroll_focus && let Some(row) = pane.selection.focus_row {
+                        if scroll_focus && let Some(row) = pane.selection().focus_row {
                             scroll = scroll.vertical_scroll_offset(
                                 (row as f32 * row_height - listing_height / 2.0).max(0.0),
                             );
@@ -329,17 +331,17 @@ pub fn pane(
                         ui.spacing_mut().item_spacing.y = 0.0;
                         scroll.show_rows(ui, row_height, count, |ui, range| {
                             for row in range {
-                                let parent = pane.selection.has_parent && row == 0;
+                                let parent = pane.selection().has_parent && row == 0;
                                 let entry = if parent {
                                     None
                                 } else {
                                     Some(
-                                        &pane.entries[pane.order
-                                            [row - usize::from(pane.selection.has_parent)]],
+                                        &pane.entries()[pane.order()
+                                            [row - usize::from(pane.selection().has_parent)]],
                                     )
                                 };
-                                let marked = !parent && pane.selection.is_marked(row, &pane.order);
-                                let focused = pane.selection.focus_row == Some(row);
+                                let marked = !parent && pane.selection().is_marked(row, pane.order());
+                                let focused = pane.selection().focus_row == Some(row);
                                 let (rect, response) = ui.allocate_exact_size(
                                     Vec2::new(content_width, row_height),
                                     Sense::click(),
@@ -365,11 +367,7 @@ pub fn pane(
                                 let ink = if focused && is_active {
                                     Color32::WHITE
                                 } else if marked {
-                                    if ui.visuals().dark_mode {
-                                        Color32::from_rgb(255, 215, 105)
-                                    } else {
-                                        Color32::from_rgb(145, 65, 0)
-                                    }
+                                    palette.warning
                                 } else {
                                     ui.visuals().text_color()
                                 };
@@ -458,7 +456,7 @@ pub fn pane(
                                                 },
                                                 text,
                                                 FontId::proportional(13.0),
-                                                ink,
+                                                if focused && is_active { Color32::WHITE } else if marked { ink } else { palette.secondary },
                                             );
                                         x += widths[index];
                                     }
@@ -508,7 +506,7 @@ pub fn pane(
                             ui.painter().text(
                                 listing_rect.center(),
                                 Align2::CENTER_CENTER,
-                                if pane.location.is_some() {
+                                if pane.location().is_some() {
                                     "This folder is empty"
                                 } else {
                                     "No folder open"
@@ -534,14 +532,14 @@ pub fn pane(
                     pane.parent(sorter);
                 }
                 if let Some(name) = navigate {
-                    if let Some(remote)=&pane.remote {if let Ok(location)=remote.child(&name){pane.request_remote(location,true,None);}}else if let Some(path)=pane.location.as_ref().map(|p|p.join(name)){pane.open(&path,sorter);}
+                    if let Some(remote)=pane.remote() {if let Ok(location)=remote.child(&name){pane.request_remote(location,true,None);}}else if let Some(path)=pane.location().map(|p|p.join(name)){pane.open(&path,sorter);}
                 }
-                let selected = pane.selection.snapshot(&pane.entries, &pane.order);
+                let selected = pane.selection().snapshot(pane.entries(), pane.order());
                 ui.separator();
                 let selected_names: std::collections::HashSet<&str> =
                     selected.selected.iter().map(String::as_str).collect();
                 let selected_bytes: u128 = pane
-                    .entries
+                    .entries()
                     .iter()
                     .filter(|entry| {
                         !entry.is_directory && selected_names.contains(entry.name.as_str())
@@ -554,11 +552,11 @@ pub fn pane(
                     ui.label(format!(
                         "{} of {} selected · {} B",
                         selected.selected.len(),
-                        pane.entries.len(),
+                        pane.entries().len(),
                         selected_bytes
                     ));
-                    if pane.remote.is_some(){ui.label(if pane.remote_disconnected{"SFTP · disconnected"}else{"SFTP"});}
-                    if pane.archive.is_some() {
+                    if pane.remote().is_some(){ui.label(if pane.remote_disconnected{"SFTP · disconnected"}else{"SFTP"});}
+                    if pane.archive().is_some() {
                         ui.label("ZIP · read-only");
                     }
                     if is_active {
@@ -573,13 +571,13 @@ pub fn pane(
 }
 
 pub(crate) fn browsable(entry: &FileEntry, pane: &BrowserPane) -> bool {
-    if pane.remote.is_some() {
+    if pane.remote().is_some() {
         return entry.is_directory && !entry.is_symlink;
     }
-    if pane.archive.is_some() {
+    if pane.archive().is_some() {
         return entry.is_directory;
     }
-    let resolved = pane.location.as_ref().map(|p| p.join(&entry.name));
+    let resolved = pane.location().map(|p| p.join(&entry.name));
     entry.is_directory
         || resolved.as_ref().is_some_and(|path| path.is_dir())
         || resolved
@@ -668,6 +666,32 @@ mod tests {
     }
 
     #[test]
+    fn path_enter_queues_only_the_edited_location() {
+        let ctx = egui::Context::default();
+        crate::appearance::Appearance::Light.apply(&ctx);
+        let sorter = NameSorter::en_us().unwrap();
+        let root = std::env::temp_dir().join(format!("mucrab-path-enter-{}", std::process::id()));
+        std::fs::create_dir_all(root.join("child")).unwrap();
+        let mut state = BrowserPane::default();
+        assert!(state.open(&root, &sorter));
+        state.defer_browsing();
+        state.path_input = root.join("child").display().to_string();
+        frame(&ctx, &mut state, &sorter, vec![]);
+        click(&ctx, &mut state, &sorter, egui::pos2(150.0, 30.0));
+        frame(&ctx, &mut state, &sorter, vec![key(egui::Key::Enter)]);
+        assert_eq!(
+            state.take_browse_request().unwrap().path(),
+            root.join("child")
+        );
+        assert_eq!(
+            state.location(),
+            Some(&root),
+            "queued navigation retains the committed listing"
+        );
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn virtualized_table_keeps_keyboard_focus_marks_and_header_sorting() {
         let ctx = egui::Context::default();
         crate::appearance::Appearance::Light.apply(&ctx);
@@ -695,31 +719,31 @@ mod tests {
             "offscreen rows must not all be painted"
         );
         // Click the metadata end of a row: the whole row must receive the click.
-        click(&ctx, &mut state, &sorter, egui::pos2(775.0, 90.0));
-        assert_eq!(state.selection.focus_row, Some(1));
+        click(&ctx, &mut state, &sorter, egui::pos2(765.0, 105.0));
+        assert_eq!(state.selection().focus_row, Some(1));
         frame(&ctx, &mut state, &sorter, vec![key(egui::Key::End)]);
         let (_, visible) = frame(&ctx, &mut state, &sorter, vec![]);
         assert!(
             visible.contains(&"file9999.txt".to_owned()),
             "keyboard focus must scroll the last row into view"
         );
-        assert_eq!(state.selection.focus_row, Some(10_000));
+        assert_eq!(state.selection().focus_row, Some(10_000));
         frame(&ctx, &mut state, &sorter, vec![key(egui::Key::Space)]);
-        let before = state.selection.snapshot(&state.entries, &state.order);
+        let before = state.selection().snapshot(state.entries(), state.order());
         assert_eq!(before.selected, vec!["file9999.txt"]);
         // Size header changes the order while preserving selected identity.
-        click(&ctx, &mut state, &sorter, egui::pos2(610.0, 43.0));
+        click(&ctx, &mut state, &sorter, egui::pos2(610.0, 60.0));
         assert_eq!(state.options.criterion, SortCriterion::Size);
         assert_eq!(
             state
-                .selection
-                .snapshot(&state.entries, &state.order)
+                .selection()
+                .snapshot(state.entries(), state.order())
                 .selected,
             before.selected
         );
-        assert_eq!(state.selection.focus_row, Some(1));
+        assert_eq!(state.selection().focus_row, Some(1));
         frame(&ctx, &mut state, &sorter, vec![key(egui::Key::Home)]);
-        assert_eq!(state.selection.focus_row, Some(0));
+        assert_eq!(state.selection().focus_row, Some(0));
     }
     #[test]
     fn quick_find_enter_returns_to_listing_before_activation() {
@@ -748,7 +772,7 @@ mod tests {
         assert!(state.quick_find.is_none());
         assert!(ctx.memory(|m| m.has_focus(listing_id(PaneSide::Left))));
         assert_eq!(
-            state.location.as_deref(),
+            state.location().map(|p| p.as_path()),
             Some(std::path::Path::new("/synthetic-ui-fixture"))
         );
         let mut release = key(egui::Key::Enter);

@@ -1,0 +1,993 @@
+{
+  "captured_date": "2026-10-24",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "display": "Xvfb/X11",
+    "renderer": "egui/eframe Glow, software OpenGL",
+    "native_macos_verified": false
+  },
+  "fonts": "Existing egui bundled fonts; no added font/icon assets",
+  "raw_run": "artifacts/gui/W16-visual-polish",
+  "binaries": {
+    "before": {
+      "path": "artifacts/gui/W16-visual-polish/baseline-binary",
+      "sha256": "c16a4940ea26d99fc2e0057aa3e085bc930aab0267b3184b0cb210fdd1ae1699"
+    },
+    "after": {
+      "path": "target/debug/mucrab",
+      "sha256": "221c6710521a8bbacf494ef895d5b12591c73b71ff407ab5d73a0c78579c2a6d"
+    }
+  },
+  "captures": [
+    {
+      "path": "gui/light-before-copy-confirmation.png",
+      "source": "artifacts/gui/W16-visual-polish/light/before/copy-confirmation.png",
+      "sha256": "83644eeafbaca11293632a5a07495dcc5f7436234b4651b7a02094851ae0b9df",
+      "appearance": "light",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "copy-confirmation"
+    },
+    {
+      "path": "gui/light-before-focused-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/light/before/focused-entry.png",
+      "sha256": "844fdd3378f7cbeb0835e9bc5c1f24908b0dcb3fe0a65510901741dde7575920",
+      "appearance": "light",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "focused-entry"
+    },
+    {
+      "path": "gui/light-before-initial.png",
+      "source": "artifacts/gui/W16-visual-polish/light/before/initial.png",
+      "sha256": "c70f4ed9bf643739d2813aff30a015c1ecf3a6ea3de7b52fc645b9d8b4274b81",
+      "appearance": "light",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "initial"
+    },
+    {
+      "path": "gui/light-before-marked-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/light/before/marked-entry.png",
+      "sha256": "2e6efd659ba4fd6faac131f90c2777f80c196b45ace1f1091c19fac7e6af8546",
+      "appearance": "light",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "marked-entry"
+    },
+    {
+      "path": "gui/light-before-minimum.png",
+      "source": "artifacts/gui/W16-visual-polish/light/before/minimum.png",
+      "sha256": "dec073b31c63a04b2fdd3a9e70baa41257867887c50a4f51bb255a5e34dd82d0",
+      "appearance": "light",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        820,
+        500
+      ],
+      "scenario": "minimum"
+    },
+    {
+      "path": "gui/light-before-search.png",
+      "source": "artifacts/gui/W16-visual-polish/light/before/search.png",
+      "sha256": "a63c07f2e0dbedd81f87823a295de8d9efaf428484d0fbe3ef25816e7df4a6fd",
+      "appearance": "light",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "search"
+    },
+    {
+      "path": "gui/light-before-viewer.png",
+      "source": "artifacts/gui/W16-visual-polish/light/before/viewer.png",
+      "sha256": "742ff0505e5c2d5299701c9d1044eb21d02dc693e915509b5ff718e15e318182",
+      "appearance": "light",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "viewer"
+    },
+    {
+      "path": "gui/light-after-column-resized.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/column-resized.png",
+      "sha256": "93299f17ef4be8c7837fe40c0cd63e347b4727ce942df4f7fe28a0d65b65ba16",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "column-resized"
+    },
+    {
+      "path": "gui/light-after-copy-confirmation.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/copy-confirmation.png",
+      "sha256": "d7f9d56048a4a22b4c0b7c8b07671142fd3539f896ad4d13c87f276ce0f94143",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "copy-confirmation"
+    },
+    {
+      "path": "gui/light-after-duplicated-tab.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/duplicated-tab.png",
+      "sha256": "869276c8ca0dbfd616f78f1cdce202e9e7ac24b326e2e05226dc93c440cbc5c0",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "duplicated-tab"
+    },
+    {
+      "path": "gui/light-after-focused-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/focused-entry.png",
+      "sha256": "f10729a8c3be0d060659b179c48d5e1caf920978068611d8a5e734a3eedcaab8",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "focused-entry"
+    },
+    {
+      "path": "gui/light-after-history-return.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/history-return.png",
+      "sha256": "f10729a8c3be0d060659b179c48d5e1caf920978068611d8a5e734a3eedcaab8",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "history-return"
+    },
+    {
+      "path": "gui/light-after-initial.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/initial.png",
+      "sha256": "3f984f68ab6d52a3c7b878b5f0b2abcc0daed4cc17ca556874e8cf068aa1a591",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "initial"
+    },
+    {
+      "path": "gui/light-after-marked-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/marked-entry.png",
+      "sha256": "9b2b696973c765561f2c5c268c59a1a0665531866c1a9e790d42fc5ba1df80e4",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "marked-entry"
+    },
+    {
+      "path": "gui/light-after-minimum.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/minimum.png",
+      "sha256": "8d518e631fc0f8430fb9159c38ebec29588bbf586f6be8a4eae78f21a766c3ad",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        820,
+        500
+      ],
+      "scenario": "minimum"
+    },
+    {
+      "path": "gui/light-after-path-navigation.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/path-navigation.png",
+      "sha256": "196c65067886d6c5540f0304929b4acfcfae0c31c949ed0c4b20931da16afd98",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "path-navigation"
+    },
+    {
+      "path": "gui/light-after-right-pane-focus.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/right-pane-focus.png",
+      "sha256": "99f1bd0d2093d46b2520ab9aaddff674e4b0398c90a1f7f209c1dc3ba63ed6fd",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "right-pane-focus"
+    },
+    {
+      "path": "gui/light-after-search.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/search.png",
+      "sha256": "b6c6a8f4318e63e62ea530536ada2a3defe850f14361ffb263026ba47b1c20ca",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "search"
+    },
+    {
+      "path": "gui/light-after-split-resized.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/split-resized.png",
+      "sha256": "dd373ec0585b727a8cc1d7cc73997cab1b44056cf950fba8460b683d4e1c9a12",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "split-resized"
+    },
+    {
+      "path": "gui/light-after-viewer.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after/viewer.png",
+      "sha256": "1c9ab07fcf91f09c6c6fbe4ef0fe17a3a4810c5162bf6b4d55e6bfa09c498164",
+      "appearance": "light",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "viewer"
+    },
+    {
+      "path": "gui/light-after-2x-copy-confirmation.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after-2x/copy-confirmation.png",
+      "sha256": "25928b8ed45dd05f32fcda780faac349fad2b1f03eff2cb1f8ffa9e8b112fc6c",
+      "appearance": "light",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "copy-confirmation"
+    },
+    {
+      "path": "gui/light-after-2x-focused-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after-2x/focused-entry.png",
+      "sha256": "535d4220f8055fe2ff5b1848332f0c714567515bf8d839aef19cc89b2b1169f8",
+      "appearance": "light",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "focused-entry"
+    },
+    {
+      "path": "gui/light-after-2x-initial.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after-2x/initial.png",
+      "sha256": "1acae032c63a2da32a66d170649740f2a8144e9d493153dc0f43bfa1ea47fe42",
+      "appearance": "light",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "initial"
+    },
+    {
+      "path": "gui/light-after-2x-marked-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after-2x/marked-entry.png",
+      "sha256": "da1092b13eb838027eee393482e69298e3180c1f23637fce3e65e71bd4e6912b",
+      "appearance": "light",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "marked-entry"
+    },
+    {
+      "path": "gui/light-after-2x-minimum.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after-2x/minimum.png",
+      "sha256": "18f07996fc72e78e0bf323736afbb68fa99dae03f9671251ef02f9761c8d0e1e",
+      "appearance": "light",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        820,
+        500
+      ],
+      "scenario": "minimum"
+    },
+    {
+      "path": "gui/light-after-2x-search.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after-2x/search.png",
+      "sha256": "43546178a47150173fb4b34d5286826608d0e54dfea8f2fc43283e4d60100c92",
+      "appearance": "light",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "search"
+    },
+    {
+      "path": "gui/light-after-2x-viewer.png",
+      "source": "artifacts/gui/W16-visual-polish/light/after-2x/viewer.png",
+      "sha256": "b4650ff9b75eee5fcb073df97ade4f267b1f59e7bbfb01cff688ee99ccc0280c",
+      "appearance": "light",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "viewer"
+    },
+    {
+      "path": "gui/dark-before-copy-confirmation.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/before/copy-confirmation.png",
+      "sha256": "06f3e6e02f5551221091db3c59449418d3ea25b9aa685dc56b988cadc694d26c",
+      "appearance": "dark",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "copy-confirmation"
+    },
+    {
+      "path": "gui/dark-before-focused-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/before/focused-entry.png",
+      "sha256": "00cd5fb3cee0c26fcb3c76f226220d81ceba1301c8ab1dbf756e8fc0f948416d",
+      "appearance": "dark",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "focused-entry"
+    },
+    {
+      "path": "gui/dark-before-initial.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/before/initial.png",
+      "sha256": "057ba34eaba1097718a7a0941f6e0ee75ff0d63839722f0d82ff38ffab0b8dd2",
+      "appearance": "dark",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "initial"
+    },
+    {
+      "path": "gui/dark-before-marked-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/before/marked-entry.png",
+      "sha256": "765111e7b29f38ea905f0e9c9062190a5274ed79fe69cee3df2343d796c89836",
+      "appearance": "dark",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "marked-entry"
+    },
+    {
+      "path": "gui/dark-before-minimum.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/before/minimum.png",
+      "sha256": "ace7cc29dfc17cd039bda9bdb35935252b2afce566c12af78991e7fa895ae364",
+      "appearance": "dark",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        820,
+        500
+      ],
+      "scenario": "minimum"
+    },
+    {
+      "path": "gui/dark-before-search.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/before/search.png",
+      "sha256": "dcdeb95c3338a80bbbb22fa8cad2a35c9559f1a6886889fadb64741f21a422fd",
+      "appearance": "dark",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "search"
+    },
+    {
+      "path": "gui/dark-before-viewer.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/before/viewer.png",
+      "sha256": "8ae7ff783bc5e01c2ff005445a8fb43642309212b0bab4ffaecbb269e47be511",
+      "appearance": "dark",
+      "version": "before",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "viewer"
+    },
+    {
+      "path": "gui/dark-after-column-resized.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/column-resized.png",
+      "sha256": "eb46c37a835235aaf9cc71487cd394bab8734bc49876ecc522dcda652440288c",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "column-resized"
+    },
+    {
+      "path": "gui/dark-after-copy-confirmation.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/copy-confirmation.png",
+      "sha256": "ffed6f368b8a373dfac72e5cb1d943ea857ff4e7beff5bbd7f88d990fbcb5561",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "copy-confirmation"
+    },
+    {
+      "path": "gui/dark-after-duplicated-tab.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/duplicated-tab.png",
+      "sha256": "f53670004a23b8ca7fb6f7da89293e7bdaac10585c32f00ad8d833cbae06b691",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "duplicated-tab"
+    },
+    {
+      "path": "gui/dark-after-focused-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/focused-entry.png",
+      "sha256": "34605ba6aa31051703c8a81ca68097fdb98ab7737a0e11bfde8add5728ba45ac",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "focused-entry"
+    },
+    {
+      "path": "gui/dark-after-history-return.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/history-return.png",
+      "sha256": "34605ba6aa31051703c8a81ca68097fdb98ab7737a0e11bfde8add5728ba45ac",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "history-return"
+    },
+    {
+      "path": "gui/dark-after-initial.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/initial.png",
+      "sha256": "954c139734da0ba3a26918f9c0dc7a6dd11ed34d5510827697631e01b64bf8cb",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "initial"
+    },
+    {
+      "path": "gui/dark-after-marked-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/marked-entry.png",
+      "sha256": "19f73352c92034fd7d823888bd42c6d7d1ec2c0da37f5a7c62763292e2a9f541",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "marked-entry"
+    },
+    {
+      "path": "gui/dark-after-minimum.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/minimum.png",
+      "sha256": "930ec3d917c1c09e7f95a297ec7d70599237e6ff8255ee8ddd819e0581fdc642",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        820,
+        500
+      ],
+      "scenario": "minimum"
+    },
+    {
+      "path": "gui/dark-after-path-navigation.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/path-navigation.png",
+      "sha256": "89c97789adcabc6e0d10bfec62a288bc5e9385ba218630779964470b4428ebe7",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "path-navigation"
+    },
+    {
+      "path": "gui/dark-after-right-pane-focus.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/right-pane-focus.png",
+      "sha256": "0d4e49ac92ff6527d25ac7c670efb9b746efdb898771d1f7f5dd09ace4bbe791",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "right-pane-focus"
+    },
+    {
+      "path": "gui/dark-after-search.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/search.png",
+      "sha256": "69ad1c243c90c63bd0816fde08624d0e200eff971ebdfc9151e8cf5fb47a4ffc",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "search"
+    },
+    {
+      "path": "gui/dark-after-split-resized.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/split-resized.png",
+      "sha256": "d596e7e9890fd3930e46f4e772f777e56a0f37f28fbd3c2eea10d3660c94171d",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "split-resized"
+    },
+    {
+      "path": "gui/dark-after-viewer.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after/viewer.png",
+      "sha256": "447620dda22d63d1fa52d30ed0ea414597e318f3ee43d216548f6064a38774aa",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 1,
+      "physical_desktop": [
+        1120,
+        720
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "viewer"
+    },
+    {
+      "path": "gui/dark-after-2x-copy-confirmation.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after-2x/copy-confirmation.png",
+      "sha256": "f61253a2b1da00bf5103be89f97e7f72d8581fc765549ef262ab570a0b4fb336",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "copy-confirmation"
+    },
+    {
+      "path": "gui/dark-after-2x-focused-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after-2x/focused-entry.png",
+      "sha256": "8a352bc4071181ed24e6d373952479e5dd852ddcf8d3c50873030f7816ba354a",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "focused-entry"
+    },
+    {
+      "path": "gui/dark-after-2x-initial.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after-2x/initial.png",
+      "sha256": "6597744116ef53afe64c7ffc544709b583a36d81d6d019e5d2304dd0b49d4a71",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "initial"
+    },
+    {
+      "path": "gui/dark-after-2x-marked-entry.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after-2x/marked-entry.png",
+      "sha256": "abe809d1a625c9482c7e06af7a6b7e23bb77076ff2124afb9c4f7549cb446807",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "marked-entry"
+    },
+    {
+      "path": "gui/dark-after-2x-minimum.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after-2x/minimum.png",
+      "sha256": "420393b7ae21de247dc87a0c127112017f8ed75662e68f1bad62a63a47ce04f3",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        820,
+        500
+      ],
+      "scenario": "minimum"
+    },
+    {
+      "path": "gui/dark-after-2x-search.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after-2x/search.png",
+      "sha256": "81b8ccf1e35308b7717a1d4e0e92f0b30753d59db498bdf5edadaebe795e2e46",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "search"
+    },
+    {
+      "path": "gui/dark-after-2x-viewer.png",
+      "source": "artifacts/gui/W16-visual-polish/dark/after-2x/viewer.png",
+      "sha256": "441edf54bb1dcf1fc6aab60c3a055cb53f4f7a657436814a9e2de7bebc9d2460",
+      "appearance": "dark",
+      "version": "after",
+      "scale": 2,
+      "physical_desktop": [
+        2240,
+        1440
+      ],
+      "logical_window": [
+        1120,
+        720
+      ],
+      "scenario": "viewer"
+    }
+  ],
+  "traces": [
+    {
+      "path": "gui/light-before-actions.json",
+      "sha256": "7fd3d69096e373f548a469e2495b56420573814ec45a7620709ece24108fb6f1"
+    },
+    {
+      "path": "gui/light-before-light-before.json",
+      "sha256": "952df22cb31824c6f232dc65e11a92ed81685a2d31a3500b60a4a0caae93c5c6"
+    },
+    {
+      "path": "gui/light-after-actions.json",
+      "sha256": "d4a2544dd02536ae4ccca6e42166cb615221bd92a325b7931d2209b6b727bb11"
+    },
+    {
+      "path": "gui/light-after-light-after.json",
+      "sha256": "bb8249ff716c627541ac15f383aa9aedf0a3537291e1483db1c64ff934feb18a"
+    },
+    {
+      "path": "gui/light-after-2x-actions.json",
+      "sha256": "9dba0b212881c1930644215aa11448049062f139e33c12de4a477ae3f8037600"
+    },
+    {
+      "path": "gui/light-after-2x-light-after-2x.json",
+      "sha256": "0cb0c44a68664de13858766a575b53f62b04310720eac05d7cc4135b5a5ae95a"
+    },
+    {
+      "path": "gui/dark-before-actions.json",
+      "sha256": "7fd3d69096e373f548a469e2495b56420573814ec45a7620709ece24108fb6f1"
+    },
+    {
+      "path": "gui/dark-before-dark-before.json",
+      "sha256": "81ccdc9ac0d4db8c0ee92ec511b287778eb88bef8b8db1cb234a3d0aec73854d"
+    },
+    {
+      "path": "gui/dark-after-actions.json",
+      "sha256": "d4a2544dd02536ae4ccca6e42166cb615221bd92a325b7931d2209b6b727bb11"
+    },
+    {
+      "path": "gui/dark-after-dark-after.json",
+      "sha256": "e640b4cf8960c2c7904edf06e2fc8e5c4a897ab3e728f95951c0e061ff592ace"
+    },
+    {
+      "path": "gui/dark-after-2x-actions.json",
+      "sha256": "9dba0b212881c1930644215aa11448049062f139e33c12de4a477ae3f8037600"
+    },
+    {
+      "path": "gui/dark-after-2x-dark-after-2x.json",
+      "sha256": "9c4f897380bb578aafa4def89e139d4a2f55544b0f3b49acc5f2cd4e489a89ed"
+    }
+  ],
+  "scope": "Disposable fixtures; confirmations cancelled. Screenshots show desktop bounds, including black area outside resized windows."
+}

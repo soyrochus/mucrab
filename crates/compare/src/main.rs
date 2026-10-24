@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
+//! Original/native behavioural comparison adapters and fixture readiness checks.
 use mucrab_core::{FileEntry, NameSorter, SortOptions, list_directory};
 mod w02;
 mod w02b;

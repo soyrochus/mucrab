@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 use super::read_job::ReadJob;
-use super::*;
+use super::{Duration, MuCrabApp, PaneSide, PathBuf, TabId, egui};
 use mucrab_core::{EntryTarget, Preview, PreviewContent, TextDocument, ViewRequest};
 use std::ops::Range;
 #[derive(Default)]
@@ -233,10 +233,10 @@ fn text_canvas(
 impl MuCrabApp {
     pub(super) fn open_viewer(&mut self, ctx: &egui::Context) {
         let i = usize::from(self.active == PaneSide::Right);
-        if let Some(location) = self.panes[i].remote.clone() {
+        if let Some(location) = self.panes[i].remote().cloned() {
             if let Some(name) = self.panes[i]
-                .selection
-                .snapshot(&self.panes[i].entries, &self.panes[i].order)
+                .selection()
+                .snapshot(self.panes[i].entries(), self.panes[i].order())
                 .focused
                 .filter(|n| n != "..")
                 && let Ok(child) = location.child(&name)

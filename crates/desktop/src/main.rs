@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
+//! Native two-pane desktop application and isolated worker lifecycle.
 use std::process::ExitCode;
 
 mod app;

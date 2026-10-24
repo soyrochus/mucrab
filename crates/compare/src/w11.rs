@@ -17,7 +17,7 @@ pub fn probe(args: &[std::ffi::OsString]) -> Result<(), Box<dyn std::error::Erro
     let origin = tabs.active().id;
     tabs.duplicate(&sorter)?;
     let copied = tabs.active().pane.history_len();
-    let same = tabs.active().pane.location == Some(child.clone());
+    let same = tabs.active().pane.location() == Some(&child);
     tabs.active_mut().pane.open(&root, &sorter);
     tabs.select(origin);
     let b = Bookmark {

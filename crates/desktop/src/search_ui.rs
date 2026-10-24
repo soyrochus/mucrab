@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
-use super::*;
+use super::{Duration, JobControl, MuCrabApp, PaneSide, PathBuf, egui, mpsc};
 use mucrab_core::{SearchHit, SearchPlan, SearchQuery, SearchReport, search_time_bound};
 use std::sync::mpsc::{Receiver, TrySendError, sync_channel};
 
@@ -172,7 +172,7 @@ impl Search {
 impl MuCrabApp {
     pub(super) fn open_search(&mut self) {
         if self.panes[usize::from(self.active == PaneSide::Right)]
-            .remote
+            .remote()
             .is_some()
         {
             self.remote.message = Some("Remote search is unsupported; choose a local pane.".into());
@@ -180,14 +180,13 @@ impl MuCrabApp {
         }
         if !self.search.initialized {
             let i = usize::from(self.active == PaneSide::Right);
-            if self.panes[i].archive.is_some() {
+            if self.panes[i].archive().is_some() {
                 self.navigation.error =
                     Some("Search requires a local folder; leave the archive first.".into());
                 return;
             }
             self.search.root = self.panes[i]
-                .location
-                .as_ref()
+                .location()
                 .map(|p| p.display().to_string())
                 .unwrap_or_default();
             self.search.hidden = self.show_hidden;

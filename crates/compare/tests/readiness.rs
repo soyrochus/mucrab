@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
+//! Behavioural regression coverage for readiness using disposable fixtures.
 use std::process::Command;
 
 #[test]

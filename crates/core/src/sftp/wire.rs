@@ -1,11 +1,16 @@
 // SPDX-License-Identifier: GPL-3.0-only
 //! Bounded SFTP v3 subset over an authenticated SSH subsystem channel.
-use super::*;
-use std::io::{Read, Write};
+use super::{Arc, JobControl, RemoteLocation, Session, check, error};
+use std::{
+    io::{self, Read, Write},
+    time::Duration,
+};
 const PACKET: usize = 512 * 1024;
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub(super) struct Attributes {
+    /// File size in bytes; compatibility listing metadata can use -1 for unknown size.
     pub size: Option<u64>,
+    /// Natural or lexical name tie-breaking policy.
     pub mode: Option<u32>,
     pub mtime: Option<u32>,
 }
@@ -219,7 +224,7 @@ impl Client {
         if !self.lstat("/")?.is_some_and(|a| a.directory()) {
             return Err(error("Remote root is not a directory"));
         }
-        for part in loc.path.split('/').filter(|p| !p.is_empty()) {
+        for part in loc.path().split('/').filter(|p| !p.is_empty()) {
             current = if current == "/" {
                 format!("/{part}")
             } else {
@@ -373,6 +378,63 @@ fn lock_gate<'a>(
             }
             Err(std::sync::TryLockError::WouldBlock) => {
                 std::thread::sleep(Duration::from_millis(10))
+            }
+        }
+    }
+}
+
+#[cfg(any(test, feature = "test-util"))]
+pub(crate) fn exercise_packet(bytes: &[u8]) -> io::Result<()> {
+    if bytes.len() > PACKET {
+        return Err(error("Oversized fuzz packet"));
+    }
+    let Some((&mode, bytes)) = bytes.split_first() else {
+        return Ok(());
+    };
+    let mut packet = Packet {
+        bytes: bytes.to_vec(),
+        offset: 0,
+    };
+    match mode % 4 {
+        0 => {
+            packet.u32()?;
+        }
+        1 => {
+            packet.u64()?;
+        }
+        2 => {
+            packet.text()?;
+        }
+        _ => {
+            packet.attrs()?;
+        }
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod malformed_tests {
+    use super::*;
+    #[test]
+    fn truncated_lengths_attributes_and_oversized_packets_are_errors() {
+        for bytes in [
+            vec![0],
+            vec![1, 0, 1],
+            vec![2, 255, 255, 255, 255],
+            vec![3, 255, 255, 255, 255],
+            vec![0; PACKET + 1],
+        ] {
+            assert!(
+                exercise_packet(&bytes).is_err(),
+                "invalid bounded packet length {}",
+                bytes.len()
+            );
+        }
+        for mode in 0..4 {
+            for len in 0..64 {
+                let mut bytes = vec![0u8; len + 1];
+                bytes[0] = mode;
+                let _ = exercise_packet(&bytes);
             }
         }
     }

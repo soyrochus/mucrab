@@ -1,5 +1,15 @@
 # Current status
 
+W16/W17 implementation checkpoint (2026-10-24): coordinated desktop styling,
+bounded background local/ZIP browsing, validated capture APIs, checked fallback
+move synchronisation, component extraction and routine quality gates are implemented.
+Fresh Linux/X11 light/dark and 100%/200% evidence accompanies 121 runtime Rust
+tests, three documentation examples and 51 Python tests. Four service-dependent
+tests remain ignored; macOS native and physical theme-notification checks remain
+pending. See [W16 evidence](../evidence/workflows/W16-desktop-visual-polish/README.md)
+and [W17 verification](../evidence/workflows/W17-rust-quality-hardening/README.md).
+This checkpoint does not close the earlier parity/platform gates below.
+
 [Back to the README](../README.md).
 
 **v0.10.0 — updated 2026-10-18.** W11–W15 and native macOS menu integration are

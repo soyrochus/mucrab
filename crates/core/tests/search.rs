@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
+//! Behavioural regression coverage for search using disposable fixtures.
 mod support;
 use mucrab_core::*;
 use std::{
@@ -251,20 +252,25 @@ fn limits_cancellation_batches_and_stale_result_navigation() {
     let mut pane = BrowserPane::default();
     pane.open(&t.0, &sorter);
     pane.apply_event(&PaneEvent::All, &sorter).unwrap();
-    let marks = pane.selection.marked_count();
+    let marks = pane.selection().marked_count();
     assert!(hit.open_containing(&mut pane, &sorter).is_ok());
     assert_eq!(
-        pane.selection.marked_count(),
+        pane.selection().marked_count(),
         marks,
         "Opening a result in the same folder preserves marks"
     );
-    let location = pane.location.clone();
-    let focus = pane.selection.snapshot(&pane.entries, &pane.order).focused;
+    let location = pane.location().cloned();
+    let focus = pane
+        .selection()
+        .snapshot(pane.entries(), pane.order())
+        .focused;
     fs::remove_file(&hit.path).unwrap();
     assert!(hit.open_containing(&mut pane, &sorter).is_err());
-    assert_eq!(pane.location, location);
+    assert_eq!(pane.location().cloned(), location);
     assert_eq!(
-        pane.selection.snapshot(&pane.entries, &pane.order).focused,
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
+            .focused,
         focus
     );
 }

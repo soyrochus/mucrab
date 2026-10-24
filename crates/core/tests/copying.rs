@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+//! Behavioural regression coverage for copying using disposable fixtures.
 #![cfg(unix)]
 mod support;
 
@@ -200,8 +201,8 @@ fn symlinks_and_copy_completion_preserve_selection_identity() {
     pane.open(&s, &sorter);
     pane.options.criterion = SortCriterion::Extension;
     pane.resort(&sorter);
-    for row in 1..pane.selection.row_count(&pane.order) {
-        pane.selection.set_marked(row, true, &pane.order);
+    for row in 1..pane.selection().row_count(pane.order()) {
+        pane.mark(row, true);
     }
     let report = copy_entries(&f.request(&["pack"], CopyPolicy::Skip)).unwrap();
     assert!(report.outcomes[0].success);
@@ -219,7 +220,9 @@ fn symlinks_and_copy_completion_preserve_selection_identity() {
     pane.refresh(&sorter);
     assert_eq!(pane.options.criterion, SortCriterion::Extension);
     assert_eq!(
-        pane.selection.snapshot(&pane.entries, &pane.order).marked,
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
+            .marked,
         vec!["other"]
     );
 }

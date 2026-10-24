@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+//! Bounded non-secret location persistence with checked atomic publication.
 use crate::{PaneLocation, is_valid_leaf_name};
 use serde::{Deserialize, Serialize};
 use std::{
@@ -11,12 +12,16 @@ use std::{
 };
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+/// A stable saved location and display label, containing no credentials.
 pub struct Bookmark {
+    /// Stable identity used instead of a mutable display position.
     pub id: u64,
+    /// User-facing non-secret label, validated before persistence.
     pub label: String,
+    /// Structured provider location rather than an unvalidated display URL.
     pub location: PaneLocation,
 }
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Document {
     version: u32,
@@ -32,6 +37,8 @@ impl Default for Document {
         }
     }
 }
+#[derive(Debug)]
+/// An ordered bounded bookmark document with external-edit checks and atomic publication.
 pub struct BookmarkStore {
     path: PathBuf,
     document: Document,
@@ -78,7 +85,7 @@ fn validate(d: &Document) -> io::Result<()> {
         }
         match &e.location {
             PaneLocation::Sftp(loc) => {
-                if crate::sftp::RemoteLocation::new(&loc.profile, &loc.path)? != *loc {
+                if crate::sftp::RemoteLocation::new(loc.profile(), loc.path())? != *loc {
                     return Err(invalid("Invalid remote bookmark"));
                 }
             }
@@ -114,6 +121,10 @@ fn valid_path(p: &Path) -> bool {
     p.is_absolute() && p.to_str().is_some_and(|s| !s.contains('\0'))
 }
 impl BookmarkStore {
+    /// Load a bounded bookmark document without replacing invalid existing bytes.
+    ///
+    /// # Errors
+    /// Returns validation or I/O errors; failed saves preserve the last valid in-memory document.
     pub fn load(path: PathBuf) -> io::Result<Self> {
         let baseline = read(&path)?;
         let document = match &baseline {
@@ -127,9 +138,14 @@ impl BookmarkStore {
             baseline,
         })
     }
+    /// Borrow bookmarks in their persisted display order.
     pub fn entries(&self) -> &[Bookmark] {
         &self.document.entries
     }
+    /// Persist a labelled location and return its stable bookmark identifier.
+    ///
+    /// # Errors
+    /// Returns validation or I/O errors; failed saves preserve the last valid in-memory document.
     pub fn add(&mut self, label: &str, location: PaneLocation) -> io::Result<u64> {
         let mut d = self.document.clone();
         let id = d.next_id;
@@ -145,6 +161,10 @@ impl BookmarkStore {
         self.commit(d)?;
         Ok(id)
     }
+    /// Persist a replacement label while preserving the bookmark identity.
+    ///
+    /// # Errors
+    /// Returns validation or I/O errors; failed saves preserve the last valid in-memory document.
     pub fn rename(&mut self, id: u64, label: &str) -> io::Result<()> {
         let mut d = self.document.clone();
         let e = d
@@ -155,6 +175,10 @@ impl BookmarkStore {
         e.label = label.trim().into();
         self.commit(d)
     }
+    /// Persist removal of an existing bookmark without altering its target.
+    ///
+    /// # Errors
+    /// Returns validation or I/O errors; failed saves preserve the last valid in-memory document.
     pub fn remove(&mut self, id: u64) -> io::Result<()> {
         let mut d = self.document.clone();
         let i = d
@@ -165,6 +189,10 @@ impl BookmarkStore {
         d.entries.remove(i);
         self.commit(d)
     }
+    /// Move a bookmark one position toward the start when `up` is true.
+    ///
+    /// # Errors
+    /// Returns validation or I/O errors; failed saves preserve the last valid in-memory document.
     pub fn reorder(&mut self, id: u64, up: bool) -> io::Result<()> {
         let mut d = self.document.clone();
         let i = d

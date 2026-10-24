@@ -3,6 +3,7 @@
 
 // Recovered from original MoveJob, LocalFile.renameTo and transfer/delete callers.
 // See NOTICE.md and evidence/workflows/W04-move-rename/contract.md.
+//! Local atomic rename and checked copy-delete fallback with source preservation.
 use crate::copying::{apply_metadata, modified_ms, resolved};
 use crate::{CopyIssue, CopyIssueKind, CopyOutcome, CopyPolicy, CopyRequest, is_valid_leaf_name};
 use crate::{JobControl, jobs::copy_stream};
@@ -16,19 +17,29 @@ use std::{
 };
 
 #[derive(Clone, Debug, Deserialize)]
+/// A reviewed transfer plus the constraint selecting in-folder single-item rename mode.
 pub struct MoveRequest {
     #[serde(flatten)]
+    /// The underlying source/destination selection and collision policy.
     pub transfer: CopyRequest,
     #[serde(default)]
+    /// Require exactly one new direct-child name within the source directory.
     pub rename_mode: bool,
 }
 #[derive(Clone, Debug, Default)]
+/// Rename/copy/delete outcomes, preserving sources on unsuccessful copy fallback.
 pub struct MoveReport {
+    /// Whether cooperative cancellation stopped or prevented the remaining work.
     pub cancelled: bool,
+    /// Ordered results for selected top-level items, including partial-operation outcomes.
     pub outcomes: Vec<CopyOutcome>,
+    /// Detailed per-path failures, skips, unsupported cases or cancellation notices.
     pub issues: Vec<CopyIssue>,
+    /// Number of successful filesystem rename operations.
     pub renamed_entries: usize,
+    /// Number of regular files transferred by copy fallback.
     pub files_transferred: usize,
+    /// Number of source entries removed after successful rename or checked copy fallback.
     pub sources_removed: usize,
 }
 struct Mover<'a> {
@@ -271,22 +282,48 @@ impl Mover<'_> {
                 format!("Copy stopped; source retained: {error}"),
             );
         }
-        drop(output);
         apply_metadata(metadata.as_ref(), destination, true);
+        let completion =
+            remove_synced_source(&output, source, self.control, File::sync_all, |path| {
+                fs::remove_file(path)
+            });
+        drop(output);
         self.report.files_transferred += 1;
-        if !self.control.checkpoint() {
-            return false;
-        }
-        if let Err(error) = fs::remove_file(source) {
+        if let Err(ref error) = completion {
             return self.issue(
                 source,
                 CopyIssueKind::Failed,
                 format!("Copied to destination, but source could not be removed: {error}"),
             );
         }
+        if !completion.unwrap_or(false) {
+            return false;
+        }
         self.report.sources_removed += 1;
         true
     }
+}
+
+// The two injected operations keep the ordering testable without exposing a
+// production switch that can bypass destination persistence.
+fn remove_synced_source(
+    output: &File,
+    source: &Path,
+    control: &JobControl,
+    sync: impl FnOnce(&File) -> io::Result<()>,
+    remove: impl FnOnce(&Path) -> io::Result<()>,
+) -> io::Result<bool> {
+    sync(output).map_err(|error| {
+        io::Error::new(
+            error.kind(),
+            format!("Destination synchronisation failed; source retained: {error}"),
+        )
+    })?;
+    if !control.checkpoint() {
+        return Ok(false);
+    }
+    remove(source)?;
+    Ok(true)
 }
 
 /// Move selected direct children, retaining sources on failed fallback/deletion.
@@ -295,6 +332,10 @@ pub fn move_entries(request: &MoveRequest) -> io::Result<MoveReport> {
     move_entries_with_control(request, &JobControl::default())
 }
 
+/// Move an ordered selection, synchronising copied destinations before source deletion.
+///
+/// # Errors
+/// Returns invalid-request or root-access errors; failed fallback writes or sync retain their source.
 pub fn move_entries_with_control(
     request: &MoveRequest,
     control: &JobControl,
@@ -385,4 +426,66 @@ pub(crate) fn move_entries_controlled(
         });
     }
     Ok(mover.report)
+}
+
+#[cfg(test)]
+mod persistence_tests {
+    use super::*;
+    use std::cell::RefCell;
+    #[test]
+    fn sync_failure_and_cancellation_never_remove_the_source() {
+        let p = std::env::temp_dir().join(format!("mucrab-sync-{}", std::process::id()));
+        let file = File::create(&p).unwrap();
+        let log = RefCell::new(vec!["write"]);
+        let control = JobControl::default();
+        let result = remove_synced_source(
+            &file,
+            &p,
+            &control,
+            |_| {
+                log.borrow_mut().push("sync");
+                Err(io::Error::other("injected delayed write failure"))
+            },
+            |_| {
+                log.borrow_mut().push("remove");
+                Ok(())
+            },
+        );
+        assert!(result.unwrap_err().to_string().contains("synchronisation"));
+        assert_eq!(*log.borrow(), ["write", "sync"]);
+        assert!(p.exists(), "sync failure must retain the source");
+        let result = remove_synced_source(
+            &file,
+            &p,
+            &control,
+            |_| {
+                control.cancel();
+                Ok(())
+            },
+            |_| panic!("cancelled move must not remove the source"),
+        );
+        assert!(!result.unwrap());
+        let log = RefCell::new(vec!["write"]);
+        let result = remove_synced_source(
+            &file,
+            &p,
+            &JobControl::default(),
+            |_| {
+                log.borrow_mut().push("sync");
+                Ok(())
+            },
+            |_| {
+                log.borrow_mut().push("remove");
+                Err(io::Error::new(
+                    io::ErrorKind::PermissionDenied,
+                    "injected removal failure",
+                ))
+            },
+        );
+        assert_eq!(result.unwrap_err().kind(), io::ErrorKind::PermissionDenied);
+        assert_eq!(*log.borrow(), ["write", "sync", "remove"]);
+        assert!(p.exists());
+        drop(file);
+        fs::remove_file(p).unwrap();
+    }
 }

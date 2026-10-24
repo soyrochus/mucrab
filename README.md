@@ -115,6 +115,16 @@ parity and other macOS versions remain outside the completed acceptance.
 The [current status report](docs/current-status.md) owns the detailed workflow
 results, historical checkpoints and remaining gates.
 
+## Current engineering and appearance
+
+The W16/W17 update introduces coordinated light/dark desktop styling, background
+local/ZIP browsing, immutable validated captures and checked move-fallback
+synchronisation. See [desktop appearance](docs/desktop-appearance.md),
+[Rust quality and ownership](docs/rust-quality.md),
+[W16 visual evidence](evidence/workflows/W16-desktop-visual-polish/README.md) and
+[W17 verification](evidence/workflows/W17-rust-quality-hardening/README.md).
+Host/service verification limits and earlier incomplete parity gates remain explicit.
+
 ## Migration screenshots
 
 ### muCrab — W08 interface screenshot

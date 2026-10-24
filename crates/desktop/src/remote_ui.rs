@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 use super::read_job::ReadJob;
-use super::*;
+use super::{
+    BrowserPane, CopyPolicy, Duration, FileAction, JobResult, MuCrabApp, PaneSide, PathBuf, TabId,
+    egui,
+};
 use mucrab_core::{FileEntry, sftp::*};
 use std::{collections::HashMap, sync::Arc};
 // Secret editing uses a private String; it is moved to a zeroizing owner on submit
@@ -140,7 +143,7 @@ impl RemoteUi {
         self.sessions.get(id).filter(|s| s.connected()).cloned()
     }
     fn authenticate(&mut self, handshake: Handshake, mut input: Inputs) {
-        let verified = handshake.identity.clone();
+        let verified = handshake.identity().clone();
         let store_path = crate::appearance::settings_path().map(|p| p.with_file_name("sftp.json"));
         let result = self.connect.start(move |c| {
             if input.use_saved&&!input.profile.saved_credential_matches(){return Err("Saved credential belongs to different connection settings or is unavailable; enter a new session secret.".into());}
@@ -187,16 +190,16 @@ impl RemoteUi {
         }
     }
     fn endpoint(&self, pane: &BrowserPane) -> Option<Endpoint> {
-        if let Some(location) = &pane.remote {
+        if let Some(location) = pane.remote() {
             if pane.remote_disconnected {
                 return None;
             }
             Some(Endpoint::Remote {
-                session: self.session(&location.profile)?,
+                session: self.session(location.profile())?,
                 location: location.clone(),
             })
-        } else if pane.archive.is_none() {
-            Some(Endpoint::Local(pane.location.clone()?))
+        } else if pane.archive().is_none() {
+            Some(Endpoint::Local(pane.location().cloned()?))
         } else {
             None
         }
@@ -206,12 +209,12 @@ impl MuCrabApp {
     pub(super) fn can_remote_copy(&self) -> bool {
         let i = usize::from(self.active == PaneSide::Right);
         let (a, b) = (&self.panes[i], &self.panes[1 - i]);
-        (a.remote.is_some() ^ b.remote.is_some())
+        (a.remote().is_some() ^ b.remote().is_some())
             && self.remote.endpoint(a).is_some()
             && self.remote.endpoint(b).is_some()
             && !a
-                .selection
-                .snapshot(&a.entries, &a.order)
+                .selection()
+                .snapshot(a.entries(), a.order())
                 .selected
                 .is_empty()
             && !self.remote.prepare.busy()
@@ -225,8 +228,8 @@ impl MuCrabApp {
             return;
         };
         let names = self.panes[i]
-            .selection
-            .snapshot(&self.panes[i].entries, &self.panes[i].order)
+            .selection()
+            .snapshot(self.panes[i].entries(), self.panes[i].order())
             .selected;
         self.remote.prepare_origin = Some((self.active, self.panes.stack(i).active().id));
         if let Err(e) = self.remote.prepare.start(move |c| {
@@ -237,7 +240,7 @@ impl MuCrabApp {
         }
     }
     pub(super) fn remote_open(&mut self, location: RemoteLocation, view: bool) {
-        let Some(session) = self.remote.session(&location.profile) else {
+        let Some(session) = self.remote.session(location.profile()) else {
             self.remote.message = Some("SFTP session disconnected; reconnect first".into());
             return;
         };
@@ -248,7 +251,7 @@ impl MuCrabApp {
         let side = self.active;
         let i = usize::from(side == PaneSide::Right);
         let tab = self.panes.stack(i).active().id;
-        self.remote.download_profile = Some(location.profile.clone());
+        self.remote.download_profile = Some(location.profile().to_owned());
         if let Err(e) = self.remote.download.start(move |c| {
             download_open(&session, &location, &c)
                 .map(|p| (p, view, side, tab))
@@ -292,22 +295,17 @@ impl MuCrabApp {
             .remote
             .resume
             .take()
-            .filter(|r| r.location.profile == profile.id);
+            .filter(|r| r.location.profile() == profile.id);
         let location = resume
             .as_ref()
             .map(|r| r.location.clone())
             .or_else(|| {
                 pane.remote_request
                     .as_ref()
-                    .filter(|r| r.location.profile == profile.id)
+                    .filter(|r| r.location.profile() == profile.id)
                     .map(|r| r.location.clone())
             })
-            .or_else(|| {
-                pane.remote
-                    .as_ref()
-                    .filter(|r| r.profile == profile.id)
-                    .cloned()
-            })
+            .or_else(|| pane.remote().filter(|r| r.profile() == profile.id).cloned())
             .unwrap_or_else(|| {
                 RemoteLocation::new(&profile.id, &profile.directory).expect("validated profile")
             });
@@ -346,7 +344,7 @@ impl MuCrabApp {
                 .pane
                 .remote_request
                 .as_ref()
-                .is_some_and(|r| r.location.profile == id)
+                .is_some_and(|r| r.location.profile() == id)
             {
                 tab.pane.remote_request = None;
             }
@@ -355,14 +353,14 @@ impl MuCrabApp {
             s.disconnect();
         }
         for t in self.panes.all_mut() {
-            if t.pane.remote.as_ref().is_some_and(|r| r.profile == id) {
+            if t.pane.remote().is_some_and(|r| r.profile() == id) {
                 t.pane.remote_disconnected = true;
                 t.pane.remote_request = None;
                 t.pane.error = Some("SFTP disconnected; reconnect to browse or copy".into());
             }
         }
         for l in self.remote.listings.values_mut() {
-            if l.request.location.profile == id {
+            if l.request.location.profile() == id {
                 l.job.discard();
             }
         }
@@ -391,7 +389,7 @@ impl MuCrabApp {
                         .as_ref()
                         .ok_or("SFTP config unavailable".to_owned())
                         .and_then(|s| {
-                            s.trust_status(&handshake.identity)
+                            s.trust_status(handshake.identity())
                                 .map_err(|e| e.to_string())
                         });
                     match status {
@@ -403,10 +401,10 @@ impl MuCrabApp {
                 Ok(ConnectionResult::Ready(session, tab, request, entries)) => {
                     self.remote.connecting_profile = None;
                     let trusted = self.remote.store.as_ref().is_some_and(|store| {
-                        store.trust_status(&session.identity).unwrap_or(false)
+                        store.trust_status(session.identity()).unwrap_or(false)
                             && store
-                                .profile(&session.profile.id)
-                                .is_some_and(|p| p.same_connection(&session.profile))
+                                .profile(&session.profile().id)
+                                .is_some_and(|p| p.same_connection(session.profile()))
                     });
                     if !trusted {
                         session.disconnect();
@@ -426,7 +424,7 @@ impl MuCrabApp {
                     }
                     self.remote
                         .sessions
-                        .insert(session.profile.id.clone(), session);
+                        .insert(session.profile().id.clone(), session);
                     if let Some(pane) = self.panes.find_mut(tab) {
                         pane.remote_loaded(&request, entries, &self.sorter);
                     }
@@ -438,7 +436,7 @@ impl MuCrabApp {
                         .remote
                         .store
                         .as_ref()
-                        .and_then(|s| s.profile(&request.location.profile))
+                        .and_then(|s| s.profile(request.location.profile()))
                     {
                         self.remote.profile = p.clone();
                     }
@@ -506,7 +504,7 @@ impl MuCrabApp {
             {
                 continue;
             }
-            if let Some(session) = self.remote.session(&request.location.profile) {
+            if let Some(session) = self.remote.session(request.location.profile()) {
                 let l = self.remote.listings.entry(tab).or_insert_with(|| Listing {
                     request: request.clone(),
                     job: ReadJob::default(),
@@ -524,7 +522,7 @@ impl MuCrabApp {
                     .remote
                     .store
                     .as_ref()
-                    .and_then(|s| s.profile(&request.location.profile))
+                    .and_then(|s| s.profile(request.location.profile()))
                     .cloned();
                 if let Some(profile) = profile {
                     self.remote.profile = profile;
@@ -540,7 +538,7 @@ impl MuCrabApp {
                         );
                     }
                     self.remote.resume = Some(request.clone());
-                    self.remote.profile.directory = request.location.path;
+                    self.remote.profile.directory = request.location.path().to_owned();
                 } else if let Some(p) = self.panes.find_mut(tab) {
                     p.remote_request = None;
                     p.error=Some("SFTP profile missing. Edit the bookmark or create the profile; previous location retained.".into());
@@ -620,9 +618,9 @@ if let Authentication::PrivateKey(path)=&mut r.profile.authentication{let mut te
                 .and_then(|s| s.profile(&p.id))
                 .and_then(|p| p.credential_context.clone());
             let disconnect = self.remote.sessions.get(&p.id).is_some_and(|s| {
-                s.profile.endpoint() != p.endpoint()
-                    || s.profile.user != p.user
-                    || s.profile.authentication != p.authentication
+                s.profile().endpoint() != p.endpoint()
+                    || s.profile().user != p.user
+                    || s.profile().authentication != p.authentication
             });
             let result = self
                 .remote
@@ -668,7 +666,7 @@ if let Authentication::PrivateKey(path)=&mut r.profile.authentication{let mut te
             self.begin_connection();
         }
         if let Some((handshake, _)) = &self.remote.trust {
-            let key = handshake.identity.clone();
+            let key = handshake.identity().clone();
             let mut accept = false;
             let mut decline = false;
             egui::Modal::new(egui::Id::new("sftp-first-trust")).show(ctx,|ui|{ui.set_width(600.);ui.heading("Trust this SFTP host key?");ui.label(&key.endpoint);ui.label(&key.algorithm);ui.monospace(&key.fingerprint);ui.label("Verify this fingerprint with the server owner before trusting. Authentication has not been sent.");ui.horizontal(|ui|{decline=ui.button("Cancel").clicked();accept=ui.button("Trust host and connect").clicked();});});
@@ -739,7 +737,7 @@ if let Authentication::PrivateKey(path)=&mut r.profile.authentication{let mut te
                         .remote
                         .sessions
                         .iter()
-                        .filter(|(_, s)| s.profile.endpoint() == value)
+                        .filter(|(_, s)| s.profile().endpoint() == value)
                         .map(|(id, _)| id.clone())
                         .collect();
                     for id in ids {
@@ -761,20 +759,20 @@ if let Authentication::PrivateKey(path)=&mut r.profile.authentication{let mut te
         };
         let mut apply = false;
         let mut cancel = false;
-        egui::Modal::new(egui::Id::new("sftp-copy-review")).show(ctx,|ui|{ui.set_width(650.);ui.heading("Copy between local folder and SFTP");ui.label(format!("From: {}",plan.source.description()));ui.label(format!("To: {}",plan.destination.description()));ui.label(plan.names().join(", "));ui.horizontal(|ui|{ui.selectable_value(&mut plan.policy,CopyPolicy::Skip,"Skip existing");ui.selectable_value(&mut plan.policy,CopyPolicy::Overwrite,"Overwrite");});ui.label("Hidden descendants included; links/special files are rejected. Remote identity uses kind/size/second-resolution time. Owned staging paths may remain after failure or cancellation; sources and earlier completed work are retained.");ui.label("Overwrite requires advertised POSIX rename. A failed/uncertain publication is not retried automatically. No remote move or writeback.");ui.horizontal(|ui|{cancel=ui.button("Cancel").clicked();apply=ui.add_enabled(self.copy_job.is_none(),egui::Button::new("Apply copy")).clicked();});});
+        egui::Modal::new(egui::Id::new("sftp-copy-review")).show(ctx,|ui|{ui.set_width(650.);ui.heading("Copy between local folder and SFTP");ui.label(format!("From: {}",plan.source().description()));ui.label(format!("To: {}",plan.destination().description()));ui.label(plan.names().join(", "));ui.horizontal(|ui|{ui.selectable_value(&mut plan.policy(),CopyPolicy::Skip,"Skip existing");ui.selectable_value(&mut plan.policy(),CopyPolicy::Overwrite,"Overwrite");});ui.label("Hidden descendants included; links/special files are rejected. Remote identity uses kind/size/second-resolution time. Owned staging paths may remain after failure or cancellation; sources and earlier completed work are retained.");ui.label("Overwrite requires advertised POSIX rename. A failed/uncertain publication is not retried automatically. No remote move or writeback.");ui.horizontal(|ui|{cancel=ui.button("Cancel").clicked();apply=ui.add_enabled(self.copy_job.is_none(),egui::Button::new("Apply copy")).clicked();});});
         if cancel {
             self.remote.review = None;
         } else if apply {
             let (plan, side, tab) = self.remote.review.take().expect("reviewed");
-            let source_remote = match &plan.source {
+            let source_remote = match &plan.source() {
                 Endpoint::Remote { location, .. } => Some(location.clone()),
                 _ => None,
             };
-            let directory = match &plan.source {
+            let directory = match &plan.source() {
                 Endpoint::Local(p) => p.clone(),
                 _ => PathBuf::new(),
             };
-            self.remote.transfer_profiles = [plan.source.profile(), plan.destination.profile()]
+            self.remote.transfer_profiles = [plan.source().profile(), plan.destination().profile()]
                 .into_iter()
                 .flatten()
                 .map(str::to_owned)

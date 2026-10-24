@@ -1,30 +1,41 @@
 // SPDX-License-Identifier: GPL-3.0-only
-use super::*;
+//! Reviewed local/SFTP transfers with bounded recursion and staged publication.
+use super::{
+    Arc, JobControl, Path, PathBuf, RemoteLocation, RemoteSession, check, error, fs, io, next_id,
+    wire,
+};
 use crate::{CopyIssue, CopyIssueKind, CopyOutcome, CopyPolicy, CopyReport, PinnedDirectory};
 use std::io::{Read, Write};
-#[derive(Clone)]
+#[derive(Clone, Debug)]
+/// A local directory or authenticated saved-profile remote transfer endpoint.
 pub enum Endpoint {
+    #[doc = "An existing local filesystem path."]
     Local(PathBuf),
+    #[doc = "An authenticated saved-profile remote directory."]
     Remote {
+        #[doc = "Authenticated session whose saved profile must match the location."]
         session: Arc<RemoteSession>,
+        #[doc = "Validated provider location associated with this request or endpoint."]
         location: RemoteLocation,
     },
 }
 impl Endpoint {
+    /// Format a non-secret local or saved-profile endpoint description.
     pub fn description(&self) -> String {
         match self {
             Self::Local(p) => p.display().to_string(),
             Self::Remote { location, .. } => location.display(),
         }
     }
+    /// Borrow the saved-profile identifier for remote endpoints only.
     pub fn profile(&self) -> Option<&str> {
         match self {
-            Self::Remote { location, .. } => Some(&location.profile),
+            Self::Remote { location, .. } => Some(location.profile()),
             _ => None,
         }
     }
 }
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct Pin {
     name: String,
     local: Option<crate::properties::EntryIdentity>,
@@ -32,16 +43,30 @@ struct Pin {
     destination_local: Option<crate::properties::EntryIdentity>,
     destination_remote: Option<wire::Attributes>,
 }
-#[derive(Clone)]
+#[derive(Clone, Debug)]
+/// Immutable mixed local/remote selection tied to captured source/destination evidence.
 pub struct TransferPlan {
-    pub source: Endpoint,
-    pub destination: Endpoint,
-    pub policy: CopyPolicy,
+    source: Endpoint,
+    destination: Endpoint,
+    policy: CopyPolicy,
     pins: Vec<Pin>,
     source_directory: Option<PinnedDirectory>,
     destination_directory: Option<PinnedDirectory>,
 }
 impl TransferPlan {
+    /// Captured source endpoint.
+    pub fn source(&self) -> &Endpoint {
+        &self.source
+    }
+    /// Captured destination endpoint.
+    pub fn destination(&self) -> &Endpoint {
+        &self.destination
+    }
+    /// Collision policy reviewed with this capture.
+    pub fn policy(&self) -> CopyPolicy {
+        self.policy
+    }
+
     /// Network pin capture belongs to a background preparation worker.
     pub fn capture(
         source: Endpoint,
@@ -72,14 +97,14 @@ impl TransferPlan {
             }
             _ => unreachable!(),
         };
-        if remote.1.profile != remote.0.profile.id
-            || RemoteLocation::new(&remote.1.profile, &remote.1.path)? != *remote.1
+        if remote.1.profile() != remote.0.profile.id
+            || RemoteLocation::new(remote.1.profile(), remote.1.path())? != *remote.1
         {
             return Err(error("Remote endpoint/profile mismatch"));
         }
         let pin = PinnedDirectory::new(local)?;
         let mut client = remote.0.client(c)?;
-        client.ensure_directory(&remote.1.path)?;
+        client.ensure_directory(remote.1.path())?;
         let mut pins = vec![];
         let mut seen = std::collections::HashSet::new();
         for name in names {
@@ -96,7 +121,7 @@ impl TransferPlan {
                     None,
                     Some(
                         client
-                            .lstat(&location.child(&name)?.path)?
+                            .lstat(location.child(&name)?.path())?
                             .ok_or_else(|| error("Remote source disappeared"))?,
                     ),
                 ),
@@ -112,7 +137,7 @@ impl TransferPlan {
                 _ => None,
             };
             let destination_remote = match &destination {
-                Endpoint::Remote { location, .. } => client.lstat(&location.child(&name)?.path)?,
+                Endpoint::Remote { location, .. } => client.lstat(location.child(&name)?.path())?,
                 _ => None,
             };
             pins.push(Pin {
@@ -133,9 +158,14 @@ impl TransferPlan {
             destination_directory: (!upload).then_some(pin),
         })
     }
+    /// Copy the ordered transfer names captured with filesystem evidence.
     pub fn names(&self) -> Vec<String> {
         self.pins.iter().map(|p| p.name.clone()).collect()
     }
+    /// Revalidate reviewed endpoints and transfer with bounded recursion and staged file publication.
+    ///
+    /// # Errors
+    /// Returns stale-capture, unsupported-endpoint, cancellation or transport/filesystem errors; prior completed files remain.
     pub fn apply(&self, c: &JobControl) -> io::Result<CopyReport> {
         if let Some(p) = &self.source_directory {
             p.validate()?;
@@ -153,7 +183,7 @@ impl TransferPlan {
             _ => return Err(error("Invalid mixed transfer endpoints")),
         };
         let mut client = session.client(c)?;
-        client.ensure_directory(&remote.path)?;
+        client.ensure_directory(remote.path())?;
         let mut report = CopyReport::default();
         c.total(self.pins.len());
         let mut visited = 0;
@@ -170,12 +200,12 @@ impl TransferPlan {
                     id.validate(&local.join(&pin.name))?;
                 }
                 if let Some(id) = &pin.remote
-                    && client.lstat(&remote.child(&pin.name)?.path)?.as_ref() != Some(id)
+                    && client.lstat(remote.child(&pin.name)?.path())?.as_ref() != Some(id)
                 {
                     return Err(error("Remote source changed after review"));
                 }
                 if upload {
-                    if client.lstat(&remote.child(&pin.name)?.path)? != pin.destination_remote {
+                    if client.lstat(remote.child(&pin.name)?.path())? != pin.destination_remote {
                         return Err(error("Remote destination changed after review"));
                     }
                 } else {
@@ -196,7 +226,7 @@ impl TransferPlan {
                     policy: self.policy,
                     upload,
                 };
-                walk.copy(&local.join(&pin.name), &remote.child(&pin.name)?.path, 0)
+                walk.copy(&local.join(&pin.name), remote.child(&pin.name)?.path(), 0)
             })();
             let success = matches!(result, Ok(true));
             report.outcomes.push(CopyOutcome {
@@ -519,13 +549,13 @@ pub fn download_open(
     location: &RemoteLocation,
     c: &JobControl,
 ) -> io::Result<PathBuf> {
-    if location.profile != session.profile.id
-        || RemoteLocation::new(&location.profile, &location.path)? != *location
+    if location.profile() != session.profile.id
+        || RemoteLocation::new(location.profile(), location.path())? != *location
     {
         return Err(error("Remote Open endpoint/profile mismatch"));
     }
     let name = location
-        .path
+        .path()
         .rsplit('/')
         .next()
         .ok_or_else(|| error("Remote leaf required"))?;
@@ -543,7 +573,7 @@ pub fn download_open(
     }
     let mut client = session.client(c)?;
     let source = client
-        .lstat(&location.path)?
+        .lstat(location.path())?
         .ok_or_else(|| error("Remote file missing"))?;
     if !source.file() || source.size.is_none_or(|n| n > 512 * 1024 * 1024) {
         return Err(error("Remote Open requires a regular file within512MiB"));
@@ -571,8 +601,8 @@ pub fn download_open(
             upload: false,
         };
         let parent = location.parent();
-        walk.client.ensure_directory(&parent.path)?;
-        walk.download_file(&location.path, &path, &source, None)?;
+        walk.client.ensure_directory(parent.path())?;
+        walk.download_file(location.path(), &path, &source, None)?;
         Ok(path)
     })();
     if result.is_err() {

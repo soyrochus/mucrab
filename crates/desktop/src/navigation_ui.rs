@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
-use super::*;
+use super::{MuCrabApp, PaneSide, PathBuf, TabId, egui};
 use mucrab_core::{BookmarkStore, PaneLocation};
 use std::collections::HashMap;
 #[derive(Clone, Copy)]
@@ -92,8 +92,7 @@ impl MuCrabApp {
                         .current_location()
                         .ok_or("No successful location")?;
                     let label = self.panes[i]
-                        .location
-                        .as_ref()
+                        .location()
                         .and_then(|p| p.file_name())
                         .map(|n| n.to_string_lossy().into_owned())
                         .unwrap_or_else(|| "Root".into());
@@ -151,15 +150,24 @@ impl MuCrabApp {
                             for tab in self.panes.stack(i).tabs() {
                                 let name = tab
                                     .pane
-                                    .location
-                                    .as_ref()
+                                    .location()
                                     .and_then(|p| p.file_name())
                                     .map(|n| n.to_string_lossy().into_owned())
                                     .unwrap_or_else(|| "Root".into());
                                 let label: String = name.chars().take(24).collect();
                                 let response = ui.add_enabled(
                                     enabled,
-                                    egui::Button::selectable(tab.id == active_id, label),
+                                    egui::Button::selectable(
+                                        tab.id == active_id,
+                                        egui::RichText::new(label).strong().color(
+                                            if tab.id == active_id {
+                                                egui::Color32::WHITE
+                                            } else {
+                                                ui.visuals().text_color()
+                                            },
+                                        ),
+                                    )
+                                    .min_size(egui::vec2(60.0, 28.0)),
                                 );
                                 if self.navigation.focus[i] == Some(tab.id) {
                                     response.scroll_to_me(Some(egui::Align::Center));

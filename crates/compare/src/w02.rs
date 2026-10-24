@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
-use mucrab_core::{
-    BrowserPane, FileEntry, FileSelection, NameSorter, PaneEvent, SelectionSnapshot,
-};
+use mucrab_core::{BrowserPane, FileEntry, NameSorter, PaneEvent, SelectionSnapshot};
 use serde::{Deserialize, Serialize};
 use std::{
     io::{self, BufRead},
@@ -44,18 +42,12 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
                 })
             })
             .collect::<Result<Vec<_>, std::io::Error>>()?;
-        let mut pane = BrowserPane {
-            show_hidden: true,
-            order: (0..entries.len()).collect(),
-            selection: FileSelection::new(entries.len(), request.parent),
-            entries,
-            ..Default::default()
-        };
-        pane.order = sorter.sorted_indices(&pane.entries, pane.options);
-        let mut states = vec![pane.selection.snapshot(&pane.entries, &pane.order)];
+        let mut pane = BrowserPane::with_options(Default::default(), true);
+        pane.load_listing(request.path, entries, request.parent, &sorter);
+        let mut states = vec![pane.selection().snapshot(pane.entries(), pane.order())];
         for event in request.events {
             pane.apply_event(&event, &sorter)?;
-            states.push(pane.selection.snapshot(&pane.entries, &pane.order));
+            states.push(pane.selection().snapshot(pane.entries(), pane.order()));
         }
         println!(
             "{}",

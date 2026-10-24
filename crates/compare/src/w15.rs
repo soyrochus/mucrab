@@ -29,7 +29,7 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
         let c = JobControl::default();
         if cached
             .as_ref()
-            .is_none_or(|s| s.profile.port != r.port || s.profile.host != r.host)
+            .is_none_or(|s| s.profile().port != r.port || s.profile().host != r.host)
         {
             let p = Profile {
                 id: "fixture".into(),
@@ -43,10 +43,10 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
                 credential_context: None,
             };
             let h = Handshake::connect(&p, &c)?;
-            if h.identity.fingerprint != r.fingerprint {
+            if h.identity().fingerprint != r.fingerprint {
                 return Err("Test server fingerprint mismatch".into());
             }
-            let identity = h.identity.clone();
+            let identity = h.identity().clone();
             cached = Some(h.authenticate(p, &identity, &r.password, &c)?);
         }
         let session = cached.as_ref().expect("connected").clone();
@@ -65,7 +65,7 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
                     .and_then(|s| s.to_str())
                     .ok_or("Local leaf required")?
                     .to_owned();
-                if location.path.rsplit('/').next() != Some(&name) {
+                if location.path().rsplit('/').next() != Some(&name) {
                     return Err("Equivalent test leaf names required".into());
                 }
                 let local =

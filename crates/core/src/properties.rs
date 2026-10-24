@@ -12,11 +12,20 @@ use std::{
 };
 
 #[derive(Clone, Debug)]
+/// A local entry or direct ZIP member selected for read-only inspection.
 pub enum EntryTarget {
+    #[doc = "An existing local filesystem path."]
     Local(PathBuf),
-    Zip { location: ZipLocation, name: String },
+    #[doc = "A virtual folder or member within a local read-only ZIP."]
+    Zip {
+        #[doc = "Validated provider location associated with this request or endpoint."]
+        location: ZipLocation,
+        #[doc = "One direct-child member name within the captured ZIP folder."]
+        name: String,
+    },
 }
 impl EntryTarget {
+    /// Build a human-readable local or virtual ZIP target path.
     pub fn display_path(&self) -> PathBuf {
         match self {
             Self::Local(p) => p.clone(),
@@ -25,10 +34,15 @@ impl EntryTarget {
     }
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+/// Filesystem object kind determined without following the entry itself.
 pub enum EntryKind {
+    #[doc = "A regular file without following a symbolic-link entry."]
     File,
+    #[doc = "A directory entry without following a symbolic link."]
     Folder,
+    #[doc = "A symbolic-link entry, including missing or external targets."]
     Link,
+    #[doc = "An object outside regular-file, directory and symbolic-link classifications."]
     Other,
 }
 pub(crate) fn entry_kind(m: &fs::Metadata) -> EntryKind {
@@ -82,7 +96,10 @@ impl EntryIdentity {
     }
     pub(crate) fn validate(&self, path: &Path) -> io::Result<()> {
         if Self::read(path)? != *self {
-            Err(invalid("Captured entry changed; refresh and review again"))
+            Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                crate::CaptureChanged::new(path),
+            ))
         } else {
             Ok(())
         }
@@ -117,11 +134,16 @@ fn gid(_: &fs::Metadata) -> Option<u32> {
 }
 
 #[derive(Clone, Debug)]
+/// An immutable target/identity capture for background property inspection.
 pub struct PropertyRequest {
     target: EntryTarget,
     identity: EntryIdentity,
 }
 impl PropertyRequest {
+    /// Capture target identity before scheduling property inspection.
+    ///
+    /// # Errors
+    /// Returns validation, stale-capture, unsupported-platform or filesystem errors as appropriate to the operation.
     pub fn capture(target: EntryTarget) -> io::Result<Self> {
         let path = match &target {
             EntryTarget::Local(p) => p,
@@ -132,6 +154,10 @@ impl PropertyRequest {
             target,
         })
     }
+    /// Revalidate, inspect metadata and resolve account names on the calling read worker.
+    ///
+    /// # Errors
+    /// Returns validation, stale-capture, unsupported-platform or filesystem errors as appropriate to the operation.
     pub fn inspect(&self) -> io::Result<PropertySnapshot> {
         let path = match &self.target {
             EntryTarget::Local(p) => p,
@@ -145,24 +171,56 @@ impl PropertyRequest {
     }
 }
 #[derive(Clone, Debug)]
+/// Read-only inspection output and the private identity needed to review metadata changes.
 pub struct PropertySnapshot {
-    pub target: EntryTarget,
-    pub kind: EntryKind,
+    /// Inspection target; a mutation plan captures and privately binds its own evidence.
+    target: EntryTarget,
+    /// Typed category independent of user-facing diagnostic wording.
+    kind: EntryKind,
+    /// File size in bytes; compatibility listing metadata can use -1 for unknown size.
     pub size: Option<u64>,
+    /// Optional filesystem-allocated byte size, distinct from logical file length.
     pub allocated_size: Option<u64>,
+    /// Optional filesystem modification time, with actual platform precision retained.
     pub modified: Option<SystemTime>,
+    /// Optional access time, preserved when modification time is edited.
     pub accessed: Option<SystemTime>,
+    /// Optional creation time where the filesystem exposes it.
     pub created: Option<SystemTime>,
+    /// Optional numeric Unix owner identity.
     pub uid: Option<u32>,
+    /// Optional numeric Unix group identity.
     pub gid: Option<u32>,
+    /// Best-effort resolved owner name; unavailable lookup does not invalidate numeric identity.
     pub owner: Option<String>,
+    /// Best-effort resolved group name; unavailable lookup does not invalidate numeric identity.
     pub group: Option<String>,
-    pub mode: Option<u32>,
+    /// Optional Unix permission and special mode bits captured from the inode.
+    mode: Option<u32>,
+    /// Symbolic-link inclusion/count or inode link count, as identified by the enclosing type.
     pub links: Option<u64>,
+    /// Optional literal symbolic-link target without following it for mutation.
     pub link_target: Option<PathBuf>,
     pub(crate) identity: EntryIdentity,
 }
 impl PropertySnapshot {
+    /// Captured target; changing it requires a fresh inspection.
+    pub fn target(&self) -> &EntryTarget {
+        &self.target
+    }
+    /// Captured entry kind used to decide whether mutation is supported.
+    pub fn kind(&self) -> EntryKind {
+        self.kind
+    }
+    /// Captured Unix mode; this cannot be changed to bypass edit validation.
+    pub fn mode(&self) -> Option<u32> {
+        self.mode
+    }
+
+    /// Read local or explicit ZIP metadata without changing the target.
+    ///
+    /// # Errors
+    /// Returns validation, stale-capture, unsupported-platform or filesystem errors as appropriate to the operation.
     pub fn capture(target: EntryTarget) -> io::Result<Self> {
         match &target {
             EntryTarget::Local(path) => {
@@ -245,17 +303,23 @@ impl PropertySnapshot {
         self.owner = self.uid.and_then(|id| account_name(id, false));
         self.group = self.gid.and_then(|id| account_name(id, true));
     }
+    #[doc = "Revalidate this captured inspection target without modifying filesystem metadata.\n\n# Errors\nReturns a typed stale-capture or underlying filesystem error if the entry changed."]
     pub fn validate(&self) -> io::Result<()> {
         match &self.target {
             EntryTarget::Local(p) => self.identity.validate(p),
             EntryTarget::Zip { location, .. } => self.identity.validate(&location.archive),
         }
     }
+    /// Test whether ordinary Unix permission/time edits are supported for this captured target.
     pub fn editable(&self) -> bool {
         matches!(self.target, EntryTarget::Local(_))
             && matches!(self.kind, EntryKind::File | EntryKind::Folder)
             && self.mode.is_some()
     }
+    /// Validate requested ordinary permission bits and capture a reviewed metadata change.
+    ///
+    /// # Errors
+    /// Returns validation, stale-capture, unsupported-platform or filesystem errors as appropriate to the operation.
     pub fn metadata_plan(
         &self,
         rwx: Option<u32>,
@@ -316,23 +380,48 @@ fn account_name(id: u32, group: bool) -> Option<String> {
     }
 }
 #[derive(Clone, Debug)]
+/// Immutable metadata changes coupled to the reviewed identity and requested values.
 pub struct MetadataPlan {
-    pub snapshot: PropertySnapshot,
-    pub rwx: Option<u32>,
-    pub modified: Option<SystemTime>,
+    snapshot: PropertySnapshot,
+    rwx: Option<u32>,
+    modified: Option<SystemTime>,
 }
 #[derive(Clone, Debug, Serialize)]
+/// One metadata-field attempt, recording success or a reason it was not committed.
 pub struct MetadataStep {
+    /// Metadata field being attempted in operation order.
     pub field: String,
+    /// Whether the field change completed successfully.
     pub changed: bool,
+    /// Optional diagnostic explaining failure or why a field was not attempted.
     pub error: Option<String>,
 }
 #[derive(Clone, Debug, Default, Serialize)]
+/// Ordered field outcomes; earlier successful edits are retained after a later failure.
 pub struct MetadataReport {
+    /// Ordered metadata-field outcomes with partial changes retained.
     pub steps: Vec<MetadataStep>,
+    /// Whether cooperative cancellation stopped or prevented the remaining work.
     pub cancelled: bool,
 }
 impl MetadataPlan {
+    /// Read-only identity and properties captured before review.
+    pub fn snapshot(&self) -> &PropertySnapshot {
+        &self.snapshot
+    }
+    /// Requested permission bits, excluding preserved special bits.
+    pub fn rwx(&self) -> Option<u32> {
+        self.rwx
+    }
+    /// Requested modification time.
+    pub fn modified(&self) -> Option<SystemTime> {
+        self.modified
+    }
+
+    /// Apply reviewed metadata steps in order, retaining completed fields after failure or cancellation.
+    ///
+    /// # Errors
+    /// Returns validation, stale-capture, unsupported-platform or filesystem errors as appropriate to the operation.
     pub fn apply(&self, control: &JobControl) -> io::Result<MetadataReport> {
         let EntryTarget::Local(path) = &self.snapshot.target else {
             return Err(invalid("Local metadata required"));
@@ -430,17 +519,27 @@ impl MetadataPlan {
 }
 
 #[derive(Clone, Debug, Default, Serialize)]
+/// Bounded aggregate traversal totals with explicit cancellation and error accounting.
 pub struct FolderSizeReport {
+    /// Accumulated regular-file byte count without following link targets.
     pub bytes: u64,
+    /// Regular-file inclusion or count, according to the enclosing query/report.
     pub files: usize,
+    /// Directory inclusion or count, according to the enclosing query/report.
     pub folders: usize,
+    /// Symbolic-link inclusion/count or inode link count, as identified by the enclosing type.
     pub links: usize,
+    /// Visited-entry count or traversal limit, according to the enclosing type.
     pub visited: usize,
+    /// Total encountered traversal errors, including details omitted by the cap.
     pub errors: usize,
+    /// Bounded human-readable traversal diagnostics.
     pub details: Vec<String>,
+    /// Whether cooperative cancellation stopped or prevented the remaining work.
     pub cancelled: bool,
 }
 impl FolderSizeReport {
+    /// Report whether cancellation or errors make folder totals incomplete.
     pub fn partial(&self) -> bool {
         self.cancelled || self.errors > 0
     }
@@ -451,9 +550,17 @@ impl FolderSizeReport {
         }
     }
 }
+/// Count a local directory tree with default depth and visit bounds.
+///
+/// # Errors
+/// Returns validation, stale-capture, unsupported-platform or filesystem errors as appropriate to the operation.
 pub fn folder_size(path: &Path, control: &JobControl) -> io::Result<FolderSizeReport> {
     folder_size_with_limits(path, control, 256, 1_000_000)
 }
+/// Count without following directory links or crossing mounted filesystem boundaries.
+///
+/// # Errors
+/// Returns validation, stale-capture, unsupported-platform or filesystem errors as appropriate to the operation.
 pub fn folder_size_with_limits(
     path: &Path,
     control: &JobControl,
@@ -555,6 +662,7 @@ pub fn folder_size_with_limits(
     report.cancelled |= control.is_cancelled();
     Ok(report)
 }
+/// Convert signed epoch milliseconds when representable by the platform clock.
 pub fn time_from_millis(ms: i64) -> Option<SystemTime> {
     if ms >= 0 {
         UNIX_EPOCH.checked_add(Duration::from_millis(ms as u64))
@@ -562,6 +670,10 @@ pub fn time_from_millis(ms: i64) -> Option<SystemTime> {
         UNIX_EPOCH.checked_sub(Duration::from_millis(ms.unsigned_abs()))
     }
 }
+/// Parse a user-entered UTC timestamp for a reviewed modification-time change.
+///
+/// # Errors
+/// Returns validation, stale-capture, unsupported-platform or filesystem errors as appropriate to the operation.
 pub fn parse_modified_time(text: &str) -> Result<SystemTime, String> {
     let dt = chrono::DateTime::parse_from_rfc3339(text)
         .map_err(|_| "Use an RFC3339 UTC timestamp, for example 2026-10-17T12:00:00Z".to_owned())?;

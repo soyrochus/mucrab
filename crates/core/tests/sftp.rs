@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
+//! Behavioural regression coverage for sftp using disposable fixtures.
 use mucrab_core::{CopyPolicy, JobControl, sftp::*};
 use std::{fs, path::PathBuf, sync::Arc};
 fn scratch(label: &str) -> PathBuf {
@@ -41,7 +42,7 @@ fn typed_locations_and_nonsecret_atomic_store_reject_unsafe_configuration() {
     }
     let loc = RemoteLocation::new("fixture", "/a/../café %?#/file.txt").unwrap();
     assert_eq!(RemoteLocation::parse(&loc.display()).unwrap(), loc);
-    assert_eq!(loc.parent().path, "/café %?#");
+    assert_eq!(loc.parent().path(), "/café %?#");
     let key = HostIdentity {
         endpoint: "[127.0.0.1]:22".into(),
         algorithm: "Ed25519".into(),
@@ -90,7 +91,7 @@ fn remote_navigation_only_commits_matching_results_and_preserves_local_history()
         }],
         &sorter
     ));
-    assert!(pane.location.is_none());
+    assert!(pane.location().is_none());
     assert!(matches!(
         pane.current_location(),
         Some(PaneLocation::Sftp(_))
@@ -112,7 +113,7 @@ fn server() -> (PathBuf, Profile) {
 fn login(p: Profile, secret: &str) -> Arc<RemoteSession> {
     let c = JobControl::default();
     let h = Handshake::connect(&p, &c).unwrap();
-    let key = h.identity.clone();
+    let key = h.identity().clone();
     h.authenticate(p, &key, secret, &c).unwrap()
 }
 #[test]
@@ -121,7 +122,7 @@ fn real_sftp_auth_list_transfer_collision_links_cancel_and_retained_open() {
     let (root, p) = server();
     let c = JobControl::default();
     let h = Handshake::connect(&p, &c).unwrap();
-    let identity = h.identity.clone();
+    let identity = h.identity().clone();
     assert!(
         h.authenticate(p.clone(), &identity, "wrong-disposable-secret", &c)
             .is_err()
@@ -474,7 +475,7 @@ fn real_sftp_failure_boundaries_preserve_sources_destinations_and_owned_partials
     session3.disconnect();
 
     // Loss after a successful chunk but before publication preserves the destination.
-    let lost = login(session.profile.clone(), "w15-disposable-only");
+    let lost = login(session.profile().clone(), "w15-disposable-only");
     let lost_path = local.join("network-loss.bin");
     fs::write(&lost_path, &data).unwrap();
     fs::write(
@@ -513,7 +514,7 @@ fn real_sftp_failure_boundaries_preserve_sources_destinations_and_owned_partials
     );
     assert_eq!(fs::read(lost_path).unwrap(), data);
     // A source changed by another writer during Open must never yield a launchable copy.
-    let changed = login(session.profile.clone(), "w15-disposable-only");
+    let changed = login(session.profile().clone(), "w15-disposable-only");
     let source = remote.join("open-changed.bin");
     fs::write(&source, vec![9u8; 131072]).unwrap();
     let once = std::sync::atomic::AtomicBool::new(false);
@@ -668,15 +669,15 @@ fn remote_bookmarks_and_duplicated_tabs_keep_structured_history_and_marks_isolat
         }],
         &sorter,
     );
-    pane.selection.set_marked(1, true, &pane.order);
+    pane.mark(1, true);
     let mut tabs = TabStack::new(pane);
     let original = tabs.active().id;
     let duplicate = tabs.duplicate(&sorter).unwrap();
-    assert_eq!(tabs.active().pane.remote.as_ref(), Some(&loc));
-    assert_eq!(tabs.active().pane.selection.marked_count(), 0);
+    assert_eq!(tabs.active().pane.remote(), Some(&loc));
+    assert_eq!(tabs.active().pane.selection().marked_count(), 0);
     assert_eq!(tabs.active().pane.history_len(), 2);
     tabs.select(original);
-    assert_eq!(tabs.active().pane.selection.marked_count(), 1);
+    assert_eq!(tabs.active().pane.selection().marked_count(), 1);
     assert!(tabs.close(duplicate));
     let mut bookmarks = BookmarkStore::load(dir.join("bookmarks.json")).unwrap();
     bookmarks

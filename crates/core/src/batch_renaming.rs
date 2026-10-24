@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+//! Captured rename previews with compatibility masks and stale-source rejection.
 use crate::{JobControl, moving::move_entries_controlled};
 
 // Recovered from original BatchRenameDialog tokens/preview and BatchRenameJob.
@@ -18,13 +19,21 @@ use std::{
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq)]
 #[serde(default)]
+/// User-editable rename mask/counter settings validated before a preview is captured.
 pub struct BatchRenameOptions {
+    /// Rename template interpreted using the documented compatibility tokens.
     pub mask: String,
+    /// Literal substring replaced before rename case handling.
     pub search: String,
+    /// Literal replacement for the configured search substring.
     pub replacement: String,
+    /// Compatibility case mode index in the validated range zero through four.
     pub case_mode: usize,
+    /// User-entered initial counter, parsed during preview construction.
     pub counter_start: String,
+    /// User-entered signed counter increment, parsed during preview construction.
     pub counter_step: String,
+    /// Validated minimum counter width between one and five digits.
     pub digits: usize,
 }
 impl Default for BatchRenameOptions {
@@ -41,19 +50,29 @@ impl Default for BatchRenameOptions {
     }
 }
 #[derive(Clone, Debug, Serialize, PartialEq, Eq)]
+/// An original direct-child name paired with its proposed replacement.
 pub struct BatchRenameRow {
+    /// Direct entry name, independent of a display path or target resolution.
     pub name: String,
+    /// Proposed replacement direct-child name; validated before mutation.
     pub new_name: String,
 }
 #[derive(Clone, Debug, Serialize, PartialEq, Eq)]
+/// Ordered rename proposals and conflict checks used before capturing a mutation.
 pub struct BatchRenamePreview {
+    /// Rename proposals in the selected source order.
     pub rows: Vec<BatchRenameRow>,
+    /// Whether proposed replacement names collide with each other.
     pub duplicate_names: bool,
+    /// Whether a proposed name collides with another selected original name.
     pub old_names_conflict: bool,
+    /// Whether preview conflict checks permit applying any changes.
     pub rename_enabled: bool,
+    /// Number of proposed names that differ from their source names.
     pub changed_count: usize,
 }
 impl BatchRenamePreview {
+    /// Check whether the preview has changes and every resulting name is a valid direct child.
     pub fn can_apply(&self) -> bool {
         self.rename_enabled
             && self.changed_count > 0
@@ -64,15 +83,23 @@ impl BatchRenamePreview {
     }
 }
 #[derive(Clone, Debug, Serialize)]
+/// The result of one attempted rename, independent of later items.
 pub struct BatchRenameOutcome {
+    /// Direct entry name, independent of a display path or target resolution.
     pub name: String,
+    /// Proposed replacement direct-child name; validated before mutation.
     pub new_name: String,
+    /// Whether this item met the operation success contract; inspect detailed issues separately.
     pub success: bool,
 }
 #[derive(Clone, Debug, Default)]
+/// Ordered rename outcomes and failures, including cancellation after partial progress.
 pub struct BatchRenameReport {
+    /// Whether cooperative cancellation stopped or prevented the remaining work.
     pub cancelled: bool,
+    /// Ordered results for selected top-level items, including partial-operation outcomes.
     pub outcomes: Vec<BatchRenameOutcome>,
+    /// Detailed per-path failures, skips, unsupported cases or cancellation notices.
     pub issues: Vec<CopyIssue>,
 }
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -101,9 +128,10 @@ fn fingerprint(path: &Path) -> io::Result<Option<Fingerprint>> {
     }
 }
 #[derive(Clone, Debug)]
+/// An immutable reviewed preview tied to source fingerprints and validated options.
 pub struct BatchRenamePlan {
-    pub directory: PathBuf,
-    pub preview: BatchRenamePreview,
+    directory: PathBuf,
+    preview: BatchRenamePreview,
     names: Vec<String>,
     options: BatchRenameOptions,
     fingerprints: Vec<Option<Fingerprint>>,
@@ -346,6 +374,19 @@ fn generated_name(
     })
 }
 impl BatchRenamePlan {
+    /// Canonical directory captured for this plan.
+    pub fn directory(&self) -> &Path {
+        &self.directory
+    }
+    /// Immutable preview whose names match the captured evidence.
+    pub fn preview(&self) -> &BatchRenamePreview {
+        &self.preview
+    }
+
+    /// Capture source fingerprints and a validated ordered batch-rename preview.
+    ///
+    /// # Errors
+    /// Returns invalid-preview or changed-source errors; completed individual renames are not rolled back.
     pub fn new(
         directory: &Path,
         names: &[String],
@@ -421,6 +462,10 @@ pub fn apply_batch_rename(plan: &BatchRenamePlan) -> io::Result<BatchRenameRepor
     apply_batch_rename_with_control(plan, &JobControl::default())
 }
 
+/// Apply the reviewed preview with cancellation between individual renames.
+///
+/// # Errors
+/// Returns invalid-preview or changed-source errors; completed individual renames are not rolled back.
 pub fn apply_batch_rename_with_control(
     plan: &BatchRenamePlan,
     control: &JobControl,

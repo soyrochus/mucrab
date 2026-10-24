@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
-use super::*;
+use super::{
+    CopyOutcome, CopyPolicy, Duration, FileAction, JobResult, MuCrabApp, PaneSide, PathBuf, TabId,
+    copy_policy_label, egui, is_valid_leaf_name, mpsc,
+};
 use crate::native_files;
 use mucrab_core::{DeletePlan, PastePlan, PinnedDirectory};
 use std::path::Path;
@@ -76,12 +79,15 @@ impl MuCrabApp {
         let result = (|| -> Result<(), String> {
             let tab = self.panes.stack(i).active().id;
             let pane = &self.panes[i];
-            if pane.archive.is_some() {
+            if pane.archive().is_some() {
                 return Err("This action requires a local folder.".into());
             }
-            let directory = pane.location.clone().ok_or("No local folder open")?;
+            let directory = pane.location().cloned().ok_or("No local folder open")?;
             let pin = PinnedDirectory::new(&directory).map_err(|e| e.to_string())?;
-            let names = pane.selection.snapshot(&pane.entries, &pane.order).selected;
+            let names = pane
+                .selection()
+                .snapshot(pane.entries(), pane.order())
+                .selected;
             let paths: Vec<_> = names.iter().map(|n| directory.join(n)).collect();
             self.everyday.review = match action {
                 Action::NewFolder => Some(Review::Folder {
@@ -96,10 +102,9 @@ impl MuCrabApp {
                         .all()
                         .filter_map(|t| {
                             let p = &t.pane;
-                            p.archive
-                                .as_ref()
+                            p.archive()
                                 .map(|z| z.archive.clone())
-                                .or_else(|| p.location.clone())
+                                .or_else(|| p.location().cloned())
                         })
                         .collect();
                     let plan = DeletePlan::new(&paths, &protected).map_err(|e| e.to_string())?;

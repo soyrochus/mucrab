@@ -3,6 +3,7 @@
 
 // Recovered from original muCommander CopyJob and its transfer/collision callers.
 // See NOTICE.md and evidence/workflows/W03-recursive-copy/contract.md.
+//! Reviewed local copy operations retaining explicit partial-failure outcomes.
 use crate::{JobControl, jobs::copy_stream};
 use serde::{Deserialize, Serialize};
 #[cfg(unix)]
@@ -16,53 +17,83 @@ use std::{
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+/// The reviewed collision decision for an existing destination file.
 pub enum CopyPolicy {
     #[default]
+    #[doc = "Preserve an existing destination file and report a skipped outcome."]
     Skip,
+    #[doc = "Replace existing destination file contents under the reviewed operation contract."]
     Overwrite,
+    #[doc = "Replace only when the source modification time is later."]
     OverwriteIfOlder,
+    #[doc = "Replace only when source and destination byte lengths differ."]
     OverwriteIfSizeDiffers,
 }
 
 #[derive(Clone, Debug, Deserialize)]
+/// An ordered direct-child transfer request validated against canonical roots before writing.
 pub struct CopyRequest {
+    /// Existing local directory containing the selected direct children.
     pub source_directory: PathBuf,
+    /// Existing target directory, revalidated before writes.
     pub destination_directory: PathBuf,
+    /// Ordered distinct direct-child source selection.
     pub names: Vec<String>,
+    /// Proposed replacement direct-child name; validated before mutation.
     pub new_name: Option<String>,
+    /// Reviewed handling of existing destination files.
     pub policy: CopyPolicy,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+/// Success of one selected top-level item; detailed child failures remain in the report.
 pub struct CopyOutcome {
+    /// Direct entry name, independent of a display path or target resolution.
     pub name: String,
     /// Original processFile return value; a directory may contain failed children.
     pub success: bool,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+/// A recoverable item outcome category used independently of its diagnostic text.
 pub enum CopyIssueKind {
+    #[doc = "The collision or overlap policy intentionally retained this item."]
     Skipped,
+    #[doc = "The operation failed; inspect diagnostics and any retained partial results."]
     Failed,
+    #[doc = "This object or operation is outside the supported safe subset."]
     Unsupported,
+    #[doc = "The operation stopped in response to cancellation; completed writes remain."]
     Cancelled,
 }
 #[derive(Clone, Debug)]
+/// One path-associated skip, failure, unsupported operation or cancellation diagnostic.
 pub struct CopyIssue {
+    /// Captured or reported filesystem/remote path; inspect the enclosing operation contract.
     pub path: PathBuf,
+    /// Typed category independent of user-facing diagnostic wording.
     pub kind: CopyIssueKind,
+    /// Human-readable diagnostic; callers use the accompanying kind for decisions.
     pub message: String,
 }
 #[derive(Clone, Debug, Default)]
+/// Completed local operations and per-item issues; partial destinations can remain.
 pub struct CopyReport {
+    /// Whether cooperative cancellation stopped or prevented the remaining work.
     pub cancelled: bool,
+    /// Ordered results for selected top-level items, including partial-operation outcomes.
     pub outcomes: Vec<CopyOutcome>,
+    /// Detailed per-path failures, skips, unsupported cases or cancellation notices.
     pub issues: Vec<CopyIssue>,
+    /// Number of regular files copied successfully.
     pub files_copied: usize,
+    /// Number of enumerated source directories processed.
     pub directories_processed: usize,
+    /// Number of supported symbolic links copied.
     pub links_copied: usize,
 }
 
+/// Reject empty, parent, root and separator-bearing direct-child names.
 pub fn is_valid_leaf_name(name: &str) -> bool {
     !name.is_empty()
         && !name.contains('\0')
@@ -332,6 +363,10 @@ pub fn copy_entries(request: &CopyRequest) -> io::Result<CopyReport> {
     copy_entries_with_control(request, &JobControl::default())
 }
 
+/// Copy an ordered direct-child selection with cooperative pause/cancellation.
+///
+/// # Errors
+/// Returns invalid-request or root-access errors; individual and partial failures are recorded in the report.
 pub fn copy_entries_with_control(
     request: &CopyRequest,
     control: &JobControl,

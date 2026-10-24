@@ -1,17 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
-use crate::{
-    appearance::{Appearance, Icon, icon_button},
-    browser_ui::pane,
-};
+use crate::appearance::Appearance;
 use eframe::egui;
 use mucrab_core::{
     BatchRenameOptions, BatchRenamePlan, BrowserPane, CopyIssue, CopyIssueKind, CopyOutcome,
     CopyPolicy, CopyRequest, JobControl, JobState, MoveRequest, NameSorter, PaneEvent, PaneSide,
-    SortCriterion, SortMode, TabId, TabbedPanes, ZipExtractPlan, apply_batch_rename_with_control,
-    copy_entries_with_control, extract_zip_with_control, is_valid_leaf_name,
-    move_entries_with_control,
+    TabId, TabbedPanes, ZipExtractPlan, apply_batch_rename_with_control, copy_entries_with_control,
+    extract_zip_with_control, is_valid_leaf_name, move_entries_with_control,
 };
 use std::{path::PathBuf, sync::mpsc, time::Duration};
 
@@ -21,6 +17,18 @@ use everyday_ui::Action as EverydayAction;
 #[path = "navigation_ui.rs"]
 mod navigation_ui;
 use navigation_ui::Action as NavigationAction;
+#[path = "browse_jobs.rs"]
+mod browse_jobs;
+#[path = "chrome.rs"]
+mod chrome;
+#[path = "confirmations.rs"]
+mod confirmations;
+#[path = "mutation_job.rs"]
+mod mutation_job;
+#[path = "workspace_ui.rs"]
+mod workspace_ui;
+use confirmations::{BatchReview, CopyConfirmation, ZipReview};
+use mutation_job::{MutationOrigin, PendingCopy};
 #[cfg(target_os = "macos")]
 #[path = "native_menu.rs"]
 mod native_menu;
@@ -56,6 +64,7 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
             let mut panes = [BrowserPane::default(), BrowserPane::default()];
             let default = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("/"));
             for (i, pane) in panes.iter_mut().enumerate() {
+                pane.defer_browsing();
                 pane.open(paths.get(i).unwrap_or(&default), &sorter);
             }
             Ok(Box::new(MuCrabApp {
@@ -66,12 +75,11 @@ pub fn run(paths: Vec<PathBuf>) -> eframe::Result {
                 help: None,
                 split: 0.5,
                 sorter,
+                browse: Default::default(),
                 panes: panes.into(),
                 active: PaneSide::Left,
                 show_hidden: false,
-                copy_confirmation: None,
-                batch_review: None,
-                zip_review: None,
+                confirmations: Default::default(),
                 navigation: navigation_ui::Navigation::load(),
                 search: search_ui::Search::default(),
                 remote: remote_ui::RemoteUi::load(),
@@ -98,12 +106,11 @@ struct MuCrabApp {
     help: Option<bool>,
     split: f32,
     sorter: NameSorter,
+    browse: browse_jobs::BrowseJobs,
     panes: TabbedPanes,
     active: PaneSide,
     show_hidden: bool,
-    copy_confirmation: Option<CopyConfirmation>,
-    batch_review: Option<BatchReview>,
-    zip_review: Option<ZipReview>,
+    confirmations: confirmations::Confirmations,
     navigation: navigation_ui::Navigation,
     search: search_ui::Search,
     remote: remote_ui::RemoteUi,
@@ -117,22 +124,6 @@ struct MuCrabApp {
     copy_details: Vec<String>,
     show_copy_details: bool,
     restore_copy_focus: bool,
-}
-struct CopyConfirmation {
-    action: FileAction,
-    source_side: PaneSide,
-    source_tab: TabId,
-    request: CopyRequest,
-}
-struct PendingCopy {
-    source_remote: Option<mucrab_core::sftp::RemoteLocation>,
-    control: JobControl,
-    worker: std::thread::JoinHandle<()>,
-    action: FileAction,
-    renamed_to: Option<String>,
-    source_tab: TabId,
-    source_directory: PathBuf,
-    receiver: mpsc::Receiver<Result<JobResult, String>>,
 }
 #[derive(Clone, Copy, PartialEq)]
 enum FileAction {
@@ -171,38 +162,22 @@ struct JobResult {
     issues: Vec<CopyIssue>,
     summary: String,
 }
-struct BatchReview {
-    source_side: PaneSide,
-    source_tab: TabId,
-    directory: PathBuf,
-    names: Vec<String>,
-    options: BatchRenameOptions,
-    plan: Result<BatchRenamePlan, String>,
-}
-struct ZipReview {
-    source_side: PaneSide,
-    source_tab: TabId,
-    source_directory: PathBuf,
-    source_names: Vec<String>,
-    policy: CopyPolicy,
-    plan: Result<ZipExtractPlan, String>,
-}
 impl MuCrabApp {
     fn can_extract(&self) -> bool {
         let index = if self.active == PaneSide::Left { 0 } else { 1 };
         let source = &self.panes[index];
         let target = &self.panes[1 - index];
-        if target.archive.is_some() || target.location.is_none() {
+        if target.archive().is_some() || target.location().is_none() {
             return false;
         }
         let names = source
-            .selection
-            .snapshot(&source.entries, &source.order)
+            .selection()
+            .snapshot(source.entries(), source.order())
             .selected;
         !names.is_empty()
-            && (source.archive.is_some()
+            && (source.archive().is_some()
                 || (names.len() == 1
-                    && source.entries.iter().any(|entry| {
+                    && source.entries().iter().any(|entry| {
                         entry.name == names[0]
                             && !entry.is_directory
                             && !entry.is_symlink
@@ -216,12 +191,12 @@ impl MuCrabApp {
         let index = if self.active == PaneSide::Left { 0 } else { 1 };
         let source = &self.panes[index];
         let names = source
-            .selection
-            .snapshot(&source.entries, &source.order)
+            .selection()
+            .snapshot(source.entries(), source.order())
             .selected;
-        let source_directory = source.location.clone()?;
-        let destination = self.panes[1 - index].location.as_ref()?;
-        let plan = if let Some(location) = &source.archive {
+        let source_directory = source.location().cloned()?;
+        let destination = self.panes[1 - index].location()?;
+        let plan = if let Some(location) = source.archive() {
             ZipExtractPlan::new(
                 &location.archive,
                 &location.prefix,
@@ -253,75 +228,13 @@ impl MuCrabApp {
         })
     }
     fn zip_dialog(&mut self, ctx: &egui::Context) {
-        let mut apply = false;
-        let mut cancel = false;
-        if let Some(review) = &mut self.zip_review {
-            let response = egui::Modal::new(egui::Id::new("zip-extraction")).show(ctx, |ui| {
-                ui.set_width(560.0);
-                ui.heading("Extract ZIP to other pane");
-                match &review.plan {
-                    Ok(plan) => {
-                        ui.label("Archive:");
-                        ui.label(plan.archive().display().to_string());
-                        if !plan.prefix().is_empty() {
-                            ui.label(format!("Folder: {}", plan.prefix()));
-                        }
-                        ui.label("Destination:");
-                        ui.label(plan.destination().display().to_string());
-                        ui.separator();
-                        egui::ScrollArea::vertical()
-                            .max_height(140.0)
-                            .show(ui, |ui| {
-                                for name in plan.names() {
-                                    ui.label(name);
-                                }
-                            });
-                        ui.label(format!(
-                            "{} selected entries · {} expanded bytes",
-                            plan.names().len(),
-                            plan.expanded_bytes()
-                        ));
-                    }
-                    Err(error) => {
-                        ui.colored_label(ui.visuals().error_fg_color, error);
-                    }
-                }
-                egui::ComboBox::from_id_salt("zip-policy")
-                    .width(300.0)
-                    .selected_text(copy_policy_label(review.policy))
-                    .show_ui(ui, |ui| {
-                        for policy in [
-                            CopyPolicy::Skip,
-                            CopyPolicy::Overwrite,
-                            CopyPolicy::OverwriteIfOlder,
-                            CopyPolicy::OverwriteIfSizeDiffers,
-                        ] {
-                            ui.selectable_value(
-                                &mut review.policy,
-                                policy,
-                                copy_policy_label(policy),
-                            );
-                        }
-                    });
-                ui.label(
-                    "Folders merge. Extraction stops at the first error; earlier files remain.",
-                );
-                ui.label("The archive stays unchanged. Unsafe paths and links are rejected.");
-                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    apply = ui
-                        .add_enabled(review.plan.is_ok(), egui::Button::new("Extract"))
-                        .clicked();
-                    cancel = ui.button("Cancel").clicked();
-                });
-            });
-            cancel |= response.should_close();
-        }
-        if cancel {
-            self.zip_review = None;
+        let decision = self.confirmations.draw_zip_dialog(ctx);
+        if decision == confirmations::Decision::Cancel {
+            self.confirmations.zip = None;
             self.restore_copy_focus = true;
             ctx.request_repaint();
-        } else if apply
-            && let Some(review) = self.zip_review.take()
+        } else if decision == confirmations::Decision::Apply
+            && let Some(review) = self.confirmations.zip.take()
             && let Ok(mut plan) = review.plan
         {
             plan.policy = review.policy;
@@ -367,14 +280,17 @@ impl MuCrabApp {
     fn prepare_batch(&self) -> Option<BatchReview> {
         let index = if self.active == PaneSide::Left { 0 } else { 1 };
         let pane = &self.panes[index];
-        if pane.archive.is_some() {
+        if pane.archive().is_some() {
             return None;
         }
-        let names = pane.selection.snapshot(&pane.entries, &pane.order).selected;
+        let names = pane
+            .selection()
+            .snapshot(pane.entries(), pane.order())
+            .selected;
         if names.is_empty() {
             return None;
         }
-        let directory = pane.location.clone()?;
+        let directory = pane.location().cloned()?;
         let options = BatchRenameOptions::default();
         let plan =
             BatchRenamePlan::new(&directory, &names, &options).map_err(|error| error.to_string());
@@ -392,61 +308,13 @@ impl MuCrabApp {
         })
     }
     fn batch_dialog(&mut self, ctx: &egui::Context) {
-        let mut apply = false;
-        let mut cancel = false;
-        if let Some(review) = &mut self.batch_review {
-            let response = egui::Modal::new(egui::Id::new("batch-rename")).show(ctx, |ui| {
-                ui.set_width(700.0);
-                ui.heading(format!("Batch rename {} items", review.names.len()));
-                ui.label(review.directory.display().to_string());
-                ui.separator();
-                let before = review.options.clone();
-                egui::Grid::new("batch-options").num_columns(2).show(ui, |ui| {
-                    ui.label("Mask"); ui.add(egui::TextEdit::singleline(&mut review.options.mask).desired_width(510.0)); ui.end_row();
-                    ui.label("Search"); ui.text_edit_singleline(&mut review.options.search); ui.end_row();
-                    ui.label("Replace with"); ui.text_edit_singleline(&mut review.options.replacement); ui.end_row();
-                    ui.label("Case");
-                    egui::ComboBox::from_id_salt("batch-case").selected_text(batch_case_label(review.options.case_mode)).show_ui(ui, |ui| {
-                        for value in 0..5 { ui.selectable_value(&mut review.options.case_mode, value, batch_case_label(value)); }
-                    }); ui.end_row();
-                    ui.label("Counter"); ui.horizontal(|ui| {
-                        ui.label("Start"); ui.add(egui::TextEdit::singleline(&mut review.options.counter_start).desired_width(58.0));
-                        ui.label("Step"); ui.add(egui::TextEdit::singleline(&mut review.options.counter_step).desired_width(58.0));
-                        ui.label("Digits"); ui.add(egui::DragValue::new(&mut review.options.digits).range(1..=5));
-                    }); ui.end_row();
-                });
-                ui.small("[N] name · [E] extension · [C] counter · [P] parent · [YMD] UTC date · [N2-5] range");
-                if before != review.options {
-                    review.plan = BatchRenamePlan::new(&review.directory, &review.names, &review.options).map_err(|error| error.to_string());
-                }
-                ui.separator();
-                let enabled = match &review.plan {
-                    Ok(plan) => {
-                        egui::ScrollArea::vertical().max_height(190.0).show(ui, |ui| {
-                            egui::Grid::new("batch-preview").num_columns(3).striped(true).show(ui, |ui| {
-                                ui.strong("Original name"); ui.label(""); ui.strong("New name"); ui.end_row();
-                                for row in &plan.preview.rows { ui.label(&row.name); ui.label("->"); ui.label(&row.new_name); ui.end_row(); }
-                            });
-                        });
-                        if plan.preview.duplicate_names { ui.colored_label(ui.visuals().error_fg_color, "Duplicate new names: change the mask or counter."); }
-                        else if plan.preview.old_names_conflict { ui.colored_label(ui.visuals().error_fg_color, "A new name conflicts with another selected original name."); }
-                        else if !plan.preview.rows.iter().all(|row| is_valid_leaf_name(&row.new_name)) { ui.colored_label(ui.visuals().error_fg_color, "Each new name must be a nonempty direct child name."); }
-                        ui.label(format!("{} changed · {} unchanged", plan.preview.changed_count, plan.preview.rows.len() - plan.preview.changed_count));
-                        plan.preview.can_apply()
-                    }
-                    Err(message) => { ui.colored_label(ui.visuals().error_fg_color, message); false }
-                };
-                ui.label("Existing files are skipped; folders merge. Partial renames remain after errors.");
-                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| { apply = ui.add_enabled(enabled, egui::Button::new("Apply rename")).clicked(); cancel = ui.button("Cancel").clicked(); });
-            });
-            cancel |= response.should_close();
-        }
-        if cancel {
-            self.batch_review = None;
+        let decision = self.confirmations.draw_batch_dialog(ctx);
+        if decision == confirmations::Decision::Cancel {
+            self.confirmations.batch = None;
             self.restore_copy_focus = true;
             ctx.request_repaint();
-        } else if apply
-            && let Some(review) = self.batch_review.take()
+        } else if decision == confirmations::Decision::Apply
+            && let Some(review) = self.confirmations.batch.take()
             && let Ok(plan) = review.plan
         {
             self.restore_copy_focus = true;
@@ -487,12 +355,14 @@ impl MuCrabApp {
     fn prepare_action(&self, action: FileAction) -> Option<CopyConfirmation> {
         let side = if self.active == PaneSide::Left { 0 } else { 1 };
         let source = &self.panes[side];
-        if source.archive.is_some()
-            || (action != FileAction::Rename && self.panes[1 - side].archive.is_some())
+        if source.archive().is_some()
+            || (action != FileAction::Rename && self.panes[1 - side].archive().is_some())
         {
             return None;
         }
-        let snapshot = source.selection.snapshot(&source.entries, &source.order);
+        let snapshot = source
+            .selection()
+            .snapshot(source.entries(), source.order());
         let names = if action == FileAction::Rename {
             vec![snapshot.focused.filter(|name| name != "..")?]
         } else {
@@ -510,11 +380,11 @@ impl MuCrabApp {
                 .active()
                 .id,
             request: CopyRequest {
-                source_directory: source.location.clone()?,
+                source_directory: source.location().cloned()?,
                 destination_directory: if action == FileAction::Rename {
-                    source.location.clone()?
+                    source.location().cloned()?
                 } else {
-                    self.panes[1 - side].location.clone()?
+                    self.panes[1 - side].location().cloned()?
                 },
                 new_name: (action == FileAction::Rename).then(|| names[0].clone()),
                 names,
@@ -523,22 +393,16 @@ impl MuCrabApp {
         })
     }
     fn poll_copy(&mut self, ctx: &egui::Context) {
-        let Some(job) = self.copy_job.as_ref() else {
+        let Some(job) = self.copy_job.as_mut() else {
             return;
         };
-        let result = match job.receiver.try_recv() {
-            Ok(result) => result,
-            Err(mpsc::TryRecvError::Empty) => {
-                ctx.request_repaint_after(Duration::from_millis(50));
-                return;
-            }
-            Err(mpsc::TryRecvError::Disconnected) => Err(
-                "File worker stopped unexpectedly; inspect both folders for partial results"
-                    .to_owned(),
-            ),
+        let Some(result) = job.poll() else {
+            ctx.request_repaint_after(Duration::from_millis(50));
+            return;
         };
-        let job = self.copy_job.take().unwrap();
-        let _ = job.worker.join();
+        let Some(job) = self.copy_job.take() else {
+            return;
+        };
         self.copy_details.clear();
         let mut rename_succeeded = false;
         match result {
@@ -553,10 +417,10 @@ impl MuCrabApp {
                     && (job
                         .source_remote
                         .as_ref()
-                        .is_some_and(|r| pane.remote.as_ref() == Some(r))
+                        .is_some_and(|r| pane.remote() == Some(r))
                         || (job.source_remote.is_none()
-                            && pane.remote.is_none()
-                            && pane.location.as_ref() == Some(&job.source_directory)))
+                            && pane.remote().is_none()
+                            && pane.location() == Some(&job.source_directory)))
                 {
                     pane.unmark_copy_outcomes(&report.outcomes);
                 }
@@ -605,18 +469,19 @@ impl MuCrabApp {
             && (job
                 .source_remote
                 .as_ref()
-                .is_some_and(|r| pane.remote.as_ref() == Some(r))
+                .is_some_and(|r| pane.remote() == Some(r))
                 || (job.source_remote.is_none()
-                    && pane.remote.is_none()
-                    && pane.location.as_ref() == Some(&job.source_directory)))
+                    && pane.remote().is_none()
+                    && pane.location() == Some(&job.source_directory)))
         {
-            pane.focus_name(&name);
+            pane.focus_after_browse(&name);
         }
         if job.action == FileAction::Metadata {
             self.refresh_properties_after_metadata();
         }
         self.restore_copy_focus = true;
         if self.close_after_job
+            && !self.browse.busy()
             && !self.opener.busy()
             && !self.search.busy()
             && !self.remote.busy()
@@ -627,45 +492,14 @@ impl MuCrabApp {
         }
     }
     fn copy_dialogs(&mut self, ctx: &egui::Context) {
-        let mut start = false;
-        let mut cancel = false;
-        if let Some(confirmation) = &mut self.copy_confirmation {
-            let response = egui::Modal::new(egui::Id::new("copy-confirmation")).show(ctx, |ui| {
-                ui.set_width(510.0);
-                let destination = if confirmation.source_side == PaneSide::Left { "right" } else { "left" };
-                let count=confirmation.request.names.len();
-                let rename = confirmation.action == FileAction::Rename;
-                ui.heading(if rename { "Rename focused item".to_owned() } else { format!("{} {count} {} to {destination} pane",confirmation.action.label(),if count==1 {"item"} else {"items"}) });
-                ui.add_space(8.0);
-                ui.label("From:"); ui.label(confirmation.request.source_directory.display().to_string());
-                ui.label("To:"); ui.label(confirmation.request.destination_directory.display().to_string());
-                ui.separator();
-                if let Some(name) = &mut confirmation.request.new_name {
-                    ui.label("New name:");
-                    ui.text_edit_singleline(name);
-                    if !is_valid_leaf_name(name) { ui.label("Enter a direct child name without path separators."); }
-                }
-                egui::ScrollArea::vertical().max_height(140.0).show(ui, |ui| {
-                    for name in &confirmation.request.names { ui.label(name); }
-                });
-                ui.separator();
-                egui::ComboBox::from_id_salt("copy-policy").width(300.0).selected_text(copy_policy_label(confirmation.request.policy)).show_ui(ui,|ui| {
-                    for policy in [CopyPolicy::Skip,CopyPolicy::Overwrite,CopyPolicy::OverwriteIfOlder,CopyPolicy::OverwriteIfSizeDiffers] {
-                        ui.selectable_value(&mut confirmation.request.policy,policy,copy_policy_label(policy));
-                    }
-                });
-                ui.label(if confirmation.action == FileAction::Copy { "Existing folders are merged. Files copied before an error remain in the destination." } else { "Existing folders are merged. Partial moves remain; skipped or failed sources are retained." });
-                ui.add_space(8.0);
-                let valid = confirmation.request.new_name.as_ref().is_none_or(|name| is_valid_leaf_name(name) && name != &confirmation.request.names[0]);
-                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| { start=ui.add_enabled(valid,egui::Button::new(confirmation.action.label())).clicked();cancel=ui.button("Cancel").clicked(); });
-            });
-            cancel |= response.should_close();
-        }
-        if cancel {
+        let decision = self.confirmations.draw_copy_dialogs(ctx);
+        if decision == confirmations::Decision::Cancel {
             self.restore_copy_focus = true;
             ctx.request_repaint();
-            self.copy_confirmation = None;
-        } else if start && let Some(confirmation) = self.copy_confirmation.take() {
+            self.confirmations.copy = None;
+        } else if decision == confirmations::Decision::Apply
+            && let Some(confirmation) = self.confirmations.copy.take()
+        {
             self.restore_copy_focus = true;
             ctx.request_repaint();
             let source_directory = confirmation.request.source_directory.clone();
@@ -746,6 +580,7 @@ impl eframe::App for MuCrabApp {
         if ui.input(|input| input.viewport().close_requested()) {
             self.request_close(ui.ctx());
         }
+        self.poll_browsing(ui.ctx());
         self.poll_remote(ui.ctx());
         self.properties.poll(ui.ctx());
         self.viewer.poll(ui.ctx());
@@ -754,6 +589,7 @@ impl eframe::App for MuCrabApp {
         self.opener.poll();
         if self.close_after_job
             && self.copy_job.is_none()
+            && !self.browse.busy()
             && !self.opener.busy()
             && !self.search.busy()
             && !self.remote.busy()
@@ -774,18 +610,18 @@ impl eframe::App for MuCrabApp {
             && self.everyday.review.is_none()
             && !self.everyday.busy()
             && self.copy_job.is_none()
-            && self.copy_confirmation.is_none()
-            && self.batch_review.is_none()
-            && self.zip_review.is_none()
+            && self.confirmations.copy.is_none()
+            && self.confirmations.batch.is_none()
+            && self.confirmations.zip.is_none()
             && !self.show_copy_details
             && self.help.is_none();
         let browsing = !self.remote.modal()
             && self.properties.review.is_none()
             && !self.navigation.modal()
             && self.everyday.review.is_none()
-            && self.copy_confirmation.is_none()
-            && self.batch_review.is_none()
-            && self.zip_review.is_none()
+            && self.confirmations.copy.is_none()
+            && self.confirmations.batch.is_none()
+            && self.confirmations.zip.is_none()
             && !self.show_copy_details
             && self.help.is_none();
         let can_copy =
@@ -795,15 +631,15 @@ impl eframe::App for MuCrabApp {
         let active_index = if self.active == PaneSide::Left { 0 } else { 1 };
         let active_pane = &self.panes[active_index];
         let can_batch = idle
-            && active_pane.location.is_some()
-            && active_pane.archive.is_none()
+            && active_pane.location().is_some()
+            && active_pane.archive().is_none()
             && !active_pane
-                .selection
-                .snapshot(&active_pane.entries, &active_pane.order)
+                .selection()
+                .snapshot(active_pane.entries(), active_pane.order())
                 .selected
                 .is_empty();
         let can_move = idle && self.prepare_action(FileAction::Move).is_some();
-        let archive_active = self.panes[active_index].archive.is_some();
+        let archive_active = self.panes[active_index].archive().is_some();
         let can_copy = can_copy || (archive_active && can_extract);
         let old_active = self.active;
         if browsing && ui.memory(|m| m.has_focus(listing_id(self.active))) {
@@ -912,638 +748,28 @@ impl eframe::App for MuCrabApp {
         }
         let browsing = browsing
             && self.properties.review.is_none()
-            && self.copy_confirmation.is_none()
-            && self.zip_review.is_none()
+            && self.confirmations.copy.is_none()
+            && self.confirmations.zip.is_none()
             && self.everyday.review.is_none()
             && !self.navigation.modal();
-        let mut command = None;
+        let mut command;
         let old_appearance = self.appearance;
-        egui::Panel::top("menus").show(ui, |ui| {
-            #[cfg(not(target_os = "macos"))]
-            let _ = egui::MenuBar::new().ui(ui, |ui| {
-                ui.menu_button("File", |ui| {
-                    menu_action(ui, "Open", "Enter", browsing, Command::Open, &mut command);
-                    menu_action(
-                        ui,
-                        "Copy…",
-                        "F5",
-                        can_copy,
-                        Command::Action(FileAction::Copy),
-                        &mut command,
-                    );
-                    menu_action(
-                        ui,
-                        "Move…",
-                        "F6",
-                        can_move,
-                        Command::Action(FileAction::Move),
-                        &mut command,
-                    );
-                    menu_action(
-                        ui,
-                        "Rename…",
-                        "F2",
-                        can_rename,
-                        Command::Action(FileAction::Rename),
-                        &mut command,
-                    );
-                    menu_action(
-                        ui,
-                        "Batch rename…",
-                        "",
-                        can_batch,
-                        Command::Batch,
-                        &mut command,
-                    );
-                    menu_action(
-                        ui,
-                        "Extract ZIP…",
-                        "",
-                        can_extract,
-                        Command::Extract,
-                        &mut command,
-                    );
-                    ui.separator();
-                    let local = !archive_active && self.panes[active_index].location.is_some();
-                    for (label, shortcut, action, enabled) in [
-                        (
-                            "New Folder…",
-                            "F7",
-                            EverydayAction::NewFolder,
-                            idle && local,
-                        ),
-                        (
-                            "Move to Trash…",
-                            "F8 / Delete",
-                            EverydayAction::Trash,
-                            can_batch,
-                        ),
-                        (
-                            "Permanently delete…",
-                            "Shift+F8",
-                            EverydayAction::Delete,
-                            can_batch,
-                        ),
-                        (
-                            "Copy files to clipboard",
-                            "Ctrl/Cmd+C",
-                            EverydayAction::CopyClipboard,
-                            idle && local && can_batch,
-                        ),
-                        (
-                            "Paste files…",
-                            "Ctrl/Cmd+V",
-                            EverydayAction::Paste,
-                            idle && local,
-                        ),
-                    ] {
-                        menu_action(
-                            ui,
-                            label,
-                            shortcut,
-                            enabled,
-                            Command::Everyday(action),
-                            &mut command,
-                        );
-                    }
-                    ui.separator();
-                    menu_action(
-                        ui,
-                        "View file…",
-                        "F3",
-                        browsing
-                            && (self.focused_target().is_some()
-                                || self.panes[active_index].remote.is_some()),
-                        Command::View,
-                        &mut command,
-                    );
-                    menu_action(
-                        ui,
-                        "Properties…",
-                        "Alt+Enter",
-                        browsing && self.focused_target().is_some(),
-                        Command::Properties,
-                        &mut command,
-                    );
-                    if ui.button("Close window").clicked() {
-                        ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
-                    }
-                });
-                ui.menu_button("Mark", |ui| {
-                    for (label, event) in [
-                        ("Mark all", PaneEvent::All),
-                        ("Unmark all", PaneEvent::None),
-                        ("Invert selection", PaneEvent::Invert),
-                    ] {
-                        menu_action(ui, label, "", browsing, Command::Mark(event), &mut command);
-                    }
-                });
-                ui.menu_button("View", |ui| {
-                    if ui
-                        .add_enabled(
-                            browsing,
-                            egui::Checkbox::new(&mut self.show_hidden, "Show hidden files"),
-                        )
-                        .changed()
-                    {
-                        for tab in self.panes.all_mut() {
-                            tab.pane.set_show_hidden(self.show_hidden, &self.sorter);
-                        }
-                    }
-                    let pane = &mut self.panes[active_index];
-                    let before = pane.options;
-                    ui.add_enabled_ui(browsing, |ui| {
-                        ui.checkbox(&mut pane.options.directories_first, "Folders first");
-                        ui.checkbox(&mut pane.options.ascending, "Ascending order");
-                        ui.menu_button("Sort by", |ui| {
-                            for (criterion, label) in [
-                                (SortCriterion::Name, "Name"),
-                                (SortCriterion::Extension, "Extension"),
-                                (SortCriterion::Size, "Size"),
-                                (SortCriterion::Date, "Modified"),
-                            ] {
-                                ui.radio_value(&mut pane.options.criterion, criterion, label);
-                            }
-                        });
-                        ui.menu_button("Name ordering", |ui| {
-                            ui.radio_value(&mut pane.options.mode, SortMode::Natural, "Natural");
-                            ui.radio_value(
-                                &mut pane.options.mode,
-                                SortMode::Lexicographic,
-                                "Lexicographic",
-                            );
-                        });
-                    });
-                    if pane.options != before {
-                        pane.resort(&self.sorter);
-                    }
-                    ui.separator();
-                    ui.menu_button("Appearance", |ui| {
-                        ui.radio_value(&mut self.appearance, Appearance::System, "System");
-                        ui.radio_value(&mut self.appearance, Appearance::Light, "Light");
-                        ui.radio_value(&mut self.appearance, Appearance::Dark, "Dark");
-                    });
-                    menu_action(
-                        ui,
-                        "Find by name…",
-                        "Type a prefix",
-                        browsing,
-                        Command::Everyday(EverydayAction::Find),
-                        &mut command,
-                    );
-                });
-                ui.menu_button("Go", |ui| {
-                    menu_action(
-                        ui,
-                        "Back",
-                        "Alt+Left",
-                        browsing && self.panes[active_index].can_back(),
-                        Command::Everyday(EverydayAction::Back),
-                        &mut command,
-                    );
-                    menu_action(
-                        ui,
-                        "Forward",
-                        "Alt+Right",
-                        browsing && self.panes[active_index].can_forward(),
-                        Command::Everyday(EverydayAction::Forward),
-                        &mut command,
-                    );
-                    menu_action(
-                        ui,
-                        "Parent folder",
-                        "Backspace",
-                        browsing,
-                        Command::Parent,
-                        &mut command,
-                    );
-                    menu_action(ui, "Home folder", "", browsing, Command::Home, &mut command);
-                    menu_action(ui, "Refresh", "", browsing, Command::Refresh, &mut command);
-                    menu_action(
-                        ui,
-                        "Search files…",
-                        "Ctrl/Cmd+F",
-                        browsing && self.panes[active_index].remote.is_none(),
-                        Command::Search,
-                        &mut command,
-                    );
-                    ui.menu_button("Bookmarks", |ui| {
-                        menu_action(
-                            ui,
-                            "Add current location…",
-                            "Ctrl/Cmd+B",
-                            browsing && self.navigation.store.is_some(),
-                            Command::Navigation(NavigationAction::AddBookmark),
-                            &mut command,
-                        );
-                        menu_action(
-                            ui,
-                            "Manage bookmarks…",
-                            "",
-                            browsing,
-                            Command::Navigation(NavigationAction::ManageBookmarks),
-                            &mut command,
-                        );
-                        menu_action(
-                            ui,
-                            "Reload bookmarks",
-                            "",
-                            browsing,
-                            Command::Navigation(NavigationAction::ReloadBookmarks),
-                            &mut command,
-                        );
-                        ui.separator();
-                        if let Some(store) = &self.navigation.store {
-                            for b in store.entries() {
-                                menu_action(
-                                    ui,
-                                    &b.label,
-                                    "",
-                                    browsing,
-                                    Command::Navigation(NavigationAction::OpenBookmark(b.id)),
-                                    &mut command,
-                                );
-                            }
-                        }
-                    });
-                    ui.separator();
-                    menu_action(
-                        ui,
-                        "SFTP connections…",
-                        "",
-                        browsing,
-                        Command::Connections,
-                        &mut command,
-                    );
-                });
-                ui.menu_button("Window", |ui| {
-                    for (label, shortcut, action, enabled) in [
-                        (
-                            "New Tab",
-                            "Ctrl/Cmd+T",
-                            NavigationAction::New,
-                            browsing && self.panes.stack(active_index).len() < 32,
-                        ),
-                        (
-                            "Duplicate Tab",
-                            "Ctrl/Cmd+Shift+T",
-                            NavigationAction::Duplicate,
-                            browsing && self.panes.stack(active_index).len() < 32,
-                        ),
-                        (
-                            "Close Tab",
-                            "Ctrl/Cmd+W",
-                            NavigationAction::Close,
-                            browsing && self.panes.stack(active_index).len() > 1,
-                        ),
-                        ("Next Tab", "Ctrl+Tab", NavigationAction::Next, browsing),
-                        (
-                            "Previous Tab",
-                            "Ctrl+Shift+Tab",
-                            NavigationAction::Previous,
-                            browsing,
-                        ),
-                    ] {
-                        menu_action(
-                            ui,
-                            label,
-                            shortcut,
-                            enabled,
-                            Command::Navigation(action),
-                            &mut command,
-                        );
-                    }
-                    ui.separator();
-                    menu_action(
-                        ui,
-                        "Switch pane",
-                        "Tab",
-                        browsing,
-                        Command::SwitchPane,
-                        &mut command,
-                    );
-                    if ui.button("Split equally").clicked() {
-                        self.split = 0.5;
-                        ui.close();
-                    }
-                });
-                ui.menu_button("Help", |ui| {
-                    if ui.button("Keyboard shortcuts").clicked() {
-                        self.help = Some(false);
-                        ui.close();
-                    }
-                    if ui.button("About muCrab").clicked() {
-                        self.help = Some(true);
-                        ui.close();
-                    }
-                });
-            });
-            #[cfg(not(target_os = "macos"))]
-            ui.separator();
-            ui.horizontal(|ui| {
-                for (icon, tip, enabled, action) in [
-                    (
-                        Icon::Parent,
-                        "Parent folder (Backspace)",
-                        browsing,
-                        Command::Parent,
-                    ),
-                    (Icon::Home, "Home folder", browsing, Command::Home),
-                    (
-                        Icon::Refresh,
-                        "Refresh active pane",
-                        browsing,
-                        Command::Refresh,
-                    ),
-                    (
-                        Icon::Copy,
-                        "Copy to other pane (F5)",
-                        can_copy,
-                        Command::Action(FileAction::Copy),
-                    ),
-                    (
-                        Icon::Move,
-                        "Move to other pane (F6)",
-                        can_move,
-                        Command::Action(FileAction::Move),
-                    ),
-                    (
-                        Icon::Rename,
-                        "Rename focused item (F2)",
-                        can_rename,
-                        Command::Action(FileAction::Rename),
-                    ),
-                    (
-                        Icon::Archive,
-                        "Extract ZIP to other pane",
-                        can_extract,
-                        Command::Extract,
-                    ),
-                ] {
-                    if icon_button(ui, icon, tip, enabled).clicked() {
-                        command = Some(action);
-                    }
-                }
-                ui.separator();
-                if icon_button(
-                    ui,
-                    Icon::Back,
-                    "Back (Alt+Left)",
-                    browsing && self.panes[active_index].can_back(),
-                )
-                .clicked()
-                {
-                    command = Some(Command::Everyday(EverydayAction::Back));
-                }
-                if icon_button(
-                    ui,
-                    Icon::Forward,
-                    "Forward (Alt+Right)",
-                    browsing && self.panes[active_index].can_forward(),
-                )
-                .clicked()
-                {
-                    command = Some(Command::Everyday(EverydayAction::Forward));
-                }
-                ui.weak(if self.active == PaneSide::Left {
-                    "Left > Right"
-                } else {
-                    "Right > Left"
-                });
-                if let Some(job) = &self.copy_job {
-                    let state = job.control.snapshot().state;
-                    if state != JobState::Paused {
-                        ui.add(egui::Spinner::new().size(16.0));
-                    }
-                    ui.label(format!(
-                        "{} {}",
-                        job.action.label(),
-                        if state == JobState::Paused {
-                            "paused"
-                        } else if state == JobState::Cancelling {
-                            "cancelling…"
-                        } else {
-                            "in progress…"
-                        }
-                    ));
-                }
-            });
-        });
-        egui::Panel::bottom("commands").show(ui, |ui| {
-            if let Some(error) = self.navigation.error.clone() {
-                ui.horizontal(|ui| {
-                    ui.colored_label(ui.visuals().error_fg_color, error);
-                    if ui.small_button("Dismiss").clicked() {
-                        self.navigation.error = None;
-                    }
-                });
-            }
-            if let Some(message) = self.everyday.message.clone() {
-                ui.horizontal(|ui| {
-                    ui.label(message);
-                    if ui.small_button("Dismiss").clicked() {
-                        self.everyday.message = None;
-                    }
-                });
-            }
-            if let Some(message) = self.remote.message.clone() {
-                ui.horizontal_wrapped(|ui| {
-                    ui.label(message);
-                    if ui.small_button("Connections…").clicked() {
-                        self.remote.visible = true;
-                    }
-                    if ui.small_button("Dismiss").clicked() {
-                        self.remote.message = None;
-                    }
-                });
-            }
-            if self.remote.preparation_busy() {
-                ui.horizontal(|ui| {
-                    ui.spinner();
-                    ui.label("SFTP preparation…");
-                    if ui.button("Cancel SFTP preparation").clicked() {
-                        self.remote.cancel_preparation();
-                    }
-                });
-            }
-            if let Some(message) = self.opener.message.clone() {
-                ui.horizontal(|ui| {
-                    ui.label(message);
-                    if self.opener.busy() && ui.button("Cancel Open").clicked() {
-                        self.opener.cancel();
-                    }
-                    if ui.small_button("Dismiss").clicked() {
-                        self.opener.message = None;
-                    }
-                });
-            }
-            if let Some(error) = &self.preference_error {
-                ui.colored_label(ui.visuals().error_fg_color, error);
-            }
-            ui.horizontal(|ui| {
-                if let Some(job) = &self.copy_job {
-                    let progress = job.control.snapshot();
-                    let fraction = progress
-                        .current_file_size
-                        .filter(|size| *size > 0)
-                        .map_or(0.0, |size| progress.current_file_bytes as f32 / size as f32);
-                    ui.add(
-                        egui::ProgressBar::new(fraction.clamp(0.0, 1.0))
-                            .desired_width(155.0)
-                            .text(format!(
-                                "{} / {} B",
-                                progress.current_file_bytes,
-                                progress.current_file_size.unwrap_or(0)
-                            )),
-                    );
-                    ui.label(format!(
-                        "{} / {} items",
-                        progress.completed_items, progress.total_items
-                    ));
-                    let stopping = matches!(progress.state, JobState::Cancelling);
-                    if ui
-                        .add_enabled(
-                            !stopping,
-                            egui::Button::new(if progress.state == JobState::Paused {
-                                "Resume"
-                            } else {
-                                "Pause"
-                            }),
-                        )
-                        .clicked()
-                    {
-                        job.control.set_paused(progress.state != JobState::Paused);
-                    }
-                    if ui
-                        .add_enabled(
-                            !stopping,
-                            egui::Button::new(if stopping { "Cancelling…" } else { "Cancel" }),
-                        )
-                        .clicked()
-                    {
-                        job.control.cancel();
-                    }
-                    let path = progress
-                        .current_path
-                        .map_or_else(|| "Starting…".to_owned(), |path| path.display().to_string());
-                    ui.add(egui::Label::new(path.clone()).truncate())
-                        .on_hover_text(format!(
-                            "{path}\nTotal transferred: {} B",
-                            progress.transferred_bytes
-                        ));
-                } else if let Some(summary) = &self.copy_summary {
-                    ui.label(summary);
-                    if !self.copy_details.is_empty() && ui.small_button("Details…").clicked() {
-                        self.show_copy_details = true;
-                    }
-                } else {
-                    ui.weak("Ready");
-                }
-            });
-            ui.separator();
-            ui.horizontal(|ui| {
-                let width =
-                    ((ui.available_width() - 5.0 * ui.spacing().item_spacing.x) / 6.0).max(60.0);
-                for (label, enabled, action) in [
-                    (
-                        if archive_active {
-                            "Extract  F5"
-                        } else {
-                            "Copy  F5"
-                        },
-                        can_copy,
-                        Command::Action(FileAction::Copy),
-                    ),
-                    ("Move  F6", can_move, Command::Action(FileAction::Move)),
-                    (
-                        "Rename  F2",
-                        can_rename,
-                        Command::Action(FileAction::Rename),
-                    ),
-                    ("Batch rename…", can_batch, Command::Batch),
-                    ("Extract ZIP…", can_extract, Command::Extract),
-                    ("Refresh", browsing, Command::Refresh),
-                ] {
-                    if ui
-                        .add_enabled(
-                            enabled,
-                            egui::Button::new(label).min_size(egui::vec2(width, 28.0)),
-                        )
-                        .clicked()
-                    {
-                        command = Some(action);
-                    }
-                }
-            });
-        });
-        egui::CentralPanel::default()
-            .frame(
-                egui::Frame::new()
-                    .fill(ui.visuals().panel_fill)
-                    .inner_margin(3.0),
-            )
-            .show(ui, |ui| {
-                let area = ui.available_rect_before_wrap();
-                let divider_width = 7.0;
-                let minimum = (220.0 / area.width()).min(0.4);
-                self.split = self.split.clamp(minimum, 1.0 - minimum);
-                let middle = area.left() + (area.width() - divider_width) * self.split;
-                let left = egui::Rect::from_min_max(area.min, egui::pos2(middle, area.bottom()));
-                let divider = egui::Rect::from_min_size(
-                    egui::pos2(middle, area.top()),
-                    egui::vec2(divider_width, area.height()),
-                );
-                let right =
-                    egui::Rect::from_min_max(egui::pos2(divider.right(), area.top()), area.max);
-                let response = ui
-                    .interact(divider, ui.id().with("divider"), egui::Sense::drag())
-                    .on_hover_cursor(egui::CursorIcon::ResizeHorizontal);
-                if response.dragged()
-                    && let Some(pos) = response.interact_pointer_pos()
-                {
-                    self.split = ((pos.x - area.left()) / (area.width() - divider_width))
-                        .clamp(minimum, 1.0 - minimum);
-                }
-                if response.double_clicked() {
-                    self.split = 0.5;
-                }
-                ui.painter().line_segment(
-                    [divider.center_top(), divider.center_bottom()],
-                    ui.visuals().widgets.noninteractive.bg_stroke,
-                );
-                for (index, (side, rect)) in [(PaneSide::Left, left), (PaneSide::Right, right)]
-                    .into_iter()
-                    .enumerate()
-                {
-                    ui.scope_builder(
-                        egui::UiBuilder::new()
-                            .max_rect(rect)
-                            .layout(egui::Layout::top_down(egui::Align::Min)),
-                        |ui| {
-                            self.tab_strip(ui, side, browsing);
-                            let tab = self.panes.stack_mut(index).active_mut();
-                            let target = ui
-                                .push_id(tab.id, |ui| {
-                                    pane(
-                                        ui,
-                                        side,
-                                        &mut tab.pane,
-                                        &self.sorter,
-                                        &mut self.active,
-                                        &mut tab.widths,
-                                        browsing
-                                            && self.copy_confirmation.is_none()
-                                            && self.zip_review.is_none(),
-                                    )
-                                })
-                                .inner;
-                            if let Some(target) = target {
-                                self.dispatch_target(target);
-                            }
-                        },
-                    );
-                }
-            });
+        let state = chrome::FrameState {
+            idle,
+            browsing,
+            can_copy,
+            can_move,
+            can_rename,
+            can_extract,
+            can_batch,
+            archive_active,
+            active_index,
+        };
+        command = self.render_top(ui, state);
+        if let Some(bottom) = self.render_commands(ui, state) {
+            command = Some(bottom);
+        }
+        self.render_workspace(ui, browsing);
         if self.appearance != old_appearance {
             self.appearance.apply(ui.ctx());
             self.preference_error = self
@@ -1755,20 +981,20 @@ impl MuCrabApp {
             Command::Everyday(action) => self.everyday_action(action, ctx),
             Command::Open => {
                 let pane = &mut self.panes[index];
-                if pane.selection.has_parent && pane.selection.focus_row == Some(0) {
+                if pane.selection().has_parent && pane.selection().focus_row == Some(0) {
                     pane.parent(&self.sorter);
-                } else if let Some(row) = pane.selection.focus_row
+                } else if let Some(row) = pane.selection().focus_row
                     && let Some(&entry) = pane
-                        .order
-                        .get(row.saturating_sub(usize::from(pane.selection.has_parent)))
+                        .order()
+                        .get(row.saturating_sub(usize::from(pane.selection().has_parent)))
                 {
-                    let e = &pane.entries[entry];
+                    let e = &pane.entries()[entry];
                     if crate::browser_ui::browsable(e, pane) {
-                        if let Some(remote) = &pane.remote {
+                        if let Some(remote) = pane.remote() {
                             if let Ok(loc) = remote.child(&e.name) {
                                 pane.request_remote(loc, true, None);
                             }
-                        } else if let Some(path) = pane.location.as_ref().map(|p| p.join(&e.name)) {
+                        } else if let Some(path) = pane.location().map(|p| p.join(&e.name)) {
                             pane.open(&path, &self.sorter);
                         }
                     } else {
@@ -1778,21 +1004,22 @@ impl MuCrabApp {
                 }
             }
             Command::Action(FileAction::Copy)
-                if self.panes[index].remote.is_some() || self.panes[1 - index].remote.is_some() =>
+                if self.panes[index].remote().is_some()
+                    || self.panes[1 - index].remote().is_some() =>
             {
                 self.prepare_remote_copy();
             }
-            Command::Action(FileAction::Copy) if self.panes[index].archive.is_some() => {
-                self.zip_review = self.prepare_extract();
+            Command::Action(FileAction::Copy) if self.panes[index].archive().is_some() => {
+                self.confirmations.zip = self.prepare_extract();
             }
             Command::Action(action) => {
-                self.copy_confirmation = self.prepare_action(action);
+                self.confirmations.copy = self.prepare_action(action);
             }
             Command::Batch => {
-                self.batch_review = self.prepare_batch();
+                self.confirmations.batch = self.prepare_batch();
             }
             Command::Extract => {
-                self.zip_review = self.prepare_extract();
+                self.confirmations.zip = self.prepare_extract();
             }
             Command::Parent => {
                 self.panes[index].parent(&self.sorter);
@@ -1816,9 +1043,9 @@ impl MuCrabApp {
                 };
             }
         }
-        if self.copy_confirmation.is_none()
-            && self.batch_review.is_none()
-            && self.zip_review.is_none()
+        if self.confirmations.copy.is_none()
+            && self.confirmations.batch.is_none()
+            && self.confirmations.zip.is_none()
         {
             ctx.memory_mut(|m| m.request_focus(listing_id(self.active)));
         }
@@ -1828,7 +1055,8 @@ impl MuCrabApp {
 impl MuCrabApp {
     /// Window close and the native Quit menu share cancellation/acknowledgment.
     fn request_close(&mut self, ctx: &egui::Context) {
-        let busy = self.copy_job.is_some()
+        let busy = self.browse.busy()
+            || self.copy_job.is_some()
             || self.opener.busy()
             || self.search.busy()
             || self.properties.busy()
@@ -1840,6 +1068,7 @@ impl MuCrabApp {
         }
         ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
         self.close_after_job = true;
+        self.browse.cancel();
         if let Some(job) = &self.copy_job {
             job.control.cancel();
         }
@@ -1873,39 +1102,17 @@ impl MuCrabApp {
         if self.copy_job.is_some() {
             return;
         }
-        let control = JobControl::default();
-        let worker_control = control.clone();
-        let (sender, receiver) = mpsc::channel();
-        let worker = std::thread::Builder::new()
-            .name(format!("mucrab-{}", action.label().to_lowercase()))
-            .spawn(move || {
-                let mut result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                    work(worker_control.clone())
-                }))
-                .unwrap_or_else(|_| {
-                    Err("File worker panicked; inspect both folders for partial results".to_owned())
-                });
-                worker_control.finish(result.is_err());
-                if let Ok(report) = &mut result {
-                    report.cancelled = worker_control.snapshot().state == JobState::Cancelled;
-                }
-                // No filesystem work follows this acknowledgement.
-                let _ = sender.send(result);
-            });
-        match worker {
-            Ok(worker) => {
+        let origin = MutationOrigin {
+            action,
+            source_tab,
+            source_directory,
+            renamed_to,
+        };
+        match PendingCopy::start(origin, work) {
+            Ok(job) => {
                 self.copy_summary = None;
                 self.copy_details.clear();
-                self.copy_job = Some(PendingCopy {
-                    source_remote: None,
-                    control,
-                    worker,
-                    action,
-                    renamed_to,
-                    source_tab,
-                    source_directory,
-                    receiver,
-                });
+                self.copy_job = Some(job);
             }
             Err(error) => {
                 self.copy_summary = Some(format!("{} could not start", action.label()));
@@ -1935,12 +1142,11 @@ mod job_tests {
             help: None,
             split: 0.5,
             sorter: NameSorter::en_us().unwrap(),
+            browse: Default::default(),
             panes: [BrowserPane::default(), BrowserPane::default()].into(),
             active: PaneSide::Left,
             show_hidden: false,
-            copy_confirmation: None,
-            batch_review: None,
-            zip_review: None,
+            confirmations: Default::default(),
             navigation: navigation_ui::Navigation::default(),
             search: search_ui::Search::default(),
             remote: remote_ui::RemoteUi::load(),
@@ -2123,7 +1329,7 @@ mod job_tests {
             },
         );
         await_job(&mut app, &ctx);
-        assert_eq!(app.panes[0].selection.marked_count(), 1);
+        assert_eq!(app.panes[0].selection().marked_count(), 1);
         assert_eq!(std::fs::read(path.join("same-name")).unwrap(), b"unrelated");
         app.start_job(
             FileAction::Paste,
@@ -2142,7 +1348,7 @@ mod job_tests {
         );
         await_job(&mut app, &ctx);
         assert_eq!(
-            app.panes[0].selection.marked_count(),
+            app.panes[0].selection().marked_count(),
             1,
             "Paste must not unmark destination selections"
         );
@@ -2198,13 +1404,17 @@ mod job_tests {
                 app.panes
                     .find_mut(duplicate)
                     .unwrap()
-                    .selection
+                    .selection()
                     .marked_count(),
                 1
             );
             if !close_origin {
                 assert_eq!(
-                    app.panes.find_mut(origin).unwrap().selection.marked_count(),
+                    app.panes
+                        .find_mut(origin)
+                        .unwrap()
+                        .selection()
+                        .marked_count(),
                     0
                 );
             }
@@ -2281,7 +1491,7 @@ mod job_tests {
             .apply_event(&PaneEvent::Space, &app.sorter)
             .unwrap();
         app.panes[0].focus_name("focused.txt");
-        let marks = app.panes[0].selection.marked_count();
+        let marks = app.panes[0].selection().marked_count();
         assert_eq!(
             app.focused_target().unwrap().display_path(),
             root.join("focused.txt")
@@ -2325,7 +1535,7 @@ mod job_tests {
         )
         .drop_without_applying_deltas();
         assert!(!app.viewer.visible);
-        assert_eq!(app.panes[0].selection.marked_count(), marks);
+        assert_eq!(app.panes[0].selection().marked_count(), marks);
         let snapshot =
             mucrab_core::PropertySnapshot::capture(app.focused_target().unwrap()).unwrap();
         let plan = snapshot.metadata_plan(Some(0o640), None).unwrap();
@@ -2343,7 +1553,7 @@ mod job_tests {
             },
         );
         await_job(&mut app, &ctx);
-        assert_eq!(app.panes[0].selection.marked_count(), marks);
+        assert_eq!(app.panes[0].selection().marked_count(), marks);
         std::fs::remove_dir_all(root).unwrap();
     }
 }

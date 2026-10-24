@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+//! Behavioural regression coverage for jobs using disposable fixtures.
 mod support;
 
 use mucrab_core::*;
@@ -100,7 +101,7 @@ fn copy_cancel_keeps_prefix_completed_root_and_unfinished_marks() {
     pane.open(&f.0.join("source"), &sorter);
     pane.apply_event(&PaneEvent::All, &sorter).unwrap();
     pane.unmark_copy_outcomes(&report.outcomes);
-    let snapshot = pane.selection.snapshot(&pane.entries, &pane.order);
+    let snapshot = pane.selection().snapshot(pane.entries(), pane.order());
     assert_eq!(snapshot.selected, vec!["large", "later"]);
     control.finish(false);
     assert_eq!(control.snapshot().state, JobState::Cancelled);

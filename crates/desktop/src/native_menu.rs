@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // macOS presentation of the existing application commands. All AppKit objects
 // stay on the UI thread; the event callback only queues an ID and wakes eframe.
-use super::*;
+use super::{
+    Appearance, Command, EverydayAction, FileAction, MuCrabApp, NavigationAction, PaneEvent,
+    PaneSide, egui, listing_id, mpsc,
+};
+use mucrab_core::{SortCriterion, SortMode};
 use muda::{
     CheckMenuItem, Menu, MenuEvent, MenuId, MenuItem, MenuItemKind, PredefinedMenuItem, Submenu,
     accelerator::{Accelerator, Code, Modifiers},
@@ -86,9 +90,9 @@ impl State {
             && app.properties.review.is_none()
             && !app.navigation.modal()
             && app.everyday.review.is_none()
-            && app.copy_confirmation.is_none()
-            && app.batch_review.is_none()
-            && app.zip_review.is_none()
+            && app.confirmations.copy.is_none()
+            && app.confirmations.batch.is_none()
+            && app.confirmations.zip.is_none()
             && !app.show_copy_details
             && app.help.is_none();
         let idle = browsing && !app.everyday.busy() && app.copy_job.is_none();
@@ -96,10 +100,10 @@ impl State {
         Self {
             browsing,
             idle,
-            local: pane.location.is_some() && pane.archive.is_none() && pane.remote.is_none(),
+            local: pane.location().is_some() && pane.archive().is_none() && pane.remote().is_none(),
             selected: !pane
-                .selection
-                .snapshot(&pane.entries, &pane.order)
+                .selection()
+                .snapshot(pane.entries(), pane.order())
                 .selected
                 .is_empty(),
             listing: focused == Some(listing_id(app.active)),
@@ -108,15 +112,15 @@ impl State {
             copy: idle
                 && (app.prepare_action(FileAction::Copy).is_some()
                     || app.can_remote_copy()
-                    || (pane.archive.is_some() && app.can_extract())),
+                    || (pane.archive().is_some() && app.can_extract())),
             move_: idle && app.prepare_action(FileAction::Move).is_some(),
             rename: idle && app.prepare_action(FileAction::Rename).is_some(),
             extract: idle && app.can_extract(),
-            view: browsing && (app.focused_target().is_some() || pane.remote.is_some()),
-            properties: browsing && app.focused_target().is_some() && pane.remote.is_none(),
+            view: browsing && (app.focused_target().is_some() || pane.remote().is_some()),
+            properties: browsing && app.focused_target().is_some() && pane.remote().is_none(),
             back: pane.can_back(),
             forward: pane.can_forward(),
-            remote: pane.remote.is_some(),
+            remote: pane.remote().is_some(),
             tabs: app.panes.stack(index).len(),
             bookmarks_available: app.navigation.store.is_some(),
             hidden: app.show_hidden,

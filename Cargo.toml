@@ -16,3 +16,5 @@ eframe = { version = "=0.36.2", default-features = false, features = ["accesskit
 
 [workspace.lints.rust]
 unsafe_code = "forbid"
+missing_debug_implementations = "warn"
+missing_docs = "warn"

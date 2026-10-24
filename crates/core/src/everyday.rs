@@ -52,11 +52,17 @@ fn invalid(message: &str) -> io::Error {
     io::Error::new(io::ErrorKind::InvalidInput, message)
 }
 #[derive(Clone, Debug)]
+/// A canonical local directory bound to its captured filesystem identity.
 pub struct PinnedDirectory {
+    /// Captured or reported filesystem/remote path; inspect the enclosing operation contract.
     pub path: PathBuf,
     id: Identity,
 }
 impl PinnedDirectory {
+    /// Capture the canonical identity of an existing local directory.
+    ///
+    /// # Errors
+    /// Returns validation, stale-review or filesystem errors; reports retain completed operations and partial failures.
     pub fn new(path: &Path) -> io::Result<Self> {
         let path = fs::canonicalize(path)?;
         let id = identity(&path)?;
@@ -65,12 +71,20 @@ impl PinnedDirectory {
         }
         Ok(Self { path, id })
     }
+    /// Reject a directory whose current identity differs from the captured review.
+    ///
+    /// # Errors
+    /// Returns validation, stale-review or filesystem errors; reports retain completed operations and partial failures.
     pub fn validate(&self) -> io::Result<()> {
         if identity(&self.path)? != self.id {
             return Err(invalid("Reviewed directory changed; review again"));
         }
         Ok(())
     }
+    /// Create one validated direct child after checking the captured directory.
+    ///
+    /// # Errors
+    /// Returns validation, stale-review or filesystem errors; reports retain completed operations and partial failures.
     pub fn create_folder(&self, name: &str, control: &JobControl) -> io::Result<bool> {
         self.validate()?;
         if !is_valid_leaf_name(name) {
@@ -126,12 +140,17 @@ impl Entry {
     }
 }
 #[derive(Clone, Debug)]
+/// Reviewed non-overlapping roots with protected locations and captured identities.
 pub struct DeletePlan {
     entries: Vec<Entry>,
     protected: Vec<PathBuf>,
 }
 pub type TrashAdapter<'a> = dyn FnMut(&Path) -> io::Result<()> + 'a;
 impl DeletePlan {
+    /// Capture deletion roots while rejecting mounts, protected ancestors and overlapping selections.
+    ///
+    /// # Errors
+    /// Returns validation, stale-review or filesystem errors; reports retain completed operations and partial failures.
     pub fn new(paths: &[PathBuf], protected: &[PathBuf]) -> io::Result<Self> {
         if paths.is_empty() {
             return Err(invalid("Select at least one local entry"));
@@ -172,9 +191,14 @@ impl DeletePlan {
         }
         Ok(Self { entries, protected })
     }
+    /// Copy the reviewed deletion paths without granting mutation of plan evidence.
     pub fn paths(&self) -> Vec<PathBuf> {
         self.entries.iter().map(|e| e.path.clone()).collect()
     }
+    /// Revalidate and delete or trash reviewed roots, reporting completed and failed items.
+    ///
+    /// # Errors
+    /// Returns validation, stale-review or filesystem errors; reports retain completed operations and partial failures.
     pub fn apply(
         &self,
         control: &JobControl,
@@ -278,11 +302,16 @@ fn remove_tree(
     }
 }
 #[derive(Clone, Debug)]
+/// Reviewed distinct local sources and a captured destination directory.
 pub struct PastePlan {
     entries: Vec<Entry>,
     destination: PinnedDirectory,
 }
 impl PastePlan {
+    /// Capture distinct local sources and a pinned destination for a reviewed paste.
+    ///
+    /// # Errors
+    /// Returns validation, stale-review or filesystem errors; reports retain completed operations and partial failures.
     pub fn new(paths: &[PathBuf], destination: &Path) -> io::Result<Self> {
         if paths.is_empty() {
             return Err(invalid("Clipboard contains no local files"));
@@ -312,9 +341,14 @@ impl PastePlan {
             destination,
         })
     }
+    /// Copy the captured source paths in transfer order.
     pub fn paths(&self) -> Vec<PathBuf> {
         self.entries.iter().map(|e| e.path.clone()).collect()
     }
+    /// Revalidate and copy captured sources under the selected collision policy.
+    ///
+    /// # Errors
+    /// Returns validation, stale-review or filesystem errors; reports retain completed operations and partial failures.
     pub fn apply(&self, policy: CopyPolicy, control: &JobControl) -> io::Result<CopyReport> {
         self.destination.validate()?;
         for e in &self.entries {

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+//! Behavioural regression coverage for archives using disposable fixtures.
 #![cfg(unix)]
 mod support;
 
@@ -113,31 +114,31 @@ fn archive_navigation_refresh_hidden_filter_and_parent_preserve_local_behavior()
     let sorter = NameSorter::en_us().unwrap();
     let mut pane = BrowserPane::default();
     assert!(pane.open(&archive, &sorter));
-    assert!(pane.archive.is_some());
+    assert!(pane.archive().is_some());
     pane.refresh(&sorter);
     assert!(pane.error.is_none());
-    assert_eq!(pane.entries.len(), 2);
+    assert_eq!(pane.entries().len(), 2);
     pane.apply_event(&PaneEvent::All, &sorter).unwrap();
     pane.set_show_hidden(true, &sorter);
-    assert_eq!(pane.entries.len(), 3);
-    assert_eq!(pane.selection.marked_count(), 2);
+    assert_eq!(pane.entries().len(), 3);
+    assert_eq!(pane.selection().marked_count(), 2);
     assert!(pane.open(&archive.join("folder"), &sorter));
-    let old = pane.location.clone();
+    let old = pane.location().cloned();
     assert!(!pane.open(&archive.join("missing"), &sorter));
-    assert_eq!(pane.location, old);
+    assert_eq!(pane.location().cloned(), old);
     pane.parent(&sorter);
     assert_eq!(
-        pane.selection
-            .snapshot(&pane.entries, &pane.order)
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
             .focused
             .as_deref(),
         Some("folder")
     );
     pane.parent(&sorter);
-    assert!(pane.archive.is_none());
+    assert!(pane.archive().is_none());
     assert_eq!(
-        pane.selection
-            .snapshot(&pane.entries, &pane.order)
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
             .focused
             .as_deref(),
         Some("fixture.zip")
@@ -145,7 +146,7 @@ fn archive_navigation_refresh_hidden_filter_and_parent_preserve_local_behavior()
     let hidden_archive = f.0.join(".zip");
     fs::copy(&archive, &hidden_archive).unwrap();
     assert!(pane.open(&hidden_archive, &sorter));
-    assert!(pane.archive.is_some());
+    assert!(pane.archive().is_some());
     assert!(
         ZipExtractPlan::new(
             &archive,

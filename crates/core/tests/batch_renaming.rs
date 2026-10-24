@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
+//! Behavioural regression coverage for batch renaming using disposable fixtures.
 #![cfg(unix)]
 mod support;
 
@@ -71,15 +72,15 @@ fn recovered_tokens_use_utf16_independent_wrapping_counters_and_utc_dates() {
         "[YMD]-[hms]-[N1-2]-[C2147483647,1]-[C3,2,3].[E]",
     );
     assert_eq!(
-        p.preview.rows[0].new_name,
+        p.preview().rows[0].new_name,
         "20200101-000000-🦀-2147483647-003.txt"
     );
     assert_eq!(
-        p.preview.rows[1].new_name,
+        p.preview().rows[1].new_name,
         "20200101-000000-Be--2147483648-005.TXT"
     );
     let p = f.plan(&["Beta.TXT"], "[N2--2]-[E-2]-[P1,3]-[[]-[]-[Q]");
-    assert_eq!(p.preview.rows[0].new_name, "et-X-sou-[--[Q]");
+    assert_eq!(p.preview().rows[0].new_name, "et-X-sou-[--[Q]");
 }
 #[test]
 fn ordered_apply_preserves_bytes_metadata_links_and_unchanged_entries() {
@@ -155,13 +156,13 @@ fn stale_conflicting_and_unsafe_plans_cannot_mutate_files() {
     f.file("a", b"one");
     f.file("b", b"two");
     let duplicate = f.plan(&["a", "b"], "same");
-    assert!(duplicate.preview.duplicate_names);
+    assert!(duplicate.preview().duplicate_names);
     assert!(apply_batch_rename(&duplicate).is_err());
     let conflict = f.plan(&["a", "b"], "b");
-    assert!(conflict.preview.old_names_conflict);
+    assert!(conflict.preview().old_names_conflict);
     assert!(apply_batch_rename(&conflict).is_err());
     let invalid = f.plan(&["a"], "../outside");
-    assert!(!invalid.preview.can_apply());
+    assert!(!invalid.preview().can_apply());
     assert!(apply_batch_rename(&invalid).is_err());
     let p = f.plan(&["a", "b"], "new-[N]");
     let modified = fs::metadata(f.0.join("a")).unwrap().modified().unwrap();

@@ -63,7 +63,7 @@ fn snapshot(show_hidden: bool, panes: &[BrowserPane]) -> State {
         show_hidden,
         panes: panes
             .iter()
-            .map(|p| p.selection.snapshot(&p.entries, &p.order))
+            .map(|p| p.selection().snapshot(p.entries(), p.order()))
             .collect(),
     }
 }
@@ -78,14 +78,13 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
         let mut show_hidden = request.show_hidden;
         let mut panes = Vec::new();
         for input in &request.panes {
-            let mut pane = BrowserPane {
-                show_hidden,
-                options: SortOptions {
+            let mut pane = BrowserPane::with_options(
+                SortOptions {
                     mode: request.mode,
                     ..Default::default()
                 },
-                ..Default::default()
-            };
+                show_hidden,
+            );
             load(&mut pane, input, &sorter)?;
             panes.push(pane);
         }
@@ -107,7 +106,7 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
                 } else {
                     let command = if op == "focus_name" || op == "click_name" {
                         let name = event["name"].as_str().ok_or("Missing name")?;
-                        let state = pane.selection.snapshot(&pane.entries, &pane.order);
+                        let state = pane.selection().snapshot(pane.entries(), pane.order());
                         let row = state
                             .visible
                             .iter()

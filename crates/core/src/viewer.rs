@@ -26,58 +26,117 @@ fn checkpoint(control: &JobControl) -> io::Result<()> {
         Ok(())
     }
 }
+/// An immutable source capture for bounded, read-only preview preparation.
+/// Retargeting requires a new capture, so identity evidence cannot be reused.
+///
+/// ```compile_fail
+/// use mucrab_core::{EntryTarget, ViewRequest};
+/// let mut request = ViewRequest::capture(EntryTarget::Local("file.txt".into()))?;
+/// request.target = EntryTarget::Local("other.txt".into());
+/// # Ok::<(), std::io::Error>(())
+/// ```
 #[derive(Clone, Debug)]
 pub struct ViewRequest {
-    pub target: EntryTarget,
-    identity: EntryIdentity,
-    resolved: Option<(PathBuf, EntryIdentity)>,
+    capture: CapturedSource,
 }
+
+#[derive(Clone, Debug)]
+enum CapturedSource {
+    Local {
+        path: PathBuf,
+        identity: EntryIdentity,
+        resolved: PathBuf,
+        resolved_identity: EntryIdentity,
+    },
+    Zip {
+        location: crate::ZipLocation,
+        name: String,
+        identity: EntryIdentity,
+    },
+}
+
 impl ViewRequest {
+    /// Capture a regular local file, file link, or named ZIP member.
+    ///
+    /// # Errors
+    /// Returns an I/O or invalid-input error if the source cannot be captured.
     pub fn capture(target: EntryTarget) -> io::Result<Self> {
-        let (identity, resolved) = match &target {
+        let capture = match target {
             EntryTarget::Local(path) => {
-                let identity = EntryIdentity::read(path)?;
-                let resolved = fs::canonicalize(path)?;
+                let identity = EntryIdentity::read(&path)?;
+                let resolved = fs::canonicalize(&path)?;
                 let m = fs::symlink_metadata(&resolved)?;
                 if entry_kind(&m) != EntryKind::File {
                     return Err(invalid("View requires a regular file or a link to one"));
                 }
-                let target_id = EntryIdentity::from_metadata(&resolved, &m)?;
-                (identity, Some((resolved, target_id)))
+                let resolved_identity = EntryIdentity::from_metadata(&resolved, &m)?;
+                CapturedSource::Local {
+                    path,
+                    identity,
+                    resolved,
+                    resolved_identity,
+                }
             }
             EntryTarget::Zip { location, name } => {
-                if !crate::is_valid_leaf_name(name) {
+                if !crate::is_valid_leaf_name(&name) {
                     return Err(invalid("One regular ZIP child is required"));
                 }
-                (EntryIdentity::read(&location.archive)?, None)
+                let identity = EntryIdentity::read(&location.archive)?;
+                CapturedSource::Zip {
+                    location,
+                    name,
+                    identity,
+                }
             }
         };
-        Ok(Self {
-            target,
-            identity,
-            resolved,
-        })
+        Ok(Self { capture })
     }
+
+    /// Inspect a copy of the captured target without changing its evidence.
+    pub fn target(&self) -> EntryTarget {
+        match &self.capture {
+            CapturedSource::Local { path, .. } => EntryTarget::Local(path.clone()),
+            CapturedSource::Zip { location, name, .. } => EntryTarget::Zip {
+                location: location.clone(),
+                name: name.clone(),
+            },
+        }
+    }
+
+    /// Check that source and resolved link identities still match the capture.
+    ///
+    /// # Errors
+    /// Returns an error on missing, inaccessible or changed sources.
     pub fn validate(&self) -> io::Result<()> {
-        match &self.target {
-            EntryTarget::Local(path) => {
-                self.identity.validate(path)?;
-                let (resolved, id) = self.resolved.as_ref().expect("local target");
+        match &self.capture {
+            CapturedSource::Local {
+                path,
+                identity,
+                resolved,
+                resolved_identity,
+            } => {
+                identity.validate(path)?;
                 if fs::canonicalize(path)? != *resolved {
                     return Err(invalid("Link target changed"));
                 }
-                id.validate(resolved)
+                resolved_identity.validate(resolved)
             }
-            EntryTarget::Zip { location, .. } => self.identity.validate(&location.archive),
+            CapturedSource::Zip {
+                location, identity, ..
+            } => identity.validate(&location.archive),
         }
     }
+    /// Read and decode a bounded preview while revalidating the immutable source capture.
+    ///
+    /// # Errors
+    /// Returns errors for changed sources, unsupported content, decoding failure or declared resource limits.
     pub fn prepare(&self, control: &JobControl, gpu_limit: u32) -> io::Result<Preview> {
         checkpoint(control)?;
         self.validate()?;
         let mut lease = None;
-        let path = match &self.target {
-            EntryTarget::Local(_) => self.resolved.as_ref().expect("resolved file").0.clone(),
-            EntryTarget::Zip { location, name } => {
+        let path = match &self.capture {
+            CapturedSource::Local { resolved, .. } => resolved.clone(),
+            CapturedSource::Zip { location, name, .. } => {
                 let owned = ViewerLease::new()?;
                 let plan = ZipExtractPlan::new(
                     &location.archive,
@@ -153,6 +212,7 @@ impl ViewRequest {
     }
 }
 #[derive(Debug)]
+/// Unique ownership of one private preview directory; cleanup never targets user sources.
 pub struct ViewerLease {
     path: PathBuf,
 }
@@ -179,6 +239,7 @@ impl ViewerLease {
         }
         Err(invalid("Cannot allocate a private viewer lease"))
     }
+    /// Borrow the private temporary directory owned exclusively by this viewer lease.
     pub fn path(&self) -> &Path {
         &self.path
     }
@@ -189,31 +250,52 @@ impl Drop for ViewerLease {
     }
 }
 #[derive(Debug)]
+/// Decoded read-only content and an optional owned ZIP preview lease.
 pub struct Preview {
+    /// Bounded decoded text or oriented image pixels.
     pub content: PreviewContent,
+    /// The local regular file used for preview preparation.
     pub resolved_path: PathBuf,
+    /// Optional unique ownership of a private extracted preview directory.
     pub lease: Option<ViewerLease>,
 }
 #[derive(Debug)]
+/// Supported decoded text or image content, independent of GUI texture ownership.
 pub enum PreviewContent {
+    #[doc = "Strictly decoded text within the declared byte and line limits."]
     Text(TextDocument),
+    #[doc = "Validated PNG or JPEG pixels within decoded-allocation and GPU limits."]
     Image(PreviewImage),
 }
 #[derive(Debug)]
+/// Validated oriented pixels and dimensions bounded before GPU upload.
 pub struct PreviewImage {
+    /// Validated image width in pixels after orientation.
     pub width: u32,
+    /// Validated image height in pixels after orientation.
     pub height: u32,
+    /// Validated row-major RGBA pixels within the decoded allocation limit.
     pub rgba: Vec<u8>,
+    #[doc = "Description of the image orientation policy applied to decoded pixels."]
     pub orientation: String,
 }
 #[derive(Debug)]
+/// Strictly decoded immutable text with byte-indexed line starts and original newline content.
 pub struct TextDocument {
+    /// Strictly decoded source text, preserving original newline content.
     pub text: String,
+    #[doc = "Detected strict text encoding; decoded content retains exact newlines."]
     pub encoding: &'static str,
+    /// Byte ranges or starts identifying decoded lines without duplicating their text.
     pub lines: Vec<Range<usize>>,
+    #[doc = "Maximum decoded character count of an individual line."]
     pub max_chars: usize,
 }
 impl TextDocument {
+    /// Decode strict UTF-8 or BOM-marked UTF-16 within text size and line limits.
+    ///
+    /// # Errors
+    /// Returns errors for changed sources, unsupported content, decoding failure or declared resource limits.
     pub fn decode(bytes: &[u8]) -> io::Result<Self> {
         if bytes.len() > TEXT_BYTES {
             return Err(invalid("Text exceeds 16 MiB; open externally"));
@@ -309,6 +391,7 @@ impl TextDocument {
             max_chars,
         })
     }
+    /// Find a literal case-sensitive term, wrapping within this decoded document.
     pub fn find(&self, term: &str, from: usize, forward: bool) -> Option<Range<usize>> {
         if term.is_empty() {
             return None;
@@ -327,6 +410,7 @@ impl TextDocument {
         }?;
         Some(offset..offset + term.len())
     }
+    /// Locate the decoded line containing a byte offset using the line-start index.
     pub fn line_at(&self, offset: usize) -> usize {
         self.lines
             .partition_point(|r| r.end <= offset)
@@ -364,6 +448,10 @@ fn validate_png(bytes: &[u8]) -> io::Result<()> {
     }
     Err(invalid("Truncated PNG (missing IEND)"))
 }
+/// Decode supported text or PNG/JPEG while enforcing encoded, RGBA and GPU limits.
+///
+/// # Errors
+/// Returns errors for changed sources, unsupported content, decoding failure or declared resource limits.
 pub fn decode_preview(bytes: &[u8], gpu_limit: u32) -> io::Result<PreviewContent> {
     let format = if bytes.starts_with(b"\x89PNG\r\n\x1a\n") {
         Some(ImageFormat::Png)

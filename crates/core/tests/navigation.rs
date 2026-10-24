@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 
+//! Behavioural regression coverage for navigation using disposable fixtures.
 mod support;
 
 use mucrab_core::{BrowserPane, NameSorter, PaneEvent, SortMode, list_directory};
@@ -32,26 +33,35 @@ fn failed_navigation_retains_last_location_and_panes_are_independent() {
     let mut right = BrowserPane::default();
     assert!(left.open(&fixture.0, &sorter));
     assert!(right.open(&fixture.0.join("child"), &sorter));
-    let previous_entries = left.entries.clone();
+    let previous_entries = left.entries().to_vec();
     assert!(!left.open(&fixture.0.join("missing"), &sorter));
-    assert_eq!(left.location.as_deref(), Some(fixture.0.as_path()));
-    assert_eq!(left.entries, previous_entries);
+    assert_eq!(
+        left.location().map(|p| p.as_path()),
+        Some(fixture.0.as_path())
+    );
+    assert_eq!(left.entries(), previous_entries);
     assert!(left.error.is_some());
     left.options.mode = SortMode::Lexicographic;
     left.options.ascending = false;
     left.resort(&sorter);
     assert_eq!(right.options.mode, SortMode::Natural);
-    assert!(right.entries.is_empty());
+    assert!(right.entries().is_empty());
     assert!(left.open(&fixture.0.join("child"), &sorter));
     assert!(left.error.is_none());
-    assert!(left.entries.is_empty());
+    assert!(left.entries().is_empty());
     left.parent(&sorter);
-    assert_eq!(left.location.as_deref(), Some(fixture.0.as_path()));
-    assert_eq!(left.entries.len(), 3);
+    assert_eq!(
+        left.location().map(|p| p.as_path()),
+        Some(fixture.0.as_path())
+    );
+    assert_eq!(left.entries().len(), 3);
     assert!(left.open(&fixture.0.join("child/.."), &sorter));
-    assert_eq!(left.location.as_deref(), Some(fixture.0.as_path()));
+    assert_eq!(
+        left.location().map(|p| p.as_path()),
+        Some(fixture.0.as_path())
+    );
     left.parent(&sorter);
-    assert_eq!(left.location.as_deref(), fixture.0.parent());
+    assert_eq!(left.location().map(|p| p.as_path()), fixture.0.parent());
 }
 
 #[test]
@@ -63,9 +73,9 @@ fn marks_survive_sort_refresh_and_failures_but_remain_pane_local() {
     assert!(left.open(&fixture.0, &sorter));
     assert!(right.open(&fixture.0, &sorter));
     let row = left
-        .order
+        .order()
         .iter()
-        .position(|index| left.entries[*index].name == "file2")
+        .position(|index| left.entries()[*index].name == "file2")
         .unwrap()
         + 1;
     left.apply_event(
@@ -80,22 +90,22 @@ fn marks_survive_sort_refresh_and_failures_but_remain_pane_local() {
     left.options.ascending = false;
     left.resort(&sorter);
     assert_eq!(
-        left.selection
-            .snapshot(&left.entries, &left.order)
+        left.selection()
+            .snapshot(left.entries(), left.order())
             .focused
             .as_deref(),
         Some("file2")
     );
     assert!(!left.open(&fixture.0.join("absent"), &sorter));
     left.refresh(&sorter);
-    let state = left.selection.snapshot(&left.entries, &left.order);
+    let state = left.selection().snapshot(left.entries(), left.order());
     assert_eq!(state.marked, ["file2"]);
     assert_eq!(state.focused.as_deref(), Some("file2"));
-    assert_eq!(right.selection.marked_count(), 0);
+    assert_eq!(right.selection().marked_count(), 0);
     assert_eq!(
         right
-            .selection
-            .snapshot(&right.entries, &right.order)
+            .selection()
+            .snapshot(right.entries(), right.order())
             .focused
             .as_deref(),
         Some("..")
@@ -104,7 +114,7 @@ fn marks_survive_sort_refresh_and_failures_but_remain_pane_local() {
     // discard the vanished mark, rather than leave a stale index/identity.
     fs::remove_file(fixture.0.join("file2")).unwrap();
     left.refresh(&sorter);
-    let state = left.selection.snapshot(&left.entries, &left.order);
+    let state = left.selection().snapshot(left.entries(), left.order());
     assert!(state.focus_row.unwrap() < state.visible.len());
     assert!(state.marked.is_empty());
 }
@@ -117,26 +127,26 @@ fn folder_changes_clear_marks_and_parent_focuses_departed_folder() {
     assert!(pane.open(&fixture.0, &sorter));
     pane.apply_event(&PaneEvent::All, &sorter).unwrap();
     assert!(pane.open(&fixture.0.join("child"), &sorter));
-    assert_eq!(pane.selection.marked_count(), 0);
+    assert_eq!(pane.selection().marked_count(), 0);
     assert_eq!(
-        pane.selection
-            .snapshot(&pane.entries, &pane.order)
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
             .focused
             .as_deref(),
         Some("..")
     );
     pane.parent(&sorter);
-    let state = pane.selection.snapshot(&pane.entries, &pane.order);
+    let state = pane.selection().snapshot(pane.entries(), pane.order());
     assert_eq!(state.focused.as_deref(), Some("child"));
     assert!(state.marked.is_empty());
     // A separate press after Space release can toggle the final row again.
     pane.apply_event(&PaneEvent::Last, &sorter).unwrap();
     pane.apply_event(&PaneEvent::Space, &sorter).unwrap();
     pane.apply_event(&PaneEvent::Space, &sorter).unwrap();
-    assert_eq!(pane.selection.marked_count(), 1);
+    assert_eq!(pane.selection().marked_count(), 1);
     pane.apply_event(&PaneEvent::Release, &sorter).unwrap();
     pane.apply_event(&PaneEvent::Space, &sorter).unwrap();
-    assert_eq!(pane.selection.marked_count(), 0);
+    assert_eq!(pane.selection().marked_count(), 0);
 }
 
 #[cfg(unix)]
@@ -159,22 +169,19 @@ fn hidden_filter_discards_marks_and_falls_back_without_resurrecting_selection() 
     let fixture = Fixture::new();
     fs::write(fixture.0.join(".hidden"), b"hidden").unwrap();
     let sorter = NameSorter::en_us().unwrap();
-    let mut pane = BrowserPane {
-        show_hidden: true,
-        ..Default::default()
-    };
+    let mut pane = BrowserPane::with_options(Default::default(), true);
     assert!(pane.open(&fixture.0, &sorter));
     let hidden_row = pane
-        .order
+        .order()
         .iter()
-        .position(|i| pane.entries[*i].name == ".hidden")
+        .position(|i| pane.entries()[*i].name == ".hidden")
         .unwrap()
         + 1;
     pane.apply_event(&PaneEvent::All, &sorter).unwrap();
     pane.apply_event(&PaneEvent::Focus { row: hidden_row }, &sorter)
         .unwrap();
     pane.set_show_hidden(false, &sorter);
-    let hidden = pane.selection.snapshot(&pane.entries, &pane.order);
+    let hidden = pane.selection().snapshot(pane.entries(), pane.order());
     assert!(
         !hidden
             .visible
@@ -187,7 +194,7 @@ fn hidden_filter_discards_marks_and_falls_back_without_resurrecting_selection() 
     );
     assert_eq!(hidden.marked.len(), 3);
     pane.set_show_hidden(true, &sorter);
-    let shown = pane.selection.snapshot(&pane.entries, &pane.order);
+    let shown = pane.selection().snapshot(pane.entries(), pane.order());
     assert!(shown.visible.iter().any(|name| name == ".hidden"));
     assert!(!shown.marked.iter().any(|name| name == ".hidden"));
     assert_eq!(shown.focused, hidden.focused);
@@ -198,10 +205,10 @@ fn hidden_filter_discards_marks_and_falls_back_without_resurrecting_selection() 
     pane.apply_event(&PaneEvent::Space, &sorter).unwrap();
     pane.set_show_hidden(false, &sorter);
     pane.apply_event(&PaneEvent::Space, &sorter).unwrap();
-    assert_eq!(pane.selection.marked_count(), 1);
+    assert_eq!(pane.selection().marked_count(), 1);
     pane.apply_event(&PaneEvent::Release, &sorter).unwrap();
     pane.apply_event(&PaneEvent::Space, &sorter).unwrap();
-    assert_eq!(pane.selection.marked_count(), 0);
+    assert_eq!(pane.selection().marked_count(), 0);
 }
 
 #[cfg(unix)]
@@ -216,33 +223,43 @@ fn hidden_setting_follows_navigation_and_classifies_links_by_their_own_names() {
     let mut pane = BrowserPane::default();
     assert!(pane.open(&fixture.0, &sorter));
     assert!(
-        pane.entries
+        pane.entries()
             .iter()
             .any(|entry| entry.name == "visible-link")
     );
-    assert!(!pane.entries.iter().any(|entry| entry.name.starts_with('.')));
+    assert!(
+        !pane
+            .entries()
+            .iter()
+            .any(|entry| entry.name.starts_with('.'))
+    );
     pane.set_show_hidden(true, &sorter);
     assert!(
-        pane.entries
+        pane.entries()
             .iter()
             .any(|entry| entry.name == ".hidden-broken-link")
     );
     assert!(pane.open(&fixture.0.join("child"), &sorter));
-    assert_eq!(pane.entries[0].name, ".child-hidden");
+    assert_eq!(pane.entries()[0].name, ".child-hidden");
     pane.set_show_hidden(false, &sorter);
-    assert!(pane.entries.is_empty());
+    assert!(pane.entries().is_empty());
     assert_eq!(
-        pane.selection
-            .snapshot(&pane.entries, &pane.order)
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
             .focused
             .as_deref(),
         Some("..")
     );
     assert!(!pane.open(&fixture.0.join("absent"), &sorter));
-    assert!(pane.entries.is_empty());
+    assert!(pane.entries().is_empty());
     pane.parent(&sorter);
     assert!(!pane.show_hidden);
-    assert!(!pane.entries.iter().any(|entry| entry.name.starts_with('.')));
+    assert!(
+        !pane
+            .entries()
+            .iter()
+            .any(|entry| entry.name.starts_with('.'))
+    );
 }
 
 #[cfg(unix)]
@@ -302,9 +319,9 @@ fn metadata_sort_refresh_retains_criterion_focus_marks_and_pane_independence() {
     assert!(left.open(&fixture.0, &sorter));
     assert!(right.open(&fixture.0, &sorter));
     let row = left
-        .order
+        .order()
         .iter()
-        .position(|i| left.entries[*i].name == "file2")
+        .position(|i| left.entries()[*i].name == "file2")
         .unwrap()
         + 1;
     left.apply_event(
@@ -320,7 +337,7 @@ fn metadata_sort_refresh_retains_criterion_focus_marks_and_pane_independence() {
     left.resort(&sorter);
     fs::write(fixture.0.join("file2"), vec![0; 1024]).unwrap();
     left.refresh(&sorter);
-    let snapshot = left.selection.snapshot(&left.entries, &left.order);
+    let snapshot = left.selection().snapshot(left.entries(), left.order());
     assert_eq!(snapshot.visible.last().map(String::as_str), Some("file2"));
     assert_eq!(snapshot.focused.as_deref(), Some("file2"));
     assert_eq!(snapshot.marked, ["file2"]);

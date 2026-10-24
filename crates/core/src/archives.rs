@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (C) 2026 muCrab contributors
 // Recovered listing/extraction rules: evidence/workflows/W06-zip-browsing-extraction/contract.md.
+//! Validated bounded ZIP browsing and reviewed extraction without archive writeback.
 use crate::{JobControl, jobs::copy_stream};
 
 use crate::{CopyIssue, CopyIssueKind, CopyPolicy, FileEntry, FileMetadata, filename_extension};
@@ -50,11 +51,13 @@ impl ArchiveStamp {
 #[derive(Clone, Debug, Eq, PartialEq, serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ZipLocation {
+    /// Local archive path, retained unchanged by browsing and extraction.
     pub archive: PathBuf,
     /// Empty for the root; otherwise a relative path ending in `/`.
     pub prefix: String,
 }
 impl ZipLocation {
+    #[doc = "Build the virtual path used to display and navigate this archive folder."]
     pub fn display_path(&self) -> PathBuf {
         if self.prefix.is_empty() {
             self.archive.clone()
@@ -113,6 +116,7 @@ struct Node {
 /// Validated ZIP32 metadata in original encounter order. No extraction convenience API is used.
 #[derive(Clone, Debug)]
 pub struct ZipCatalog {
+    /// Captured or reported filesystem/remote path; inspect the enclosing operation contract.
     pub path: PathBuf,
     stamp: ArchiveStamp,
     members: Vec<Member>,
@@ -120,7 +124,7 @@ pub struct ZipCatalog {
     by_path: HashMap<String, usize>,
 }
 
-fn validate_path(path: &str) -> io::Result<()> {
+pub(crate) fn validate_path(path: &str) -> io::Result<()> {
     let path = path.strip_suffix('/').unwrap_or(path);
     let parts: Vec<_> = path.split('/').collect();
     if path.is_empty()
@@ -142,6 +146,16 @@ fn zip32_directory(file: &mut File) -> io::Result<(usize, u64)> {
     file.seek(SeekFrom::End(-(tail_len as i64)))?;
     let mut tail = vec![0; tail_len];
     file.read_exact(&mut tail)?;
+    let result = directory_tail(&tail, length)?;
+    file.rewind()?;
+    Ok(result)
+}
+
+pub(crate) fn directory_tail(tail: &[u8], length: u64) -> io::Result<(usize, u64)> {
+    if tail.len() > 65_557 || length < tail.len() as u64 {
+        return Err(invalid("Invalid ZIP directory tail size"));
+    }
+    let tail_len = tail.len();
     for offset in (0..tail_len.saturating_sub(21)).rev() {
         let bytes = &tail[offset..];
         if bytes[..4] != *b"PK\x05\x06" {
@@ -167,7 +181,6 @@ fn zip32_directory(file: &mut File) -> io::Result<(usize, u64)> {
                 "Unsupported ZIP directory, ZIP64, multi-disk or metadata limit",
             ));
         }
-        file.rewind()?;
         return Ok((count, start));
     }
     Err(invalid(
@@ -176,6 +189,10 @@ fn zip32_directory(file: &mut File) -> io::Result<(usize, u64)> {
 }
 
 impl ZipCatalog {
+    /// Read a bounded ZIP catalog and validate member paths, sizes and metadata.
+    ///
+    /// # Errors
+    /// Returns errors for unsupported, unsafe, changed or inaccessible archive/destination data.
     pub fn open(path: &Path) -> io::Result<Self> {
         if fs::symlink_metadata(path)?.file_type().is_symlink() {
             return Err(invalid("ZIP source cannot be a symbolic link"));
@@ -326,6 +343,10 @@ impl ZipCatalog {
             .ok_or_else(|| invalid("ZIP child missing"))?;
         Ok(node.explicit.then(|| node.entry.metadata.clone()).flatten())
     }
+    /// Enumerate direct children of a validated virtual archive folder.
+    ///
+    /// # Errors
+    /// Returns errors for unsupported, unsafe, changed or inaccessible archive/destination data.
     pub fn list(&self, prefix: &str) -> io::Result<Vec<FileEntry>> {
         let prefix = prefix.trim_end_matches('/');
         if !prefix.is_empty() {
@@ -359,17 +380,24 @@ pub struct ZipExtractPlan {
     destination: PathBuf,
     #[cfg(unix)]
     destination_identity: (u64, u64),
+    /// Reviewed handling of existing destination files.
     pub policy: CopyPolicy,
     expanded_bytes: u64,
     catalog: ZipCatalog,
     indices: Vec<usize>,
 }
 #[derive(Debug, Default)]
+/// Completed extraction counts and failures; cancellation does not roll back prior writes.
 pub struct ZipExtractReport {
+    /// Whether cooperative cancellation stopped or prevented the remaining work.
     pub cancelled: bool,
+    /// Whether this item met the operation success contract; inspect detailed issues separately.
     pub success: bool,
+    /// Detailed per-path failures, skips, unsupported cases or cancellation notices.
     pub issues: Vec<CopyIssue>,
+    #[doc = "Number of regular ZIP members successfully extracted."]
     pub files_extracted: usize,
+    /// Number of enumerated source directories processed.
     pub directories_processed: usize,
 }
 
@@ -408,21 +436,30 @@ fn check_target(root: &Path, relative: &str, archive: &Path) -> io::Result<()> {
 }
 
 impl ZipExtractPlan {
+    /// Borrow the captured archive path used for source revalidation.
     pub fn archive(&self) -> &Path {
         &self.archive
     }
+    /// Borrow the normalized virtual folder prefix, empty at the archive root.
     pub fn prefix(&self) -> &str {
         &self.prefix
     }
+    /// Borrow the ordered direct-child selection reviewed for extraction.
     pub fn names(&self) -> &[String] {
         &self.names
     }
+    /// Borrow the canonical extraction destination captured by the plan.
     pub fn destination(&self) -> &Path {
         &self.destination
     }
+    /// Return the validated sum of expanded member bytes before extraction.
     pub fn expanded_bytes(&self) -> u64 {
         self.expanded_bytes
     }
+    /// Capture an ordered extraction plan with source and destination validation.
+    ///
+    /// # Errors
+    /// Returns errors for unsupported, unsafe, changed or inaccessible archive/destination data.
     pub fn new(
         archive: &Path,
         prefix: &str,
@@ -490,10 +527,18 @@ impl ZipExtractPlan {
     }
 }
 
+/// Extract the reviewed selection, retaining completed writes after an error.
+///
+/// # Errors
+/// Returns errors for unsupported, unsafe, changed or inaccessible archive/destination data.
 pub fn extract_zip(plan: &ZipExtractPlan) -> io::Result<ZipExtractReport> {
     extract_zip_with_control(plan, &JobControl::default())
 }
 
+/// Extract with cooperative cancellation and explicit retained-partial reporting.
+///
+/// # Errors
+/// Returns errors for unsupported, unsafe, changed or inaccessible archive/destination data.
 pub fn extract_zip_with_control(
     plan: &ZipExtractPlan,
     control: &JobControl,

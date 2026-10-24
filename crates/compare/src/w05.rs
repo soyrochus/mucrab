@@ -22,20 +22,20 @@ pub fn adapter() -> Result<(), Box<dyn std::error::Error>> {
             &request.names,
             &BatchRenameOptions::default(),
         )?;
-        let mut previews = vec![plan.preview.clone()];
+        let mut previews = vec![plan.preview().clone()];
         for options in request.options {
             plan = BatchRenamePlan::new(&request.directory, &request.names, &options)?;
-            previews.push(plan.preview.clone());
+            previews.push(plan.preview().clone());
         }
         let unchanged_names: Vec<_> = plan
-            .preview
+            .preview()
             .rows
             .iter()
             .filter(|row| row.name == row.new_name)
             .map(|row| row.name.clone())
             .collect();
         let applied =
-            request.apply && plan.preview.rename_enabled && plan.preview.changed_count > 0;
+            request.apply && plan.preview().rename_enabled && plan.preview().changed_count > 0;
         let outcomes = if applied {
             apply_batch_rename(&plan)?.outcomes
         } else {

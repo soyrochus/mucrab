@@ -13,18 +13,31 @@ use std::{
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(default, deny_unknown_fields)]
+/// Read-only local search filters; invalid ranges are rejected by plan construction.
 pub struct SearchQuery {
+    /// Captured local search root; traversal does not follow directory links.
     pub root: PathBuf,
+    /// Wildcard pattern using star, question mark and escaped literal characters.
     pub pattern: String,
+    /// Whether wildcard and extension comparisons preserve letter case.
     pub case_sensitive: bool,
+    /// Optional final filename extension, excluding empty or leading-dot suffixes.
     pub extension: String,
+    /// Regular-file inclusion or count, according to the enclosing query/report.
     pub files: bool,
+    /// Directory inclusion or count, according to the enclosing query/report.
     pub folders: bool,
+    /// Symbolic-link inclusion/count or inode link count, as identified by the enclosing type.
     pub links: bool,
+    /// Whether dot-prefixed names participate in search.
     pub include_hidden: bool,
+    /// Optional inclusive minimum byte size for regular-file filtering.
     pub min_size: Option<u64>,
+    /// Optional inclusive maximum byte size for regular-file filtering.
     pub max_size: Option<u64>,
+    /// Optional inclusive UTC epoch-millisecond lower time bound.
     pub from_ms: Option<i64>,
+    /// Optional exclusive UTC epoch-millisecond upper time bound.
     pub to_ms: Option<i64>,
 }
 impl Default for SearchQuery {
@@ -52,6 +65,7 @@ enum Token {
     Literal(char),
 }
 #[derive(Clone, Debug)]
+/// Validated compiled wildcard query against a captured local directory.
 pub struct SearchPlan {
     query: SearchQuery,
     root: PinnedDirectory,
@@ -61,6 +75,10 @@ fn invalid(s: &str) -> io::Error {
     io::Error::new(io::ErrorKind::InvalidInput, s)
 }
 impl SearchPlan {
+    /// Validate search ranges and compile a bounded wildcard query against a pinned root.
+    ///
+    /// # Errors
+    /// Returns validation, changed-source or filesystem errors; search reports retain bounded partial failures.
     pub fn new(mut query: SearchQuery) -> io::Result<Self> {
         if query
             .min_size
@@ -100,9 +118,11 @@ impl SearchPlan {
             tokens,
         })
     }
+    /// Borrow the validated query captured by this search plan.
     pub fn query(&self) -> &SearchQuery {
         &self.query
     }
+    /// Match one name against the compiled wildcard and extension filters.
     pub fn matches_name(&self, name: &str) -> bool {
         let chars: Vec<char> = name.chars().collect();
         let mut row = vec![false; chars.len() + 1];
@@ -135,6 +155,10 @@ impl SearchPlan {
                         == self.query.extension.to_lowercase()
                 })
     }
+    /// Search within default bounds, emitting bounded batches and retaining partial results.
+    ///
+    /// # Errors
+    /// Returns validation, changed-source or filesystem errors; search reports retain bounded partial failures.
     pub fn run(
         &self,
         control: &JobControl,
@@ -142,6 +166,10 @@ impl SearchPlan {
     ) -> io::Result<SearchReport> {
         self.run_with_limits(control, SearchLimits::default(), emit)
     }
+    /// Search within explicit bounds and stop when cancelled or the consumer declines a batch.
+    ///
+    /// # Errors
+    /// Returns validation, changed-source or filesystem errors; search reports retain bounded partial failures.
     pub fn run_with_limits(
         &self,
         control: &JobControl,
@@ -305,9 +333,13 @@ impl SearchPlan {
     }
 }
 #[derive(Clone, Copy, Debug)]
+/// Positive traversal bounds with production upper caps applied during search.
 pub struct SearchLimits {
+    /// Maximum nested directory depth for traversal.
     pub depth: usize,
+    /// Visited-entry count or traversal limit, according to the enclosing type.
     pub visited: usize,
+    /// Result count bound or collected matching entries, according to the enclosing type.
     pub hits: usize,
 }
 impl Default for SearchLimits {
@@ -320,10 +352,15 @@ impl Default for SearchLimits {
     }
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+/// An entry classification that does not follow directory or file links.
 pub enum SearchKind {
+    #[doc = "A regular file without following a symbolic-link entry."]
     File,
+    #[doc = "A directory entry without following a symbolic link."]
     Folder,
+    #[doc = "A symbolic-link entry, including missing or external targets."]
     Link,
+    #[doc = "An object outside regular-file, directory and symbolic-link classifications."]
     Other,
 }
 fn kind(m: &fs::Metadata) -> SearchKind {
@@ -369,16 +406,26 @@ impl Identity {
     }
 }
 #[derive(Clone, Debug, Serialize)]
+/// One search result tied to the identity required for open-containing revalidation.
 pub struct SearchHit {
+    /// Path relative to the captured search root, used for stable result ordering.
     pub relative_path: PathBuf,
+    /// Captured or reported filesystem/remote path; inspect the enclosing operation contract.
     pub path: PathBuf,
+    /// Typed category independent of user-facing diagnostic wording.
     pub kind: SearchKind,
+    /// File size in bytes; compatibility listing metadata can use -1 for unknown size.
     pub size: u64,
+    /// Signed milliseconds relative to the UTC Unix epoch.
     pub modified_ms: Option<i64>,
     #[serde(skip)]
     identity: Identity,
 }
 impl SearchHit {
+    /// Revalidate a search hit and navigate its pane to the containing folder.
+    ///
+    /// # Errors
+    /// Returns validation, changed-source or filesystem errors; search reports retain bounded partial failures.
     pub fn open_containing(&self, pane: &mut BrowserPane, sorter: &NameSorter) -> io::Result<()> {
         let meta = fs::symlink_metadata(&self.path)?;
         if Identity::new(&meta) != self.identity {
@@ -395,12 +442,18 @@ impl SearchHit {
             .ok_or_else(|| invalid("Invalid result name"))?;
         let pinned = PinnedDirectory::new(parent)?;
         pinned.validate()?;
-        let retained_marks =
-            if pane.archive.is_none() && pane.location.as_deref() == Some(pinned.path.as_path()) {
-                pane.selection.snapshot(&pane.entries, &pane.order).marked
-            } else {
-                Vec::new()
-            };
+        let retained_marks = if pane.archive().is_none()
+            && pane.location().map(|p| p.as_path()) == Some(pinned.path.as_path())
+        {
+            pane.selection.snapshot(&pane.entries, &pane.order).marked
+        } else {
+            Vec::new()
+        };
+        if pane.browsing_deferred() {
+            pane.queue_browse(parent.to_owned(), true, None);
+            pane.focus_after_browse(name);
+            return Ok(());
+        }
         let mut candidate = BrowserPane {
             options: pane.options,
             show_hidden: pane.show_hidden,
@@ -430,9 +483,9 @@ impl SearchHit {
                     position
                         + usize::from(
                             candidate
-                                .location
-                                .as_deref()
-                                .and_then(Path::parent)
+                                .location()
+                                .map(|p| p.as_path())
+                                .and_then(|p| p.parent())
                                 .is_some(),
                         ),
                     true,
@@ -445,11 +498,17 @@ impl SearchHit {
     }
 }
 #[derive(Clone, Debug, Default, Serialize)]
+/// Collected bounded hits and partial traversal diagnostics, with no mutation effects.
 pub struct SearchReport {
+    /// Result count bound or collected matching entries, according to the enclosing type.
     pub hits: Vec<SearchHit>,
+    /// Visited-entry count or traversal limit, according to the enclosing type.
     pub visited: usize,
+    /// Total encountered traversal errors, even when stored details are capped.
     pub error_count: usize,
+    /// Detailed per-path failures, skips, unsupported cases or cancellation notices.
     pub issues: Vec<String>,
+    /// Whether cooperative cancellation stopped or prevented the remaining work.
     pub cancelled: bool,
 }
 impl SearchReport {
@@ -459,6 +518,7 @@ impl SearchReport {
             self.issues.push(format!("{}: {message}", path.display()));
         }
     }
+    /// Report whether cancellation or encountered errors make the totals incomplete.
     pub fn partial(&self) -> bool {
         self.cancelled || self.error_count > 0
     }

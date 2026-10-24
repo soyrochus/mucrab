@@ -1,0 +1,97 @@
+[
+  {
+    "op": "capture",
+    "name": "initial",
+    "wait": 2
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Home"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Down"
+    ],
+    "capture": "focused-entry"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "space"
+    ],
+    "capture": "marked-entry"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "copy-confirmation"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "d"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "End"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Up"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "capture": "viewer"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "f"
+    ],
+    "capture": "search"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 1500,
+    "y": 84
+  },
+  {
+    "op": "resize",
+    "width": 1640,
+    "height": 1000,
+    "capture": "minimum"
+  }
+]

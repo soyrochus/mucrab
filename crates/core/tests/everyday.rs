@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
+//! Behavioural regression coverage for everyday using disposable fixtures.
 use mucrab_core::*;
 use std::{
     fs,
@@ -190,7 +191,7 @@ fn history_bounds_branches_duplicates_and_failed_navigation() {
         pane.open(&t.dir(name), &s);
     }
     assert!(pane.traverse_history(false, &s));
-    assert!(pane.location.as_ref().unwrap().ends_with("b"));
+    assert!(pane.location().unwrap().ends_with("b"));
     pane.refresh(&s);
     pane.options.ascending = false;
     pane.resort(&s);
@@ -201,7 +202,7 @@ fn history_bounds_branches_duplicates_and_failed_navigation() {
     assert!(pane.can_forward());
     fs::remove_dir(t.0.join("a")).unwrap();
     assert!(!pane.traverse_history(false, &s));
-    assert!(pane.location.as_ref().unwrap().ends_with("b"));
+    assert!(pane.location().unwrap().ends_with("b"));
     assert!(pane.can_forward());
     pane.open(&t.dir("d"), &s);
     assert!(!pane.can_forward());
@@ -227,11 +228,11 @@ fn history_retains_zip_identity_and_is_pane_local() {
     let zip = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/W09/open.zip");
     assert!(a.open(&zip.join("nested"), &s));
     assert!(a.traverse_history(false, &s));
-    assert!(a.archive.is_none());
+    assert!(a.archive().is_none());
     assert!(a.traverse_history(true, &s));
-    assert_eq!(a.archive.as_ref().unwrap().prefix, "nested/");
+    assert_eq!(a.archive().unwrap().prefix, "nested/");
     assert_eq!(b.history_len(), 1);
-    assert!(b.archive.is_none());
+    assert!(b.archive().is_none());
 }
 #[test]
 fn quick_find_focuses_prefixes_wraps_and_preserves_marks_and_filters() {
@@ -251,40 +252,45 @@ fn quick_find_focuses_prefixes_wraps_and_preserves_marks_and_filters() {
     pane.open(&t.0, &s);
     pane.focus_name("xAlpha.txt");
     pane.apply_event(&PaneEvent::Space, &s).unwrap();
-    let marks = pane.selection.snapshot(&pane.entries, &pane.order).marked;
+    let marks = pane
+        .selection()
+        .snapshot(pane.entries(), pane.order())
+        .marked;
     assert!(pane.find_prefix("al", None));
     assert_eq!(
-        pane.selection
-            .snapshot(&pane.entries, &pane.order)
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
             .focused
             .as_deref(),
         Some("Alpha.txt")
     );
     assert!(pane.find_prefix("al", Some(true)));
     assert_eq!(
-        pane.selection
-            .snapshot(&pane.entries, &pane.order)
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
             .focused
             .as_deref(),
         Some("alphabet.txt")
     );
     pane.find_prefix("al", Some(true));
     assert_eq!(
-        pane.selection
-            .snapshot(&pane.entries, &pane.order)
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
             .focused
             .as_deref(),
         Some("Alpha.txt")
     );
     assert_eq!(
-        pane.selection.snapshot(&pane.entries, &pane.order).marked,
+        pane.selection()
+            .snapshot(pane.entries(), pane.order())
+            .marked,
         marks
     );
     assert!(pane.find_prefix("é", None));
     assert!(pane.find_prefix("中 ", None));
-    let row = pane.selection.focus_row;
+    let row = pane.selection().focus_row;
     assert!(!pane.find_prefix("missing", None));
-    assert_eq!(pane.selection.focus_row, row);
+    assert_eq!(pane.selection().focus_row, row);
     assert!(!pane.find_prefix(".Al", None));
 }
 

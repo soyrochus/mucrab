@@ -5,6 +5,7 @@
 // See NOTICE.md and evidence/workflows/W01-local-browse-sort/ for upstream
 // attribution, original-bytecode fingerprints, and scoped comparison evidence.
 
+//! Recovered file ordering with explicit locale and compatibility arithmetic.
 use crate::FileEntry;
 use icu_collator::{Collator, CollatorBorrowed, options::CollatorOptions, options::Strength};
 use serde::{Deserialize, Serialize};
@@ -12,28 +13,41 @@ use std::cmp::Ordering;
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+/// The primary ordering field before compatibility name tie-breaking.
 pub enum SortCriterion {
     #[default]
+    #[doc = "Order by the recovered name comparison."]
     Name,
+    #[doc = "Order by byte size before name tie-breaking."]
     Size,
+    #[doc = "Order by modification time before name tie-breaking."]
     Date,
+    #[doc = "Order by final extension before name tie-breaking."]
     Extension,
 }
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+/// Name ordering policy: first-number natural comparison or locale-based lexical comparison.
 pub enum SortMode {
     #[default]
+    #[doc = "Compare the first numeric group before locale name tie-breaking."]
     Natural,
+    #[doc = "Use explicit locale-based name collation without numeric-group handling."]
     Lexicographic,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+/// Independent ordering choices applied to a visible file listing.
 pub struct SortOptions {
     #[serde(default)]
+    /// Primary metadata or name comparison criterion.
     pub criterion: SortCriterion,
+    /// Whether to apply ascending order after directory-first handling.
     pub ascending: bool,
+    /// Whether directory targets precede non-directory entries independently of direction.
     pub directories_first: bool,
+    /// Natural or lexical name tie-breaking policy.
     pub mode: SortMode,
 }
 
@@ -48,6 +62,8 @@ impl Default for SortOptions {
     }
 }
 
+#[derive(Debug)]
+/// Explicit en-US collation and recovered name/metadata compatibility comparison.
 pub struct NameSorter {
     tertiary: CollatorBorrowed<'static>,
     primary: CollatorBorrowed<'static>,
@@ -68,6 +84,7 @@ impl NameSorter {
         })
     }
 
+    /// Compare two entries using recovered directory, metadata and name-order semantics.
     pub fn compare(&self, left: &FileEntry, right: &FileEntry, options: SortOptions) -> Ordering {
         // FileComparator returns here BEFORE applying descending inversion.
         if options.directories_first && left.is_directory != right.is_directory {

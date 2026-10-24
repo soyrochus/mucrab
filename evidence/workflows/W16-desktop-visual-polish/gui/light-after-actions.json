@@ -1,0 +1,186 @@
+[
+  {
+    "op": "capture",
+    "name": "initial",
+    "wait": 2
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Tab"
+    ],
+    "capture": "right-pane-focus"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Tab"
+    ]
+  },
+  {
+    "op": "drag",
+    "x": 560,
+    "y": 400,
+    "to_x": 650,
+    "to_y": 400,
+    "capture": "split-resized"
+  },
+  {
+    "op": "click",
+    "x": 655,
+    "y": 400,
+    "count": 2
+  },
+  {
+    "op": "drag",
+    "x": 257,
+    "y": 174,
+    "to_x": 285,
+    "to_y": 174,
+    "capture": "column-resized"
+  },
+  {
+    "op": "drag",
+    "x": 285,
+    "y": 174,
+    "to_x": 257,
+    "to_y": 174
+  },
+  {
+    "op": "click",
+    "x": 200,
+    "y": 142
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "a"
+    ]
+  },
+  {
+    "op": "text",
+    "text": "/home/iwk/src/mucrab/artifacts/gui/W16-visual-polish/left/Documents"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Return"
+    ],
+    "capture": "path-navigation"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Alt_L",
+      "Left"
+    ],
+    "capture": "history-return"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "Shift_L",
+      "t"
+    ],
+    "capture": "duplicated-tab"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "w"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Home"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Down"
+    ],
+    "capture": "focused-entry"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "space"
+    ],
+    "capture": "marked-entry"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F5"
+    ],
+    "capture": "copy-confirmation"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "d"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "End"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Up"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "F3"
+    ],
+    "capture": "viewer"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Control_L",
+      "f"
+    ],
+    "capture": "search"
+  },
+  {
+    "op": "key",
+    "keys": [
+      "Escape"
+    ]
+  },
+  {
+    "op": "click",
+    "x": 750,
+    "y": 42
+  },
+  {
+    "op": "resize",
+    "width": 820,
+    "height": 500,
+    "capture": "minimum"
+  }
+]
