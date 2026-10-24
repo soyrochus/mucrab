@@ -1979,7 +1979,7 @@ dependencies = [
 
 [[package]]
 name = "mucrab-compare"
-version = "0.10.0"
+version = "0.11.0"
 dependencies = [
  "mucrab-core",
  "serde",
@@ -1988,7 +1988,7 @@ dependencies = [
 
 [[package]]
 name = "mucrab-core"
-version = "0.10.0"
+version = "0.11.0"
 dependencies = [
  "base64",
  "chrono",
@@ -2012,7 +2012,7 @@ dependencies = [
 
 [[package]]
 name = "mucrab-desktop"
-version = "0.10.0"
+version = "0.11.0"
 dependencies = [
  "chrono",
  "eframe",
