@@ -20,12 +20,12 @@
 - [ ] 3.4 Run Linux/macOS both-pane native replays, workspace checks and W07–W10 regressions; record unavailable checks as pending.
 - [x] 3.5 Update status, ledger, notices and W11 evidence with exact scope/results; close only completed gates.
 
-Implementation and Linux receipts: [W11 evidence](../../../evidence/workflows/W11-tabs-bookmarks/README.md).
+Implementation and Linux receipts: [W11 evidence](../../../../evidence/workflows/W11-tabs-bookmarks/README.md).
 Unchecked original full-trace/native-host gates remain pending; see the evidence index for exact tested boundaries.
 
 ## Mac checkpoint — 2026-10-18
 
 - [x] Both-pane tab controls, independent marks, bookmark save/restart and session-only tab reset.
 - [x] Same-path origin-tab closure during a paused SFTP copy leaves its captured transfer/progress intact; app close cancels normally.
-- [x] Current workspace checks and scoped original factory/bookmark probe; [Mac evidence](../../../evidence/platforms/macos-arm64/W11-W15.md).
+- [x] Current workspace checks and scoped original factory/bookmark probe; [Mac evidence](../../../../evidence/platforms/macos-arm64/W11-W15.md).
 - [ ] Complete every operation variant in 3.2, full original traces in 3.1 and fresh earlier native regression replays in 3.4.

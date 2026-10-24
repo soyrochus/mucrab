@@ -20,11 +20,11 @@
 - [ ] 3.4 Run Linux/macOS native result navigation in both panes, required workspace checks and earlier regressions; leave unavailable host checks pending.
 - [x] 3.5 Update docs, ledger, licenses and W12 evidence with actual scope, performance observations and unresolved limits.
 
-Implementation and Linux receipts: [W12 evidence](../../../evidence/workflows/W12-file-search/README.md).
+Implementation and Linux receipts: [W12 evidence](../../../../evidence/workflows/W12-file-search/README.md).
 Unchecked original full-trace/native-host gates remain pending; see the evidence index for exact tested boundaries.
 
 ## Mac checkpoint — 2026-10-18
 
 - [x] Both-pane native result navigation, Unicode NFC search on APFS and real mounted-child omission.
-- [x] 64+64 scoped predicate cases, current workspace checks and deterministic worker cancellation/replacement tests; [Mac evidence](../../../evidence/platforms/macos-arm64/W11-W15.md).
+- [x] 64+64 scoped predicate cases, current workspace checks and deterministic worker cancellation/replacement tests; [Mac evidence](../../../../evidence/platforms/macos-arm64/W11-W15.md).
 - [ ] Full original traversal/error/result-window coverage, native close during active traversal, Linux same-device bind mounts and fresh earlier native regressions.

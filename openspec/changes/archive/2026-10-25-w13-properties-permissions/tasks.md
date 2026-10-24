@@ -26,5 +26,5 @@
 - [x] Deterministic replaced-entry/link/partial/cancel tests, denied folder/time-handle tests, hidden/cycle/hard-link totals and traversal limits.
 - [x] Read-only folder totals beside a paused real mutation, workspace checks and fresh W07–W12 native regressions; final read-result abandonment fix separately tested and replayed.
 - [ ] Complete foreign-owner chmod-denial and real bind-mount integration coverage for 3.2/3.3.
-- [x] Native macOS both-pane inspection/editing, nanosecond modified-time read-back, hidden/link-safe totals and real different-device mounted-child boundary; [Mac evidence](../../../evidence/platforms/macos-arm64/W11-W15.md).
+- [x] Native macOS both-pane inspection/editing, nanosecond modified-time read-back, hidden/link-safe totals and real different-device mounted-child boundary; [Mac evidence](../../../../evidence/platforms/macos-arm64/W11-W15.md).
 - [ ] Complete original full-window coverage and fresh earlier native regressions for 3.4; Linux same-device bind mounts and foreign-owner denial remain open.

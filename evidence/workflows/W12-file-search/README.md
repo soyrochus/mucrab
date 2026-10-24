@@ -6,7 +6,7 @@ omission and 64+64 scoped predicate cases. Mac traversal now uses NFC like pane
 listings; predicate comparisons preserve the same observed direct-provider inputs.
 
 Implemented with bounded Linux/Mac verification. Broader original traversal/UI
-and composite regression gates remain open in [tasks](../../../openspec/changes/w12-file-search/tasks.md).
+and composite regression gates remain open in [tasks](../../../openspec/changes/archive/2026-10-25-w12-file-search/tasks.md).
 
 Go → Search files / Ctrl/Cmd+F opens a nonmodal search window. Each start captures
 a canonical local root and immutable criteria. Filename globs use `*`, `?` and

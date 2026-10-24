@@ -4,7 +4,7 @@ Implemented with bounded Linux and Mac verification. The
 [2026-10-18 Mac checkpoint](../../platforms/macos-arm64/W11-W15.md) adds native
 tab/mark isolation, bookmark restart, same-path origin-tab closure during a paused
 SFTP transfer, workspace checks and the original value probe. Composite original/
-regression gates remain open in [tasks](../../../openspec/changes/w11-tabs-bookmarks/tasks.md).
+regression gates remain open in [tasks](../../../openspec/changes/archive/2026-10-25-w11-tabs-bookmarks/tasks.md).
 
 Each pane has 1–32 session tabs with stable nonreused IDs, location/history,
 marks/focus, sorting and widths. New opens Home with default options; Duplicate

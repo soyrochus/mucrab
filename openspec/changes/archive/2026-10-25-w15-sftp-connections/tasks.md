@@ -34,6 +34,6 @@
 - [x] Record server-root/key corrections and failure instrumentation after Rust began; retain original freeze and exact errata rather than claiming a blind server fixture (1.3 remains open as originally worded).
 - [x] Linux native trust, mixed copies, viewer/clipboard/external lifetime, bookmarks/tabs and disconnect/reconnect; real protocol failure tests and isolated credential service checks.
 - [x] Fresh W07–W14 candidate regressions, followed by final W15 workspace/service/native checks; preserve candidate/final binary provenance separately.
-- [x] Native macOS vendored-OpenSSL build, unique-item Keychain save/read/update/removal, real SFTP failure tests and native upload/download/view/external opening/disconnect/reconnect; [Mac evidence](../../../evidence/platforms/macos-arm64/W11-W15.md).
+- [x] Native macOS vendored-OpenSSL build, unique-item Keychain save/read/update/removal, real SFTP failure tests and native upload/download/view/external opening/disconnect/reconnect; [Mac evidence](../../../../evidence/platforms/macos-arm64/W11-W15.md).
 - [x] Mac origin-tab closure during a paused remote transfer keeps the job/progress; app close cancels and exits normally, preserving source, old destination and owned partial stage.
 - [ ] Mac locked/unavailable Keychain and GUI Remember/use-saved checks; Linux active-transfer tab/app closure, expanded disconnect races, full original window parity and wider server/key-format/IPv6 interoperability.

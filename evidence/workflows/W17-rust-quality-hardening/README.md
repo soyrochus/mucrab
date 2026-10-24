@@ -64,7 +64,9 @@ The pre-existing W09–W15 incomplete platform/parity gates remain open.
 
 ## OpenSpec validation
 
-Both W16 and W17 pass strict validation. The whole-project validation also reports
-a pre-existing failure in unchanged `w09-open-files`: its `file-opening/spec.md`
-has no recognised delta section, so the change has no parsed requirements delta.
-That earlier proposal was not modified as part of these implementations.
+Both W16 and W17 passed strict validation. Before archival, whole-project
+validation reported a pre-existing W09 failure: its specification had no recognised
+delta section. The 2026-10-25 archive step converted those existing bullets into
+standard requirements/scenarios and synced all 19 specifications; strict validation
+now passes. All nine changes were archived at the user's request with unchecked
+tasks preserved; see the [archive checkpoint](../../../openspec/changes/archive/README.md).

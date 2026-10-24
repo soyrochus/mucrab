@@ -68,5 +68,6 @@ Native macOS presentation/menu checks, physical OS theme-notification delivery a
 Wayland were not exercised. The existing injected live-theme regression passes,
 but is not evidence of physical OS notification delivery. Hosted CI has not been
 run from this working tree. Earlier W09–W15 unfinished gates remain open, and both
-W16/W17 retain explicit macOS acceptance tasks instead of being archived as fully
-verified changes.
+W16/W17 retain explicit macOS acceptance tasks in their archived task records.
+They were archived at the user's request on 2026-10-25, without claiming full host
+verification; see the [archive checkpoint](../../../openspec/changes/archive/README.md).

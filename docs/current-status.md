@@ -1,5 +1,10 @@
 # Current status
 
+OpenSpec archive checkpoint (2026-10-25): W09–W17 are archived and their 19
+capability specifications are synced. The 32 unchecked acceptance/closure tasks
+remain in the archived records; archival does not close the limitations below.
+See the [archive checkpoint](../openspec/changes/archive/README.md).
+
 W16/W17 implementation checkpoint (2026-10-24): coordinated desktop styling,
 bounded background local/ZIP browsing, validated capture APIs, checked fallback
 move synchronisation, component extraction and routine quality gates are implemented.
